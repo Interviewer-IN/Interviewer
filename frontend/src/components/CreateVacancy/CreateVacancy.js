@@ -165,11 +165,16 @@ class CreateVacancy extends Component{
 
 
         let showProjectFilter = () => {
-            let projectList = this.props.newProject.projects;
+            let projectList = this.props.newProject.projects,
+                options = [];
 
-            let options =  projectList.map((value, index) =>
-                <option key={index}>{value.title}</option>
-            );
+
+            if (projectList !== undefined){
+                options =  projectList.map((value, index) =>
+                    <option key={index}>{value.title}</option>
+                );
+            }
+
 
             return (
                 <div className="form-group">

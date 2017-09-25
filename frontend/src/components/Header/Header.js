@@ -4,25 +4,25 @@ import './header.css';
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as pageActions from '../../redux/actions/sideBarActions';
+import * as sideBarActions from '../../redux/actions/sideBarActions';
+import {logOut} from "../../redux/actions/authenticationActions";
 import Notifications from '../../containers/Notifications';
 
 
 class Header extends Component {
 
-    constructor(props) {
-        super(props);
-
-        this.handleMenuBthClick = this.handleMenuBthClick.bind(this);
-    }
-
-    handleMenuBthClick() {
-        this.props.pageActions.showSideBar(true);
-    }
-
     componentDidUpdate(){
 
     }
+
+    handleMenuBthClick() {
+        this.props.sideBarActions.showSideBar(true);
+    }
+
+    handleLogOut(){
+        this.props.logOut();
+    }
+
 
     render() {
 
@@ -55,7 +55,7 @@ class Header extends Component {
         return (
             <header className="header">
                 <div className="header-block header-block-collapse hidden-lg-up">
-                    <button className="collapse-btn" id="sidebar-collapse-btn" onClick={this.handleMenuBthClick}>
+                    <button className="collapse-btn" id="sidebar-collapse-btn" onClick={() => this.handleMenuBthClick()}>
                         <i className="fa fa-bars"></i>
                     </button>
                 </div>
@@ -71,10 +71,7 @@ class Header extends Component {
                             {toggleActiveSettings()}
                         </li>
                         <li>
-                            <Link to="/login" id="headerLogin">Log in</Link>
-                        </li>
-                        <li>
-                            <Link to="/login" id="headerLogout">Logout</Link>
+                            <Link to="/login" id="headerLogout" onClick={() => this.handleLogOut()}>Logout</Link>
                         </li>
                     </ul>
                 </div>
@@ -87,13 +84,16 @@ class Header extends Component {
 
 function mapStateToProps(state) {
     return {
-        sideBar: state.sideBar.status
+        sideBar: state.sideBar.status,
+        userData: state.authentication.userData,
+        loggedUser: state.authentication.loggedUser
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        pageActions: bindActionCreators(pageActions, dispatch)
+        sideBarActions: bindActionCreators(sideBarActions, dispatch),
+        logOut: bindActionCreators(logOut, dispatch)
     }
 }
 

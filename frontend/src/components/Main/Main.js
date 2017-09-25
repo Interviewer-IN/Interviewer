@@ -16,6 +16,7 @@ import ProjectEdit from "./../ProjectEdit";
 import Username from "./../Username";
 import Password from "./../Password";
 import {makeNote} from "../../redux/actions/notificationActions";
+import {authorizationCheck} from "../../redux/actions/authenticationActions";
 import {connect} from "react-redux";
 
 
@@ -24,14 +25,35 @@ class Main extends Component {
 
     componentDidUpdate() {
 
-        let status = this.props.sideBar,
+        //-- CHECKING STATUS OF SIDEBAR ----------------
+
+        let sideBarStatus = this.props.sideBar,
             app = document.getElementById('app');
 
-        if (status) {
+        if (sideBarStatus) {
             app.classList.add('sidebar-open');
         } else {
             app.classList.remove('sidebar-open');
         }
+
+        //-- END CHECKING STATUS OF SIDEBAR --------------
+
+    }
+
+    componentWillMount() {
+
+        //-- CHECKING IS USER LOGGED ----------------
+
+        const {dispatch} = this.props;
+        dispatch(authorizationCheck());
+
+        let loggedUser = this.props.loggedUser;
+        if (!loggedUser){
+            this.props.history.push('/login');
+        }
+
+        //-- END CHECKING IS USER LOGGED ----------------
+
     }
 
     handleMakeNote(status, text, hide) {
@@ -175,7 +197,10 @@ class Main extends Component {
 function mapStateToProps(state) {
     return {
         sideBar: state.sideBar.status,
-        notifications: state.notifications
+        notifications: state.notifications,
+        loggedUser: state.authentication.loggedUser,
+        userData: state.authentication.userData,
+        sessionData: state.authentication.sessionData
     }
 }
 

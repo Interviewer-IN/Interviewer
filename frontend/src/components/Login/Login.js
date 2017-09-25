@@ -1,9 +1,14 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Modal} from 'react-bootstrap';
+import {bindActionCreators} from "redux";
+import {connect} from 'react-redux';
 import Notifications from '../../containers/Notifications';
 import './login.css';
+import {Redirect} from 'react-router-dom';
 
+
+import * as pageActions from "../../redux/actions/authenticationActions";
 
 class Login extends Component {
 
@@ -14,11 +19,6 @@ class Login extends Component {
             showModal: false,
             emailIsEmpty: true
         };
-
-
-        // this.openModal = this.openModal.bind(this);
-        // this.closeModal = this.closeModal.bind(this);
-        // this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     openModal() {
@@ -40,6 +40,7 @@ class Login extends Component {
         let currentForm = event.target,
             email = this.refs.login_email,
             password = this.refs.login_password;
+
 
         let loginValidationSettings = {
             rules: {
@@ -66,6 +67,10 @@ class Login extends Component {
                 }
             }
         };
+
+        //----------------------------------
+        //LOGIN FORM VALIDATION
+        //----------------------------------
 
         let validate = (loginValidationSettings, email, password, currentForm) => {
 
@@ -169,6 +174,10 @@ class Login extends Component {
 
         };
 
+        //----------------------------------
+        //END LOGIN FORM VALIDATION
+        //----------------------------------
+
         if (!Element.prototype.remove) {
             Element.prototype.remove = function remove() {
                 if (this.parentNode) {
@@ -191,11 +200,18 @@ class Login extends Component {
         };
 
 
-        let isPassValidation =  validate(loginValidationSettings, email, password, currentForm);
+        let isPassValidation = validate(loginValidationSettings, email, password, currentForm);
 
-        if (isPassValidation){
+        if (isPassValidation) {
 
+            let authData = {
+                email: email.value,
+                password: password.value
+            };
+
+            this.props.pageActions.doLogin(authData);
         }
+
 
     }
 
@@ -205,70 +221,107 @@ class Login extends Component {
 
     render() {
 
-        return (
-            <div className="auth">
-                <Modal show={this.state.showModal} onHide={() => this.closeModal()} id="noAccountModal">
-                    <Modal.Header closeButton>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <p>In order to get access to Interviewer app please contact your system administrator or HR
-                            department</p>
-                    </Modal.Body>
-                </Modal>
-                <Notifications/>
-                <div className="auth-container">
-                    <div className="card">
-                        <header className="auth-header">
-                            <h1 className="auth-title">
-                                Interviewer Logo
-                            </h1>
-                        </header>
-                        <div className="auth-content">
-                            <p className="text-xs-center">LOGIN TO CONTINUE</p>
-                            <form id="login-form" onSubmit={(event) => this.handleSubmit(event)}>
-                                <div className="form-group">
-                                    <label htmlFor="email">Email</label>
-                                    <input type="text" className="form-control underlined required" name="email"
-                                           id="username" placeholder="Your email address" maxLength='60'
-                                           ref='login_email'/>
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="password">Password</label>
-                                    <input type="password" className="form-control underlined required" name="password"
-                                           id="password" placeholder="Your password" maxLength='30'
-                                           ref="login_password"/>
-                                </div>
-                                <div className="form-group submit-btn">
-                                    <button type="submit" id="loginSubmit" className="btn btn-block btn-primary">Login
-                                    </button>
-                                </div>
-                                <div className="form-group forgot-pass">
-                                    <Link to="/forgotpassword" className="forgot-btn" id="forgotPassBtn">Forgot
-                                        password?</Link>
-                                </div>
-                                <div className="form-group no-account">
-                                    <p className="text-xs-center" id="noAccount" onClick={() => this.openModal()}>Do not have an
-                                        account? Click here</p>
-                                </div>
-                            </form>
+        //-- REDIRECT LOGGED USER TO MAIN PAGE  ----------------
 
-                            <ul className="copyright">
-                                <li>
-                                    (C) Interviewer, 2017
-                                </li>
-                                <li>
-                                    <Link to="#" id="termsService">Terms of service</Link>
-                                </li>
-                                <li>
-                                    <Link to="#" id="helpCenter">Help Center</Link>
-                                </li>
-                            </ul>
+        let loggedUser = this.props.loggedUser;
+        if (loggedUser) {
+            return <Redirect to={{pathname: '/'}}/>
+
+        }
+
+        //-- END REDIRECT LOGGED USER TO MAIN PAGE  ---------
+
+
+        return (
+            <div className="main-wrapper">
+                <div className="app" id="app">
+                    <div className="auth">
+                        <Modal show={this.state.showModal} onHide={() => this.closeModal()} id="noAccountModal">
+                            <Modal.Header closeButton>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <p>In order to get access to Interviewer app please contact your system administrator or
+                                    HR
+                                    department</p>
+                            </Modal.Body>
+                        </Modal>
+                        <Notifications/>
+                        <div className="auth-container">
+                            <div className="card">
+                                <header className="auth-header">
+                                    <h1 className="auth-title">
+                                        Interviewer Logo
+                                    </h1>
+                                </header>
+                                <div className="auth-content">
+                                    <p className="text-xs-center">LOGIN TO CONTINUE</p>
+                                    <form id="login-form" onSubmit={(event) => this.handleSubmit(event)}>
+                                        <div className="form-group">
+                                            <label htmlFor="email">Email</label>
+                                            <input type="text" className="form-control underlined required" name="email"
+                                                   id="username" placeholder="Your email address" maxLength='60'
+                                                   ref='login_email'/>
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor="password">Password</label>
+                                            <input type="password" className="form-control underlined required"
+                                                   name="password"
+                                                   id="password" placeholder="Your password" maxLength='30'
+                                                   ref="login_password"/>
+                                        </div>
+                                        <div className="form-group submit-btn">
+                                            <button type="submit" id="loginSubmit"
+                                                    className="btn btn-block btn-primary">Login
+                                            </button>
+                                        </div>
+                                        <div className="form-group forgot-pass">
+                                            <Link to="/forgotpassword" className="forgot-btn" id="forgotPassBtn">Forgot
+                                                password?</Link>
+                                        </div>
+                                        <div className="form-group no-account">
+                                            <p className="text-xs-center" id="noAccount"
+                                               onClick={() => this.openModal()}>Do not have an
+                                                account? Click here</p>
+                                        </div>
+                                    </form>
+
+                                    <ul className="copyright">
+                                        <li>
+                                            (C) Interviewer, 2017
+                                        </li>
+                                        <li>
+                                            <Link to="#" id="termsService">Terms of service</Link>
+                                        </li>
+                                        <li>
+                                            <Link to="#" id="helpCenter">Help Center</Link>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         );
     }
 }
 
-export default Login;
+
+function mapStateToProps(state) {
+
+    return {
+        userData: state.authentication.userData,
+        loggedUser: state.authentication.loggedUser
+    }
+
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        pageActions: bindActionCreators(pageActions, dispatch)
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
