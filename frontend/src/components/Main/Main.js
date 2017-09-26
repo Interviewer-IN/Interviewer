@@ -22,6 +22,20 @@ import {connect} from "react-redux";
 
 class Main extends Component {
 
+//-- CHECKING IS USER LOGGED ----------------
+
+    checkUserStatus() {
+        const {dispatch} = this.props;
+        dispatch(authorizationCheck());
+
+        let loggedUser = this.props.loggedUser;
+        if (!loggedUser) {
+            this.props.history.push('/login');
+        }
+    }
+
+//--  END CHECKING IS USER LOGGED ----------------
+
 
     componentDidUpdate() {
 
@@ -30,34 +44,19 @@ class Main extends Component {
         let sideBarStatus = this.props.sideBar,
             app = document.getElementById('app');
 
-        if (app !== null){
+        if (app !== null) {
             if (sideBarStatus) {
                 app.classList.add('sidebar-open');
             } else {
                 app.classList.remove('sidebar-open');
             }
         }
-
-
-
-        //-- END CHECKING STATUS OF SIDEBAR --------------
-
+        this.checkUserStatus();
     }
 
     componentWillMount() {
 
-        //-- CHECKING IS USER LOGGED ----------------
-
-        const {dispatch} = this.props;
-        dispatch(authorizationCheck());
-
-        let loggedUser = this.props.loggedUser;
-        if (!loggedUser){
-            this.props.history.push('/login');
-        }
-
-        //-- END CHECKING IS USER LOGGED ----------------
-
+        this.checkUserStatus()
     }
 
     handleMakeNote(status, text, hide) {
@@ -66,7 +65,6 @@ class Main extends Component {
     }
 
     render() {
-
         return (
             <div className="main-wrapper">
                 <div className="app" id="app">
