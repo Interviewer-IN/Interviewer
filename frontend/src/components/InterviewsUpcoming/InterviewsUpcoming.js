@@ -4,6 +4,8 @@ import './interviewsUpcoming.css';
 class interviewsUpcoming extends Component{
 
     render(){
+        console.log('Intervie', this);
+
         return (
             <div className="bcgr">
                 <div className="row sameheight-container">
