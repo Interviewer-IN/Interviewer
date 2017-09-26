@@ -1,7 +1,11 @@
 .notification-container {
-  position: absolute;
+  position: fixed;
   top: 75px;
-  right: 5px;
+  right: 12px;
+
+  @media (max-width: 749px) {
+    top: 55px;
+  }
 }
 
 .notification {
