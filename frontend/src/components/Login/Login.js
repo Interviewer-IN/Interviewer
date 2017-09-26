@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import Notifications from '../../containers/Notifications';
 import './login.css';
 import {Redirect} from 'react-router-dom';
+import Helmet from 'react-helmet';
 
 
 import * as pageActions from "../../redux/actions/authenticationActions";
@@ -225,8 +226,7 @@ class Login extends Component {
 
         let loggedUser = this.props.loggedUser;
         if (loggedUser) {
-            return <Redirect to={{pathname: '/'}}/>
-
+            return <Redirect to={{pathname: '/interviews-upcoming'}}/>
         }
 
         //-- END REDIRECT LOGGED USER TO MAIN PAGE  ---------
@@ -234,6 +234,9 @@ class Login extends Component {
 
         return (
             <div className="main-wrapper">
+                <Helmet>
+                    <title>Login</title>
+                </Helmet>
                 <div className="app" id="app">
                     <div className="auth">
                         <Modal show={this.state.showModal} onHide={() => this.closeModal()} id="noAccountModal">
@@ -274,8 +277,8 @@ class Login extends Component {
                                                     className="btn btn-block btn-primary">Login
                                             </button>
                                         </div>
-                                        <div className="form-group forgot-pass">
-                                            <Link to="/forgotpassword" className="forgot-btn" id="forgotPassBtn">Forgot
+                                        <div className="form-group">
+                                            <Link to="/recovery_password" className="forgot-btn text-center" id="forgotPassBtn">Forgot
                                                 password?</Link>
                                         </div>
                                         <div className="form-group no-account">

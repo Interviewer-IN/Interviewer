@@ -30,11 +30,15 @@ class Main extends Component {
         let sideBarStatus = this.props.sideBar,
             app = document.getElementById('app');
 
-        if (sideBarStatus) {
-            app.classList.add('sidebar-open');
-        } else {
-            app.classList.remove('sidebar-open');
+        if (app !== null){
+            if (sideBarStatus) {
+                app.classList.add('sidebar-open');
+            } else {
+                app.classList.remove('sidebar-open');
+            }
         }
+
+
 
         //-- END CHECKING STATUS OF SIDEBAR --------------
 
@@ -184,7 +188,7 @@ class Main extends Component {
                                               callMakeNote={(status, text, hide) =>
                                                   this.handleMakeNote(status, text, hide)}/>}
                             />
-                            <Redirect from="/" to="/interviews-upcoming"/>
+                            <Redirect from="/" to="/login"/>
                         </Switch>
                     </article>
                 </div>
@@ -200,7 +204,6 @@ function mapStateToProps(state) {
         notifications: state.notifications,
         loggedUser: state.authentication.loggedUser,
         userData: state.authentication.userData,
-        sessionData: state.authentication.sessionData
     }
 }
 
