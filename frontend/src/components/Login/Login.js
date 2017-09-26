@@ -227,6 +227,7 @@ class Login extends Component {
         let loggedUser = this.props.loggedUser;
         if (loggedUser) {
             return <Redirect to={{pathname: '/interviews-upcoming'}}/>
+
         }
 
         //-- END REDIRECT LOGGED USER TO MAIN PAGE  ---------
