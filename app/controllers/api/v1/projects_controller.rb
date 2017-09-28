@@ -2,7 +2,7 @@ module Api
   module V1
    class ProjectsController < ApplicationController
 
-     before_action :authenticate_user!
+     # before_action :authenticate_user!
 
      def index
        projects = Project.order('created_at DESC')

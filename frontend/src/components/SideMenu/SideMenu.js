@@ -66,33 +66,9 @@ class SideMenu extends Component {
 
         let changeMenuItems = () => {
 
-            let dashboard = "";
+            let dashboard;
 
-            if (this.state.user.uid != "user@user.com" ) {
-
-                dashboard = [
-                    {
-                        name: '/interviews',
-                        icon: 'handshake-o',
-                        label: 'Interviews',
-                        content: [
-                            {
-                                name: '/interviews-upcoming',
-                                icon: 'square-o',
-                                label: 'Upcoming',
-                                to: '/interviews-upcoming',
-                            },
-                            {
-                                name: '/interviews-completed',
-                                icon: 'check-square-o',
-                                label: 'Completed',
-                                to: '/interviews-completed',
-                            }
-                        ]
-                    }
-                ]
-
-            } else {
+            if (this.state.user.uid === "user@user.com" ) {
 
                 dashboard = [
                     {
@@ -150,6 +126,31 @@ class SideMenu extends Component {
                         to: '/projects'
                     },
                 ];
+
+            } else {
+
+                dashboard = [
+                    {
+                        name: '/interviews',
+                        icon: 'handshake-o',
+                        label: 'Interviews',
+                        content: [
+                            {
+                                name: '/interviews-upcoming',
+                                icon: 'square-o',
+                                label: 'Upcoming',
+                                to: '/interviews-upcoming',
+                            },
+                            {
+                                name: '/interviews-completed',
+                                icon: 'check-square-o',
+                                label: 'Completed',
+                                to: '/interviews-completed',
+                            }
+                        ]
+                    }
+                ]
+
             }
 
                 let settings = [
