@@ -222,17 +222,6 @@ class Login extends Component {
 
     render() {
 
-        //-- REDIRECT LOGGED USER TO MAIN PAGE  ----------------
-
-        let loggedUser = this.props.loggedUser;
-        if (loggedUser) {
-            return <Redirect to={{pathname: '/interviews-upcoming'}}/>
-
-        }
-
-        //-- END REDIRECT LOGGED USER TO MAIN PAGE  ---------
-
-
         return (
             <div className="main-wrapper">
                 <Helmet>
