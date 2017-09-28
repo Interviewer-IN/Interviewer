@@ -68,7 +68,7 @@ class SideMenu extends Component {
 
             let dashboard = "";
 
-            if (this.state.user.uid === "user@user.com" ) {
+            if (this.state.user.uid != "user@user.com" ) {
 
                 dashboard = [
                     {

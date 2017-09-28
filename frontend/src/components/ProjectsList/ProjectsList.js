@@ -103,7 +103,8 @@ class ProjectsList extends Component {
                 }
             )
 
-        } else {
+        }
+        else {
             projectsToDisplay = "No projects";
         }
 
@@ -125,7 +126,6 @@ class ProjectsList extends Component {
                         />
                     </div>
                 </div>
-                <button onClick={() => this.getCookies()}>Click</button>
                 <PanelGroup bsClass='custom-panel-group' accordion>
                     {projectsToDisplay}
                 </PanelGroup>

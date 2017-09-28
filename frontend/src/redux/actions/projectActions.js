@@ -65,6 +65,10 @@ export function showProjects() {
                 method: 'get',
                 headers: {
                     "Content-Type": "application/json",
+                    // "Access-Token": "Z-6maSH-jtU6oYz0ZZOEsQ",
+                    // "Client": "MseRlrsFu1CuDVgLn7z-iQ",
+                    // "Uid": "user@user.com",
+                    // "Expiry": "1507812579"
                 }
             })
             .then(res =>

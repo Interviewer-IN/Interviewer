@@ -17,32 +17,55 @@ import Username from "./../Username";
 import Password from "./../Password";
 import {makeNote} from "../../redux/actions/notificationActions";
 import {authorizationCheck} from "../../redux/actions/authenticationActions";
+import {showSideBar} from '../../redux/actions/sideBarActions';
 import {connect} from "react-redux";
 
 
 class Main extends Component {
 
-//-- CHECKING IS USER LOGGED ----------------
+    componentWillMount() {
+        this.checkUserStatus();
+    }
+
+    componentDidUpdate() {
+
+        //-- CHECKING STATUS OF SIDEBAR ----------------
+
+        let sideBarStatus = this.props.sideBar,
+            app = document.getElementById('app');
+
+        if (app !== null) {
+            if (sideBarStatus) {
+                app.classList.add('sidebar-open');
+            } else {
+                app.classList.remove('sidebar-open');
+            }
+        }
+
+        //-- END CHECKING STATUS OF SIDEBAR ----------------
+
+        this.checkUserStatus();
+    }
+
+    componentWillUnmount(){
+        const {dispatch} = this.props;
+        dispatch(showSideBar(false));
+    }
+
+    //-- CHECKING IS USER LOGGED ----------------
 
     checkUserStatus() {
         const {dispatch} = this.props;
         dispatch(authorizationCheck());
-
-        let loggedUser = this.props.loggedUser;
-        if (!loggedUser) {
-            this.props.history.push('/login');
-        }
     }
 
 //--  END CHECKING IS USER LOGGED ----------------
-
-
 
 // -- CHECKING USER'S ROLE ----------------
 
     checkUserRole() {
         let user = this.getCookies();
-        if (user.uid === "user@user.com") {
+        if (user.uid != "user@user.com") {
             this.props.history.push('/interviews-upcoming');
         }
     }
@@ -59,36 +82,15 @@ class Main extends Component {
 
 //--  END CHECKING USER'S ROLE  ----------------
 
-
-
-    componentDidUpdate() {
-
-        //-- CHECKING STATUS OF SIDEBAR ----------------
-
-        let sideBarStatus = this.props.sideBar,
-            app = document.getElementById('app');
-
-        if (app !== null) {
-            if (sideBarStatus) {
-                app.classList.add('sidebar-open');
-            } else {
-                app.classList.remove('sidebar-open');
-            }
-        }
-        this.checkUserStatus();
-    }
-
-    componentWillMount() {
-
-        this.checkUserStatus()
-    }
-
     handleMakeNote(status, text, hide) {
         const {dispatch} = this.props;
         dispatch(makeNote({status: status, text: text, hide: hide}));
     }
 
     render() {
+
+        let isLoggedIn = () => this.props.loggedUser;
+
         return (
             <div className="main-wrapper">
                 <div className="app" id="app">
@@ -98,145 +100,193 @@ class Main extends Component {
 
                         <Switch>
                             <Route
+                                exact path="/interviews-upcoming"
+                                name="InterviewsUpcoming"
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<InterviewsUpcoming {...props}
+                                                             callMakeNote={(status, text, hide) =>
+                                                                 this.handleMakeNote(status, text, hide)}
+                                        />) :
+                                        (<Redirect to="/login"/>)
+
+                                )}
+                            />
+                            <Route
+                                exact path="/interviews-completed"
+                                name="InterviewsCompleted"
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<InterviewsCompleted {...props}
+                                                              callMakeNote={(status, text, hide) =>
+                                                                  this.handleMakeNote(status, text, hide)}
+                                        />) :
+                                        (<Redirect to="/login"/>)
+
+                                )}
+                            />
+                            <Route
+                                exact path="/interviewers"
+                                name="Interviewers"
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<Interviewers {...props}
+                                                       callMakeNote={(status, text, hide) =>
+                                                           this.handleMakeNote(status, text, hide)}
+                                                       onCheckUserRole={() => this.checkUserRole()}
+                                        />) :
+                                        (<Redirect to="/login"/>)
+
+                                )}
+                            />
+                            <Route
+                                exact path="/candidates"
+                                name="Candidates"
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<Candidates {...props}
+                                                     callMakeNote={(status, text, hide) =>
+                                                         this.handleMakeNote(status, text, hide)}
+                                                     onCheckUserRole={() => this.checkUserRole()}
+                                        />) :
+                                        (<Redirect to="/login"/>)
+
+                                )}
+                            />
+                            <Route
+                                exact path="/vacancies-open"
+                                name="VacanciesOpen"
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<VacanciesOpen {...props}
+                                                        callMakeNote={(status, text, hide) =>
+                                                            this.handleMakeNote(status, text, hide)}
+                                                        onCheckUserRole={() => this.checkUserRole()}
+                                        />) :
+                                        (<Redirect to="/login"/>)
+                                )}
+                            />
+                            <Route
+                                exact path="/vacancies-closed"
+                                name="VacanciesClosed"
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<VacanciesClosed {...props}
+                                                          callMakeNote={(status, text, hide) =>
+                                                              this.handleMakeNote(status, text, hide)}
+                                                          onCheckUserRole={() => this.checkUserRole()}
+                                        />) :
+                                        (<Redirect to="/login"/>)
+                                )}
+                            />
+                            <Route
+                                exact path="/vacancies-open/create-vacancy"
+                                name="CreateVacancy"
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<CreateVacancy {...props}
+                                                        callMakeNote={(status, text, hide) =>
+                                                            this.handleMakeNote(status, text, hide)}
+                                                        onCheckUserRole={() => this.checkUserRole()}
+                                        />) :
+                                        (<Redirect to="/login"/>)
+                                )}
+                            />
+                            <Route
+                                exact path="/vacancies-closed/create-vacancy"
+                                name="CreateVacancy"
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<CreateVacancy {...props}
+                                                        callMakeNote={(status, text, hide) =>
+                                                            this.handleMakeNote(status, text, hide)}
+                                                        onCheckUserRole={() => this.checkUserRole()}
+                                        />) :
+                                        (<Redirect to="/login"/>)
+                                )}
+                            />
+                            <Route
                                 exact path="/projects"
                                 name="Projects List"
-                                render={(props) =>
-                                    <ProjectsList {...props}
-                                                  callMakeNote={(status, text, hide) =>
-                                                      this.handleMakeNote(status, text, hide)}
-                                                  onCheckUserRole={() => this.checkUserRole()}
-
-                                    />}
-
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<ProjectsList {...props}
+                                                       callMakeNote={(status, text, hide) =>
+                                                           this.handleMakeNote(status, text, hide)}
+                                                       onCheckUserRole={() => this.checkUserRole()}
+                                        />) :
+                                        (<Redirect to="/login"/>)
+                                )}
                             />
                             <Route
                                 exact path="/projects/create-project"
                                 name="Create project"
-                                render={(props) =>
-                                    <CreateProject {...props}
-                                                   callMakeNote={(status, text, hide) =>
-                                                       this.handleMakeNote(status, text, hide)}
-                                                   onCheckUserRole={() => this.checkUserRole()}
-                                    />}
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<CreateProject {...props}
+                                                        callMakeNote={(status, text, hide) =>
+                                                            this.handleMakeNote(status, text, hide)}
+                                                        onCheckUserRole={() => this.checkUserRole()}
+                                        />) :
+                                        (<Redirect to="/login"/>)
+                                )}
                             />
                             <Route
                                 exact path="/projects/project/:id"
                                 name="Project Details"
-                                render={(props) =>
-                                    <ProjectDetails {...props}
-                                                    callMakeNote={(status, text, hide) =>
-                                                        this.handleMakeNote(status, text, hide)}
-                                                    onCheckUserRole={() => this.checkUserRole()}
-                                    />}
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<ProjectDetails {...props}
+                                                         callMakeNote={(status, text, hide) =>
+                                                             this.handleMakeNote(status, text, hide)}
+                                                         onCheckUserRole={() => this.checkUserRole()}
+                                        />) :
+                                        (<Redirect to="/login"/>)
+                                )}
                             />
 
                             <Route
                                 exact path="/projects/project/:id/edit"
                                 name="Project Edit"
-                                render={(props) =>
-                                    <ProjectEdit {...props}
-                                                 callMakeNote={(status, text, hide) =>
-                                                     this.handleMakeNote(status, text, hide)}
-                                                 onCheckUserRole={() => this.checkUserRole()}
-                                    />}
-                            />
-                            <Route
-                                exact path="/interviews-upcoming"
-                                name="InterviewsUpcoming"
-                                render={(props) =>
-                                    <InterviewsUpcoming {...props}
-                                                        callMakeNote={(status, text, hide) =>
-                                                            this.handleMakeNote(status, text, hide)}
-                                    />}
-                            />
-                            <Route
-                                exact path="/interviews-completed"
-                                name="InterviewsCompleted"
-                                render={(props) =>
-                                    <InterviewsCompleted {...props}
-                                                         callMakeNote={(status, text, hide) =>
-                                                             this.handleMakeNote(status, text, hide)}
-                                    />}
-                            />
-                            <Route
-                                exact path="/interviewers"
-                                name="Interviewers"
-                                render={(props) =>
-                                    <Interviewers {...props}
-                                                  callMakeNote={(status, text, hide) =>
-                                                      this.handleMakeNote(status, text, hide)}
-                                                  onCheckUserRole={() => this.checkUserRole()}
-                                    />}
-                            />
-                            <Route
-                                exact path="/candidates"
-                                name="Candidates"
-                                render={(props) =>
-                                    <Candidates {...props}
-                                                callMakeNote={(status, text, hide) =>
-                                                    this.handleMakeNote(status, text, hide)}
-                                                onCheckUserRole={() => this.checkUserRole()}
-                                    />}
-                            />
-                            <Route
-                                exact path="/vacancies-open"
-                                name="VacanciesOpen"
-                                render={(props) =>
-                                    <VacanciesOpen {...props}
-                                                   callMakeNote={(status, text, hide) =>
-                                                       this.handleMakeNote(status, text, hide)}
-                                                   onCheckUserRole={() => this.checkUserRole()}
-                                    />}
-                            />
-                            <Route
-                                exact path="/vacancies-closed"
-                                name="VacanciesClosed"
-                                render={(props) =>
-                                    <VacanciesClosed {...props}
-                                                     callMakeNote={(status, text, hide) =>
-                                                         this.handleMakeNote(status, text, hide)}
-                                                     onCheckUserRole={() => this.checkUserRole()}
-                                    />}
-                            />
-                            <Route
-                                exact path="/vacancies-open/create-vacancy"
-                                name="CreateVacancy"
-                                render={(props) =>
-                                    <CreateVacancy {...props}
-                                                   callMakeNote={(status, text, hide) =>
-                                                       this.handleMakeNote(status, text, hide)}
-                                                   onCheckUserRole={() => this.checkUserRole()}
-                                    />}
-                            />
-                            <Route
-                                exact path="/vacancies-closed/create-vacancy"
-                                name="CreateVacancy"
-                                render={(props) =>
-                                    <CreateVacancy {...props}
-                                                   callMakeNote={(status, text, hide) =>
-                                                       this.handleMakeNote(status, text, hide)}
-                                                   onCheckUserRole={() => this.checkUserRole()}
-                                    />}
+
+
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<ProjectEdit {...props}
+                                                      callMakeNote={(status, text, hide) =>
+                                                          this.handleMakeNote(status, text, hide)}
+                                                      onCheckUserRole={() => this.checkUserRole()}
+                                        />) :
+                                        (<Redirect to="/login"/>)
+                                )}
                             />
                             <Route
                                 exact path="/username"
                                 name="Username"
-                                render={(props) =>
-                                    <Username {...props}
-                                              callMakeNote={(status, text, hide) =>
-                                                  this.handleMakeNote(status, text, hide)}
-                                    />}
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<Username {...props}
+                                                   callMakeNote={(status, text, hide) =>
+                                                       this.handleMakeNote(status, text, hide)}
+                                                   onCheckUserRole={() => this.checkUserRole()}
+                                        />) :
+                                        (<Redirect to="/login"/>)
+                                )}
                             />
                             <Route
                                 exact path="/password"
                                 name="Password"
-                                render={(props) =>
-                                    <Password {...props}
-                                              callMakeNote={(status, text, hide) =>
-                                                  this.handleMakeNote(status, text, hide)}
-                                    />}
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<Password {...props}
+                                                   callMakeNote={(status, text, hide) =>
+                                                       this.handleMakeNote(status, text, hide)}
+                                                   onCheckUserRole={() => this.checkUserRole()}
+                                        />) :
+                                        (<Redirect to="/login"/>)
+                                )}
                             />
-                            <Redirect from="/" to="/login"/>
+                            <Redirect from="/" to="/interviews-upcoming"/>
                         </Switch>
                     </article>
                 </div>
