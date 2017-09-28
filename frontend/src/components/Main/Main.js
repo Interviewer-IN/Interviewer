@@ -61,26 +61,6 @@ class Main extends Component {
 
 //--  END CHECKING IS USER LOGGED ----------------
 
-// -- CHECKING USER'S ROLE ----------------
-
-    checkUserRole() {
-        let user = this.getCookies();
-        if (user.uid != "user@user.com") {
-            this.props.history.push('/interviews-upcoming');
-        }
-    }
-
-    getCookies() {
-        let cookies = {};
-        for (let cookie of document.cookie.split('; ')) {
-            let [name, value] = cookie.split("=");
-            cookies[name] = decodeURIComponent(value);
-        }
-        return cookies;
-    }
-
-
-//--  END CHECKING USER'S ROLE  ----------------
 
     handleMakeNote(status, text, hide) {
         const {dispatch} = this.props;
@@ -106,8 +86,7 @@ class Main extends Component {
                                     isLoggedIn() ?
                                         (<InterviewsUpcoming {...props}
                                                              callMakeNote={(status, text, hide) =>
-                                                                 this.handleMakeNote(status, text, hide)}
-                                        />) :
+                                                                 this.handleMakeNote(status, text, hide)}/>) :
                                         (<Redirect to="/login"/>)
 
                                 )}
@@ -118,9 +97,8 @@ class Main extends Component {
                                 render={(props) => (
                                     isLoggedIn() ?
                                         (<InterviewsCompleted {...props}
-                                                              callMakeNote={(status, text, hide) =>
-                                                                  this.handleMakeNote(status, text, hide)}
-                                        />) :
+                                                             callMakeNote={(status, text, hide) =>
+                                                                 this.handleMakeNote(status, text, hide)}/>) :
                                         (<Redirect to="/login"/>)
 
                                 )}
@@ -131,10 +109,8 @@ class Main extends Component {
                                 render={(props) => (
                                     isLoggedIn() ?
                                         (<Interviewers {...props}
-                                                       callMakeNote={(status, text, hide) =>
-                                                           this.handleMakeNote(status, text, hide)}
-                                                       onCheckUserRole={() => this.checkUserRole()}
-                                        />) :
+                                                              callMakeNote={(status, text, hide) =>
+                                                                  this.handleMakeNote(status, text, hide)}/>) :
                                         (<Redirect to="/login"/>)
 
                                 )}
@@ -145,10 +121,8 @@ class Main extends Component {
                                 render={(props) => (
                                     isLoggedIn() ?
                                         (<Candidates {...props}
-                                                     callMakeNote={(status, text, hide) =>
-                                                         this.handleMakeNote(status, text, hide)}
-                                                     onCheckUserRole={() => this.checkUserRole()}
-                                        />) :
+                                                       callMakeNote={(status, text, hide) =>
+                                                           this.handleMakeNote(status, text, hide)}/>) :
                                         (<Redirect to="/login"/>)
 
                                 )}
@@ -159,10 +133,8 @@ class Main extends Component {
                                 render={(props) => (
                                     isLoggedIn() ?
                                         (<VacanciesOpen {...props}
-                                                        callMakeNote={(status, text, hide) =>
-                                                            this.handleMakeNote(status, text, hide)}
-                                                        onCheckUserRole={() => this.checkUserRole()}
-                                        />) :
+                                                     callMakeNote={(status, text, hide) =>
+                                                         this.handleMakeNote(status, text, hide)}/>) :
                                         (<Redirect to="/login"/>)
                                 )}
                             />
@@ -172,10 +144,8 @@ class Main extends Component {
                                 render={(props) => (
                                     isLoggedIn() ?
                                         (<VacanciesClosed {...props}
-                                                          callMakeNote={(status, text, hide) =>
-                                                              this.handleMakeNote(status, text, hide)}
-                                                          onCheckUserRole={() => this.checkUserRole()}
-                                        />) :
+                                                        callMakeNote={(status, text, hide) =>
+                                                            this.handleMakeNote(status, text, hide)}/>) :
                                         (<Redirect to="/login"/>)
                                 )}
                             />
@@ -185,10 +155,8 @@ class Main extends Component {
                                 render={(props) => (
                                     isLoggedIn() ?
                                         (<CreateVacancy {...props}
-                                                        callMakeNote={(status, text, hide) =>
-                                                            this.handleMakeNote(status, text, hide)}
-                                                        onCheckUserRole={() => this.checkUserRole()}
-                                        />) :
+                                                          callMakeNote={(status, text, hide) =>
+                                                              this.handleMakeNote(status, text, hide)}/>) :
                                         (<Redirect to="/login"/>)
                                 )}
                             />
@@ -199,9 +167,7 @@ class Main extends Component {
                                     isLoggedIn() ?
                                         (<CreateVacancy {...props}
                                                         callMakeNote={(status, text, hide) =>
-                                                            this.handleMakeNote(status, text, hide)}
-                                                        onCheckUserRole={() => this.checkUserRole()}
-                                        />) :
+                                                            this.handleMakeNote(status, text, hide)}/>) :
                                         (<Redirect to="/login"/>)
                                 )}
                             />
@@ -211,10 +177,8 @@ class Main extends Component {
                                 render={(props) => (
                                     isLoggedIn() ?
                                         (<ProjectsList {...props}
-                                                       callMakeNote={(status, text, hide) =>
-                                                           this.handleMakeNote(status, text, hide)}
-                                                       onCheckUserRole={() => this.checkUserRole()}
-                                        />) :
+                                                        callMakeNote={(status, text, hide) =>
+                                                            this.handleMakeNote(status, text, hide)}/>) :
                                         (<Redirect to="/login"/>)
                                 )}
                             />
@@ -225,9 +189,7 @@ class Main extends Component {
                                     isLoggedIn() ?
                                         (<CreateProject {...props}
                                                         callMakeNote={(status, text, hide) =>
-                                                            this.handleMakeNote(status, text, hide)}
-                                                        onCheckUserRole={() => this.checkUserRole()}
-                                        />) :
+                                                            this.handleMakeNote(status, text, hide)}/>) :
                                         (<Redirect to="/login"/>)
                                 )}
                             />
@@ -237,10 +199,8 @@ class Main extends Component {
                                 render={(props) => (
                                     isLoggedIn() ?
                                         (<ProjectDetails {...props}
-                                                         callMakeNote={(status, text, hide) =>
-                                                             this.handleMakeNote(status, text, hide)}
-                                                         onCheckUserRole={() => this.checkUserRole()}
-                                        />) :
+                                                        callMakeNote={(status, text, hide) =>
+                                                            this.handleMakeNote(status, text, hide)}/>) :
                                         (<Redirect to="/login"/>)
                                 )}
                             />
@@ -253,10 +213,8 @@ class Main extends Component {
                                 render={(props) => (
                                     isLoggedIn() ?
                                         (<ProjectEdit {...props}
-                                                      callMakeNote={(status, text, hide) =>
-                                                          this.handleMakeNote(status, text, hide)}
-                                                      onCheckUserRole={() => this.checkUserRole()}
-                                        />) :
+                                                        callMakeNote={(status, text, hide) =>
+                                                            this.handleMakeNote(status, text, hide)}/>) :
                                         (<Redirect to="/login"/>)
                                 )}
                             />
@@ -266,10 +224,8 @@ class Main extends Component {
                                 render={(props) => (
                                     isLoggedIn() ?
                                         (<Username {...props}
-                                                   callMakeNote={(status, text, hide) =>
-                                                       this.handleMakeNote(status, text, hide)}
-                                                   onCheckUserRole={() => this.checkUserRole()}
-                                        />) :
+                                                        callMakeNote={(status, text, hide) =>
+                                                            this.handleMakeNote(status, text, hide)}/>) :
                                         (<Redirect to="/login"/>)
                                 )}
                             />
@@ -279,10 +235,8 @@ class Main extends Component {
                                 render={(props) => (
                                     isLoggedIn() ?
                                         (<Password {...props}
-                                                   callMakeNote={(status, text, hide) =>
-                                                       this.handleMakeNote(status, text, hide)}
-                                                   onCheckUserRole={() => this.checkUserRole()}
-                                        />) :
+                                                        callMakeNote={(status, text, hide) =>
+                                                            this.handleMakeNote(status, text, hide)}/>) :
                                         (<Redirect to="/login"/>)
                                 )}
                             />
