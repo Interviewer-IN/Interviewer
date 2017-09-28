@@ -22,6 +22,10 @@ class CreateVacancy extends Component{
 
     }
 
+    componentWillMount() {
+        this.props.onCheckUserRole();
+    }
+
     componentDidMount(){
         const {dispatch} = this.props;
         dispatch(showProjects());

@@ -26,6 +26,7 @@ class ProjectEdit extends Component {
     }
 
     componentWillMount() {
+        this.props.onCheckUserRole();
         const {dispatch} = this.props;
         if (this.props.projects.length < 1) {
             dispatch(getProjects(this.props.match.params.id)).then(() => {
@@ -39,6 +40,7 @@ class ProjectEdit extends Component {
                     return currentProject.id === +projectId;
                 }) || {};
             this.setStates(currentProject);
+
 
         }
     }
