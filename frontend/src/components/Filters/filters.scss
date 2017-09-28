@@ -2,7 +2,7 @@
   width: 100%;
   background: #d7dde4;
   overflow: hidden;
-  padding: 15px 20px;
+  padding: 0 20px;
 
 }
 
@@ -17,11 +17,20 @@
     float: left;
     margin-right: 30px;
     line-height: 29px;
+    margin-top: 15px;
+
+    @media (max-width: 580px){
+      float: none;
+    }
   }
 
   &__selects{
     float: left;
     overflow: hidden;
+
+    @media (max-width: 580px){
+      width: 100%;
+    }
 
   }
 
@@ -29,6 +38,14 @@
     float: left;
     margin-bottom: 0;
     margin-right: 10px;
+    padding: 15px 0;
+
+    @media (max-width: 580px){
+      float: none;
+      margin-right: 0;
+      padding: 0;
+      margin-bottom: 15px;
+    }
 
     &:last-child{
       margin-right: 0;
@@ -37,6 +54,10 @@
     .form-control{
       width: 140px;
       border-color: transparent;
+
+      @media (max-width: 580px){
+        width: 100%;
+      }
     }
   }
 

@@ -6,6 +6,12 @@ $text-color-primary: #4f5f6f;
   border: none;
 }
 
+.panel-heading:hover{
+  .vacancy-info-block__position:before{
+    background: #70b02b;
+  }
+}
+
 .custom-panel-title {
   overflow: hidden;
 
@@ -48,8 +54,49 @@ $text-color-primary: #4f5f6f;
     margin-right: 20px;
     font-weight: bold;
     font-size: 1.1rem;
-
   }
+
+  &__project{
+    display: inline-block;
+    margin-right: 15px;
+  }
+
+  &__position{
+    position: relative;
+    display: inline-block;
+    font-weight: normal;
+    padding-left: 15px;
+
+    &:before{
+      position: absolute;
+      left: 0;
+      top: 50%;
+      margin-top: -8px;
+      content: '';
+      width: 2px;
+      height: 18px;
+      background: black;
+    }
+
+    @media (max-width: 640px){
+      &{
+        padding-left: 0;
+      }
+      &:before{
+        display: none;
+
+      }
+    }
+  }
+
+  &__position-capture{
+    margin-right: 10px;
+  }
+
+  &__position-name{
+    font-weight: bold;
+  }
+
 }
 
 .custom-panel-body{

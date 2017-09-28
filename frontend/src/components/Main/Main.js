@@ -6,6 +6,7 @@ import Interviewers from "./../Interviewers";
 import InterviewsUpcoming from "../InterviewsUpcoming";
 import InterviewsCompleted from "../InterviewsCompleted";
 import Candidates from "./../Candidates";
+import CreateCandidate from "./../CreateCandidate";
 import VacanciesOpen from "./../VacanciesOpen";
 import VacanciesClosed from "./../VacanciesClosed";
 import CreateVacancy from "./../CreateVacancy";
@@ -123,6 +124,18 @@ class Main extends Component {
                                         (<Candidates {...props}
                                                        callMakeNote={(status, text, hide) =>
                                                            this.handleMakeNote(status, text, hide)}/>) :
+                                        (<Redirect to="/login"/>)
+
+                                )}
+                            />
+                            <Route
+                                exact path="/candidates/create-candidate"
+                                name="CreateCandidate"
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<CreateCandidate {...props}
+                                                     callMakeNote={(status, text, hide) =>
+                                                         this.handleMakeNote(status, text, hide)}/>) :
                                         (<Redirect to="/login"/>)
 
                                 )}
