@@ -9,6 +9,29 @@ import RouterLink from "react-metismenu-router-link";
 
 class SideMenu extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            user: ""
+        }
+    }
+
+
+    componentWillMount() {
+        let user = this.getCookies();
+        this.setState({user: user})
+    }
+
+    getCookies() {
+        let cookies = {};
+        for (let cookie of document.cookie.split('; ')) {
+            let [name, value] = cookie.split("=");
+            cookies[name] = decodeURIComponent(value);
+        }
+        return cookies;
+    }
+
+
     handleCloseSideBarClick() {
         this.props.pageActions.hideSideBar(false);
     }
@@ -43,77 +66,107 @@ class SideMenu extends Component {
 
         let changeMenuItems = () => {
 
-            const dashboard = [
-                {
-                    name: '/interviews',
-                    icon: 'handshake-o',
-                    label: 'Interviews',
-                    content: [
-                        {
-                            name: '/interviews-upcoming',
-                            icon: 'square-o',
-                            label: 'Upcoming',
-                            to: '/interviews-upcoming',
-                        },
-                        {
-                            name: '/interviews-completed',
-                            icon: 'check-square-o',
-                            label: 'Completed',
-                            to: '/interviews-completed',
-                        }
-                    ]
-                },
-                {
-                    name: '/interviewers',
-                    icon: 'user-o',
-                    label: 'Interviewers',
-                    to: '/interviewers',
-                },
-                {
-                    name: '/vacancies',
-                    icon: 'binoculars',
-                    label: 'Vacancies',
-                    content: [
-                        {
-                            name: '/vacancies-open',
-                            label: 'Open',
-                            to: '/vacancies-open',
-                        },
-                        {
-                            name: '/vacancies-closed',
-                            label: 'Closed',
-                            to: '/vacancies-closed',
-                        }
-                    ]
-                },
-                {
-                    name: '/candidates',
-                    icon: 'address-card-o',
-                    label: 'Candidates',
-                    to: '/candidates',
-                },
-                {
-                    name: '/projects',
-                    icon: 'briefcase',
-                    label: 'Projects',
-                    to: '/projects'
-                },
-            ];
+            let dashboard = "";
 
-            const settings = [
-                {
-                    name: '/username',
-                    icon: 'user-circle-o',
-                    label: 'Username',
-                    to: '/username'
-                },
-                {
-                    name: '/password',
-                    icon: 'lock',
-                    label: 'Password',
-                    to: '/password',
-                }
-            ];
+            if (this.state.user.uid === "user@user.com" ) {
+
+                dashboard = [
+                    {
+                        name: '/interviews',
+                        icon: 'handshake-o',
+                        label: 'Interviews',
+                        content: [
+                            {
+                                name: '/interviews-upcoming',
+                                icon: 'square-o',
+                                label: 'Upcoming',
+                                to: '/interviews-upcoming',
+                            },
+                            {
+                                name: '/interviews-completed',
+                                icon: 'check-square-o',
+                                label: 'Completed',
+                                to: '/interviews-completed',
+                            }
+                        ]
+                    }
+                ]
+
+            } else {
+
+                dashboard = [
+                    {
+                        name: '/interviews',
+                        icon: 'handshake-o',
+                        label: 'Interviews',
+                        content: [
+                            {
+                                name: '/interviews-upcoming',
+                                icon: 'square-o',
+                                label: 'Upcoming',
+                                to: '/interviews-upcoming',
+                            },
+                            {
+                                name: '/interviews-completed',
+                                icon: 'check-square-o',
+                                label: 'Completed',
+                                to: '/interviews-completed',
+                            }
+                        ]
+                    },
+                    {
+                        name: '/interviewers',
+                        icon: 'user-o',
+                        label: 'Interviewers',
+                        to: '/interviewers',
+                    },
+                    {
+                        name: '/vacancies',
+                        icon: 'binoculars',
+                        label: 'Vacancies',
+                        content: [
+                            {
+                                name: '/vacancies-open',
+                                label: 'Open',
+                                to: '/vacancies-open',
+                            },
+                            {
+                                name: '/vacancies-closed',
+                                label: 'Closed',
+                                to: '/vacancies-closed',
+                            }
+                        ]
+                    },
+                    {
+                        name: '/candidates',
+                        icon: 'address-card-o',
+                        label: 'Candidates',
+                        to: '/candidates',
+                    },
+                    {
+                        name: '/projects',
+                        icon: 'briefcase',
+                        label: 'Projects',
+                        to: '/projects'
+                    },
+                ];
+            }
+
+                let settings = [
+                    {
+                        name: '/username',
+                        icon: 'user-circle-o',
+                        label: 'Username',
+                        to: '/username'
+                    },
+                    {
+                        name: '/password',
+                        icon: 'lock',
+                        label: 'Password',
+                        to: '/password',
+                    }
+                ];
+
 
             let pathName = window.location.hash,
                 items = dashboard.concat(settings);

@@ -37,6 +37,30 @@ class Main extends Component {
 //--  END CHECKING IS USER LOGGED ----------------
 
 
+
+// -- CHECKING USER'S ROLE ----------------
+
+    checkUserRole() {
+        let user = this.getCookies();
+        if (user.uid === "user@user.com") {
+            this.props.history.push('/interviews-upcoming');
+        }
+    }
+
+    getCookies() {
+        let cookies = {};
+        for (let cookie of document.cookie.split('; ')) {
+            let [name, value] = cookie.split("=");
+            cookies[name] = decodeURIComponent(value);
+        }
+        return cookies;
+    }
+
+
+//--  END CHECKING USER'S ROLE  ----------------
+
+
+
     componentDidUpdate() {
 
         //-- CHECKING STATUS OF SIDEBAR ----------------
@@ -79,7 +103,11 @@ class Main extends Component {
                                 render={(props) =>
                                     <ProjectsList {...props}
                                                   callMakeNote={(status, text, hide) =>
-                                                      this.handleMakeNote(status, text, hide)}/>}
+                                                      this.handleMakeNote(status, text, hide)}
+                                                  onCheckUserRole={() => this.checkUserRole()}
+
+                                    />}
+
                             />
                             <Route
                                 exact path="/projects/create-project"
@@ -87,7 +115,9 @@ class Main extends Component {
                                 render={(props) =>
                                     <CreateProject {...props}
                                                    callMakeNote={(status, text, hide) =>
-                                                       this.handleMakeNote(status, text, hide)}/>}
+                                                       this.handleMakeNote(status, text, hide)}
+                                                   onCheckUserRole={() => this.checkUserRole()}
+                                    />}
                             />
                             <Route
                                 exact path="/projects/project/:id"
@@ -95,7 +125,9 @@ class Main extends Component {
                                 render={(props) =>
                                     <ProjectDetails {...props}
                                                     callMakeNote={(status, text, hide) =>
-                                                        this.handleMakeNote(status, text, hide)}/>}
+                                                        this.handleMakeNote(status, text, hide)}
+                                                    onCheckUserRole={() => this.checkUserRole()}
+                                    />}
                             />
 
                             <Route
@@ -104,7 +136,9 @@ class Main extends Component {
                                 render={(props) =>
                                     <ProjectEdit {...props}
                                                  callMakeNote={(status, text, hide) =>
-                                                     this.handleMakeNote(status, text, hide)}/>}
+                                                     this.handleMakeNote(status, text, hide)}
+                                                 onCheckUserRole={() => this.checkUserRole()}
+                                    />}
                             />
                             <Route
                                 exact path="/interviews-upcoming"
@@ -112,7 +146,8 @@ class Main extends Component {
                                 render={(props) =>
                                     <InterviewsUpcoming {...props}
                                                         callMakeNote={(status, text, hide) =>
-                                                            this.handleMakeNote(status, text, hide)}/>}
+                                                            this.handleMakeNote(status, text, hide)}
+                                    />}
                             />
                             <Route
                                 exact path="/interviews-completed"
@@ -120,7 +155,8 @@ class Main extends Component {
                                 render={(props) =>
                                     <InterviewsCompleted {...props}
                                                          callMakeNote={(status, text, hide) =>
-                                                             this.handleMakeNote(status, text, hide)}/>}
+                                                             this.handleMakeNote(status, text, hide)}
+                                    />}
                             />
                             <Route
                                 exact path="/interviewers"
@@ -128,7 +164,9 @@ class Main extends Component {
                                 render={(props) =>
                                     <Interviewers {...props}
                                                   callMakeNote={(status, text, hide) =>
-                                                      this.handleMakeNote(status, text, hide)}/>}
+                                                      this.handleMakeNote(status, text, hide)}
+                                                  onCheckUserRole={() => this.checkUserRole()}
+                                    />}
                             />
                             <Route
                                 exact path="/candidates"
@@ -136,7 +174,9 @@ class Main extends Component {
                                 render={(props) =>
                                     <Candidates {...props}
                                                 callMakeNote={(status, text, hide) =>
-                                                    this.handleMakeNote(status, text, hide)}/>}
+                                                    this.handleMakeNote(status, text, hide)}
+                                                onCheckUserRole={() => this.checkUserRole()}
+                                    />}
                             />
                             <Route
                                 exact path="/vacancies-open"
@@ -144,7 +184,9 @@ class Main extends Component {
                                 render={(props) =>
                                     <VacanciesOpen {...props}
                                                    callMakeNote={(status, text, hide) =>
-                                                       this.handleMakeNote(status, text, hide)}/>}
+                                                       this.handleMakeNote(status, text, hide)}
+                                                   onCheckUserRole={() => this.checkUserRole()}
+                                    />}
                             />
                             <Route
                                 exact path="/vacancies-closed"
@@ -152,7 +194,9 @@ class Main extends Component {
                                 render={(props) =>
                                     <VacanciesClosed {...props}
                                                      callMakeNote={(status, text, hide) =>
-                                                         this.handleMakeNote(status, text, hide)}/>}
+                                                         this.handleMakeNote(status, text, hide)}
+                                                     onCheckUserRole={() => this.checkUserRole()}
+                                    />}
                             />
                             <Route
                                 exact path="/vacancies-open/create-vacancy"
@@ -160,7 +204,9 @@ class Main extends Component {
                                 render={(props) =>
                                     <CreateVacancy {...props}
                                                    callMakeNote={(status, text, hide) =>
-                                                       this.handleMakeNote(status, text, hide)}/>}
+                                                       this.handleMakeNote(status, text, hide)}
+                                                   onCheckUserRole={() => this.checkUserRole()}
+                                    />}
                             />
                             <Route
                                 exact path="/vacancies-closed/create-vacancy"
@@ -168,7 +214,9 @@ class Main extends Component {
                                 render={(props) =>
                                     <CreateVacancy {...props}
                                                    callMakeNote={(status, text, hide) =>
-                                                       this.handleMakeNote(status, text, hide)}/>}
+                                                       this.handleMakeNote(status, text, hide)}
+                                                   onCheckUserRole={() => this.checkUserRole()}
+                                    />}
                             />
                             <Route
                                 exact path="/username"
@@ -176,7 +224,8 @@ class Main extends Component {
                                 render={(props) =>
                                     <Username {...props}
                                               callMakeNote={(status, text, hide) =>
-                                                  this.handleMakeNote(status, text, hide)}/>}
+                                                  this.handleMakeNote(status, text, hide)}
+                                    />}
                             />
                             <Route
                                 exact path="/password"
@@ -184,7 +233,8 @@ class Main extends Component {
                                 render={(props) =>
                                     <Password {...props}
                                               callMakeNote={(status, text, hide) =>
-                                                  this.handleMakeNote(status, text, hide)}/>}
+                                                  this.handleMakeNote(status, text, hide)}
+                                    />}
                             />
                             <Redirect from="/" to="/login"/>
                         </Switch>

@@ -9,6 +9,10 @@ import Panels from './../../components/Panels';
 
 class VacanciesClosed extends Component{
 
+    componentWillMount() {
+        this.props.onCheckUserRole();
+    }
+
     render(){
 
         const panelTitle = (

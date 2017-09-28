@@ -2,16 +2,14 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Modal, Button, PanelGroup} from "react-bootstrap";
 import Helmet from "react-helmet";
-
 import "./ProjectsList.css";
 import {showProjects, removeProject} from "../../redux/actions/projectActions";
 import PageTitle from "./../../containers/PageTitle";
 import Panels from "../Panels/Panels";
 
 
-
-
 class ProjectsList extends Component {
+
 
     constructor(props) {
         super(props);
@@ -24,6 +22,7 @@ class ProjectsList extends Component {
     componentWillMount() {
         const {dispatch} = this.props;
         dispatch(showProjects());
+        this.props.onCheckUserRole();
     }
 
     switchToEditMode(currentID) {
@@ -54,6 +53,7 @@ class ProjectsList extends Component {
 
 
     render() {
+
 
         let projects = this.props.newProject.projects;
 
@@ -125,6 +125,7 @@ class ProjectsList extends Component {
                         />
                     </div>
                 </div>
+                <button onClick={() => this.getCookies()}>Click</button>
                 <PanelGroup bsClass='custom-panel-group' accordion>
                     {projectsToDisplay}
                 </PanelGroup>
