@@ -15,6 +15,7 @@ end
 
 Admin.new({:email => "admin@admin.com", :password => "123456", :password_confirmation => "123456" }).save(:validate => false) unless Admin.where(email: "admin@admin.com").exists?
 User.new({:email => "user@user.com", :password => "123456", :password_confirmation => "123456" }).save(:validate => false) unless User.where(email: "user@user.com").exists?
+User.new({:email => "user1@user.com", :password => "123456", :password_confirmation => "123456" }).save(:validate => false) unless User.where(email: "user1@user.com").exists?
 
 #TODO - index Level and Position by name case insesitive
 #TODO - make params not optional
