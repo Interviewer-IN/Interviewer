@@ -104,7 +104,8 @@ class Main extends Component {
                                     isLoggedIn() ?
                                         (<InterviewsUpcoming {...props}
                                                              callMakeNote={(status, text, hide) =>
-                                                                 this.handleMakeNote(status, text, hide)}/>) :
+                                                                 this.handleMakeNote(status, text, hide)}
+                                        />) :
                                         (<Redirect to="/login"/>)
 
                                 )}
@@ -116,7 +117,8 @@ class Main extends Component {
                                     isLoggedIn() ?
                                         (<InterviewsCompleted {...props}
                                                               callMakeNote={(status, text, hide) =>
-                                                                  this.handleMakeNote(status, text, hide)}/>) :
+                                                                  this.handleMakeNote(status, text, hide)}
+                                        />) :
                                         (<Redirect to="/login"/>)
 
                                 )}
@@ -128,7 +130,9 @@ class Main extends Component {
                                     isLoggedIn() ?
                                         (<Interviewers {...props}
                                                        callMakeNote={(status, text, hide) =>
-                                                           this.handleMakeNote(status, text, hide)}/>) :
+                                                           this.handleMakeNote(status, text, hide)}
+                                                       onCheckUserRole={() => this.checkUserRole()}
+                                        />) :
                                         (<Redirect to="/login"/>)
 
                                 )}
