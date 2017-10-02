@@ -19,4 +19,4 @@ User.new({:email => "user1@user.com", :password => "123456", :password_confirmat
 
 #TODO - index Level and Position by name case insesitive
 #TODO - make params not optional
-#TODO - auto-increment for id
+#TODO - unique elements

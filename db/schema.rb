@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171002230002) do
+ActiveRecord::Schema.define(version: 20171002233814) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -86,6 +86,25 @@ ActiveRecord::Schema.define(version: 20171002230002) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  create_table "vacancies", force: :cascade do |t|
+    t.text "descriprion"
+    t.bigint "level_id"
+    t.bigint "project_id"
+    t.bigint "position_id"
+    t.text "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "levels_id"
+    t.bigint "positions_id"
+    t.bigint "projects_id"
+    t.index ["levels_id"], name: "index_vacancies_on_levels_id"
+    t.index ["positions_id"], name: "index_vacancies_on_positions_id"
+    t.index ["projects_id"], name: "index_vacancies_on_projects_id"
+  end
+
   add_foreign_key "users", "levels"
   add_foreign_key "users", "positions"
+  add_foreign_key "vacancies", "levels", column: "levels_id"
+  add_foreign_key "vacancies", "positions", column: "positions_id"
+  add_foreign_key "vacancies", "projects", column: "projects_id"
 end
