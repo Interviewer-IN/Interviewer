@@ -17,17 +17,16 @@ class Candidates extends Component {
                     </div>
                 </div>
                 <div className="custom-panel-title__left-side">
-                    <div className="vacancy-info-block">
-                        <div className="vacancy-info-block__item">
-                           <div className="vacancy-info-block__project">Project</div>
-                           <div className="vacancy-info-block__position">
-                               <span className="vacancy-info-block__position-capture">
+                    <div className="info-block">
+                        <div className="info-block__item">
+                           <div className="info-block__project">Project</div>
+                           <div className="info-block__position separate-line">
+                               <span className="info-block__position-capture">
                                    Desired position:
                                </span>
-                               <span className="vacancy-info-block__position-name">Junior Cook Junior Cook Junior Cook Junior Cook Junior Cook Junior Cook</span>
+                               <span className="info-block__position-name">Junior Cook</span>
                            </div>
                         </div>
-
                     </div>
                 </div>
             </div>

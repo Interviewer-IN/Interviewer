@@ -6,6 +6,12 @@ select {
   cursor: pointer;
 }
 
+.custom-mode{
+  &:focus{
+    border-color: #85CE36;
+  }
+}
+
 .text-center{
   text-align: center !important;
   display: block;
@@ -64,7 +70,6 @@ div.has-error {
 
 .form-filter-block {
   background-color: transparent;
-  //margin-bottom: 2.5rem;
   overflow: hidden;
 
   &__title {

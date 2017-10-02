@@ -1,20 +1,19 @@
-$border-color-primary:#85CE36;
+$border-color-primary: #85CE36;
 $text-color-primary: #4f5f6f;
 
-.panel{
+.panel {
   background: #fff;
   border: none;
 }
 
-.panel-heading:hover{
-  .vacancy-info-block__position:before{
+.panel-heading:hover {
+  .separate-line:before {
     background: #70b02b;
   }
 }
 
 .custom-panel-title {
   overflow: hidden;
-
 
   &__left-side {
     float: left;
@@ -27,8 +26,6 @@ $text-color-primary: #4f5f6f;
   a {
     color: $text-color-primary;
   }
-
-
 
   &__right-side {
     float: right;
@@ -45,7 +42,7 @@ $text-color-primary: #4f5f6f;
   }
 }
 
-.vacancy-info-block {
+.info-block {
   overflow: hidden;
   line-height: 26px;
 
@@ -56,18 +53,23 @@ $text-color-primary: #4f5f6f;
     font-size: 1.1rem;
   }
 
-  &__project{
+  &__project {
     display: inline-block;
     margin-right: 15px;
   }
 
-  &__position{
+  &__position {
     position: relative;
     display: inline-block;
     font-weight: normal;
     padding-left: 15px;
+  }
 
-    &:before{
+  .separate-line {
+    position: relative;
+    padding-left: 15px;
+
+    &:before {
       position: absolute;
       left: 0;
       top: 50%;
@@ -75,74 +77,73 @@ $text-color-primary: #4f5f6f;
       content: '';
       width: 2px;
       height: 18px;
-      background: black;
-    }
-
-    @media (max-width: 640px){
-      &{
-        padding-left: 0;
-      }
-      &:before{
-        display: none;
-
-      }
+      background: #4f5f6f;
     }
   }
 
-  &__position-capture{
+  @media (max-width: 640px) {
+    & {
+      padding-left: 0;
+    }
+    &:before {
+      display: none;
+
+    }
+  }
+
+  &__position-capture {
     margin-right: 10px;
   }
 
-  &__position-name{
+  &__position-name {
     font-weight: bold;
   }
 
 }
 
-.custom-panel-body{
+.custom-panel-body {
   overflow: hidden;
 
-  &__left{
+  &__left {
     float: left;
     width: 70%;
     padding-right: 20px;
 
-    @media (max-width: 420px){
+    @media (max-width: 420px) {
       float: none;
       width: 100%;
     }
 
   }
 
-  &__right{
+  &__right {
     float: right;
     width: 30%;
     text-align: right;
 
-    @media (max-width: 420px){
+    @media (max-width: 420px) {
       float: none;
       width: 100%;
       margin-top: 25px;
 
-      .btn{
+      .btn {
         width: 100%;
       }
     }
 
-    .btn{
+    .btn {
       white-space: normal;
     }
   }
 
-  &__vacancy-controls{
+  &__vacancy-controls {
     width: 100%;
     margin-top: 40px;
   }
 
-
 }
 
-.panel-list-item  {
+.panel-list-item {
   word-wrap: break-word;
   border: 1px solid white;
 

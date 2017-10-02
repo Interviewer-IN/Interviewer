@@ -75,7 +75,7 @@ class Filters extends Component{
             if (level){
                 return (
                     <div className="form-group">
-                        <select className="form-control form-control-sm"
+                        <select className="form-control form-control-sm custom-mode"
                                 id={levelFilterId}
                         >
                             <option>All Levels</option>
@@ -96,7 +96,7 @@ class Filters extends Component{
                         <div className="filter-block__title">Date:</div>
                         <div className="filter-block__selects">
                             <div className="form-group">
-                                <select className="form-control form-control-sm"
+                                <select className="form-control form-control-sm custom-mode"
                                         id={dateFromFilterId}>
                                     <option>Option one</option>
                                     <option>Option two</option>
@@ -105,7 +105,7 @@ class Filters extends Component{
                                 </select>
                             </div>
                             <div className="form-group">
-                                <select className="form-control form-control-sm"
+                                <select className="form-control form-control-sm custom-mode"
                                         id={dateToFilterId}>
                                     <option>Option one</option>
                                     <option>Option two</option>
