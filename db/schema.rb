@@ -87,24 +87,21 @@ ActiveRecord::Schema.define(version: 20171002233814) do
   end
 
   create_table "vacancies", force: :cascade do |t|
-    t.text "descriprion"
-    t.bigint "level_id"
-    t.bigint "project_id"
-    t.bigint "position_id"
+    t.text "description"
     t.text "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "levels_id"
-    t.bigint "positions_id"
-    t.bigint "projects_id"
-    t.index ["levels_id"], name: "index_vacancies_on_levels_id"
-    t.index ["positions_id"], name: "index_vacancies_on_positions_id"
-    t.index ["projects_id"], name: "index_vacancies_on_projects_id"
+    t.bigint "level_id"
+    t.bigint "position_id"
+    t.bigint "project_id"
+    t.index ["level_id"], name: "index_vacancies_on_level_id"
+    t.index ["position_id"], name: "index_vacancies_on_position_id"
+    t.index ["project_id"], name: "index_vacancies_on_project_id"
   end
 
   add_foreign_key "users", "levels"
   add_foreign_key "users", "positions"
-  add_foreign_key "vacancies", "levels", column: "levels_id"
-  add_foreign_key "vacancies", "positions", column: "positions_id"
-  add_foreign_key "vacancies", "projects", column: "projects_id"
+  add_foreign_key "vacancies", "levels"
+  add_foreign_key "vacancies", "positions"
+  add_foreign_key "vacancies", "projects"
 end
