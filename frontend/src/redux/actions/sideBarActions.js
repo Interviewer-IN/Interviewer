@@ -11,3 +11,4 @@ export function hideSideBar(status){
         payload: status
     };
 }
+

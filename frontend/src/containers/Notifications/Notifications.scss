@@ -1,0 +1,14 @@
+.notification-container {
+  position: fixed;
+  top: 75px;
+  right: 12px;
+
+  @media (max-width: 749px) {
+    top: 55px;
+  }
+}
+
+.notification {
+  border-radius: 0px !important;
+  margin-bottom: 10px !important;
+}

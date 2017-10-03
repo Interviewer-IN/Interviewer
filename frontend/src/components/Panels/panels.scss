@@ -1,0 +1,105 @@
+$border-color-primary:#85CE36;
+$text-color-primary: #4f5f6f;
+
+.panel{
+  background: #fff;
+  border: none;
+}
+
+.custom-panel-title {
+  overflow: hidden;
+
+
+  &__left-side {
+    float: left;
+
+    @media (max-width: 420px) {
+      float: none;
+    }
+  }
+
+  a {
+    color: $text-color-primary;
+  }
+
+
+
+  &__right-side {
+    float: right;
+
+    @media (max-width: 420px) {
+      float: none;
+      text-align: right;
+      margin-bottom: 15px;
+    }
+  }
+
+  &__btn {
+    margin-bottom: 0;
+  }
+}
+
+.vacancy-info-block {
+  overflow: hidden;
+  line-height: 26px;
+
+  &__item {
+    display: inline-block;
+    margin-right: 20px;
+    font-weight: bold;
+    font-size: 1.1rem;
+
+  }
+}
+
+.custom-panel-body{
+  overflow: hidden;
+
+  &__left{
+    float: left;
+    width: 70%;
+    padding-right: 20px;
+
+    @media (max-width: 420px){
+      float: none;
+      width: 100%;
+    }
+
+  }
+
+  &__right{
+    float: right;
+    width: 30%;
+    text-align: right;
+
+    @media (max-width: 420px){
+      float: none;
+      width: 100%;
+      margin-top: 25px;
+
+      .btn{
+        width: 100%;
+      }
+    }
+
+    .btn{
+      white-space: normal;
+    }
+  }
+
+  &__vacancy-controls{
+    width: 100%;
+    margin-top: 40px;
+  }
+
+
+}
+
+.panel-list-item  {
+  word-wrap: break-word;
+  border: 1px solid white;
+
+  &:hover {
+    border: 1px solid $border-color-primary;
+  }
+}

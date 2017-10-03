@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  devise_for :users
+  mount_devise_token_auth_for 'User', at: 'auth'
   devise_scope :admin do
     get '/admin/sign_out' => 'devise/sessions#destroy'
   end

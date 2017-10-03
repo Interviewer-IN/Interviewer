@@ -1,5 +1,5 @@
 const initialState = {
-    status: false
+    status: false,
 };
 
 export default function sideBar(state = initialState, action) {
@@ -15,8 +15,8 @@ export default function sideBar(state = initialState, action) {
                 ...state,
                 status: action.payload
             };
-
         default:
             return state;
     }
 }
+

@@ -1,0 +1,195 @@
+* {
+  outline: none !important;
+}
+
+select {
+  cursor: pointer;
+}
+
+.text-center{
+  text-align: center !important;
+  display: block;
+}
+
+.custom-error {
+  clear: both;
+}
+
+div.has-error {
+  span.has-error {
+    color: #FF4444;
+    font-size: 13px;
+    display: block !important;
+  }
+}
+
+.app {
+  min-height: 100vh;
+  min-height: 100%;
+}
+
+.custom-btn-group{
+
+  .btn {
+    margin-right: 10px;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+
+
+.back-btn {
+  cursor: pointer;
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: normal;
+  text-decoration: underline;
+  color: #969696;
+
+  &:hover {
+    text-decoration: underline;
+    color: #70b02b;
+  }
+}
+
+.page-block {
+  padding-top: 2rem;
+}
+
+//-----------------------------------------
+// Filters styles for in forms or pages
+//-----------------------------------------
+
+.form-filter-block {
+  background-color: transparent;
+  //margin-bottom: 2.5rem;
+  overflow: hidden;
+
+  &__title {
+    margin-bottom: 1rem;
+  }
+
+  &__selects-block {
+    overflow: hidden;
+
+    .form-control:focus {
+      border-color: #85CE36;
+    }
+  }
+
+  .form-group {
+    display: inline-table;
+    width: 200px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    @media (max-width: 580px) {
+      width: 100%;
+    }
+
+    &:last-of-type{
+      margin-right: 0;
+      margin-bottom: 0;
+    }
+
+    .form-control {
+      width: 100%
+
+    }
+  }
+}
+
+//-----------------------------------------
+
+.back-link {
+  font-size: 0.9rem !important;
+  color: #7e8e9f !important;
+}
+
+.block-space {
+  margin-top: 10px;
+}
+
+//-----------------------------------------
+//Custom panel group styles
+//-----------------------------------------
+
+.custom-panel-group {
+  position: relative;
+  margin-top: 20px;
+
+  .panel {
+
+    & + .panel {
+      margin-top: 10px;
+    }
+
+    .panel-heading {
+
+      & a{
+        overflow: hidden;
+        display: block;
+        padding: 15px 20px;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      h4 {
+        margin-bottom: 0;
+        padding: 10px;
+        overflow: hidden;
+
+        a {
+          border: 1px solid black;
+          display: block;
+          float: right;
+          cursor: pointer;
+          user-select: none;
+
+        }
+      }
+    }
+
+    .panel-body {
+      padding: 40px 20px 20px 20px;
+      border-top: 1px solid #d7dde4;
+    }
+
+    .panel-collapse {
+
+      &.collapse {
+
+      }
+    }
+  }
+}
+
+.panel-collapse-btn{
+  position: relative;
+  user-select: none;
+
+  &__title{
+    display: block;
+    margin-bottom: 0;
+    margin-right: 30px;
+  }
+
+  &__arrow{
+    position: absolute;
+    right: 0;
+    top: 50%;
+    margin-top: -12px;
+    font-size: 24px;
+    transition: transform 0.3s;
+
+    &.rotate-plus-90{
+      transition: transform 0.3s;
+      transform: rotate(90deg);
+    }
+  }
+}
+
+
+
+//-----------------------------------------

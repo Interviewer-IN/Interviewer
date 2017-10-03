@@ -75,3 +75,10 @@
   }
 }
 
+
+.btn.btn-primary:focus,
+.btn.btn-primary.focus {
+  background-color: #85CE36;
+  border-color: #85CE36;
+  cursor: pointer;
+}

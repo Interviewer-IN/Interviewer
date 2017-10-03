@@ -7,5 +7,5 @@
 /*@import "theme-styles/app-seagreen.css";*/
 @import "theme-styles/vendor.css";
 @import "theme-styles/app.css";
-@import "_common.scss";
+@import "./common.css";
 

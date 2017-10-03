@@ -1,10 +1,9 @@
-.bcgr {
-  background-color: #f0f3f6;
-}
+$small-test-color: #7e8e9f;
 
-.right-project-btn {
-  margin-left:10px;
-}
+
+//.right-project-btn {
+//  margin-left:10px !important;
+//}
 
 textarea {
   width: 200px;
@@ -12,5 +11,20 @@ textarea {
 }
 
 .form-field-margin {
-  margin-top: .5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.error-message {
+  color: #FF4444;
+  font-size: 13px;
+  display: block !important;
+}
+
+.form-label {
+  margin-bottom: 0 !important;
+}
+
+.form-sublabel {
+  color: $small-test-color !important;
 }

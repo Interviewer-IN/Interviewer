@@ -1,20 +1,42 @@
 import React, {Component} from "react";
-import {Link, NavLink, activeClassName} from "react-router-dom";
-import "./SideMenu.css";
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import * as pageActions from '../../redux/actions/sideBarActions';
+import {Link} from "react-router-dom";
+import "./sideMenu.css";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import * as pageActions from "../../redux/actions/sideBarActions";
+import MetisMenu from "react-metismenu";
+import RouterLink from "react-metismenu-router-link";
 
 class SideMenu extends Component {
 
     constructor(props) {
         super(props);
-
-        this.handleCloseSideBarClick = this.handleCloseSideBarClick.bind(this);
-        this.handleMenuClick = this.handleMenuClick.bind(this);
+        this.state = {
+            user: ""
+        }
     }
 
+
+    componentWillMount() {
+        let user = this.getCookies();
+        this.setState({user: user})
+    }
+
+    getCookies() {
+        let cookies = {};
+        for (let cookie of document.cookie.split('; ')) {
+            let [name, value] = cookie.split("=");
+            cookies[name] = decodeURIComponent(value);
+        }
+        return cookies;
+    }
+
+
     handleCloseSideBarClick() {
+        this.props.pageActions.hideSideBar(false);
+    }
+
+    handleClickLogo(){
         this.props.pageActions.hideSideBar(false);
     }
 
@@ -22,61 +44,179 @@ class SideMenu extends Component {
 
         let clickItem = event.target;
 
-        if (clickItem.getAttribute('href') !== ''){
-            this.props.pageActions.hideSideBar(false);
+        if (clickItem.classList.contains('metismenu-link')){
+            setTimeout(function () {
+                hideMenu(clickItem);
+            },100);
+
+        } else {
+            setTimeout(function () {
+                hideMenu(clickItem.parentNode);
+            },100);
         }
+
+        let hideMenu = (clickItem) => {
+            if (clickItem.classList.contains('active')){
+                this.props.pageActions.hideSideBar(false);
+            }
+        };
     }
 
     render() {
 
-        var changeMenuItems = () => {
-            let pathName = window.location.pathname;
+        let changeMenuItems = () => {
 
-            if (pathName.indexOf('/settings') === 0) {
+            let dashboard;
+
+            if (this.state.user.uid === "user@user.com" ) {
+
+                dashboard = [
+                    {
+                        name: '/interviews',
+                        icon: 'handshake-o',
+                        label: 'Interviews',
+                        content: [
+                            {
+                                name: '/interviews-upcoming',
+                                icon: 'square-o',
+                                label: 'Upcoming',
+                                to: '/interviews-upcoming',
+                            },
+                            {
+                                name: '/interviews-completed',
+                                icon: 'check-square-o',
+                                label: 'Completed',
+                                to: '/interviews-completed',
+                            }
+                        ]
+                    },
+                    {
+                        name: '/interviewers',
+                        icon: 'user-o',
+                        label: 'Interviewers',
+                        to: '/interviewers',
+                    },
+                    {
+                        name: '/vacancies',
+                        icon: 'binoculars',
+                        label: 'Vacancies',
+                        content: [
+                            {
+                                name: '/vacancies-open',
+                                label: 'Open',
+                                to: '/vacancies-open',
+                            },
+                            {
+                                name: '/vacancies-closed',
+                                label: 'Closed',
+                                to: '/vacancies-closed',
+                            }
+                        ]
+                    },
+                    {
+                        name: '/candidates',
+                        icon: 'address-card-o',
+                        label: 'Candidates',
+                        to: '/candidates',
+                    },
+                    {
+                        name: '/projects',
+                        icon: 'briefcase',
+                        label: 'Projects',
+                        to: '/projects'
+                    },
+                ];
+
+            } else {
+
+                dashboard = [
+                    {
+                        name: '/interviews',
+                        icon: 'handshake-o',
+                        label: 'Interviews',
+                        content: [
+                            {
+                                name: '/interviews-upcoming',
+                                icon: 'square-o',
+                                label: 'Upcoming',
+                                to: '/interviews-upcoming',
+                            },
+                            {
+                                name: '/interviews-completed',
+                                icon: 'check-square-o',
+                                label: 'Completed',
+                                to: '/interviews-completed',
+                            }
+                        ]
+                    }
+                ]
+
+            }
+
+                let settings = [
+                    {
+                        name: '/username',
+                        icon: 'user-circle-o',
+                        label: 'Username',
+                        to: '/username'
+                    },
+                    {
+                        name: '/password',
+                        icon: 'lock',
+                        label: 'Password',
+                        to: '/password',
+                    }
+                ];
+
+
+            let pathName = window.location.hash,
+                items = dashboard.concat(settings);
+
+            items.forEach(function (item) {
+                if (item.content){
+                    for (let i = 0; i < item.content.length; i++){
+                        items.push(item.content[i]);
+                    }
+                }
+            });
+
+
+            let menuItem = items.find(function (item) {
+                return pathName === item.name;
+            });
+
+            if (!menuItem) {
+                menuItem = items.find(function (item) {
+                    let itemName = pathName.split("/")[1];
+                    return item.name.indexOf(itemName) !== -1 ;
+                });
+            }
+
+            let label;
+            if (menuItem) {
+                label = menuItem.label;
+            }
+
+            if (pathName.indexOf('#/username') === 0 || pathName.indexOf('#/password') === 0) {
                 return (
-                    <ul className="nav metismenu" id="sidebar-menu" onClick={this.handleMenuClick}>
-                        <li>
-                            <NavLink to="/settings/username" activeClassName="activeLink">
-                                <i className="fa fa-home"></i> Username
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/settings/password" activeClassName="activeLink">
-                                <i className="fa fa-home"></i> Password
-                            </NavLink>
-                        </li>
-                    </ul>
+                    <MetisMenu
+                        activeLinkLabel={label}
+                        content={settings}
+                        LinkComponent={RouterLink}
+                        classNameStateIcon="arrow"
+                        classNameItemActive="active"
+
+                    />
                 );
             } else {
                 return (
-                    <ul className="nav metismenu" id="sidebar-menu">
-                        <li>
-                            <NavLink to="/dashboard/interviews" activeClassName="activeLink">
-                                <i className="fa fa-home"></i> Interviews
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/dashboard/interviewers" activeClassName="activeLink">
-                                <i className="fa fa-home"></i> Interviewers
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/dashboard/vacancies" activeClassName="activeLink">
-                                <i className="fa fa-home"></i> Vacancies
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/dashboard/seekers" activeClassName="activeLink">
-                                <i className="fa fa-home"></i> Seekers
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/dashboard/projects" activeClassName="activeLink">
-                                <i className="fa fa-home"></i> Projects
-                            </NavLink>
-                        </li>
-
-                    </ul>
+                    <MetisMenu
+                        activeLinkLabel={label}
+                        content={dashboard}
+                        LinkComponent={RouterLink}
+                        classNameStateIcon="arrow"
+                        classNameItemActive="active"
+                    />
                 );
             }
 
@@ -88,15 +228,15 @@ class SideMenu extends Component {
                     <div className="sidebar-container">
                         <div className="sidebar-header">
                             <div className="brand">
-                                <Link to="/">Logo</Link>
+                                <Link to="/" id="sideMenuLogo" onClick={() => this.handleClickLogo()}>Logo</Link>
                             </div>
                         </div>
-                        <nav className="menu" onClick={this.handleMenuClick}>
+                        <div className="sidebar-menu" id="metisMenu" onClick={(event) => this.handleMenuClick(event)}>
                             {changeMenuItems()}
-                        </nav>
+                        </div>
                     </div>
                 </div>
-                <div className="sidebar-overlay" id="sidebar-overlay" onClick={this.handleCloseSideBarClick}/>
+                <div className="sidebar-overlay" id="sidebar-overlay" onClick={() => this.handleCloseSideBarClick()}/>
             </div>
         )
     }
@@ -105,7 +245,7 @@ class SideMenu extends Component {
 
 function mapStateToProps(state) {
     return {
-        sideBar: state.sideBar.status
+        sideBar: state.sideBar.status,
     }
 }
 

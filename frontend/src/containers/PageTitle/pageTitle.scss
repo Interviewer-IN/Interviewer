@@ -1,0 +1,28 @@
+.custom-title-block{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+  position: relative;
+  min-height: 54px;
+
+  &__left-side{
+    .title{
+      padding-right: 20px;
+    }
+  }
+
+  &__right-side{
+    order: 1;
+
+    .btn{
+      margin-bottom: 0;
+    }
+  }
+
+  .back-btn{
+    position: absolute;
+    top: -30px;
+    left: 0;
+  }
+}

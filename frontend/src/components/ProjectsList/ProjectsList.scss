@@ -1,22 +1,22 @@
-.alert-custom {
-  background-color: rgba(133,206,54,0.5) !important;
-  border: 1px solid rgba(133,206,54,0) !important;
-  border-radius: 0px !important;
-  position: absolute;
-  top:-10%;
-  left: 22%;
-  margin: 0 !important;
-  max-width: 100% !important;
-}
+
 
 .component-container {
   position: relative;
 }
 
-.project-title {
+.project-link {
   text-decoration: none !important;
 }
 
 .create-button {
   margin-bottom: 20px;
 }
+//
+//.panel-list-item {
+//  word-wrap: break-word;
+//  border: 1px solid white;
+//}
+//
+//.panel-list-item:hover {
+//  border: 1px solid $border-color-primary;
+//}

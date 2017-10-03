@@ -1,11 +1,12 @@
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
 import TextareaAutosize from "react-autosize-textarea";
-import {Link} from "react-router-dom";
+import Helmet from "react-helmet";
+import PageTitle from "./../../containers/PageTitle";
 import {Modal, Button} from "react-bootstrap";
 import "./CreateProject.css";
-import { connect } from 'react-redux';
-import { createProject } from '../../redux/actions/projectActions';
-import { showNote } from '../../redux/actions/notificationActions';
+import {connect} from "react-redux";
+import {createProject} from "../../redux/actions/projectActions";
+import {fieldCharRegex, fieldSpaceRegex} from "../../config"
 
 class CreateProject extends Component {
 
@@ -18,7 +19,9 @@ class CreateProject extends Component {
             showModalConfirm: false,
             showModaLCreateAlert: false,
             alertText: "",
-            confirmText: ""
+            confirmText: "",
+            titleError:"",
+            descriptionError: "",
         };
     }
     //----------------------------------
@@ -40,52 +43,72 @@ class CreateProject extends Component {
     //      End of the code
     //--------------------------------------
 
+    componentWillMount() {
+        this.props.onCheckUserRole();
+    }
+
     handleTitleChange(event) {
         this.setState({projectTitle: event.target.value});
+        this.setState({titleError: ""});
     }
 
     handleDescrChange(event) {
         this.setState({projectDescription: event.target.value});
+        this.setState({descriptionError:""});
     }
 
     validateFormFields(event) {
-        let regex = /^[a-zA-Z0-9\s!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
         let title = this.state.projectTitle;
-        let descr = this.state.projectDescription;
-        if (!regex.test(descr) || !regex.test(title)) {
+        let description = this.state.projectDescription;
+        let wrongCharMessage = "Please use only latin letters, numbers and special symbols";
+        let emptyFieldMessage = "Please fill the field";
+        let existTitleMessage = "This title already exists. Please, use only unique titles";
+        let emptyTitle = !title || title.match(fieldSpaceRegex);
+        let emptyDescription = !description || description.match(fieldSpaceRegex)
+        if (!fieldCharRegex.test(title)) {
             event.preventDefault();
             this.setState({
-                alertText: "Please use only latin letters, numbers and special symbols"
+                titleError: wrongCharMessage
             });
-            this.openModalAlert();
-        } else if(!this.isTitleUnique()) {
+        }
+        if (!fieldCharRegex.test(description)) {
             event.preventDefault();
             this.setState({
-                alertText: "This title already exists. Please, use only unique titles."
+                descriptionError: wrongCharMessage
             });
-            this.openModalAlert();
-        }else {
-            this.props.history.push("/dashboard/projects");
-            const { dispatch } = this.props;
-            dispatch(createProject({title: title, descr: descr}));
-            this.showNote();
+        }
+        if (!this.isTitleUnique()) {
+            event.preventDefault();
+            this.setState({
+                titleError: existTitleMessage
+            });
+        }
+        if (emptyTitle) {
+            event.preventDefault();
+            this.setState({
+                titleError: emptyFieldMessage
+            });
+        }
+        if (emptyDescription) {
+            event.preventDefault();
+            this.setState({
+                descriptionError: emptyFieldMessage
+            });
+
+        }
+        if (!emptyTitle && !emptyDescription &&
+            fieldCharRegex.test(title) &&
+            fieldCharRegex.test(description) &&
+            this.isTitleUnique()) {
+            event.preventDefault();
+            this.props.history.push("/projects");
+            const {dispatch} = this.props;
+            dispatch(createProject({title: title.trim(), description: description.trim()}));
         }
     }
 
-
     isTitleUnique() {
-        let projects = [
-            {id:1, title: "Greenlam", description: "something1"},
-            {id:2, title: "Gembucket", description: "something2"},
-            {id:3, title: "Asoka", description: "something3"},
-            {id:4, title: "Biodex", description: "something4"},
-            {id:5, title: "It", description: "something5"},
-            {id:6, title: "Vagram", description: "something6"},
-            {id:7, title: "Quo Lux", description: "something7"},
-            {id:8, title: "Sub-Ex", description: "something8"},
-            {id:9, title: "Pannier", description: "something9"},
-            {id:10, title: "Span", description: "something10"},
-        ];
+        let projects = this.props.newProject.projects;
         let isUnique = true;
         let title = this.state.projectTitle;
         projects.forEach(function(item) {
@@ -96,35 +119,15 @@ class CreateProject extends Component {
         return (isUnique) ? true: false;
     }
 
-    showNote() {
-        const { dispatch } = this.props;
-        dispatch(showNote({show: true }))
-        setInterval(() => {
-            dispatch(showNote({show: false }))
-        }, 4000)
-    }
-
     isFieldsNotEmpty() {
         if (this.state.projectTitle || this.state.projectDescription) {
             this.setState({
                 confirmText: "Are you sure you want to cancel without saving changes?"
             });
-            let confirm = this.openModalConfirm();
+          this.openModalConfirm();
         } else {
-            this.props.history.push("/dashboard/projects");
+            this.props.history.push("/projects");
         }
-    }
-
-    openModalAlert() {
-        this.setState({
-            showModalAlert: true
-        });
-    }
-
-    closeModalAlert() {
-        this.setState({
-            showModalAlert: false
-        });
     }
 
     openModalConfirm() {
@@ -142,7 +145,7 @@ class CreateProject extends Component {
     leaveForm() {
         this.resetFormFields();
         this.closeModalConfirm();
-        this.props.history.push("/dashboard/projects");
+        this.props.history.push("/projects");
     }
 
     resetFormFields() {
@@ -150,78 +153,98 @@ class CreateProject extends Component {
         this.setState({projectDescription: ""})
     }
 
+
     render() {
         return (
-            <div className="row sameheight-container">
-                <div className="col-md-12">
-                    <div className="title-block">
-                        <h3 className="title">Create project</h3>
-                        <Link to="/dashboard/projects" onClick = {() => this.isFieldsNotEmpty()} className="title-description">
-                            Back to list
-                        </Link>
+            <div>
+                <Helmet>
+                    <title>Create Project</title>
+                </Helmet>
+                <div className="row sameheight-container custom-btn-group">
+                    <div className="col-md-12">
+                        <PageTitle
+                            pageTitle='Create Projects'
+                            showBackBtn={true}
+                            showButton={false}
+                            backBtnId="back-from-create"
+                            titleForButton=''
+                            linkForButton=''
+                        />
+                        <form onSubmit={(event) => this.validateFormFields(event)}>
+                            <div className="form-group has-error">
+                                <label className="control-label form-label">Project Title</label>
+                                <p className="form-sublabel back-link">Maximum 60 characters</p>
+                                <input
+                                    id="create-project-title"
+                                    type="text"
+                                    name="title"
+                                    placeholder='Input Title'
+                                    className="form-control boxed"
+                                    maxLength="60"
+                                    value={this.state.projectTitle}
+                                    onChange={(event) => this.handleTitleChange(event)}
+                                    autoFocus
+                                />
+                                <span className="has-error error-message">{this.state.titleError}</span>
+                            </div>
+                            <div className="form-group form-field-margin">
+                                <label className="control-label form-label">Project Description</label>
+                                <p className="form-sublabel back-link">Maximum 3000 characters</p>
+                                <TextareaAutosize
+                                    id="create-project-descr"
+                                    name="description"
+                                    placeholder="Input Description"
+                                    className="form-control boxed"
+                                    maxLength="3000"
+                                    rows={10}
+                                    value={this.state.projectDescription}
+                                    onChange={(event) => this.handleDescrChange(event)}
+                                />
+                                <span className="has-error error-message">{this.state.descriptionError}</span>
+                            </div>
+                            <div className="form-group">
+                                <button
+                                    id="create-project-submitBtn"
+                                    type="submit"
+                                    className="btn btn-primary"
+                                    disabled={!this.state.projectTitle || !this.state.projectDescription}
+                                >Create
+                                </button>
+                                <button
+                                    id="create-project-resetBtn"
+                                    type="reset"
+                                    className="btn btn-danger"
+                                    onClick={() => this.isFieldsNotEmpty()}
+                                >Cancel
+                                </button>
+                            </div>
+                        </form>
+
                     </div>
-                    <form onSubmit={(event) => this.validateFormFields(event)}>
-                        <div className="form-gro1up">
-                            <label className="control-label">Project Title</label>
-                            <input
-                                id="create-project-title"
-                                type="text"
-                                name="ProjectTitle"
-                                placeholder='Input Title'
-                                className="form-control boxed"
-                                maxLength="60"
-                                value={this.state.projectTitle}
-                                onChange={(event) => this.handleTitleChange(event)}
-                                autoFocus
-                            />
-                        </div>
-                        <div className="form-group form-field-margin">
-                            <label className="control-label">Project Description</label>
-                            <TextareaAutosize
-                                id="create-project-descr"
-                                name="ProjectDescription"
-                                placeholder="Input Description"
-                                className="form-control boxed"
-                                maxLength="3000"
-                                rows={10}
-                                value={this.state.projectDescription}
-                                onChange={(event) => this.handleDescrChange(event)}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <button
-                                id="create-project-submitBtn"
-                                type="submit"
+                    <Modal className="custom-btn-group"
+                           show={this.state.showModalConfirm}
+                           onHide={() => this.closeModalConfirm()}>
+                        <Modal.Header closeButton>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <p>Are you sure you want to cancel without saving changes?</p>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button
+                                id="modal-confirm-yes"
                                 className="btn btn-primary"
-                                disabled={!this.state.projectTitle || !this.state.projectDescription }
-                            >Create</button>
-                            <button
-                                id="create-project-resetBtn"
-                                type="reset"
-                                className="btn btn-primary right-project-btn"
-                                onClick = {() => this.isFieldsNotEmpty()}
-                            >Cancel</button>
-                        </div>
-                    </form>
+                                onClick={() => this.leaveForm()}
+                            >Yes
+                            </Button>
+                            <Button
+                                id="modal-confirm-no"
+                                className="btn btn-danger"
+                                onClick={() => this.closeModalConfirm()} bsStyle="primary"
+                            >No
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
                 </div>
-                <Modal show={this.state.showModalAlert} onHide={() => this.closeModalAlert()}>
-                    <Modal.Header closeButton>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <p>{this.state.alertText}</p>
-                    </Modal.Body>
-                </Modal>
-                <Modal show={this.state.showModalConfirm} onHide={() => this.closeModalConfirm()}>
-                    <Modal.Header closeButton>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <p>Are you sure you want to cancel without saving changes?</p>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button onClick={() => this.leaveForm()}>Cancel</Button>
-                        <Button onClick={() => this.closeModalConfirm()} bsStyle="primary">Back to edit</Button>
-                    </Modal.Footer>
-                </Modal>
             </div>
         )
     }
@@ -229,7 +252,7 @@ class CreateProject extends Component {
 
 function mapStateToProps (state) {
     return {
-        newProject: state.project
+        newProject: state.project,
     }
 }
 

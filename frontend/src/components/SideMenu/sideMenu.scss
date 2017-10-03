@@ -1,0 +1,62 @@
+@import "https://cdn.rawgit.com/alpertuna/react-metismenu/master/dist/react-metismenu-standart.min.css";
+
+.metismenu{
+  background: none;
+  &:after{
+    box-shadow: none;
+  }
+
+  .arrow{
+    font-size: 20px;
+    &.fa-caret-left{
+      transform: rotate(-180deg);
+      &.rotate-minus-90{
+        transform: rotate(-90deg);
+      }
+    }
+  }
+
+ .metismenu-container{
+    box-shadow: none;
+
+   &.visible{
+     padding: 0;
+
+     &>.metismenu-item{
+       &>.metismenu-link{
+         height: auto;
+         line-height: 3.2em;
+         background: none;
+       }
+     }
+   }
+  }
+
+
+  &>.metismenu-container{
+    &>.metismenu-item{
+      &>.metismenu-link{
+        line-height: 3.2em;
+      }
+    }
+  }
+
+  .metismenu-link{
+    text-decoration: none;
+    text-shadow: none;
+
+    &:hover{
+      color: #fff;
+      text-decoration: none;
+    }
+    &.active{
+      background: #78bd2e;
+    }
+    &.has-active-child{
+      background: #78bd2e;
+      color: #fff;
+    }
+  }
+}
+
+

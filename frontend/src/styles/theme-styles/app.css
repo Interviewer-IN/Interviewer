@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,800,700,600);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,800,700,600);
 /*************************************************************
 *						App Variables
 **************************************************************/
@@ -1869,7 +1869,7 @@ span a {
       padding: 0;
       height: 0px;
       overflow: hidden; }
-      .loaded .sidebar .nav ul {
+      .sidebar .nav ul {
         height: auto; }
     .sidebar .nav li.active ul {
       height: auto; }

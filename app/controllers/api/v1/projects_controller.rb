@@ -1,6 +1,9 @@
 module Api
   module V1
    class ProjectsController < ApplicationController
+
+     # before_action :authenticate_user!
+
      def index
        projects = Project.order('created_at DESC')
        render json: {status:"SUCCESS", message: "Projects loaded", data:projects}, status: :ok

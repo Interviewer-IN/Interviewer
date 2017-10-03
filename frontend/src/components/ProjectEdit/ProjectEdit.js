@@ -1,45 +1,64 @@
 import React, {Component} from "react";
-import {IndexLink} from "react-router-dom";
-import {Link} from "react-router-dom";
+import Helmet from "react-helmet";
 import TextareaAutosize from "react-autosize-textarea";
 import {Modal, Button} from "react-bootstrap";
-import "./ProjectEdit.css";
 import {connect} from "react-redux";
-import { showNote } from '../../redux/actions/notificationActions';
 
+import "./ProjectEdit.css";
+import PageTitle from "./../../containers/PageTitle";
+import {updateProject, getProjects} from "../../redux/actions/projectActions";
+import {fieldCharRegex, fieldSpaceRegex} from "../../config"
 
 class ProjectEdit extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            projectTitle: "Project Title",
-            projectDescription: "Lorem ipsum dolor sit amet, nulla quam sapien praesent purus commodo nascetur",
+            currentProject: "",
+            projectTitle: "",
+            initProjectTitle: "",
+            projectDescription: "",
             showModalConfirm: false,
-            showModaLCreateAlert: false,
-            alertText: "",
-            confirmText: ""
+            confirmText: "",
+            titleError:"",
+            descriptionError: ""
         }
+    }
+
+    componentWillMount() {
+        this.props.onCheckUserRole();
+        const {dispatch} = this.props;
+        if (this.props.projects.length < 1) {
+            dispatch(getProjects(this.props.match.params.id)).then(() => {
+                let currentProject = this.props.currentProject;
+                this.setStates(currentProject);
+            });
+        } else {
+            let projects = this.props.projects;
+            let projectId = this.props.match.params.id;
+            let currentProject = projects.find(function (currentProject) {
+                    return currentProject.id === +projectId;
+                }) || {};
+            this.setStates(currentProject);
+
+
+        }
+    }
+
+    setStates(currentProject) {
+        this.setState({currentProject: currentProject});
+        this.setState({projectTitle: currentProject.title});
+        this.setState({projectDescription: currentProject.description});
     }
 
     handleTitleChange(event) {
         this.setState({projectTitle: event.target.value});
+        this.setState({titleError:""});
     }
 
     handleDescrChange(event) {
         this.setState({projectDescription: event.target.value});
-    }
-
-    openModalAlert() {
-        this.setState({
-            showModalAlert: true
-        });
-    }
-
-    closeModalAlert() {
-        this.setState({
-            showModalAlert: false
-        });
+        this.setState({descriptionError:""});
     }
 
     showMConfirmMessage() {
@@ -63,47 +82,66 @@ class ProjectEdit extends Component {
 
     leaveEdit() {
         this.closeModalConfirm();
-        this.props.history.push("/dashboard/projects/project");
+        this.props.history.push("/projects/");
     }
 
     validateFormFields(event) {
-        let regex = /^[a-zA-Z0-9\s!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
+        let id = this.state.currentProject.id;
         let title = this.state.projectTitle;
-        let descr = this.state.projectDescription;
-        if (!regex.test(descr) || !regex.test(title)) {
+        let description = this.state.projectDescription;
+        let wrongCharMessage = "Please use only latin letters, numbers and special symbols";
+        let emptyFieldMessage = "Please fill the field";
+        let existTitleMessage = "This title already exists. Please, use only unique titles";
+        let emptyTitle = !title || title.match(fieldSpaceRegex);
+        let emptyDescription = !description || description.match(fieldSpaceRegex)
+        if (!fieldCharRegex.test(title)) {
             event.preventDefault();
             this.setState({
-                alertText: "Please use only latin letters, numbers and special symbols"
+                titleError: wrongCharMessage
             });
-            this.openModalAlert();
-        } else if(!this.isTitleUnique()) {
+        }
+        if (!fieldCharRegex.test(description)) {
             event.preventDefault();
             this.setState({
-                alertText: "This title already exists. Please, use only unique titles."
+                descriptionError: wrongCharMessage
             });
-            this.openModalAlert();
-        }else {
-            this.props.history.push("/dashboard/projects/project");
+        }
+        if (!this.isTitleUnique()) {
+            event.preventDefault();
+            this.setState({
+                titleError: existTitleMessage
+            });
+        }
+        if (emptyTitle) {
+            event.preventDefault();
+            this.setState({
+                titleError: emptyFieldMessage
+            });
+        }
+        if (emptyDescription) {
+            event.preventDefault();
+            this.setState({
+                descriptionError: emptyFieldMessage
+            });
+        }
+        if (!emptyTitle && !emptyDescription &&
+            fieldCharRegex.test(title) &&
+            fieldCharRegex.test(description) &&
+            this.isTitleUnique()) {
+            event.preventDefault();
+            const {dispatch} = this.props;
+            dispatch(updateProject({id: id, title: title.trim(), description: description.trim()}));
+            this.props.history.push("/projects/");
         }
     }
 
     isTitleUnique() {
-        let projects = [
-            {id:1, title: "Greenlam", description: "something1"},
-            {id:2, title: "Gembucket", description: "something2"},
-            {id:3, title: "Asoka", description: "something3"},
-            {id:4, title: "Biodex", description: "something4"},
-            {id:5, title: "It", description: "something5"},
-            {id:6, title: "Vagram", description: "something6"},
-            {id:7, title: "Quo Lux", description: "something7"},
-            {id:8, title: "Sub-Ex", description: "something8"},
-            {id:9, title: "Pannier", description: "something9"},
-            {id:10, title: "Span", description: "something10"},
-        ];
+        let projects = this.props.projects;
+        let id = this.state.currentProject.id;
         let isUnique = true;
         let title = this.state.projectTitle;
         projects.forEach(function(item) {
-            if (item.title === title) {
+            if (item.title === title && item.id !== id) {
                 isUnique = false;
             }
         });
@@ -111,65 +149,92 @@ class ProjectEdit extends Component {
     }
 
     render() {
+        let id = this.state.currentProject.id;
 
         return (
             <div>
-                <div className="row sameheight-container">
+                <Helmet>
+                    <title>{this.state.projectTitle}</title>
+                </Helmet>
+                <div className="row sameheight-container custom-btn-group">
                     <div className="col-md-12 component-container">
-
-                        <form onSubmit={(event) => this.validateFormFields(event)}>
+                        <PageTitle
+                            pageTitle='Edit Projects'
+                            showBackBtn={true}
+                            showButton={false}
+                            backBtnId="back-from-edit"
+                            titleForButton=''
+                            linkForButton=''
+                        />
+                        <form
+                            className="form-pe block-space"
+                            onSubmit={(event) => this.validateFormFields(event)}
+                        >
                             <div className="title-block">
-                                <input // will transform to h3 with className="tittle"
-                                    className="title form-control boxed"
+                                <input
+                                    id={"pe-title-"+id}
+                                    className=" form-control boxed"
+                                    maxLength="60"
                                     value={this.state.projectTitle}
                                     onChange={(event) => this.handleTitleChange(event)}
                                     autoFocus
                                 />
-                                <Link to="/dashboard/projects" className="title-description">
-                                    Back to list
-                                </Link>
+                                <span className="error-message">{this.state.titleError}</span>
+                                <p className="form-sublabel no-margin"><small>Maximum 60 characters</small></p>
+
                             </div>
-                            <div className="card card-default">
-                                <TextareaAutosize // will transform to div with className="card-block"
-                                    className="form-control boxed card-block"
-                                    maxLength="3000"
-                                    rows={10}
-                                    value={this.state.projectDescription}
-                                    onChange={(event) => this.handleDescrChange(event)}
-                                />
-                            </div>
+                            <TextareaAutosize
+                                id={"pe-description-"+id}
+                                className="form-control boxed"
+                                maxLength="3000"
+                                rows={10}
+                                value={this.state.projectDescription}
+                                onChange={(event) => this.handleDescrChange(event)}
+                            />
+                            <span className="error-message">
+                                    {this.state.descriptionError}</span>
+                            <p className="form-sublabel"><small>Maximum 3000 characters</small></p>
+
                             <div className="form-group">
                                 <button
+                                    id={"pe-btn-save-"+id}
                                     type="submit"
                                     className="btn btn-primary"
                                 >Save
                                 </button>
                                 <button
+                                    id={"pe-btn-cancel-"+id}
                                     type="reset"
-                                    className="btn btn-primary right-project-btn"
-                                    onClick={() => this.showMConfirmMessage()}
+                                    className="btn btn-danger"
+                                    onClick={()=> this.showMConfirmMessage()}
                                 >Cancel
                                 </button>
                             </div>
                         </form>
+
                     </div>
                 </div>
-                <Modal show={this.state.showModalAlert} onHide={() => this.closeModalAlert()}>
-                    <Modal.Header closeButton>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <p>{this.state.alertText}</p>
-                    </Modal.Body>
-                </Modal>
-                <Modal show={this.state.showModalConfirm} onHide={() => this.closeModalConfirm()}>
+                <Modal className="custom-btn-group"
+                       show={this.state.showModalConfirm}
+                       onHide={() => this.closeModalConfirm()}>
                     <Modal.Header closeButton>
                     </Modal.Header>
                     <Modal.Body>
                         <p>{this.state.confirmText}</p>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={() => this.leaveEdit()}>Cancel</Button>
-                        <Button onClick={() => this.closeModalConfirm()} bsStyle="primary">Back to edit</Button>
+                        <Button
+                            id={"pe-btn-modal-yes-"+id}
+                            className="btn btn-primary"
+                            onClick={() => this.leaveEdit()}
+                        >Yes
+                        </Button>
+                        <Button
+                            id={"pe-btn-modal-no-"+id}
+                            className="btn btn-danger"
+                            onClick={() => this.closeModalConfirm()}
+                        >No
+                        </Button>
                     </Modal.Footer>
                 </Modal>
             </div>
@@ -179,8 +244,8 @@ class ProjectEdit extends Component {
 
 function mapStateToProps (state) {
     return {
-        newProject: state.project,
-        newNote: state.notifications
+        projects: state.project.projects,
+        currentProject: state.project.currentProject,
     }
 }
 
