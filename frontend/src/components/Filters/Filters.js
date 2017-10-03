@@ -43,7 +43,7 @@ class Filters extends Component{
 
                 return (
                     <div className="form-group">
-                        <select className="form-control form-control-sm"
+                        <select className="form-control form-control-sm custom-mode"
                                 id={projectFilterId}
                         >
                             <option>All Projects</option>
@@ -58,7 +58,7 @@ class Filters extends Component{
             if (position){
                 return (
                     <div className="form-group">
-                        <select className="form-control form-control-sm"
+                        <select className="form-control form-control-sm custom-mode"
                                 id={positionFilterId}
                         >
                             <option>All Positions</option>

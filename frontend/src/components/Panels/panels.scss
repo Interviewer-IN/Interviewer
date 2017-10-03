@@ -104,6 +104,17 @@ $text-color-primary: #4f5f6f;
 .custom-panel-body {
   overflow: hidden;
 
+  &.full-width{
+    .custom-panel-body__left{
+      width: 100%;
+      padding-right: 0;
+    }
+
+    .custom-panel-body__right{
+      display: none;
+    }
+  }
+
   &__left {
     float: left;
     width: 70%;
