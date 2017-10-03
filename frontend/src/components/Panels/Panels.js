@@ -97,12 +97,19 @@ class Panels extends Component {
             }
         };
 
+        let panelBodyClass  = '';
+        if (showActionBtn){
+            panelBodyClass = 'custom-panel-body';
+        } else {
+            panelBodyClass = 'custom-panel-body full-width';
+        }
+
         return (
             <Panel collapsible header={panelTitle}
                    onClick={(event) => this.handlePanelCollapseClick(event)}
                    id={id}
                 >
-                <div className="custom-panel-body">
+                <div className={panelBodyClass}>
                     <div className="custom-panel-body__left">
                         <div className="vacancy-description">
                             {description}

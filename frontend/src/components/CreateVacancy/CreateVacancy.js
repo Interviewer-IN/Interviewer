@@ -61,8 +61,6 @@ class CreateVacancy extends Component{
 
         removeAllErrorMessage(currentForm);
 
-        console.log('send form');
-
         //THE SELECTS BOXES CHECKING
         let mainSelectsDiv = document.getElementById('select-block'),
             selects = mainSelectsDiv.querySelectorAll('select'),
@@ -182,8 +180,8 @@ class CreateVacancy extends Component{
 
             return (
                 <div className="form-group">
-                    <select className="form-control form-control-sm" id="project-filter" onChange={(event) => {this.handleSelectChange(event)}}>
-                        <option>Select Projects</option>
+                    <select className="form-control form-control-sm custom-mode" id="project-filter" onChange={(event) => {this.handleSelectChange(event)}}>
+                        <option>Select Project</option>
                         {options}
                     </select>
                 </div>
@@ -213,16 +211,16 @@ class CreateVacancy extends Component{
                                     <label className="form-filter-block__title">Vacancy parameters</label>
                                     <div className="form-filter-block__selects-block" id="select-block">
                                         <div className="form-group">
-                                            <select className="form-control form-control-sm" id="level-filter" onChange={(event) => {this.handleSelectChange(event)}}>
-                                                <option>Select Levels</option>
+                                            <select className="form-control form-control-sm custom-mode" id="level-filter" onChange={(event) => {this.handleSelectChange(event)}}>
+                                                <option>Select Level</option>
                                                 <option>Junior</option>
                                                 <option>Middle</option>
                                                 <option>Senior</option>
                                             </select>
                                         </div>
                                         <div className="form-group">
-                                            <select className="form-control form-control-sm" id="position-filter" onChange={(event) => {this.handleSelectChange(event)}}>
-                                                <option>Select Positions</option>
+                                            <select className="form-control form-control-sm custom-mode" id="position-filter" onChange={(event) => {this.handleSelectChange(event)}}>
+                                                <option>Select position</option>
                                                 <option>QA</option>
                                                 <option>Frontend</option>
                                                 <option>Backend</option>
@@ -248,6 +246,7 @@ class CreateVacancy extends Component{
                                         ref="vacancy_desc"
                                         value={this.state.vacancyDescription}
                                         onChange={(event) => this.handleDescriptionChange(event)}
+                                        autoFocus
                                     />
                                 </div>
                                 <div className="form-group custom-btn-group">

@@ -24,10 +24,10 @@ class VacanciesClosed extends Component{
                     </div>
                 </div>
                 <div className="custom-panel-title__left-side">
-                    <div className="vacancy-info-block">
-                        <div className="vacancy-info-block__item">Project</div>
-                        <div className="vacancy-info-block__item">Position</div>
-                        <div className="vacancy-info-block__item">Level</div>
+                    <div className="info-block">
+                        <div className="info-block__item">Project</div>
+                        <div className="info-block__item">Position</div>
+                        <div className="info-block__item">Level</div>
                     </div>
                 </div>
             </div>

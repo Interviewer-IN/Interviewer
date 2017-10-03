@@ -1,0 +1,20 @@
+.download-block{
+  display: inline-block;
+  overflow: hidden;
+
+  span{
+    display: inline-block;
+  }
+
+  &__icon{
+    display: block;
+    width: 40px;
+    font-size: 1.6rem;
+    text-align: center;
+  }
+
+  &__title{
+    vertical-align: top;
+  }
+}
+
