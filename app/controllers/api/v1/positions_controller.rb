@@ -15,7 +15,7 @@ module Api
       end
 
       def create
-        position = Position.new(project_params)
+        position = Position.new(position_params)
         if position.save
           render json: {status:"SUCCESS", message: "Saved position", data:position}, status: :ok
         else
@@ -34,7 +34,7 @@ module Api
 
       def update
         position =Position.find(params[:id])
-        if  position.update_attributes(project_params)
+        if  position.update_attributes(position_params)
           render json: {status:"SUCCESS", message: "Update position", data:position}, status: :ok
         else
           render json: {status:"ERROR", message: "Position was not updated", data:position.errors}, status: :unprocessable_entity
@@ -44,7 +44,7 @@ module Api
 
 
       private
-      def vacancy_params
+      def position_params
         params.permit(:name)
       end
     end

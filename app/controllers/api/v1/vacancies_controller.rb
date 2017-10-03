@@ -15,7 +15,7 @@ module Api
       end
 
       def create
-        vacancy = Vacancy.new(project_params)
+        vacancy = Vacancy.new(vacancy_params)
         if vacancy.save
           render json: {status:"SUCCESS", message: "Saved vacancy", data:vacancy}, status: :ok
         else
@@ -34,7 +34,7 @@ module Api
 
       def update
         vacancy =Vacancy.find(params[:id])
-        if  vacancy.update_attributes(project_params)
+        if  vacancy.update_attributes(vacancy_params)
           render json: {status:"SUCCESS", message: "Update vacancy", data:vacancy}, status: :ok
         else
           render json: {status:"ERROR", message: "Vacancy was not updated", data:vacancy.errors}, status: :unprocessable_entity

@@ -15,7 +15,7 @@ module Api
       end
 
       def create
-        level = Level.new(project_params)
+        level = Level.new(level_params)
         if level.save
           render json: {status:"SUCCESS", message: "Saved level", data:level}, status: :ok
         else
@@ -34,7 +34,7 @@ module Api
 
       def update
         level =Level.find(params[:id])
-        if  level.update_attributes(project_params)
+        if  level.update_attributes(level_params)
           render json: {status:"SUCCESS", message: "Update level", data:level}, status: :ok
         else
           render json: {status:"ERROR", message: "Level was not updated", data:level.errors}, status: :unprocessable_entity
@@ -44,7 +44,7 @@ module Api
 
 
       private
-      def vacancy_params
+      def level_params
         params.permit(:name)
       end
     end
