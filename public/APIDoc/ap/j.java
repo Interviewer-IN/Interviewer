@@ -1,3 +1,5 @@
+*==========Projects========
+*========Get=======
  /**
  * @apiName GetProjects
  * @apiGroup Projects
@@ -35,7 +37,7 @@
  *
  */
 
-
+*========Create=======
 
 /**
  * @api {post} api/v1/projects/ Create project
@@ -82,7 +84,7 @@
  * @apiError Unauthorized Returned if the user is not logged in.
  */
 
-
+ *=====Update======
 
  /**
  * @api {put} api/v1/projects/:id Update project
@@ -130,7 +132,7 @@
  */
 
 
-
+ *=====Edit======
  /**
  * @api {patch} api/v1/projects/:id Edit project
  * @apiName PatchProjects
@@ -175,7 +177,7 @@
  * @apiError ProjectNotFound Returned if the project does not exist.
  */
 
-
+ *=====Delete======
 
 /**
  * @api {delete} api/v1/projects/:id Delete project
@@ -216,7 +218,8 @@
 
 
 
-
+* =================UserLogin================
+*=====login======
 
  /**
   * @api {post} auth/sign_in/ User login
@@ -266,4 +269,502 @@
   *
   * @apiError NotFound If URL entered incorrect.
   * @apiError Unauthorized Returned <code>Invalid login credentials. Please try again.</code> if email or password invalid.
+  */
+
+
+
+* =======================vacancies====================
+*====get====
+/**
+ * @apiName GetVacancies
+ * @apiGroup Vacancies
+ *
+ * @api {get} api/v1/vacancies/:id Get all vacancies
+ *
+ *
+ * @apiDescription Returns all vacancies which are visible for the currently logged in user.
+ *
+ * @apiHeader {String} access-key Users unique access-key.
+ * @apiHeader {String} content-type application/json; charset=utf-8
+ * @apiHeader {String} accept application/json
+ *
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *   {
+    "status": "SUCCESS",
+    "message": "Vacancies loaded",
+    "data": [
+        {
+            "id": 5,
+            "description": "[\"Reprehenderit magni tenetur sed distinctio in. Est tempore ex laborum nam. Voluptas recusandae consectetur. Hic cumque voluptas nihil nulla culpa a.\", \"A ut fugit labore possimus doloremque. Ipsa similique aut. Id et error excepturi ut et sunt.\", \"Occaecati cupiditate sunt qui et debitis et. Vero laudantium maxime cumque blanditiis corporis perferendis consequatur. Enim quod et sit temporibus. Placeat ut quae nihil et. Suscipit ea fugit harum sint ut sed praesentium.\"]",
+            "status": "Lots of planets have a north!",
+            "created_at": "2017-10-03T01:24:41.071Z",
+            "updated_at": "2017-10-03T01:24:41.071Z",
+            "level_id": 2,
+            "position_id": 3,
+            "project_id": 2
+        }
+*}
+ * @apiSuccess {String} id  Unique id of the vacancy.
+ * @apiSuccess {String} description  Description of the vacancy.
+ * @apiSuccess {String} status  Status of the vacancy.
+ * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+ * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+ * @apiSuccess {String} level_id      Level id for vacancy.
+ * @apiSuccess {String} position_id   ID of the position for vacancy.
+ * @apiSuccess {String} project_id    Id of the project which includes the vacancy.
+ *
+ * @apiError ProjectNotFound The <code>id</code> of the Project was not found.
+ * @apiError Unauthorized Returned if the user is not logged in.
+ *
+ */
+
+*====create====
+//todo
+ /**
+  * @api {post} api/v1/vacancies/ Create vacancy
+  * @apiName PostVacancy
+  * @apiGroup Vacancies
+  *
+  * @apiHeader {String} access-key Users unique access-key.
+  * @apiHeader {String} content-type application/json; charset=utf-8
+  * @apiHeader {String} accept application/json
+  *
+  *
+  * @apiParam {String} level       Mandatory level of the vacancy.
+  * @apiParam {String} project     Mandatory project of the vacancy.
+  * @apiParam {String} position    Mandatory position of the vacancy.
+  *
+  * @apiParamExample {json} Request-Example:
+  *     {
+  *     	"level": "Test",
+         "project": "test",
+         "position": "test"
+  *     }
+  *
+  * @apiSuccess {String} id The new Projects-ID.
+  * @apiSuccess {String} title Title of the Projects.
+  * @apiSuccess {String} description  Description of the Projects.
+  * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+  * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+  *
+  * @apiSuccessExample {json} Success-Response:
+  *     HTTP/1.1 200 OK
+  *{
+   	"status": "SUCCESS",
+   	"message": "Saved project",
+   	"data": {
+         	"id": 30,
+        		"title": "Test",
+        		"description": "test",
+        		"created_at": "2017-08-22T11:32:34.824Z",
+        		"updated_at": "2017-08-22T11:32:34.824Z"
+        }
+  *}
+  *
+  * @apiError ProjectNotFound The <code>id</code> of the Project was not found.
+  * @apiError Unauthorized Returned if the user is not logged in.
+  */
+
+
+* =======================levels====================
+*=====get======
+
+/**
+ * @apiName GetLevels
+ * @apiGroup Levels
+ *
+ * @api {get} api/v1/levels/:id Get levels
+ *
+ *
+ * @apiDescription Returns all levels which are visible for the currently logged in user.
+ *
+ * @apiHeader {String} access-key Users unique access-key.
+ * @apiHeader {String} content-type application/json; charset=utf-8
+ * @apiHeader {String} accept application/json
+ *
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *  {
+    "status": "SUCCESS",
+    "message": "Levels loaded",
+    "data": [
+        {
+            "id": 4,
+            "name": "Senior",
+            "created_at": "2017-10-03T01:24:40.364Z",
+            "updated_at": "2017-10-03T01:24:40.364Z"
+        }
+
+ * @apiSuccess {String} id  Unique id of the level.
+ * @apiSuccess {String} name  Name of the level.
+ * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+ * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+
+ *
+ * @apiError ProjectNotFound The <code>id</code> of the Project was not found.
+ * @apiError Unauthorized Returned if the user is not logged in.
+ *
+ */
+ *========CreateLevel======
+ //todo
+  /**
+   * @api {post} api/v1/levels/ Create level
+   * @apiName PostLevels
+   * @apiGroup Levels
+   *
+   * @apiHeader {String} access-key Users unique access-key.
+   * @apiHeader {String} content-type application/json; charset=utf-8
+   * @apiHeader {String} accept application/json
+   *
+   *
+   * @apiParam {String} name   Mandatory name of the level.
+   *
+   * @apiParamExample {json} Request-Example:
+   *     {
+   *     	"name": "Test"
+   *     }
+   *
+   * @apiSuccess {String} id            The new level-ID.
+   * @apiSuccess {String} name          Name of the level.
+   * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+   * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+   *
+   * @apiSuccessExample {json} Success-Response:
+   *     HTTP/1.1 200 OK
+   {
+     "status": "SUCCESS",
+     "message": "Saved level",
+     "data": {
+         "id": 6,
+         "name": "Test",
+         "created_at": "2017-10-04T08:23:27.316Z",
+         "updated_at": "2017-10-04T08:23:27.316Z"
+     }
+ }
+   *
+   * @apiError LevelNotFound The <code>id</code> of the Project was not found.
+   * @apiError Unauthorized Returned if the user is not logged in.
+   */
+   *=====EditLevel======
+   /**
+   * @api {patch} api/v1/levels/:id Update level
+   * @apiName PatchLevel
+   * @apiGroup Levels
+   * @apiDescription Replace parts of existing levels.
+   *
+   *
+   * @apiHeader {String} access-key Users unique access-key.
+   * @apiHeader {String} content-type application/json; charset=utf-8
+   * @apiHeader {String} accept application/json
+   *
+   * @apiParam {String} [name]        Optional name of the level.
+   *
+   * @apiParamExample {json} Request-Example:
+     {
+     	   "name": "Test1"
+      }
+   *
+   *
+   * @apiSuccess {String} id 	          ID of the level.
+   * @apiSuccess {String} name          Name of the level.
+   * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+   * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+   *
+   *
+   * @apiSuccessExample {json} Success-Response:
+   *     HTTP/1.1 200 OK
+   {
+     "status": "SUCCESS",
+     "message": "Update level",
+     "data": {
+         "id": 6,
+         "name": "Test1",
+         "created_at": "2017-10-04T08:23:27.316Z",
+         "updated_at": "2017-10-04T08:25:17.216Z"
+     }
+ }
+   * @apiError Unauthorized Returned if the user is not logged in.
+   * @apiError LeveltNotFound Returned if the project does not exist.
+   */
+
+*======PachLevel======
+/**
+* @api {patch} api/v1/levels/:id Edit Level
+* @apiName PatchLevels
+* @apiGroup Levels
+* @apiDescription Replace parts of existing Levels.
+*
+*
+* @apiHeader {String} access-key Users unique access-key.
+* @apiHeader {String} content-type application/json; charset=utf-8
+* @apiHeader {String} accept application/json
+*
+* @apiParam {String} [name]        Optional name of the level.
+*
+* @apiParamExample {json} Request-Example:
+  {
+      "name": "Test1"
+   }
+*
+*
+* @apiSuccess {String} id 	          ID of the level.
+* @apiSuccess {String} name          Name of the level.
+* @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+* @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+*
+*
+* @apiSuccessExample {json} Success-Response:
+*     HTTP/1.1 200 OK
+{
+  "status": "SUCCESS",
+  "message": "Update level",
+  "data": {
+      "id": 6,
+      "name": "Test1",
+      "created_at": "2017-10-04T08:23:27.316Z",
+      "updated_at": "2017-10-04T08:25:17.216Z"
+  }
+}
+* @apiError Unauthorized Returned if the user is not logged in.
+* @apiError LeveltNotFound Returned if the project does not exist.
+*/
+
+*======DeleteLevel=======
+/**
+ * @api {delete} api/v1/levels/:id Delete Level
+ * @apiName DeleteLevels
+ * @apiGroup Levels
+ *
+ *
+ *
+ * @apiHeader {String} access-key Users unique access-key.
+ * @apiHeader {String} content-type application/json; charset=utf-8
+ * @apiHeader {String} accept application/json
+ *
+ *
+ * @apiSuccess {String} id            The Level-ID.
+ * @apiSuccess {String} name		      Name of the Level.
+ * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+ * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+ *
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ {
+     "status": "SUCCESS",
+     "message": "Level deleted",
+     "data": {
+         "id": 6,
+         "name": "Test1",
+         "created_at": "2017-10-04T08:23:27.316Z",
+         "updated_at": "2017-10-04T08:25:17.216Z"
+     }
+ }
+ * @apiError Unauthorized Returned if the user is not logged in.
+ * @apiError LevelNotFound Returned if the project does not exist.
+ */
+
+
+ * =======================Positions====================
+ *=====get======
+
+ /**
+  * @apiName GetPositions
+  * @apiGroup Positions
+  *
+  * @api {get} api/v1/positions/:id Get Positions
+  *
+  *
+  * @apiDescription Returns all Positions which are visible for the currently logged in user.
+  *
+  * @apiHeader {String} access-key Users unique access-key.
+  * @apiHeader {String} content-type application/json; charset=utf-8
+  * @apiHeader {String} accept application/json
+  *
+  *
+  * @apiSuccessExample {json} Success-Response:
+  *     HTTP/1.1 200 OK
+  *  "status": "SUCCESS",
+    "message": "Positions loaded",
+    "data": [
+        {
+            "id": 4,
+            "name": "Back-end",
+            "created_at": "2017-10-03T01:24:40.499Z",
+            "updated_at": "2017-10-03T01:24:40.499Z"
+        }
+
+  * @apiSuccess {String} id  Unique id of the Positions.
+  * @apiSuccess {String} name  Name of the Positions.
+  * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+  * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+
+  *
+  * @apiError ProjectNotFound The <code>id</code> of the Project was not found.
+  * @apiError Unauthorized Returned if the user is not logged in.
+  *
+  */
+
+  *========CreatePositions======
+   /**
+    * @api {post} api/v1/positions/ Create Positions
+    * @apiName PostPositions
+    * @apiGroup Positions
+    *
+    * @apiHeader {String} access-key Users unique access-key.
+    * @apiHeader {String} content-type application/json; charset=utf-8
+    * @apiHeader {String} accept application/json
+    *
+    *
+    * @apiParam {String} [name]   Mandatory name of the position.
+    *
+    * @apiParamExample {json} Request-Example:
+    *     {
+    *     	"name": "Test"
+    *     }
+    *
+    * @apiSuccess {String} id            The new position-ID.
+    * @apiSuccess {String} name          Name of the position.
+    * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+    * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+    *
+    * @apiSuccessExample {json} Success-Response:
+    *     HTTP/1.1 200 OK
+    {
+      "status": "SUCCESS",
+      "message": "Saved position",
+      "data": {
+          "id": 6,
+          "name": "Test",
+          "created_at": "2017-10-04T08:45:58.122Z",
+          "updated_at": "2017-10-04T08:45:58.122Z"
+      }
+  }
+  *
+    * @apiError PositionNotFound The <code>id</code> of the Project was not found.
+    * @apiError Unauthorized Returned if the user is not logged in.
+    */
+    *=====EditPositions======
+    /**
+    * @api {put} api/v1/positions/:id Update level
+    * @apiName PutPositions
+    * @apiGroup Positions
+    * @apiDescription Replace parts of existing positions.
+    *
+    *
+    * @apiHeader {String} access-key Users unique access-key.
+    * @apiHeader {String} content-type application/json; charset=utf-8
+    * @apiHeader {String} accept application/json
+    *
+    * @apiParam {String} [name]        Optional name of the positions.
+    *
+    * @apiParamExample {json} Request-Example:
+    {
+         	"name": "Test6"
+         }
+    *
+    *
+    * @apiSuccess {String} id 	          ID of the positions.
+    * @apiSuccess {String} name          Name of the positions.
+    * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+    * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+    *
+    *
+    * @apiSuccessExample {json} Success-Response:
+    *     HTTP/1.1 200 OK
+    *
+    {
+    "status": "SUCCESS",
+    "message": "Update position",
+    "data": {
+        "id": 6,
+        "name": "Test6",
+        "created_at": "2017-10-04T08:45:58.122Z",
+        "updated_at": "2017-10-04T08:47:41.916Z"
+    }
+}
+    * @apiError Unauthorized Returned if the user is not logged in.
+    * @apiError PositionstNotFound Returned if the project does not exist.
+    */
+
+ *======PachPositions======
+ /**
+ * @api {pach} api/v1/positions/:id Edit Level
+ * @apiName PatchPositions
+ * @apiGroup Positions
+ * @apiDescription Replace parts of existing Positions.
+ *
+ *
+ * @apiHeader {String} access-key Users unique access-key.
+ * @apiHeader {String} content-type application/json; charset=utf-8
+ * @apiHeader {String} accept application/json
+ *
+ * @apiParam {String} [name]        Optional name of the positions.
+ *
+ * @apiParamExample {json} Request-Example:
+ {
+        "name": "Test7"
+      }
+ *
+ *
+ * @apiSuccess {String} id 	          ID of the positions.
+ * @apiSuccess {String} name          Name of the positions.
+ * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+ * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+ *
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *
+ {
+     "status": "SUCCESS",
+     "message": "Update position",
+     "data": {
+         "id": 6,
+         "name": "Test7",
+         "created_at": "2017-10-04T08:45:58.122Z",
+         "updated_at": "2017-10-04T08:49:47.054Z"
+     }
+ }
+ * @apiError Unauthorized Returned if the user is not logged in.
+ * @apiError PositionstNotFound Returned if the project does not exist.
+ */
+
+
+ *======DeletePosition=======
+ /**
+  * @api {delete} api/v1/positions/:id Delete Position
+  * @apiName DeletePosition
+  * @apiGroup Positions
+  *
+  *
+  *
+  * @apiHeader {String} access-key Users unique access-key.
+  * @apiHeader {String} content-type application/json; charset=utf-8
+  * @apiHeader {String} accept application/json
+  *
+  *
+  * @apiSuccess {String} id            The Level-ID.
+  * @apiSuccess {String} name		      Name of the Level.
+  * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+  * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+  *
+  *
+  * @apiSuccessExample {json} Success-Response:
+  *     HTTP/1.1 200 OK
+  {
+      "status": "SUCCESS",
+      "message": "Position deleted",
+      "data": {
+          "id": 6,
+          "name": "Test7",
+          "created_at": "2017-10-04T08:45:58.122Z",
+          "updated_at": "2017-10-04T08:49:47.054Z"
+      }
+  }
+  * @apiError Unauthorized Returned if the user is not logged in.
+  * @apiError PositionNotFound Returned if the project does not exist.
   */
