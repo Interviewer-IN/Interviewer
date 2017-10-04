@@ -6,6 +6,8 @@ import {Modal, Button} from "react-bootstrap";
 import {createBrowserHistory} from 'history';
 import {connect} from "react-redux";
 import {showProjects} from "../../redux/actions/projectActions";
+import {getLevels} from "../../redux/actions/levelsActions";
+import {getPositions} from "../../redux/actions/positionActions";
 
 const history = createBrowserHistory();
 
@@ -29,6 +31,8 @@ class CreateVacancy extends Component{
     componentDidMount(){
         const {dispatch} = this.props;
         dispatch(showProjects());
+        dispatch(getLevels());
+        dispatch(getPositions());
     }
 
     handleSubmitForm(event){
@@ -165,29 +169,43 @@ class CreateVacancy extends Component{
 
     render(){
 
+        console.log(this);
+
+        let showLevelFilter = () => {
+            let levelsList = this.props.levels.levels,
+                options = [];
+
+
+            if (levelsList.length){
+                options =  levelsList.map((value, index) => <option key={index}>{value.name}</option>);
+            }
+            return options;
+
+        };
+
+        let showPositionFilter = () => {
+            let positionsList = this.props.positions.positions,
+                options = [];
+
+
+            if (positionsList.length){
+                options =  positionsList.map((value, index) => <option key={index}>{value.name}</option>);
+            }
+            return options;
+
+        };
 
         let showProjectFilter = () => {
             let projectList = this.props.newProject.projects,
                 options = [];
 
 
-            if (projectList !== undefined){
-                options =  projectList.map((value, index) =>
-                    <option key={index}>{value.title}</option>
-                );
+            if (projectList.length){
+                options =  projectList.map((value, index) => <option key={index}>{value.title}</option>);
             }
+            return options;
 
-
-            return (
-                <div className="form-group">
-                    <select className="form-control form-control-sm custom-mode" id="project-filter" onChange={(event) => {this.handleSelectChange(event)}}>
-                        <option>Select Project</option>
-                        {options}
-                    </select>
-                </div>
-            );
         };
-
 
         return(
             <div className="bcgr">
@@ -213,20 +231,22 @@ class CreateVacancy extends Component{
                                         <div className="form-group">
                                             <select className="form-control form-control-sm custom-mode" id="level-filter" onChange={(event) => {this.handleSelectChange(event)}}>
                                                 <option>Select Level</option>
-                                                <option>Junior</option>
-                                                <option>Middle</option>
-                                                <option>Senior</option>
+                                                {showLevelFilter()}
                                             </select>
                                         </div>
                                         <div className="form-group">
                                             <select className="form-control form-control-sm custom-mode" id="position-filter" onChange={(event) => {this.handleSelectChange(event)}}>
                                                 <option>Select position</option>
-                                                <option>QA</option>
-                                                <option>Frontend</option>
-                                                <option>Backend</option>
+                                                {showPositionFilter()}
                                             </select>
                                         </div>
-                                        {showProjectFilter()}
+                                        <div className="form-group">
+                                            <select className="form-control form-control-sm custom-mode" id="project-filter" onChange={(event) => {this.handleSelectChange(event)}}>
+                                                <option>Select Project</option>
+                                                {showProjectFilter()}
+                                            </select>
+                                        </div>
+
                                     </div>
 
                                 </div>
@@ -293,7 +313,9 @@ class CreateVacancy extends Component{
 
 function mapStateToProps (state) {
     return {
-        newProject: state.project
+        newProject: state.project,
+        positions: state.positions,
+        levels: state.levels
     }
 }
 

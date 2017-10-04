@@ -13,6 +13,7 @@ function addNewProject(date) {
 }
 
 export function createProject(date) {
+    console.log('CreateProject', date);
     return (dispatch) => {
         fetch("/api/v1/projects",
             {

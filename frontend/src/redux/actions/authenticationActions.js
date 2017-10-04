@@ -81,7 +81,8 @@ export function doLogin(data) {
                 dispatch(showNote(
                     {
                         status: "danger",
-                        text: "Error: " + err
+                        text: "Error: " + err,
+                        hide: false
                     }
                 ));
             });

@@ -3,14 +3,17 @@ import './filters.css';
 import PropTypes from 'prop-types';
 import {connect} from "react-redux";
 import {showProjects} from "../../redux/actions/projectActions";
+import {getLevels} from "../../redux/actions/levelsActions";
+import {getPositions} from "../../redux/actions/positionActions";
 
-class Filters extends Component{
+class Filters extends Component {
 
-    componentDidMount(){
+    componentWillMount() {
         const {dispatch} = this.props;
         dispatch(showProjects());
+        dispatch(getLevels());
+        dispatch(getPositions());
     }
-
 
 
     render() {
@@ -26,26 +29,20 @@ class Filters extends Component{
             dateToFilterId = this.props.dateToId;
 
 
-
-
-
         let showProjectFilter = (project) => {
             if (project) {
 
                 let projectList = this.props.newProject.projects,
                     options = [];
 
-                if (projectList !== undefined){
-                    options =  projectList.map((value, index) =>
-                        <option key={index}>{value.title}</option>
-                    );
+                if (projectList.length) {
+                    options = projectList.map((item, index) => <option key={index}>{item.title}</option>);
                 }
 
                 return (
                     <div className="form-group">
                         <select className="form-control form-control-sm custom-mode"
-                                id={projectFilterId}
-                        >
+                                id={projectFilterId}>
                             <option>All Projects</option>
                             {options}
                         </select>
@@ -55,16 +52,22 @@ class Filters extends Component{
         };
 
         let showPositionFilter = (position) => {
-            if (position){
+
+            let positionsList = this.props.positions.positions,
+                options = [];
+
+
+            if (positionsList.length) {
+                options = positionsList.map((item, index) => <option key={index}>{item.name}</option>);
+            }
+
+            if (position) {
                 return (
                     <div className="form-group">
                         <select className="form-control form-control-sm custom-mode"
-                                id={positionFilterId}
-                        >
+                                id={positionFilterId}>
                             <option>All Positions</option>
-                            <option>QA</option>
-                            <option>Frontend</option>
-                            <option>Backend</option>
+                            {options}
                         </select>
                     </div>
                 );
@@ -72,16 +75,21 @@ class Filters extends Component{
         };
 
         let showLevelFilter = (level) => {
-            if (level){
+
+            let levelsList = this.props.levels.levels,
+                options = [];
+
+            if (levelsList.length) {
+                options = levelsList.map((item, index) => <option key={index}>{item.name}</option>);
+            }
+
+            if (level) {
                 return (
                     <div className="form-group">
                         <select className="form-control form-control-sm custom-mode"
-                                id={levelFilterId}
-                        >
+                                id={levelFilterId}>
                             <option>All Levels</option>
-                            <option>Junior</option>
-                            <option>Middle</option>
-                            <option>Senior</option>
+                            {options}
                         </select>
                     </div>
                 );
@@ -120,8 +128,6 @@ class Filters extends Component{
         };
 
 
-
-
         return (
             <div className="filters-section">
                 <div className="filter-block">
@@ -153,9 +159,12 @@ Filters.propTypes = {
 };
 
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
+    console.log(state);
     return {
-        newProject: state.project
+        newProject: state.project,
+        levels: state.levels,
+        positions: state.positions
     }
 }
 
