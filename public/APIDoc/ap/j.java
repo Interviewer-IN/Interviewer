@@ -321,7 +321,6 @@
  */
 
 *====create====
-//todo
  /**
   * @api {post} api/v1/vacancies/ Create vacancy
   * @apiName PostVacancy
@@ -332,41 +331,185 @@
   * @apiHeader {String} accept application/json
   *
   *
-  * @apiParam {String} level       Mandatory level of the vacancy.
-  * @apiParam {String} project     Mandatory project of the vacancy.
-  * @apiParam {String} position    Mandatory position of the vacancy.
+  * @apiParam {String} level_id       Mandatory level of the vacancy.
+  * @apiParam {String} project_id    Mandatory project of the vacancy.
+  * @apiParam {String} position_id    Mandatory position of the vacancy.
   *
   * @apiParamExample {json} Request-Example:
-  *     {
-  *     	"level": "Test",
-         "project": "test",
-         "position": "test"
-  *     }
+  * {
+        "level_id": 4,
+        "project_id": 87,
+        "position_id": 4
+    }
   *
-  * @apiSuccess {String} id The new Projects-ID.
-  * @apiSuccess {String} title Title of the Projects.
-  * @apiSuccess {String} description  Description of the Projects.
+  * @apiSuccess {String} id  Unique id of the vacancy.
+  * @apiSuccess {String} description  Description of the vacancy.
+  * @apiSuccess {String} status  Status of the vacancy.
   * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
   * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+  * @apiSuccess {String} level_id      Level id for vacancy.
+  * @apiSuccess {String} position_id   ID of the position for vacancy.
+  * @apiSuccess {String} project_id    Id of the project which includes the vacancy.
   *
   * @apiSuccessExample {json} Success-Response:
   *     HTTP/1.1 200 OK
-  *{
-   	"status": "SUCCESS",
-   	"message": "Saved project",
-   	"data": {
-         	"id": 30,
-        		"title": "Test",
-        		"description": "test",
-        		"created_at": "2017-08-22T11:32:34.824Z",
-        		"updated_at": "2017-08-22T11:32:34.824Z"
-        }
-  *}
   *
-  * @apiError ProjectNotFound The <code>id</code> of the Project was not found.
+  {
+      "status": "SUCCESS",
+      "message": "Saved vacancy",
+      "data": {
+          "id": 6,
+          "description": null,
+          "status": null,
+          "created_at": "2017-10-04T11:08:13.287Z",
+          "updated_at": "2017-10-04T11:08:13.287Z",
+          "level_id": 4,
+          "position_id": 4,
+          "project_id": 87
+      }
+  }
+  *
+  *
+  * @apiError VacanciesNotFound The <code>id</code> of the Project was not found.
   * @apiError Unauthorized Returned if the user is not logged in.
   */
 
+*======editVac======
+/**
+* @api {patch} api/v1/vacancies/:id Edit Vacancies
+* @apiName PatchVacancies
+* @apiGroup Vacancies
+* @apiDescription Replace parts of existing Vacancies.
+*
+*
+* @apiHeader {String} access-key Users unique access-key.
+* @apiHeader {String} content-type application/json; charset=utf-8
+* @apiHeader {String} accept application/json
+*
+* @apiParam {String} [description]        Optional description of the Vacancies.
+*
+* @apiParamExample {json} Request-Example:
+{
+     "description": "test"
+  }
+*
+*
+* @apiSuccess {String} id 	          ID of the level.
+* @apiSuccess {String} name          Name of the level.
+* @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+* @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+*
+*
+* @apiSuccessExample {json} Success-Response:
+*     HTTP/1.1 200 OK
+{
+    "status": "SUCCESS",
+    "message": "Update vacancy",
+    "data": {
+        "id": 6,
+        "description": "test",
+        "level_id": 4,
+        "project_id": 87,
+        "position_id": 4,
+        "status": null,
+        "created_at": "2017-10-04T11:08:13.287Z",
+        "updated_at": "2017-10-04T11:17:33.480Z"
+    }
+}
+* @apiError Unauthorized Returned if the user is not logged in.
+* @apiError VacancieNotFound Returned if the project does not exist.
+*/
+*=========updateVac=======
+/**
+* @api {put} api/v1/vacancies/:id Update vacancies
+* @apiName PutVacancies
+* @apiGroup Vacancies
+* @apiDescription Replace the entire project with the new representation provided.
+*
+* @apiHeader {String} access-key Users unique access-key.
+* @apiHeader {String} content-type application/json; charset=utf-8
+* @apiHeader {String} accept application/json
+*
+* @apiParam {String} [description]        Optional description of the Vacancies.
+*
+* @apiParamExample {json} Request-Example:
+{
+       "description": "test1"
+    }
+*
+*
+* @apiSuccess {String} id  Unique id of the vacancy.
+* @apiSuccess {String} description  Description of the vacancy.
+* @apiSuccess {String} status  Status of the vacancy.
+* @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+* @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+* @apiSuccess {String} level_id      Level id for vacancy.
+* @apiSuccess {String} position_id   ID of the position for vacancy.
+* @apiSuccess {String} project_id    Id of the project which includes the vacancy.
+*
+*
+* @apiSuccessExample {json} Success-Response:
+*     HTTP/1.1 200 OK
+{
+    "status": "SUCCESS",
+    "message": "Update vacancy",
+    "data": {
+        "id": 6,
+        "description": "test1",
+        "level_id": 4,
+        "project_id": 87,
+        "position_id": 4,
+        "status": null,
+        "created_at": "2017-10-04T11:08:13.287Z",
+        "updated_at": "2017-10-04T11:28:59.890Z"
+    }
+}
+* @apiError Unauthorized Returned if the user is not logged in.
+* @apiError VacancieNotFound Returned if the project does not exist.
+*/
+*======deleteVac======
+/**
+ * @api {delete} api/v1/vacancies/:id Delete vacancies
+ * @apiName DeleteVacancies
+ * @apiGroup Vacancies
+ *
+ *
+ *
+ * @apiHeader {String} access-key Users unique access-key.
+ * @apiHeader {String} content-type application/json; charset=utf-8
+ * @apiHeader {String} accept application/json
+ *
+ *
+ * @apiSuccess {String} id  Unique id of the vacancy.
+ * @apiSuccess {String} description  Description of the vacancy.
+ * @apiSuccess {String} status  Status of the vacancy.
+ * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+ * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+ * @apiSuccess {String} level_id      Level id for vacancy.
+ * @apiSuccess {String} position_id   ID of the position for vacancy.
+ * @apiSuccess {String} project_id    Id of the project which includes the vacancy.
+
+ *
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ {
+     "status": "SUCCESS",
+     "message": "Vacancy deleted",
+     "data": {
+         "id": 6,
+         "description": "test1",
+         "status": null,
+         "created_at": "2017-10-04T11:08:13.287Z",
+         "updated_at": "2017-10-04T11:28:59.890Z",
+         "level_id": 4,
+         "position_id": 4,
+         "project_id": 87
+     }
+ }
+ * @apiError Unauthorized Returned if the user is not logged in.
+ * @apiError VacancieNotFound Returned if the project does not exist.
+ */
 
 * =======================levels====================
 *=====get======
