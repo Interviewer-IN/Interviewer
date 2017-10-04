@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171002233814) do
+ActiveRecord::Schema.define(version: 20171003223237) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,19 @@ ActiveRecord::Schema.define(version: 20171002233814) do
     t.inet "last_sign_in_ip"
     t.index ["email"], name: "index_admins_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
+  end
+
+  create_table "candidates", force: :cascade do |t|
+    t.integer "age"
+    t.text "experience"
+    t.text "contacts"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "level_id"
+    t.bigint "position_id"
+    t.string "cv"
+    t.index ["level_id"], name: "index_candidates_on_level_id"
+    t.index ["position_id"], name: "index_candidates_on_position_id"
   end
 
   create_table "levels", force: :cascade do |t|
@@ -99,6 +112,8 @@ ActiveRecord::Schema.define(version: 20171002233814) do
     t.index ["project_id"], name: "index_vacancies_on_project_id"
   end
 
+  add_foreign_key "candidates", "levels"
+  add_foreign_key "candidates", "positions"
   add_foreign_key "users", "levels"
   add_foreign_key "users", "positions"
   add_foreign_key "vacancies", "levels"
