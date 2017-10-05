@@ -60,11 +60,12 @@ class CreateProject extends Component {
     validateFormFields(event) {
         let title = this.state.projectTitle;
         let description = this.state.projectDescription;
-        let wrongCharMessage = "Please use only latin letters, numbers and special symbols";
-        let emptyFieldMessage = "Please fill the field";
+        let wrongCharMessage = "Please, use only latin letters, numbers and special symbols";
+        let emptyFieldMessage = "Please, fill the field";
         let existTitleMessage = "This title already exists. Please, use only unique titles";
         let emptyTitle = !title || title.match(fieldSpaceRegex);
-        let emptyDescription = !description || description.match(fieldSpaceRegex)
+        let emptyDescription = !description || description.match(fieldSpaceRegex);
+
         if (!fieldCharRegex.test(title)) {
             event.preventDefault();
             this.setState({
