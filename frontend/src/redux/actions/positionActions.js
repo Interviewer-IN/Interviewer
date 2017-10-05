@@ -12,7 +12,7 @@ function addPositions (data) {
 }
 
 export function getPositions() {
-    return (dispatch) => {
+    return (dispatch) => new Promise ((resolve) => {
         fetch('/api/v1/positions',
             {
                 method: 'GET',
@@ -32,6 +32,7 @@ export function getPositions() {
             })
             .then(data => {
                 dispatch(addPositions(data));
+                resolve(data.data);
             })
             .catch((error) => {
                 dispatch(makeNote({
@@ -40,5 +41,5 @@ export function getPositions() {
                     hide: false
                 }))
             })
-    }
+    });
 }

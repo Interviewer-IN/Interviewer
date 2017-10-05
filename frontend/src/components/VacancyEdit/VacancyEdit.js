@@ -1,22 +1,26 @@
 import React, {Component} from 'react';
-import './createVacancy.css';
-import PageTitle from './../../containers/PageTitle';
+import './vacancyEdit.css';
+import {Modal, Button} from 'react-bootstrap';
 import TextareaAutosize from "react-autosize-textarea";
-import {Modal, Button} from "react-bootstrap";
 import {createBrowserHistory} from 'history';
 import {connect} from "react-redux";
 import {fieldCharRegex} from "../../config"
 import {showProjects} from "../../redux/actions/projectActions";
 import {getLevels} from "../../redux/actions/levelsActions";
 import {getPositions} from "../../redux/actions/positionActions";
-import {createVacancy} from "../../redux/actions/vacanciesActions";
+import {updateVacancy, getVacancy} from "../../redux/actions/vacanciesActions";
+
+import Helmet from 'react-helmet';
+import PageTitle from '../../containers/PageTitle';
 
 const history = createBrowserHistory();
 
-class CreateVacancy extends Component {
+class VacancyEdit extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
+            currentVacancy: "",
             vacancyDescription: "",
             confirmText: "Are you sure you want to cancel without saving changes?",
             wrongCharMessage: "Please use only latin letters, numbers and special symbols",
@@ -26,21 +30,77 @@ class CreateVacancy extends Component {
             levelVal: '',
             projectVal: ''
         };
+
     }
 
 
     componentWillMount() {
+
         this.props.onCheckUserRole();
         const {dispatch} = this.props;
-        dispatch(showProjects());
-        dispatch(getLevels());
-        dispatch(getPositions());
+
+
+        if (this.props.vacancies.length || this.props.projects.length || this.props.levels.length || this.props.positions.length) {
+            let vacanciesList = this.props.vacancies,
+                currentVacancyId = this.props.match.params.id,
+                projects = this.props.projects,
+                levels = this.props.levels,
+                positions = this.props.positions,
+                currentVacancy = vacanciesList.find((currentItem) => {
+                    return (
+                        currentItem.id === +currentVacancyId
+                    )
+                });
+            this.updateState(currentVacancy, projects, levels, positions);
+        } else {
+            dispatch(getVacancy(this.props.match.params.id)).then(() => {
+                let currentVacancy = this.props.currentVacancy;
+                dispatch(getPositions()).then(() => {
+                    let positions = this.props.positions;
+
+                    dispatch(getLevels()).then(() => {
+                        let levels = this.props.levels;
+
+                        dispatch(showProjects()).then(() => {
+                            let projects = this.props.projects;
+                            this.updateState(currentVacancy, projects, levels, positions);
+                        })
+                    })
+
+                })
+            });
+        }
     }
+
+
+    updateState(currentVacancy, projects, levels, positions) {
+
+        let selectedProject = projects.find((currentItem) => {
+            return currentVacancy.project_id === currentItem.id;
+        });
+
+        let selectedLevel = levels.find((currentItem) => {
+            return currentVacancy.level_id === currentItem.id;
+        });
+
+        let selectedPosition = positions.find((currentItem) => {
+            return currentVacancy.position_id === currentItem.id;
+        });
+
+        this.setState({
+            vacancyDescription: currentVacancy.description,
+            positionVal: selectedPosition.name,
+            projectVal: selectedProject.title,
+            levelVal: selectedLevel.name,
+        });
+    }
+
 
     handleSubmitForm(event) {
         event.preventDefault();
 
         let currentForm = event.target;
+
 
         let removeAllErrorMessage = (currentForm) => {
             let allErrorMessages = currentForm.querySelectorAll('span.has-error'),
@@ -117,12 +177,13 @@ class CreateVacancy extends Component {
             let positionSelectVal = this.state.positionVal,
                 levelSelectVal = this.state.levelVal,
                 projectSelectVal = this.state.projectVal,
-                projectsList = this.props.newProject,
+                projectsList = this.props.projects,
                 positionsList = this.props.positions,
                 levelsList = this.props.levels,
                 projectsTitleObj = {},
                 levelsTitleObj = {},
                 positionsTitleObj = {};
+
 
             projectsList.forEach((item) => {
                 projectsTitleObj[item.title] = item.id;
@@ -136,13 +197,14 @@ class CreateVacancy extends Component {
                 positionsTitleObj[item.name] = item.id;
             });
 
+
             let formData = {
-                description: descriptionValue,
+                id: this.props.match.params.id,
+                description: this.state.vacancyDescription,
                 level_id: levelsTitleObj[levelSelectVal],
                 position_id: positionsTitleObj[positionSelectVal],
                 project_id: projectsTitleObj[projectSelectVal]
             };
-
 
             let {dispatch} = this.props,
                 pathName = window.location.hash;
@@ -150,7 +212,9 @@ class CreateVacancy extends Component {
 
             let backPath = '#/' + pathName.split('/')[1];
 
-            dispatch(createVacancy(formData, backPath));
+
+            dispatch(updateVacancy(formData, backPath));
+
         }
         //--  END PREPARE FORM DATA FOR SENDING TO SERVER  -----------
 
@@ -217,6 +281,7 @@ class CreateVacancy extends Component {
             let levelsList = this.props.levels,
                 options = [];
 
+
             if (levelsList.length) {
                 options = levelsList.map((value, index) => <option key={index}>{value.name}</option>);
             }
@@ -228,6 +293,7 @@ class CreateVacancy extends Component {
             let positionsList = this.props.positions,
                 options = [];
 
+
             if (positionsList.length) {
                 options = positionsList.map((value, index) => <option key={index}>{value.name}</option>);
             }
@@ -236,8 +302,9 @@ class CreateVacancy extends Component {
         };
 
         let showProjectFilter = () => {
-            let projectsList = this.props.newProject,
+            let projectsList = this.props.projects,
                 options = [];
+
 
             if (projectsList.length) {
                 options = projectsList.map((value, index) => <option key={index}>{value.title}</option>);
@@ -248,15 +315,16 @@ class CreateVacancy extends Component {
 
         return (
             <div className="bcgr">
+                <Helmet>
+                    <title>Vacancy Edit</title>
+                </Helmet>
                 <div className="row sameheight-container">
                     <div className="col-md-12">
-                        <PageTitle
-                            pageTitle='Create vacancy'
-                            showBackBtn={true}
-                            showButton={false}
-                            titleForButton='Create vacancy'
-                            linkForButton='/create-vacancy'
-                        />
+                        <PageTitle pageTitle="Edit vacancy"
+                                   showBackBtn={true}
+                                   showButton={false}
+                                   titleForButton=""
+                                   linkForButton=""/>
                     </div>
                 </div>
                 <section className="section">
@@ -330,7 +398,7 @@ class CreateVacancy extends Component {
                                         type="submit"
                                         className="btn btn-primary"
                                         disabled={this.state.vacancyDescription.length < 5}
-                                    >Create
+                                    >Save
                                     </button>
                                     <button
                                         id="create-vacancy-resetBtn"
@@ -364,16 +432,22 @@ class CreateVacancy extends Component {
                     </div>
                 </section>
             </div>
+
+
+
         );
     }
 }
 
+
 function mapStateToProps(state) {
     return {
-        newProject: state.project.projects,
+        vacancies: state.vacancies.vacancies,
+        currentVacancy: state.vacancies.currentVacancy,
+        projects: state.project.projects,
         positions: state.positions.positions,
         levels: state.levels.levels
     }
 }
 
-export default connect(mapStateToProps)(CreateVacancy);
+export default connect(mapStateToProps)(VacancyEdit);

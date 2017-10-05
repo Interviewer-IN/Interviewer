@@ -133,9 +133,9 @@ class Filters extends Component {
                 <div className="filter-block">
                     <div className="filter-block__title">Filters:</div>
                     <div className="filter-block__selects">
-                        {showProjectFilter(projectFilter)}
                         {showPositionFilter(positionFilter)}
                         {showLevelFilter(levelFilter)}
+                        {showProjectFilter(projectFilter)}
                     </div>
                     {showDateFilter(dateFilter)}
                 </div>

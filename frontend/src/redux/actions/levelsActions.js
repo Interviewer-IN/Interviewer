@@ -9,7 +9,7 @@ function addLevels(data) {
 }
 
 export function getLevels() {
-    return (dispatch) => {
+    return (dispatch) => new Promise((resolve) => {
         fetch('/api/v1/levels',
             {
                 method: 'GET',
@@ -29,6 +29,7 @@ export function getLevels() {
             })
             .then(data => {
                 dispatch(addLevels(data));
+                resolve(data.data);
             })
             .catch(error => {
                 dispatch(makeNote({
@@ -37,6 +38,6 @@ export function getLevels() {
                     hide: false
                 }))
             })
-    }
+    });
 
 }

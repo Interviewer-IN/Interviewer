@@ -10,7 +10,7 @@ class Candidates extends Component {
 
         console.log(this);
 
-        const panelTitle = (
+        const PANEL_TITLE = (
             <div className="custom-panel-title panel-list-item">
                 <div className="custom-panel-title__right-side">
                     <div className="panel-collapse-btn">
@@ -34,18 +34,18 @@ class Candidates extends Component {
             </div>
         );
 
-        let description = (
-            <form onSubmit={(event) => this.handleSubmitForm(event)}>
+        const DESCRIPTION = (
+            <form>
                 <div className="col-md-6">
                     <div className="form-group">
-                        <label className="control-label form-label">Name</label>
+                        <label className="control-label form-label">Name:</label>
                         <p className="form-control-static">
                             Candidate name
                         </p>
                     </div>
 
                     <div className="form-group">
-                        <label className="control-label form-label">Desired position</label>
+                        <label className="control-label form-label">Desired position:</label>
                         <p className="form-control-static">
                             Frontend
                         </p>
@@ -59,7 +59,7 @@ class Candidates extends Component {
                 </div>
                 <div className="col-md-12">
                     <div className="form-group">
-                        <label className="control-label form-label">Work experience</label>
+                        <label className="control-label form-label">Work experience:</label>
                         <p className="form-control-static">
                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusantium amet aspernatur
                             deserunt distinctio eum illo ipsam magnam minima necessitatibus obcaecati officia quae
@@ -68,7 +68,7 @@ class Candidates extends Component {
                     </div>
 
                     <div className="form-group">
-                        <label className="control-label form-label">Contact info</label>
+                        <label className="control-label form-label">Contact info:</label>
                         <p className="form-control-static">
                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid aperiam corporis culpa,
                             debitis eaque eligendi esse ex facere id illo, ipsa iusto, natus pariatur quidem
@@ -77,7 +77,7 @@ class Candidates extends Component {
                     </div>
 
                     <div className="form-group">
-                        <label className="control-label form-label">Additional notes</label>
+                        <label className="control-label form-label">Additional notes:</label>
                         <p className="form-control-static">
                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam, aperiam asperiores
                             ducimus enim error et fugit in ipsam magni necessitatibus numquam odio optio perspiciatis
@@ -102,8 +102,8 @@ class Candidates extends Component {
                         <Filters level={true} position={true}/>
                         <PanelGroup bsClass='custom-panel-group'>
                             <Panels
-                                titleConst={panelTitle}
-                                description={description}
+                                titleConst={PANEL_TITLE}
+                                description={DESCRIPTION}
                                 showEditBtn={true}
                                 showDeleteBtn={true}
                             />

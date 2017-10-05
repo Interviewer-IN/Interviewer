@@ -1,18 +1,23 @@
 import React, {Component} from 'react';
 import './vacanciesOpen.css';
 import Helmet from "react-helmet";
-import {PanelGroup} from 'react-bootstrap';
+import {PanelGroup, Modal, Button} from 'react-bootstrap';
 import {connect} from "react-redux";
 
 import PageTitle from './../../containers/PageTitle';
 import Filters from './../../components/Filters';
 import Panels from './../../components/Panels';
-import {getVacancies} from "../../redux/actions/vacanciesActions";
+import {getVacancies, deleteVacancy} from "../../redux/actions/vacanciesActions";
 
 class VacanciesOpen extends Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            showModalConfirm: false,
+            currentVacancyId: ''
+        }
 
     }
 
@@ -20,13 +25,34 @@ class VacanciesOpen extends Component {
         const {dispatch} = this.props;
         dispatch(getVacancies());
         this.props.onCheckUserRole();
-        console.log('Will mount', this);
+    }
+
+    openModalConfirm(currentID){
+        this.setState({
+            currentVacancyId: currentID,
+            showModalConfirm: true
+        });
+    }
+
+    closeModalConfirm(){
+        this.setState({
+            showModalConfirm: false
+        })
+    }
+
+    deleteProject() {
+        this.closeModalConfirm();
+        const {dispatch} = this.props;
+        dispatch(deleteVacancy(this.state.currentVacancyId));
+    }
+
+    switchToEditMode(currentID) {
+        this.props.history.push("/vacancies-open/vacancy/" + currentID + "/edit");
     }
 
 
-    render() {
 
-        console.log('Render', this);
+    render() {
 
         let vacanciesList = this.props.vacancies.vacancies,
             projectsList = this.props.projects.projects,
@@ -69,16 +95,25 @@ class VacanciesOpen extends Component {
                             </div>
                             <div className="custom-panel-title__left-side">
                                 <div className="info-block">
-                                    <div className="info-block__item">
-                                        <span className="text-bold">{positionsTitleObj[positionId]}</span>
+                                    <div className="info-block__item text-bold--200">
+                                        <span className="text-bold--600">{positionsTitleObj[positionId]}</span>
                                         <span> </span>
-                                        <span className="text-bold">{levelsTitleObj[levelId]}</span>
+                                        <span className="text-bold--600">{levelsTitleObj[levelId]}</span>
                                         <span> for </span>
-                                        <span className="text-bold">{projectsTitleObj[projectId]}</span>
+                                        <span className="text-bold--600">{projectsTitleObj[projectId]}</span>
                                         <span> project</span>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    );
+
+                    const DESCRIPTION = (
+                        <div className="form-group">
+                            <label className="control-label form-label">Description:</label>
+                            <p className="form-control-static">
+                                {item.description}
+                            </p>
                         </div>
                     );
 
@@ -89,13 +124,16 @@ class VacanciesOpen extends Component {
                             showActionBtn={true}
                             titleForActionBtn='Close vacancy'
                             titleConst={PAGE_TITLE}
+                            description={DESCRIPTION}
                             showEditBtn={true}
                             showDuplicateBtn={true}
                             showDeleteBtn={true}
                             editBtnId={"edit-vacancy-" + vacancyId}
                             dublicateBtnId={"dublicate-vacancy-" + vacancyId}
                             deleteBtnId={"delete-vacancy-" + vacancyId}
-                            description={item.description}
+                            callDelete = {() =>{this.openModalConfirm(vacancyId)}}
+                            callEdit={() => this.switchToEditMode(vacancyId)}
+
                         />
                     )
                 }
@@ -129,6 +167,30 @@ class VacanciesOpen extends Component {
                         <PanelGroup bsClass='custom-panel-group'>
                             {vacanciesToDisplay}
                         </PanelGroup>
+                        <Modal show={this.state.showModalConfirm}
+                               onHide={() => this.closeModalConfirm()}
+                               className="custom-btn-group">
+                            <Modal.Header closeButton>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <p>Are you sure you want to delete the vacancy?</p>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button
+                                    id={"btn-modal-yes-"+this.state.currentVacancyId}
+                                    className="btn btn-primary"
+                                    onClick={() => this.deleteProject()}
+                                >Yes
+                                </Button>
+                                <Button
+                                    id={"btn-modal-no-"+this.state.currentVacancyId}
+                                    className="btn btn-danger"
+                                    onClick={() => this.closeModalConfirm()}
+                                    bsStyle="primary"
+                                >No
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
                     </div>
                 </div>
             </div>

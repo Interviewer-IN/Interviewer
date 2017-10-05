@@ -127,7 +127,7 @@ class CreateCandidate extends Component {
                     pattern: fieldCharRegex
                 },
                 uploadCV: {
-                    required: true
+                    required: false
                 },
                 additionalNotes: {
                     required: true,

@@ -6,19 +6,27 @@ select {
   cursor: pointer;
 }
 
-.custom-mode{
-  &:focus{
+.custom-mode {
+  &:focus {
     border-color: #85CE36;
   }
 }
 
-.text-center{
+.text-center {
   text-align: center !important;
   display: block;
 }
 
-.text-bold{
+.text-bold {
   font-weight: bold;
+
+  &--200{
+    font-weight: 200;
+  }
+
+  &--600{
+    font-weight: 600;
+  }
 }
 
 .custom-error {
@@ -38,7 +46,7 @@ div.has-error {
   min-height: 100%;
 }
 
-.custom-btn-group{
+.custom-btn-group {
 
   .btn {
     margin-right: 10px;
@@ -47,8 +55,6 @@ div.has-error {
     }
   }
 }
-
-
 
 .back-btn {
   cursor: pointer;
@@ -97,7 +103,7 @@ div.has-error {
       width: 100%;
     }
 
-    &:last-of-type{
+    &:last-of-type {
       margin-right: 0;
       margin-bottom: 0;
     }
@@ -136,7 +142,7 @@ div.has-error {
 
     .panel-heading {
 
-      & a{
+      & a {
         overflow: hidden;
         display: block;
         padding: 15px 20px;
@@ -174,17 +180,17 @@ div.has-error {
   }
 }
 
-.panel-collapse-btn{
+.panel-collapse-btn {
   position: relative;
   user-select: none;
 
-  &__title{
+  &__title {
     display: block;
     margin-bottom: 0;
     margin-right: 30px;
   }
 
-  &__arrow{
+  &__arrow {
     position: absolute;
     right: 0;
     top: 50%;
@@ -192,13 +198,11 @@ div.has-error {
     font-size: 24px;
     transition: transform 0.3s;
 
-    &.rotate-plus-90{
+    &.rotate-plus-90 {
       transition: transform 0.3s;
       transform: rotate(90deg);
     }
   }
 }
-
-
 
 //-----------------------------------------

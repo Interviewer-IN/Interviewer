@@ -64,8 +64,7 @@ class Panels extends Component {
                 return (
                     <div className="btn btn-primary"
                          id = {editBtnId}
-                         onClick={()=>this.onEdit()}
-                    >
+                         onClick={()=>this.onEdit()}>
                         Edit
                     </div>
                 )
@@ -76,8 +75,7 @@ class Panels extends Component {
             if (showDuplicateBtn) {
                 return (
                     <div className="btn btn-info"
-                         id = {dublicateBtnId}
-                    >
+                         id = {dublicateBtnId}>
                         Duplicate
                     </div>
                 )

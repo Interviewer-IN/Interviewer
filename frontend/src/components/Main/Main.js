@@ -10,6 +10,7 @@ import CreateCandidate from "./../CreateCandidate";
 import VacanciesOpen from "./../VacanciesOpen";
 import VacanciesClosed from "./../VacanciesClosed";
 import CreateVacancy from "./../CreateVacancy";
+import VacancyEdit from "./../VacancyEdit";
 import CreateProject from "./../CreateProject";
 import ProjectsList from "./../ProjectsList";
 import ProjectDetails from "./../ProjectDetails";
@@ -178,11 +179,37 @@ class Main extends Component {
                                 )}
                             />
                             <Route
+                                exact path="/vacancies-open/vacancy/:id/edit"
+                                name="VacanciesOpen Edit"
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<VacancyEdit {...props}
+                                                        callMakeNote={(status, text, hide) =>
+                                                            this.handleMakeNote(status, text, hide)}
+                                                        onCheckUserRole={() => this.checkUserRole()}
+                                        />) :
+                                        (<Redirect to="/login"/>)
+                                )}
+                            />
+                            <Route
                                 exact path="/vacancies-closed"
                                 name="VacanciesClosed"
                                 render={(props) => (
                                     isLoggedIn() ?
                                         (<VacanciesClosed {...props}
+                                                          callMakeNote={(status, text, hide) =>
+                                                              this.handleMakeNote(status, text, hide)}
+                                                          onCheckUserRole={() => this.checkUserRole()}
+                                        />) :
+                                        (<Redirect to="/login"/>)
+                                )}
+                            />
+                            <Route
+                                exact path="/vacancies-closed/vacancy/:id/edit"
+                                name="VacanciesClosed Edit"
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<VacancyEdit {...props}
                                                           callMakeNote={(status, text, hide) =>
                                                               this.handleMakeNote(status, text, hide)}
                                                           onCheckUserRole={() => this.checkUserRole()}
@@ -315,11 +342,5 @@ function mapStateToProps(state) {
         userData: state.authentication.userData,
     }
 }
-
-// function mapDispatchToProps(dispatch) {
-//     return {
-//         pageActions: bindActionCreators(pageActions, dispatch)
-//     }
-// }
 
 export default connect(mapStateToProps)(Main)
