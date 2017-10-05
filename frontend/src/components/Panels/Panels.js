@@ -33,7 +33,11 @@ class Panels extends Component {
     }
 
     onEdit() {
-        this.props.callEdit()
+        this.props.callEdit();
+    }
+
+    onAction() {
+        this.props.callAction();
     }
 
     render() {
@@ -54,7 +58,12 @@ class Panels extends Component {
         let toShowActionBtn = (showActionBtn, titleBtn) => {
             if (showActionBtn){
               return (
-                  <button type="button" className="btn btn-primary">{titleBtn}</button>
+                  <button type="button"
+                          className="btn btn-primary"
+                          onClick={()=>this.onAction()}
+                  >
+                      {titleBtn}
+                  </button>
               );
             }
         };
@@ -149,7 +158,7 @@ Panels.defaultProps = {
 };
 
 Panels.propTypes = {
-    id: PropTypes.number,
+   // id: PropTypes.number,
     showActionBtn: PropTypes.bool,
     showEditBtn: PropTypes.bool,
     showDuplicateBtn: PropTypes.bool,

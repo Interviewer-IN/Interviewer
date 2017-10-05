@@ -11,6 +11,8 @@ import VacanciesOpen from "./../VacanciesOpen";
 import VacanciesClosed from "./../VacanciesClosed";
 import CreateVacancy from "./../CreateVacancy";
 import CreateProject from "./../CreateProject";
+import CreateInterview from "./../CreateInterview";
+import CreateInterviewFeedback from "./../CreateInterviewFeedback";
 import ProjectsList from "./../ProjectsList";
 import ProjectDetails from "./../ProjectDetails";
 import ProjectEdit from "./../ProjectEdit";
@@ -18,7 +20,7 @@ import Username from "./../Username";
 import Password from "./../Password";
 import {makeNote} from "../../redux/actions/notificationActions";
 import {authorizationCheck} from "../../redux/actions/authenticationActions";
-import {showSideBar} from '../../redux/actions/sideBarActions';
+import {showSideBar} from "../../redux/actions/sideBarActions";
 import {connect} from "react-redux";
 
 
@@ -62,12 +64,18 @@ class Main extends Component {
 
 //--  END CHECKING IS USER LOGGED ----------------
 
-    // -- CHECKING USER'S ROLE ----------------
+// -- CHECKING USER'S ROLE ----------------
 
-    checkUserRole() {
-        let user = this.getCookies();
-        if (user.uid != "user@user.com") {
-            this.props.history.push('/interviews-upcoming');
+    isHR(interview) {
+        let currentUser = this.getCookies();
+        let HR = currentUser.uid === "user@user.com";
+        switch(HR, interview) {
+            case (!HR && !interview):
+                return this.props.history.push('/interviews-upcoming');
+            case (!HR && interview):
+                return false;
+            case (HR && interview):
+                return true;
         }
     }
 
@@ -106,11 +114,41 @@ class Main extends Component {
                                         (<InterviewsUpcoming {...props}
                                                              callMakeNote={(status, text, hide) =>
                                                                  this.handleMakeNote(status, text, hide)}
+                                                             onCheckUserRole={(interview) => this.isHR(interview)}
                                         />) :
                                         (<Redirect to="/login"/>)
 
                                 )}
                             />
+
+                            <Route
+                                exact path="/interviews-upcoming/create-interview"
+                                name="CreateInterviews"
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<CreateInterview {...props}
+                                                          callMakeNote={(status, text, hide) =>
+                                                              this.handleMakeNote(status, text, hide)}
+                                                          onCheckUserRole={(interview) => this.isHR(interview)}
+                                        />) :
+                                        (<Redirect to="/login"/>)
+                                )}
+                            />
+
+                            <Route
+                                exact path="/interviews-upcoming/:id/add-feedback"
+                                name="CreateInterviewFeedback"
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<CreateInterviewFeedback {...props}
+                                                          callMakeNote={(status, text, hide) =>
+                                                              this.handleMakeNote(status, text, hide)}
+                                                          onCheckUserRole={(interview) => this.isHR(interview)}
+                                        />) :
+                                        (<Redirect to="/login"/>)
+                                )}
+                            />
+
                             <Route
                                 exact path="/interviews-completed"
                                 name="InterviewsCompleted"
@@ -119,6 +157,8 @@ class Main extends Component {
                                         (<InterviewsCompleted {...props}
                                                               callMakeNote={(status, text, hide) =>
                                                                   this.handleMakeNote(status, text, hide)}
+                                                              onCheckUserRole={(interview) => this.isHR(interview)}
+
                                         />) :
                                         (<Redirect to="/login"/>)
 
@@ -132,7 +172,7 @@ class Main extends Component {
                                         (<Interviewers {...props}
                                                        callMakeNote={(status, text, hide) =>
                                                            this.handleMakeNote(status, text, hide)}
-                                                       onCheckUserRole={() => this.checkUserRole()}
+                                                       onCheckUserRole={() => this.isHR()}
                                         />) :
                                         (<Redirect to="/login"/>)
 
@@ -146,7 +186,7 @@ class Main extends Component {
                                         (<Candidates {...props}
                                                      callMakeNote={(status, text, hide) =>
                                                          this.handleMakeNote(status, text, hide)}
-                                                     onCheckUserRole={() => this.checkUserRole()}
+                                                     onCheckUserRole={() => this.isHR()}
                                         />) :
                                         (<Redirect to="/login"/>)
 
@@ -172,7 +212,7 @@ class Main extends Component {
                                         (<VacanciesOpen {...props}
                                                         callMakeNote={(status, text, hide) =>
                                                             this.handleMakeNote(status, text, hide)}
-                                                        onCheckUserRole={() => this.checkUserRole()}
+                                                        onCheckUserRole={() => this.isHR()}
                                         />) :
                                         (<Redirect to="/login"/>)
                                 )}
@@ -185,7 +225,7 @@ class Main extends Component {
                                         (<VacanciesClosed {...props}
                                                           callMakeNote={(status, text, hide) =>
                                                               this.handleMakeNote(status, text, hide)}
-                                                          onCheckUserRole={() => this.checkUserRole()}
+                                                          onCheckUserRole={() => this.isHR()}
                                         />) :
                                         (<Redirect to="/login"/>)
                                 )}
@@ -198,7 +238,7 @@ class Main extends Component {
                                         (<CreateVacancy {...props}
                                                         callMakeNote={(status, text, hide) =>
                                                             this.handleMakeNote(status, text, hide)}
-                                                        onCheckUserRole={() => this.checkUserRole()}
+                                                        onCheckUserRole={() => this.isHR()}
                                         />) :
                                         (<Redirect to="/login"/>)
                                 )}
@@ -211,7 +251,7 @@ class Main extends Component {
                                         (<CreateVacancy {...props}
                                                         callMakeNote={(status, text, hide) =>
                                                             this.handleMakeNote(status, text, hide)}
-                                                        onCheckUserRole={() => this.checkUserRole()}
+                                                        onCheckUserRole={() => this.isHR()}
                                         />) :
                                         (<Redirect to="/login"/>)
                                 )}
@@ -224,7 +264,7 @@ class Main extends Component {
                                         (<ProjectsList {...props}
                                                        callMakeNote={(status, text, hide) =>
                                                            this.handleMakeNote(status, text, hide)}
-                                                       onCheckUserRole={() => this.checkUserRole()}
+                                                       onCheckUserRole={() => this.isHR()}
                                         />) :
                                         (<Redirect to="/login"/>)
                                 )}
@@ -237,7 +277,7 @@ class Main extends Component {
                                         (<CreateProject {...props}
                                                         callMakeNote={(status, text, hide) =>
                                                             this.handleMakeNote(status, text, hide)}
-                                                        onCheckUserRole={() => this.checkUserRole()}
+                                                        onCheckUserRole={() => this.isHR()}
                                         />) :
                                         (<Redirect to="/login"/>)
                                 )}
@@ -250,7 +290,7 @@ class Main extends Component {
                                         (<ProjectDetails {...props}
                                                          callMakeNote={(status, text, hide) =>
                                                              this.handleMakeNote(status, text, hide)}
-                                                         onCheckUserRole={() => this.checkUserRole()}
+                                                         onCheckUserRole={() => this.isHR()}
                                         />) :
                                         (<Redirect to="/login"/>)
                                 )}
@@ -266,7 +306,7 @@ class Main extends Component {
                                         (<ProjectEdit {...props}
                                                       callMakeNote={(status, text, hide) =>
                                                           this.handleMakeNote(status, text, hide)}
-                                                      onCheckUserRole={() => this.checkUserRole()}
+                                                      onCheckUserRole={() => this.isHR()}
                                         />) :
                                         (<Redirect to="/login"/>)
                                 )}
@@ -279,7 +319,7 @@ class Main extends Component {
                                         (<Username {...props}
                                                    callMakeNote={(status, text, hide) =>
                                                        this.handleMakeNote(status, text, hide)}
-                                                   onCheckUserRole={() => this.checkUserRole()}
+                                                   onCheckUserRole={() => this.isHR()}
                                         />) :
                                         (<Redirect to="/login"/>)
                                 )}
@@ -292,7 +332,7 @@ class Main extends Component {
                                         (<Password {...props}
                                                    callMakeNote={(status, text, hide) =>
                                                        this.handleMakeNote(status, text, hide)}
-                                                   onCheckUserRole={() => this.checkUserRole()}
+                                                   onCheckUserRole={() => this.isHR()}
                                         />) :
                                         (<Redirect to="/login"/>)
                                 )}
