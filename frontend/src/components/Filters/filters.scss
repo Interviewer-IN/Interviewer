@@ -7,22 +7,31 @@
 }
 
 .filter-block{
-  overflow: hidden;
+  //overflow: hidden;
 
-  &.filter-block--right{
-    float: right;
+  &.filter-block--date{
+   // float: left;
+    margin-top: 10px;
+
   }
 
   &__title{
     float: left;
     margin-right: 30px;
     line-height: 29px;
+
+    @media (max-width: 1110px) {
+      float: none;
+    }
   }
 
   &__selects{
     float: left;
     overflow: hidden;
 
+    @media (max-width: 1110px) {
+      float: none;
+    }
   }
 
   .form-group{
@@ -39,5 +48,22 @@
       border-color: transparent;
     }
   }
-
 }
+
+.filter-select {
+  border-radius: 0;
+  width: 120px !important;
+  height: 2rem !important;
+
+  &:hover {
+    border: 1px solid #85CE36 !important;
+  }
+  &:focus {
+    border: 1px solid #85CE36 !important;
+  }
+}
+
+.filter-date {
+  margin-left: 10px;
+}
+
