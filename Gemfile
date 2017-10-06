@@ -28,6 +28,12 @@ gem 'rails_admin', github: 'sferik/rails_admin'
 gem 'rails_admin_rollincode', '~> 1.0'
 gem "devise"
 
+#File upload via json base64
+
+gem 'carrierwave-base64'
+gem 'carrierwave'
+#gem "carrierwave-mongoid"
+
 #Integrating Backend and frontend
 gem "foreman"
 
