@@ -62,7 +62,7 @@ class Panels extends Component {
         let toShowActionBtn = (showActionBtn, titleBtn) => {
             if (showActionBtn){
               return (
-                  <button type="button" className="btn btn-primary"onClick={() => this.onAction()}>{titleBtn}</button>
+                  <button type="button" className="btn btn-primary" onClick={() => this.onAction()}>{titleBtn}</button>
               );
             }
         };

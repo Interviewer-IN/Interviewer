@@ -161,7 +161,7 @@ class VacanciesClosed extends Component {
                                 this.openModalConfirm(vacancyId)
                             }}
                             callEdit={() => this.switchToEditMode(vacancyId)}
-                            changeStatus={() => this.switchToClose(statusData)}
+                            callAction={() => this.switchToClose(statusData)}
                             callDublicate={() => this.duplicateVacancy(duplicateData)}
                         />
                     )
