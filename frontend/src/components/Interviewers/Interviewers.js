@@ -4,9 +4,9 @@ import "./interviewers.css";
 
 class Interviewers extends Component{
 
-    componentWillMount() {
-        this.props.onCheckUserRole();
-    }
+    // componentWillMount() {
+    //     this.props.onCheckUserRole();
+    // }
 
     render(){
         return (

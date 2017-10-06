@@ -43,9 +43,9 @@ class CreateProject extends Component {
     //      End of the code
     //--------------------------------------
 
-    componentWillMount() {
-        this.props.onCheckUserRole();
-    }
+    // componentWillMount() {
+    //     this.props.onCheckUserRole();
+    // }
 
     handleTitleChange(event) {
         this.setState({projectTitle: event.target.value});
