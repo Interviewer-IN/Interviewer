@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import './filters.css';
-import PropTypes from 'prop-types';
+import React, {Component} from "react";
+import "./filters.css";
+import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {showProjects} from "../../redux/actions/projectActions";
 import {getLevels} from "../../redux/actions/levelsActions";
@@ -21,10 +21,14 @@ class Filters extends Component {
         let projectFilter = this.props.project,
             positionFilter = this.props.position,
             levelFilter = this.props.level,
+            interviewerFilter = this.props.interviewer,
+            ratingFilter = this.props.rating,
             dateFilter = this.props.date,
             projectFilterId = this.props.projectId,
             positionFilterId = this.props.positionId,
             levelFilterId = this.props.levelId,
+            interviewerFilterId = this.props.interviewerId,
+            ratingFilterId = this.props.ratingId,
             dateFromFilterId = this.props.dateFromId,
             dateToFilterId = this.props.dateToId;
 
@@ -36,14 +40,21 @@ class Filters extends Component {
                     options = [];
 
                 if (projectList.length) {
-                    options = projectList.map((item, index) => <option key={index}>{item.title}</option>);
+                    options = projectList.map((item, index) => {
+
+                        let title =  item.title.length < 20 ? item.title : item.title.slice(0, 10) + "...";
+
+                        return (
+                            <option key={index}>{title}</option>
+                        )
+                    });
                 }
 
                 return (
                     <div className="form-group">
-                        <select className="form-control form-control-sm custom-mode"
+                        <select className="form-control form-control-sm filter-select custom-mode"
                                 id={projectFilterId}>
-                            <option>All Projects</option>
+                            <option>Project</option>
                             {options}
                         </select>
                     </div>
@@ -64,9 +75,9 @@ class Filters extends Component {
             if (position) {
                 return (
                     <div className="form-group">
-                        <select className="form-control form-control-sm custom-mode"
+                        <select className="form-control form-control-sm filter-select custom mode"
                                 id={positionFilterId}>
-                            <option>All Positions</option>
+                            <option>Position</option>
                             {options}
                         </select>
                     </div>
@@ -86,9 +97,9 @@ class Filters extends Component {
             if (level) {
                 return (
                     <div className="form-group">
-                        <select className="form-control form-control-sm custom-mode"
+                        <select className="form-control form-control-sm filter-select custom-mode"
                                 id={levelFilterId}>
-                            <option>All Levels</option>
+                            <option>Level</option>
                             {options}
                         </select>
                     </div>
@@ -97,28 +108,65 @@ class Filters extends Component {
 
         };
 
+        let showInterviewersFilter = (interviewer) => {
+            if (interviewer){
+                return (
+                    <div className="form-group">
+                        <select className="form-control form-control-sm filter-select"
+                                id={interviewerFilterId}
+                        >
+                            <option>Interviewer</option>
+                            <option>K. Makiy</option>
+                            <option>A. Larin</option>
+                            <option>T. Grabets</option>
+                        </select>
+                    </div>
+                );
+            }
+
+        };
+
+        let showRatingFilter = (rating) => {
+            if (rating){
+                return (
+                    <div className="form-group">
+                        <select className="form-control form-control-sm filter-select"
+                                id={ratingFilterId}
+                        >
+                            <option>Rating</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                        </select>
+                    </div>
+                );
+            }
+
+        };
+
+
         let showDateFilter = (date) => {
             if (date) {
                 return (
-                    <div className="filter-block filter-block--right">
-                        <div className="filter-block__title">Date:</div>
+                    <div className="filter-block filter-block--date">
+                        <div className="filter-block__title filter-date">Date:</div>
                         <div className="filter-block__selects">
-                            <div className="form-group">
-                                <select className="form-control form-control-sm custom-mode"
+                            <div className="form-group float-left">
+                                <select className="form-control form-control-sm filter-select custom-mode"
                                         id={dateFromFilterId}>
-                                    <option>Option one</option>
-                                    <option>Option two</option>
-                                    <option>Option three</option>
-                                    <option>Option four</option>
+                                    <option>01-10-2017</option>
+                                    <option>02-10-2017</option>
+                                    <option>03-10-2017</option>
+                                    <option>04-10-2017</option>
                                 </select>
                             </div>
-                            <div className="form-group">
-                                <select className="form-control form-control-sm custom-mode"
+                            <div className="form-group float-left">
+                                <select className="form-control form-control-sm filter-select custom-mode"
                                         id={dateToFilterId}>
-                                    <option>Option one</option>
-                                    <option>Option two</option>
-                                    <option>Option three</option>
-                                    <option>Option four</option>
+                                    <option>01-10-2017</option>
+                                    <option>02-10-2017</option>
+                                    <option>03-10-2017</option>
+                                    <option>04-10-2017</option>
                                 </select>
                             </div>
                         </div>
@@ -131,11 +179,15 @@ class Filters extends Component {
         return (
             <div className="filters-section">
                 <div className="filter-block">
-                    <div className="filter-block__title">Filters:</div>
-                    <div className="filter-block__selects">
-                        {showPositionFilter(positionFilter)}
-                        {showLevelFilter(levelFilter)}
-                        {showProjectFilter(projectFilter)}
+                    <div className="clearfix">
+                        <div className="filter-block__title">Filters:</div>
+                        <div className="filter-block__selects">
+                            {showProjectFilter(projectFilter)}
+                            {showPositionFilter(positionFilter)}
+                            {showLevelFilter(levelFilter)}
+                            {showInterviewersFilter(interviewerFilter)}
+                            {showRatingFilter(ratingFilter)}
+                        </div>
                     </div>
                     {showDateFilter(dateFilter)}
                 </div>
@@ -149,12 +201,16 @@ Filters.propTypes = {
     project: PropTypes.bool,
     position: PropTypes.bool,
     level: PropTypes.bool,
+    interviewer: PropTypes.bool,
+    rating: PropTypes.bool,
     date: PropTypes.bool,
     projectFilterId: PropTypes.string,
     positionFilterId: PropTypes.string,
     levelFilterId: PropTypes.string,
+    interviewerFilterId:PropTypes.string,
+    ratingFilterId:PropTypes.string,
     dateFromFilterId: PropTypes.string,
-    dateToFilterId: PropTypes.string,
+    dateToFilterId: PropTypes.string
 
 };
 
