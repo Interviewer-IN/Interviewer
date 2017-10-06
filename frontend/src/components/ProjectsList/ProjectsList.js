@@ -22,7 +22,7 @@ class ProjectsList extends Component {
     componentWillMount() {
         const {dispatch} = this.props;
         dispatch(showProjects());
-      //  this.props.onCheckUserRole(false);
+        this.props.onCheckUserRole();
     }
 
     switchToEditMode(currentID) {

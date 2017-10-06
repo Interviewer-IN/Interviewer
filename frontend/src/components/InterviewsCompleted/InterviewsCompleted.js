@@ -17,17 +17,17 @@ class InterviewsCompleted extends Component {
         this.state = {
             showModalConfirm: false,
             currentProjectID: "",
-            isHR: true
+            isHR: false
         }
     }
 
     componentWillMount() {
         const {dispatch} = this.props;
         dispatch(showProjects());
-        // let isUserHR = this.props.onCheckUserRole(true);
-        // if (isUserHR) {
-        //     this.setState({isHR: true})
-        // }
+        let isUserHR = this.props.onCheckUserRole(true);
+        if (isUserHR) {
+            this.setState({isHR: true})
+        }
     }
 
     switchToEditMode(currentID) {

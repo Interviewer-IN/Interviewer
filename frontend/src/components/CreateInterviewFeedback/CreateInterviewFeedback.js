@@ -27,7 +27,7 @@ class CreateInterviewFeedback extends Component {
     }
 
     componentWillMount() {
-        //this.props.onCheckUserRole(true);
+        this.props.onCheckUserRole(true);
         let isUserHR = this.props.onCheckUserRole(true);
         if (isUserHR) {
             this.props.history.push('/interviews-upcoming');

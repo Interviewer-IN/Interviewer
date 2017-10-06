@@ -25,10 +25,10 @@ class CreateInterview extends Component {
             showModaLCreateAlert: false,
         };
     }
-    //
-    // componentWillMount() {
-    //     this.props.onCheckUserRole(true);
-    // }
+
+    componentWillMount() {
+        this.props.onCheckUserRole(true);
+    }
 
 
     handleDateChange(event) {

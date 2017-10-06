@@ -24,10 +24,10 @@ class InterviewsUpcoming extends Component {
     componentWillMount() {
         const {dispatch} = this.props;
         dispatch(showProjects());
-        // let isUserHR = this.props.onCheckUserRole(true);
-        // if (isUserHR) {
-        //     this.setState({isHR: true})
-        // }
+        let isUserHR = this.props.onCheckUserRole(true);
+        if (isUserHR) {
+            this.setState({isHR: true})
+        }
     }
 
     switchToEditMode(currentID) {

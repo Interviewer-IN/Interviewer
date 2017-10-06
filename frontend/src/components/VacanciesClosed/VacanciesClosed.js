@@ -26,7 +26,7 @@ class VacanciesClosed extends Component {
     componentWillMount() {
         const {dispatch} = this.props;
         dispatch(getVacancies());
-       // this.props.onCheckUserRole();
+        this.props.onCheckUserRole();
     }
 
     openModalConfirm(currentID) {

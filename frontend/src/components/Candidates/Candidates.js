@@ -7,6 +7,11 @@ import Panels from '../../components/Panels';
 import Helmet from 'react-helmet';
 
 class Candidates extends Component {
+
+    componentWillMount() {
+        this.props.onCheckUserRole();
+    }
+
     render() {
 
         console.log(this);
