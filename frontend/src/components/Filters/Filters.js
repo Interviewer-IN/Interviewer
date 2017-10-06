@@ -160,7 +160,6 @@ Filters.propTypes = {
 
 
 function mapStateToProps(state) {
-    console.log(state);
     return {
         newProject: state.project,
         levels: state.levels,

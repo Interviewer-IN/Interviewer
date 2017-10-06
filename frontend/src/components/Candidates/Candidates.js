@@ -4,6 +4,7 @@ import PageTitle from '../../containers/PageTitle';
 import Filters from '../../components/Filters';
 import {PanelGroup} from 'react-bootstrap';
 import Panels from '../../components/Panels';
+import Helmet from 'react-helmet';
 
 class Candidates extends Component {
     render() {
@@ -91,6 +92,9 @@ class Candidates extends Component {
 
         return (
             <div className="bcgr">
+                <Helmet>
+                    <title>Candidates</title>
+                </Helmet>
                 <div className="row sameheight-container">
                     <div className="col-md-12">
                         <PageTitle pageTitle="Candidates"

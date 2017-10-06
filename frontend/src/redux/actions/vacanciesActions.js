@@ -30,7 +30,6 @@ export function getVacancies() {
                 }
             })
             .then(data => {
-                console.log('DATA: ', data);
                 dispatch(addVacancies(data));
             })
             .catch((error) => {
@@ -65,7 +64,6 @@ export function getVacancy(vacancyId) {
                 }
             })
             .then(data => {
-                console.log('DATA: ', data);
                 dispatch(addVacancy(data));
                 resolve(data.data);
             })
@@ -89,7 +87,8 @@ function addNewVacancy(data) {
 }
 
 
-export function createVacancy(data, backPath) {
+export function createVacancy(data, message, backPath) {
+    let successMessage = message || 'Vacancy was created';
     return (dispatch) => {
         fetch('/api/v1/vacancies',
             {
@@ -114,11 +113,13 @@ export function createVacancy(data, backPath) {
                 dispatch(makeNote(
                     {
                         status: "success",
-                        text: "Vacancy was created successfully!",
+                        text: successMessage,
                         hide: true
                     }
                 ));
-                window.location.replace(backPath);
+                if (backPath !== undefined){
+                    window.location.replace(backPath);
+                }
 
             })
             .catch((error) => {
@@ -131,7 +132,8 @@ export function createVacancy(data, backPath) {
     }
 }
 
-export function updateVacancy(data, backPath) {
+export function updateVacancy(data, message, backPath) {
+    let successMessage = message || 'vacancy was updated';
     return (dispatch) => {
         fetch('/api/v1/vacancies/' + data.id,
             {
@@ -155,12 +157,14 @@ export function updateVacancy(data, backPath) {
                 dispatch(makeNote(
                     {
                         status: "success",
-                        text: "Vacancy was updated successfully!",
+                        text: successMessage,
                         hide: true
                     }
                 ));
 
-                window.location.replace(backPath);
+                if (backPath !== undefined){
+                    window.location.replace(backPath);
+                }
             })
             .catch((error) => {
                 dispatch(makeNote({
@@ -195,7 +199,7 @@ export function deleteVacancy(id) {
                 dispatch(makeNote(
                     {
                         status: "success",
-                        text: "Vacancy was deleted successfully!",
+                        text: "Vacancy was deleted",
                         hide: true
                     }
                 ));

@@ -213,7 +213,7 @@ class VacancyEdit extends Component {
             let backPath = '#/' + pathName.split('/')[1];
 
 
-            dispatch(updateVacancy(formData, backPath));
+            dispatch(updateVacancy(formData, null, backPath));
 
         }
         //--  END PREPARE FORM DATA FOR SENDING TO SERVER  -----------
@@ -316,7 +316,7 @@ class VacancyEdit extends Component {
         return (
             <div className="bcgr">
                 <Helmet>
-                    <title>Vacancy Edit</title>
+                    <title>Edit vacancy</title>
                 </Helmet>
                 <div className="row sameheight-container">
                     <div className="col-md-12">

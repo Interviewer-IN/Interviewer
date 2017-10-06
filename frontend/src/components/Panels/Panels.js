@@ -33,7 +33,16 @@ class Panels extends Component {
     }
 
     onEdit() {
-        this.props.callEdit()
+        this.props.callEdit();
+    }
+
+    onAction() {
+
+        this.props.changeStatus();
+    }
+
+    onDouble() {
+        this.props.callDublicate();
     }
 
     render() {
@@ -54,7 +63,10 @@ class Panels extends Component {
         let toShowActionBtn = (showActionBtn, titleBtn) => {
             if (showActionBtn){
               return (
-                  <button type="button" className="btn btn-primary">{titleBtn}</button>
+                  <button type="button"
+                          className="btn btn-primary"
+                          onClick={() => this.onAction()}>{titleBtn}
+                          </button>
               );
             }
         };
@@ -75,7 +87,9 @@ class Panels extends Component {
             if (showDuplicateBtn) {
                 return (
                     <div className="btn btn-info"
-                         id = {dublicateBtnId}>
+                         id = {dublicateBtnId}
+                        onClick={() => this.onDouble()}
+                    >
                         Duplicate
                     </div>
                 )

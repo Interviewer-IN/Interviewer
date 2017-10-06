@@ -6,6 +6,7 @@ import {Modal, Button} from "react-bootstrap";
 import {createBrowserHistory} from 'history';
 import {connect} from "react-redux";
 import {fieldCharRegex} from "../../config"
+import Helmet from 'react-helmet'
 import {showProjects} from "../../redux/actions/projectActions";
 import {getLevels} from "../../redux/actions/levelsActions";
 import {getPositions} from "../../redux/actions/positionActions";
@@ -150,7 +151,7 @@ class CreateVacancy extends Component {
 
             let backPath = '#/' + pathName.split('/')[1];
 
-            dispatch(createVacancy(formData, backPath));
+            dispatch(createVacancy(formData, null, backPath));
         }
         //--  END PREPARE FORM DATA FOR SENDING TO SERVER  -----------
 
@@ -248,6 +249,9 @@ class CreateVacancy extends Component {
 
         return (
             <div className="bcgr">
+                <Helmet>
+                    <title>Create vacancy</title>
+                </Helmet>
                 <div className="row sameheight-container">
                     <div className="col-md-12">
                         <PageTitle

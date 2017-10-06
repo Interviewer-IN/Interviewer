@@ -7,7 +7,7 @@ import {connect} from "react-redux";
 import PageTitle from './../../containers/PageTitle';
 import Filters from './../../components/Filters';
 import Panels from './../../components/Panels';
-import {getVacancies, deleteVacancy} from "../../redux/actions/vacanciesActions";
+import {getVacancies, deleteVacancy, updateVacancy, createVacancy} from "../../redux/actions/vacanciesActions";
 
 class VacanciesOpen extends Component {
 
@@ -16,7 +16,9 @@ class VacanciesOpen extends Component {
 
         this.state = {
             showModalConfirm: false,
-            currentVacancyId: ''
+            currentVacancyId: '',
+            actionBtnMessage: 'Vacancy was closed',
+            duplicateMessage: 'Duplicate was added'
         }
 
     }
@@ -27,14 +29,14 @@ class VacanciesOpen extends Component {
         this.props.onCheckUserRole();
     }
 
-    openModalConfirm(currentID){
+    openModalConfirm(currentID) {
         this.setState({
             currentVacancyId: currentID,
             showModalConfirm: true
         });
     }
 
-    closeModalConfirm(){
+    closeModalConfirm() {
         this.setState({
             showModalConfirm: false
         })
@@ -50,14 +52,25 @@ class VacanciesOpen extends Component {
         this.props.history.push("/vacancies-open/vacancy/" + currentID + "/edit");
     }
 
+    switchToClose(statusData) {
+        let successCloseMessage = this.state.actionBtnMessage;
+        const {dispatch} = this.props;
+        dispatch(updateVacancy(statusData, successCloseMessage))
+    }
+
+    duplicateVacancy(duplicateData){
+        let successDuplicateMessage = this.state.duplicateMessage;
+        const {dispatch} = this.props;
+        dispatch(createVacancy(duplicateData, successDuplicateMessage))
+    }
 
 
     render() {
 
-        let vacanciesList = this.props.vacancies.vacancies,
-            projectsList = this.props.projects.projects,
-            levelsList = this.props.levels.levels,
-            positionsList = this.props.positions.positions,
+        let vacanciesList = this.props.vacancies,
+            projectsList = this.props.projects,
+            levelsList = this.props.levels,
+            positionsList = this.props.positions,
             levelsTitleObj = {},
             positionsTitleObj = {},
             projectsTitleObj = {},
@@ -80,10 +93,25 @@ class VacanciesOpen extends Component {
             });
 
             vacanciesToDisplay = vacanciesList.map((item) => {
+
+                let vacancyStatus = item.status;
+                if (vacancyStatus) {
                     let vacancyId = item.id,
                         projectId = item.project_id,
                         levelId = item.level_id,
-                        positionId = item.position_id;
+                        positionId = item.position_id,
+                        statusData = {
+                            id: vacancyId,
+                            status: false
+                        },
+                        duplicateData = {
+                            description: item.description,
+                            level_id: levelId,
+                            position_id: positionId,
+                            project_id: projectId,
+                            status: true
+                        };
+
 
                     const PAGE_TITLE = (
                         <div className="custom-panel-title panel-list-item">
@@ -131,22 +159,24 @@ class VacanciesOpen extends Component {
                             editBtnId={"edit-vacancy-" + vacancyId}
                             dublicateBtnId={"dublicate-vacancy-" + vacancyId}
                             deleteBtnId={"delete-vacancy-" + vacancyId}
-                            callDelete = {() =>{this.openModalConfirm(vacancyId)}}
+                            callDelete={() => {
+                                this.openModalConfirm(vacancyId)
+                            }}
                             callEdit={() => this.switchToEditMode(vacancyId)}
+                            changeStatus = {() => this.switchToClose(statusData)}
+                            callDublicate={() => this.duplicateVacancy(duplicateData)}
 
                         />
                     )
                 }
-            )
-        } else {
-            vacanciesToDisplay = 'No vacancies';
+            })
         }
 
 
         return (
             <div className="bcgr">
                 <Helmet>
-                    <title>Vacancy</title>
+                    <title>Open vacancies</title>
                 </Helmet>
                 <div className="row sameheight-container">
                     <div className="col-md-12">
@@ -177,13 +207,13 @@ class VacanciesOpen extends Component {
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button
-                                    id={"btn-modal-yes-"+this.state.currentVacancyId}
+                                    id={"btn-modal-yes-" + this.state.currentVacancyId}
                                     className="btn btn-primary"
                                     onClick={() => this.deleteProject()}
                                 >Yes
                                 </Button>
                                 <Button
-                                    id={"btn-modal-no-"+this.state.currentVacancyId}
+                                    id={"btn-modal-no-" + this.state.currentVacancyId}
                                     className="btn btn-danger"
                                     onClick={() => this.closeModalConfirm()}
                                     bsStyle="primary"
@@ -200,10 +230,10 @@ class VacanciesOpen extends Component {
 
 function mapStateToProps(state) {
     return {
-        vacancies: state.vacancies,
-        projects: state.project,
-        levels: state.levels,
-        positions: state.positions
+        vacancies: state.vacancies.vacancies,
+        projects: state.project.projects,
+        levels: state.levels.levels,
+        positions: state.positions.positions
     }
 }
 
