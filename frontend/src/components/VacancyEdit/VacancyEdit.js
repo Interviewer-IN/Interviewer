@@ -36,7 +36,7 @@ class VacancyEdit extends Component {
 
     componentWillMount() {
 
-        // this.props.onCheckUserRole();
+        this.props.onCheckUserRole();
         const {dispatch} = this.props;
 
 
