@@ -16,6 +16,21 @@ class Filters extends Component {
     }
 
 
+    getPositionFilterVal(event){
+        let positionFilterVal = event.target.value;
+        this.props.positionFilterVal(positionFilterVal);
+    }
+
+    getLevelFilterVal(event){
+        let levelFilterVal = event.target.value;
+        this.props.levelFilterVal(levelFilterVal);
+    }
+
+    getProjectFilterVal(event){
+        let projectFilterVal = event.target.value;
+        this.props.projectFilterVal(projectFilterVal);
+    }
+
     render() {
 
         let projectFilter = this.props.project,
@@ -53,7 +68,9 @@ class Filters extends Component {
                 return (
                     <div className="form-group">
                         <select className="form-control form-control-sm filter-select custom-mode"
-                                id={projectFilterId}>
+                                id={projectFilterId}
+                                onChange = {(event) => this.getProjectFilterVal(event)}
+                        >
                             <option>Project</option>
                             {options}
                         </select>
@@ -76,7 +93,9 @@ class Filters extends Component {
                 return (
                     <div className="form-group">
                         <select className="form-control form-control-sm filter-select custom mode"
-                                id={positionFilterId}>
+                                id={positionFilterId}
+                                onChange = {(event) => this.getPositionFilterVal(event)}
+                        >
                             <option>Position</option>
                             {options}
                         </select>
@@ -98,7 +117,9 @@ class Filters extends Component {
                 return (
                     <div className="form-group">
                         <select className="form-control form-control-sm filter-select custom-mode"
-                                id={levelFilterId}>
+                                id={levelFilterId}
+                                onChange = {(event) => this.getLevelFilterVal(event)}
+                        >
                             <option>Level</option>
                             {options}
                         </select>

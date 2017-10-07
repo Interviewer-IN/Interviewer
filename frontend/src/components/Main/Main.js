@@ -226,7 +226,7 @@ class Main extends Component {
                                         (<VacancyEdit {...props}
                                                         callMakeNote={(status, text, hide) =>
                                                             this.handleMakeNote(status, text, hide)}
-                                                        onCheckUserRole={() => this.checkUserRole()}
+                                                        onCheckUserRole={() => this.isHR()}
                                         />) :
                                         (<Redirect to="/login"/>)
                                 )}
