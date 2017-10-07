@@ -14,8 +14,8 @@
 end
 
 Admin.new({:email => "admin@admin.com", :password => "123456", :password_confirmation => "123456" }).save(:validate => false) unless Admin.where(email: "admin@admin.com").exists?
-User.new({:email => "user@user.com", :password => "123456", :password_confirmation => "123456" }).save(:validate => false) unless User.where(email: "user@user.com").exists?
-User.new({:email => "user1@user.com", :password => "123456", :password_confirmation => "123456" }).save(:validate => false) unless User.where(email: "user1@user.com").exists?
+User.new({:email => "user@user.com", :password => "123456", :password_confirmation => "123456" , :provider => "email", :uid => "user@user.com", :confirmed_at => "22.07.2016" ,:level_id =>3, :position_id => 3}).save(:validate => true) unless User.where(email: "user@user.com").exists?
+User.new({:email => "user1@user.com", :password => "123456", :password_confirmation => "123456", :provider => "email", :uid => "user@user.com", :confirmed_at => "22.07.2016 " ,:level_id =>3, :position_id => 3 }).save(:validate => true) unless User.where(email: "user1@user.com").exists?
 
 Level.new({:name => "Trainee"}).save(:validate => false)  unless Level.where(name: "Trainee").exists?
 Level.new({:name => "Junior"}).save(:validate => false)  unless Level.where(name: "Junior").exists?
