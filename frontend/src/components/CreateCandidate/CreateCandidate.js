@@ -21,6 +21,11 @@ class CreateCandidate extends Component {
     }
 
 
+    componentWillMount() {
+        this.props.onCheckUserRole();
+    }
+
+
     isFieldsNotEmpty() {
         if (this.state.nameVal || this.state.positionVal || this.state.experienceVal || this.state.contactVal || this.state.notesVal || this.state.cvUploadVal){
             this.openModalConfirm();

@@ -84,6 +84,10 @@ class InterviewsUpcoming extends Component {
                 <PageTitle
                     pageTitle='Upcoming Interviews'
                     showBackBtn={false}
+                    showButton={false}
+                    buttonId=""
+                    titleForButton=''
+                    linkForButton=''
                 />
             )
         }
