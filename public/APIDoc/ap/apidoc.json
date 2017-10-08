@@ -1,7 +1,7 @@
 {
   "name": "interviewer",
   "version": "0.1.0",
-  "description": "apiDoc basic for interviewer",
-  "title": "Custom apiDoc browser title",
+  "description": "apiDoc for interviewer",
+  "title": "Interviewer apiDoc",
   "url" : "https://dev-interviewer.herokuapp.com/"
 }

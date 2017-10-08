@@ -37,7 +37,7 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "id",
             "description": "<p>Unique id of the Candidate.</p>"
@@ -47,7 +47,21 @@
             "type": "String",
             "optional": false,
             "field": "age",
-            "description": "<p>Age of the Positions.</p>"
+            "description": "<p>Age of the Candidate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "contacts",
+            "description": "<p>Candidate`s contacts.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "experience",
+            "description": "<p>Candidate`s experience.</p>"
           },
           {
             "group": "Success 200",
@@ -65,21 +79,21 @@
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "level_id",
             "description": "<p>Level of Candidate.</p>"
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "position_id",
             "description": "<p>Position of Candidate.</p>"
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "base64",
             "optional": false,
             "field": "cv",
             "description": "<p>CV of Candidate.</p>"
@@ -106,8 +120,8 @@
           {
             "group": "Error 4xx",
             "optional": false,
-            "field": "PositionNotFound",
-            "description": "<p>Returned if the project does not exist.</p>"
+            "field": "CandidateNotFound",
+            "description": "<p>Returned if the candidate does not exist.</p>"
           }
         ]
       }
@@ -162,7 +176,7 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "id",
             "description": "<p>Unique id of the Candidate.</p>"
@@ -172,7 +186,21 @@
             "type": "String",
             "optional": false,
             "field": "age",
-            "description": "<p>Age of the Positions.</p>"
+            "description": "<p>Age of the Candidate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "experience",
+            "description": "<p>Candidate`s experience.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "contacts",
+            "description": "<p>Candidate`s contacts.</p>"
           },
           {
             "group": "Success 200",
@@ -190,21 +218,21 @@
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "level_id",
             "description": "<p>Level of Candidate.</p>"
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "position_id",
             "description": "<p>Position of Candidate.</p>"
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "base64",
             "optional": false,
             "field": "cv",
             "description": "<p>CV of Candidate.</p>"
@@ -275,36 +303,36 @@
             "group": "Parameter",
             "type": "int",
             "optional": false,
-            "field": "level",
-            "description": "<p>Candidate`s level.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": false,
-            "field": "position",
+            "field": "position_id",
             "description": "<p>Candidate`s position.</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
-            "optional": false,
+            "optional": true,
             "field": "age",
             "description": "<p>Candidate`s age.</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
-            "optional": false,
+            "optional": true,
             "field": "experience",
             "description": "<p>Candidate`s experience.</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
-            "optional": false,
+            "optional": true,
             "field": "contacts",
             "description": "<p>Candidate`s contacts.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "base64",
+            "optional": true,
+            "field": "CV",
+            "description": "<p>Candidate`s CV.</p>"
           }
         ]
       },
@@ -321,7 +349,7 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "id",
             "description": "<p>Unique id of the Candidate.</p>"
@@ -331,7 +359,21 @@
             "type": "String",
             "optional": false,
             "field": "age",
-            "description": "<p>Age of the Positions.</p>"
+            "description": "<p>Age of the Candidate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "experience",
+            "description": "<p>Candidate`s experience.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "contacts",
+            "description": "<p>Candidate`s contacts.</p>"
           },
           {
             "group": "Success 200",
@@ -349,21 +391,21 @@
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "level_id",
             "description": "<p>Level of Candidate.</p>"
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "position_id",
             "description": "<p>Position of Candidate.</p>"
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "base64",
             "optional": false,
             "field": "cv",
             "description": "<p>CV of Candidate.</p>"
@@ -440,36 +482,43 @@
             "group": "Parameter",
             "type": "int",
             "optional": false,
-            "field": "level",
+            "field": "level_id",
             "description": "<p>Candidate`s level.</p>"
           },
           {
             "group": "Parameter",
             "type": "int",
             "optional": false,
-            "field": "position",
+            "field": "position_id",
             "description": "<p>Candidate`s position.</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
-            "optional": false,
+            "optional": true,
             "field": "age",
             "description": "<p>Candidate`s age.</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
-            "optional": false,
+            "optional": true,
             "field": "experience",
             "description": "<p>Candidate`s experience.</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
-            "optional": false,
+            "optional": true,
             "field": "contacts",
             "description": "<p>Candidate`s contacts.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "base64",
+            "optional": true,
+            "field": "CV",
+            "description": "<p>Candidate`s CV.</p>"
           }
         ]
       },
@@ -486,7 +535,7 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "id",
             "description": "<p>Unique id of the Candidate.</p>"
@@ -496,7 +545,21 @@
             "type": "String",
             "optional": false,
             "field": "age",
-            "description": "<p>Age of the Positions.</p>"
+            "description": "<p>Age of the Candidate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "experience",
+            "description": "<p>Candidate`s experience.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "contacts",
+            "description": "<p>Candidate`s contacts.</p>"
           },
           {
             "group": "Success 200",
@@ -514,21 +577,21 @@
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "level_id",
             "description": "<p>Level of Candidate.</p>"
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "position_id",
             "description": "<p>Position of Candidate.</p>"
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "base64",
             "optional": false,
             "field": "cv",
             "description": "<p>CV of Candidate.</p>"
@@ -606,36 +669,43 @@
             "group": "Parameter",
             "type": "int",
             "optional": false,
-            "field": "level",
+            "field": "level_id",
             "description": "<p>Candidate`s level.</p>"
           },
           {
             "group": "Parameter",
             "type": "int",
             "optional": false,
-            "field": "position",
+            "field": "position_id",
             "description": "<p>Candidate`s position.</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
-            "optional": false,
+            "optional": true,
             "field": "age",
             "description": "<p>Candidate`s age.</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
-            "optional": false,
+            "optional": true,
             "field": "experience",
             "description": "<p>Candidate`s experience.</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
-            "optional": false,
+            "optional": true,
             "field": "contacts",
             "description": "<p>Candidate`s contacts.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "base64",
+            "optional": true,
+            "field": "CV",
+            "description": "<p>Candidate`s CV.</p>"
           }
         ]
       },
@@ -652,7 +722,7 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "id",
             "description": "<p>Unique id of the Candidate.</p>"
@@ -662,7 +732,21 @@
             "type": "String",
             "optional": false,
             "field": "age",
-            "description": "<p>Age of the Positions.</p>"
+            "description": "<p>Age of the Candidate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "experience",
+            "description": "<p>Candidate`s experience.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "contacts",
+            "description": "<p>Candidate`s contacts.</p>"
           },
           {
             "group": "Success 200",
@@ -680,31 +764,24 @@
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "level_id",
             "description": "<p>Level of Candidate.</p>"
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "position_id",
             "description": "<p>Position of Candidate.</p>"
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "base64",
             "optional": false,
             "field": "cv",
             "description": "<p>CV of Candidate.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "name",
-            "description": "<p>Name of the positions.</p>"
           }
         ]
       },
@@ -737,34 +814,6 @@
     "version": "0.0.0",
     "filename": "./j.java",
     "groupTitle": "Candidates"
-  },
-  {
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "optional": false,
-            "field": "varname1",
-            "description": "<p>No type.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "varname2",
-            "description": "<p>With type.</p>"
-          }
-        ]
-      }
-    },
-    "type": "",
-    "url": "",
-    "version": "0.0.0",
-    "filename": "./doc/main.js",
-    "group": "D__Interviewer_public_APIDoc_ap_doc_main_js",
-    "groupTitle": "D__Interviewer_public_APIDoc_ap_doc_main_js",
-    "name": ""
   },
   {
     "type": "delete",
@@ -804,7 +853,7 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "id",
             "description": "<p>The Level-ID.</p>"
@@ -853,7 +902,7 @@
             "group": "Error 4xx",
             "optional": false,
             "field": "LevelNotFound",
-            "description": "<p>Returned if the project does not exist.</p>"
+            "description": "<p>Returned if the level does not exist.</p>"
           }
         ]
       }
@@ -908,7 +957,7 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "id",
             "description": "<p>Unique id of the level.</p>"
@@ -943,7 +992,7 @@
           {
             "group": "Error 4xx",
             "optional": false,
-            "field": "ProjectNotFound",
+            "field": "levelNotFound",
             "description": "<p>The <code>id</code> of the level was not found.</p>"
           },
           {
@@ -999,9 +1048,9 @@
           {
             "group": "Parameter",
             "type": "String",
-            "optional": true,
+            "optional": false,
             "field": "name",
-            "description": "<p>Optional name of the level.</p>"
+            "description": "<p>Name of the level.</p>"
           }
         ]
       },
@@ -1018,7 +1067,7 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "id",
             "description": "<p>ID of the level.</p>"
@@ -1116,9 +1165,9 @@
           {
             "group": "Parameter",
             "type": "String",
-            "optional": true,
+            "optional": false,
             "field": "name",
-            "description": "<p>Optional name of the level.</p>"
+            "description": "<p>Name of the level.</p>"
           }
         ]
       },
@@ -1135,7 +1184,7 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "id",
             "description": "<p>ID of the level.</p>"
@@ -1184,7 +1233,7 @@
             "group": "Error 4xx",
             "optional": false,
             "field": "LeveltNotFound",
-            "description": "<p>Returned if the project does not exist.</p>"
+            "description": "<p>Returned if the level does not exist.</p>"
           }
         ]
       }
@@ -1251,7 +1300,7 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "id",
             "description": "<p>The new level-ID.</p>"
@@ -1347,17 +1396,17 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "id",
-            "description": "<p>The Level-ID.</p>"
+            "description": "<p>The positions-ID.</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "name",
-            "description": "<p>Name of the Level.</p>"
+            "description": "<p>Name of the positions.</p>"
           },
           {
             "group": "Success 200",
@@ -1396,7 +1445,7 @@
             "group": "Error 4xx",
             "optional": false,
             "field": "PositionNotFound",
-            "description": "<p>Returned if the Positions does not exist.</p>"
+            "description": "<p>Returned if the positions does not exist.</p>"
           }
         ]
       }
@@ -1451,7 +1500,7 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "id",
             "description": "<p>Unique id of the Positions.</p>"
@@ -1486,8 +1535,8 @@
           {
             "group": "Error 4xx",
             "optional": false,
-            "field": "ProjectNotFound",
-            "description": "<p>The <code>id</code> of the Positions was not found.</p>"
+            "field": "PositionsNotFound",
+            "description": "<p>The <code>id</code> of the Project was not found.</p>"
           },
           {
             "group": "Error 4xx",
@@ -1505,7 +1554,7 @@
   {
     "type": "pach",
     "url": "api/v1/positions/:id",
-    "title": "Edit Level",
+    "title": "Edit positions",
     "name": "PatchPositions",
     "group": "Positions",
     "description": "<p>Replace parts of existing Positions.</p>",
@@ -1542,9 +1591,9 @@
           {
             "group": "Parameter",
             "type": "String",
-            "optional": true,
+            "optional": false,
             "field": "name",
-            "description": "<p>Optional name of the positions.</p>"
+            "description": "<p>Name of the positions.</p>"
           }
         ]
       },
@@ -1561,7 +1610,7 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "id",
             "description": "<p>ID of the positions.</p>"
@@ -1610,7 +1659,7 @@
             "group": "Error 4xx",
             "optional": false,
             "field": "PositionstNotFound",
-            "description": "<p>Returned if the Positions does not exist.</p>"
+            "description": "<p>Returned if the project does not exist.</p>"
           }
         ]
       }
@@ -1658,9 +1707,9 @@
           {
             "group": "Parameter",
             "type": "String",
-            "optional": true,
+            "optional": false,
             "field": "name",
-            "description": "<p>Mandatory name of the position.</p>"
+            "description": "<p>Name of the position.</p>"
           }
         ]
       },
@@ -1677,7 +1726,7 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "id",
             "description": "<p>The new position-ID.</p>"
@@ -1720,7 +1769,7 @@
             "group": "Error 4xx",
             "optional": false,
             "field": "PositionNotFound",
-            "description": "<p>The <code>id</code> of the Positions was not found.</p>"
+            "description": "<p>The <code>id</code> of the Project was not found.</p>"
           },
           {
             "group": "Error 4xx",
@@ -1738,7 +1787,7 @@
   {
     "type": "put",
     "url": "api/v1/positions/:id",
-    "title": "Update level",
+    "title": "Update positions",
     "name": "PutPositions",
     "group": "Positions",
     "description": "<p>Replace parts of existing positions.</p>",
@@ -1794,7 +1843,7 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "id",
             "description": "<p>ID of the positions.</p>"
@@ -1843,7 +1892,7 @@
             "group": "Error 4xx",
             "optional": false,
             "field": "PositionstNotFound",
-            "description": "<p>Returned if the Positions does not exist.</p>"
+            "description": "<p>Returned if the positions does not exist.</p>"
           }
         ]
       }
@@ -2488,7 +2537,7 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "id",
             "description": "<p>ID of the user.</p>"
@@ -2537,24 +2586,31 @@
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "level_id",
             "description": "<p>ID of the user`s level.</p>"
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "position_id",
             "description": "<p>ID of the position.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolen",
+            "optional": false,
+            "field": "is_hr",
+            "description": "<p>HR user or not.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n  {\n    \"data\": {\n        \"id\": 3,\n        \"email\": \"user@user.com\",\n        \"provider\": \"email\",\n        \"uid\": \"user@user.com\",\n        \"name\": null,\n        \"nickname\": null,\n        \"image\": null,\n        \"surname\": null,\n        \"level_id\": null,\n        \"position_id\": null\n    }\n}",
+          "content": "    HTTP/1.1 200 OK\n  {\n    \"data\": {\n        \"id\": 19,\n        \"email\": \"user@user.com\",\n        \"level_id\": 3,\n        \"position_id\": 3,\n        \"provider\": \"email\",\n        \"uid\": \"user@user.com\",\n        \"name\": null,\n        \"nickname\": null,\n        \"image\": null,\n        \"surname\": null,\n        \"is_hr\": false\n    }\n}",
           "type": "json"
         }
       ]
@@ -2697,24 +2753,45 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "id",
-            "description": "<p>Unique id of the vacancy.</p>"
+            "description": "<p>ID of the Vacancies.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolen",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Status of the Vacancies.</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "description",
-            "description": "<p>Description of the vacancy.</p>"
+            "description": "<p>Description of the Vacancie.</p>"
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
-            "field": "status",
-            "description": "<p>Status of the vacancy.</p>"
+            "field": "level_id",
+            "description": "<p>ID of the level for Vacancie.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "position_id",
+            "description": "<p>ID of the position for Vacancie.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "project_id",
+            "description": "<p>ID of the project for Vacancie.</p>"
           },
           {
             "group": "Success 200",
@@ -2729,27 +2806,6 @@
             "optional": false,
             "field": "updated_at",
             "description": "<p>Mandatory with data of update(By default).</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "level_id",
-            "description": "<p>Level id for vacancy.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "position_id",
-            "description": "<p>ID of the position for vacancy.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "project_id",
-            "description": "<p>Id of the project which includes the vacancy.</p>"
           }
         ]
       },
@@ -2788,7 +2844,7 @@
     "group": "Vacancies",
     "type": "get",
     "url": "api/v1/vacancies/:id",
-    "title": "Get all vacancies",
+    "title": "Get vacancies",
     "description": "<p>Returns all vacancies which are visible for the currently logged in user.</p>",
     "header": {
       "fields": {
@@ -2829,7 +2885,7 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "id",
             "description": "<p>Unique id of the vacancy.</p>"
@@ -2864,21 +2920,21 @@
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "level_id",
             "description": "<p>Level id for vacancy.</p>"
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "position_id",
             "description": "<p>ID of the position for vacancy.</p>"
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "project_id",
             "description": "<p>Id of the project which includes the vacancy.</p>"
@@ -2948,16 +3004,44 @@
           {
             "group": "Parameter",
             "type": "String",
-            "optional": true,
+            "optional": false,
             "field": "description",
-            "description": "<p>Optional description of the Vacancies.</p>"
+            "description": "<p>Description of the Vacancie.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "level_id",
+            "description": "<p>ID of the level for Vacancie.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "position_id",
+            "description": "<p>ID of the position for Vacancie.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "project_id",
+            "description": "<p>ID of the project for Vacancie.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolen",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Status of the Vacancies.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n     \"description\": \"test\"\n  }",
+          "content": "{\n            \"description\": \"test\",\n            \"level_id\": 3,\n            \"position_id\": 4,\n            \"project_id\": 1,\n            \"status\": false\n        }",
           "type": "json"
         }
       ]
@@ -2967,17 +3051,45 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "id",
-            "description": "<p>ID of the level.</p>"
+            "description": "<p>ID of the Vacancies.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolen",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Status of the Vacancies.</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "name",
-            "description": "<p>Name of the level.</p>"
+            "field": "description",
+            "description": "<p>Description of the Vacancie.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "level_id",
+            "description": "<p>ID of the level for Vacancie.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "position_id",
+            "description": "<p>ID of the position for Vacancie.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "project_id",
+            "description": "<p>ID of the project for Vacancie.</p>"
           },
           {
             "group": "Success 200",
@@ -2998,7 +3110,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n{\n    \"status\": \"SUCCESS\",\n    \"message\": \"Update vacancy\",\n    \"data\": {\n        \"id\": 6,\n        \"description\": \"test\",\n        \"level_id\": 4,\n        \"project_id\": 87,\n        \"position_id\": 4,\n        \"status\": null,\n        \"created_at\": \"2017-10-04T11:08:13.287Z\",\n        \"updated_at\": \"2017-10-04T11:17:33.480Z\"\n    }\n}",
+          "content": "    HTTP/1.1 200 OK\n{\n    \"status\": \"SUCCESS\",\n    \"message\": \"Update vacancy\",\n    \"data\": {\n        \"id\": 6,\n        \"description\": \"test\",\n        \"level_id\": 4,\n        \"project_id\": 87,\n        \"position_id\": 4,\n        \"status\": true,\n        \"created_at\": \"2017-10-04T11:08:13.287Z\",\n        \"updated_at\": \"2017-10-04T11:17:33.480Z\"\n    }\n}",
           "type": "json"
         }
       ]
@@ -3063,21 +3175,21 @@
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "level_id",
             "description": "<p>Mandatory level of the vacancy.</p>"
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "project_id",
             "description": "<p>Mandatory project of the vacancy.</p>"
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "position_id",
             "description": "<p>Mandatory position of the vacancy.</p>"
@@ -3097,7 +3209,7 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "id",
             "description": "<p>Unique id of the vacancy.</p>"
@@ -3132,21 +3244,21 @@
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "level_id",
             "description": "<p>Level id for vacancy.</p>"
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "position_id",
             "description": "<p>ID of the position for vacancy.</p>"
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "project_id",
             "description": "<p>Id of the project which includes the vacancy.</p>"
@@ -3223,16 +3335,44 @@
           {
             "group": "Parameter",
             "type": "String",
-            "optional": true,
+            "optional": false,
             "field": "description",
-            "description": "<p>Optional description of the Vacancies.</p>"
+            "description": "<p>Description of the Vacancie.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "level_id",
+            "description": "<p>ID of the level for Vacancie.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "position_id",
+            "description": "<p>ID of the position for Vacancie.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "project_id",
+            "description": "<p>ID of the project for Vacancie.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolen",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Status of the Vacancies.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n       \"description\": \"test1\"\n    }",
+          "content": "{\n            \"description\": \"test\",\n            \"level_id\": 3,\n            \"position_id\": 4,\n            \"project_id\": 1,\n            \"status\": true\n        }",
           "type": "json"
         }
       ]
@@ -3242,24 +3382,45 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
             "field": "id",
-            "description": "<p>Unique id of the vacancy.</p>"
+            "description": "<p>ID of the Vacancies.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolen",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Status of the Vacancies.</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "description",
-            "description": "<p>Description of the vacancy.</p>"
+            "description": "<p>Description of the Vacancie.</p>"
           },
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "int",
             "optional": false,
-            "field": "status",
-            "description": "<p>Status of the vacancy.</p>"
+            "field": "level_id",
+            "description": "<p>ID of the level for Vacancie.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "position_id",
+            "description": "<p>ID of the position for Vacancie.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "project_id",
+            "description": "<p>ID of the project for Vacancie.</p>"
           },
           {
             "group": "Success 200",
@@ -3274,34 +3435,13 @@
             "optional": false,
             "field": "updated_at",
             "description": "<p>Mandatory with data of update(By default).</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "level_id",
-            "description": "<p>Level id for vacancy.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "position_id",
-            "description": "<p>ID of the position for vacancy.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "project_id",
-            "description": "<p>Id of the project which includes the vacancy.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n{\n    \"status\": \"SUCCESS\",\n    \"message\": \"Update vacancy\",\n    \"data\": {\n        \"id\": 6,\n        \"description\": \"test1\",\n        \"level_id\": 4,\n        \"project_id\": 87,\n        \"position_id\": 4,\n        \"status\": null,\n        \"created_at\": \"2017-10-04T11:08:13.287Z\",\n        \"updated_at\": \"2017-10-04T11:28:59.890Z\"\n    }\n}",
+          "content": "    HTTP/1.1 200 OK\n{\n    \"status\": \"SUCCESS\",\n    \"message\": \"Update vacancy\",\n    \"data\": {\n        \"id\": 6,\n        \"description\": \"test\",\n        \"level_id\": 4,\n        \"project_id\": 87,\n        \"position_id\": 4,\n        \"status\": true,\n        \"created_at\": \"2017-10-04T11:08:13.287Z\",\n        \"updated_at\": \"2017-10-04T11:17:33.480Z\"\n    }\n}",
           "type": "json"
         }
       ]

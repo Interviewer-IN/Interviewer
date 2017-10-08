@@ -226,7 +226,6 @@
   * @apiName UserLogin
   * @apiGroup User
   *
-  * @apiHeader {String} access-key Users unique access-key.
   * @apiHeader {String} content-type application/x-www-form-urlencoded
   * @apiHeader {String} accept application/json
   *
@@ -240,30 +239,32 @@
   *        “password”: “123456"
   *     }
   *
-  * @apiSuccess {String} id ID of the user.
+  * @apiSuccess {int} id ID of the user.
   * @apiSuccess {String} email User`s login.
   * @apiSuccess {String} provider  Description of the Projects.
   * @apiSuccess {String} uid User Identificator.
   * @apiSuccess {String} nickname   Nickname of the user.
   * @apiSuccess {String} image      User`s avatar.
   * @apiSuccess {String} surname    User`s surname.
-  * @apiSuccess {String} level_id   ID of the user`s level.
-  * @apiSuccess {String} position_id   ID of the position.
+  * @apiSuccess {int} level_id   ID of the user`s level.
+  * @apiSuccess {int} position_id   ID of the position.
+  * @apiSuccess {Boolen} is_hr      HR user or not.
   *
   * @apiSuccessExample {json} Success-Response:
   *     HTTP/1.1 200 OK
   {
     "data": {
-        "id": 3,
+        "id": 19,
         "email": "user@user.com",
+        "level_id": 3,
+        "position_id": 3,
         "provider": "email",
         "uid": "user@user.com",
         "name": null,
         "nickname": null,
         "image": null,
         "surname": null,
-        "level_id": null,
-        "position_id": null
+        "is_hr": false
     }
 }
   *
@@ -271,6 +272,29 @@
   * @apiError Unauthorized Returned <code>Invalid login credentials. Please try again.</code> if email or password invalid.
   */
 
+  =========logout==========
+/**
+ * @api {delete} auth/sign_out/ User logout
+ * @apiName UserLogoutn
+ * @apiGroup User
+ *
+ * @apiHeader {String} content-type application/x-www-form-urlencoded
+ * @apiHeader {String} accept application/json
+ * @apiHeader {String} client       client which comes in login headers.
+ * @apiHeader {String} uid          uid which comes in login headers.
+ * @apiHeader {String} access-token Token which comes in login headers.
+ *
+ *
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ {
+     "success": true
+ }
+ *
+ * @apiError NotFound If URL entered incorrect.
+ * @apiError Unauthorized Returned <code>Invalid login credentials. Please try again.</code> if email or password invalid.
+ */
 
 
 * =======================vacancies====================
@@ -279,7 +303,7 @@
  * @apiName GetVacancies
  * @apiGroup Vacancies
  *
- * @api {get} api/v1/vacancies/:id Get all vacancies
+ * @api {get} api/v1/vacancies/:id Get vacancies
  *
  *
  * @apiDescription Returns all vacancies which are visible for the currently logged in user.
@@ -306,14 +330,14 @@
             "project_id": 2
         }
 *}
- * @apiSuccess {String} id  Unique id of the vacancy.
+ * @apiSuccess {int} id  Unique id of the vacancy.
  * @apiSuccess {String} description  Description of the vacancy.
  * @apiSuccess {String} status  Status of the vacancy.
  * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
  * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
- * @apiSuccess {String} level_id      Level id for vacancy.
- * @apiSuccess {String} position_id   ID of the position for vacancy.
- * @apiSuccess {String} project_id    Id of the project which includes the vacancy.
+ * @apiSuccess {int} level_id      Level id for vacancy.
+ * @apiSuccess {int} position_id   ID of the position for vacancy.
+ * @apiSuccess {int} project_id    Id of the project which includes the vacancy.
  *
  * @apiError ProjectNotFound The <code>id</code> of the Vacancies was not found.
  * @apiError Unauthorized Returned if the user is not logged in.
@@ -331,9 +355,9 @@
   * @apiHeader {String} accept application/json
   *
   *
-  * @apiParam {String} level_id       Mandatory level of the vacancy.
-  * @apiParam {String} project_id    Mandatory project of the vacancy.
-  * @apiParam {String} position_id    Mandatory position of the vacancy.
+  * @apiParam {int} level_id       Mandatory level of the vacancy.
+  * @apiParam {int} project_id    Mandatory project of the vacancy.
+  * @apiParam {int} position_id    Mandatory position of the vacancy.
   *
   * @apiParamExample {json} Request-Example:
   * {
@@ -342,14 +366,14 @@
         "position_id": 4
     }
   *
-  * @apiSuccess {String} id  Unique id of the vacancy.
-  * @apiSuccess {String} description  Description of the vacancy.
-  * @apiSuccess {String} status  Status of the vacancy.
-  * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
-  * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
-  * @apiSuccess {String} level_id      Level id for vacancy.
-  * @apiSuccess {String} position_id   ID of the position for vacancy.
-  * @apiSuccess {String} project_id    Id of the project which includes the vacancy.
+ * @apiSuccess {int} id  Unique id of the vacancy.
+ * @apiSuccess {String} description  Description of the vacancy.
+ * @apiSuccess {String} status  Status of the vacancy.
+ * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+ * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+ * @apiSuccess {int} level_id      Level id for vacancy.
+ * @apiSuccess {int} position_id   ID of the position for vacancy.
+ * @apiSuccess {int} project_id    Id of the project which includes the vacancy.
   *
   * @apiSuccessExample {json} Success-Response:
   *     HTTP/1.1 200 OK
@@ -386,18 +410,31 @@
 * @apiHeader {String} content-type application/json; charset=utf-8
 * @apiHeader {String} accept application/json
 *
-* @apiParam {String} [description]        Optional description of the Vacancies.
+* @apiParam {String} description        Description of the Vacancie.
+* @apiParam {int} level_id              ID of the level for Vacancie.
+* @apiParam {int} position_id           ID of the position for Vacancie.
+* @apiParam {int} project_id            ID of the project for Vacancie.
+* @apiParam {Boolen} status             Status of the Vacancies.
 *
 * @apiParamExample {json} Request-Example:
 {
-     "description": "test"
-  }
+            "description": "test",
+            "level_id": 3,
+            "position_id": 4,
+            "project_id": 1,
+            "status": false
+        }
 *
 *
-* @apiSuccess {String} id 	          ID of the level.
-* @apiSuccess {String} name          Name of the level.
+* @apiSuccess {int} id 	          ID of the Vacancies.
+* @apiSuccess{Boolen} status             Status of the Vacancies.
+* @apiSuccess {String} description        Description of the Vacancie.
+* @apiSuccess {int} level_id              ID of the level for Vacancie.
+* @apiSuccess {int} position_id           ID of the position for Vacancie.
+* @apiSuccess {int} project_id            ID of the project for Vacancie.
 * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
 * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+
 *
 *
 * @apiSuccessExample {json} Success-Response:
@@ -411,7 +448,7 @@
         "level_id": 4,
         "project_id": 87,
         "position_id": 4,
-        "status": null,
+        "status": true,
         "created_at": "2017-10-04T11:08:13.287Z",
         "updated_at": "2017-10-04T11:17:33.480Z"
     }
@@ -425,27 +462,35 @@
 * @apiName PutVacancies
 * @apiGroup Vacancies
 * @apiDescription Replace the entire project with the new representation provided.
-*
 * @apiHeader {String} access-key Users unique access-key.
 * @apiHeader {String} content-type application/json; charset=utf-8
 * @apiHeader {String} accept application/json
 *
-* @apiParam {String} [description]        Optional description of the Vacancies.
+* @apiParam {String} description        Description of the Vacancie.
+* @apiParam {int} level_id              ID of the level for Vacancie.
+* @apiParam {int} position_id           ID of the position for Vacancie.
+* @apiParam {int} project_id            ID of the project for Vacancie.
+* @apiParam {Boolen} status             Status of the Vacancies.
 *
 * @apiParamExample {json} Request-Example:
 {
-       "description": "test1"
-    }
+            "description": "test",
+            "level_id": 3,
+            "position_id": 4,
+            "project_id": 1,
+            "status": true
+        }
 *
 *
-* @apiSuccess {String} id  Unique id of the vacancy.
-* @apiSuccess {String} description  Description of the vacancy.
-* @apiSuccess {String} status  Status of the vacancy.
+* @apiSuccess {int} id 	          ID of the Vacancies.
+* @apiSuccess{Boolen} status             Status of the Vacancies.
+* @apiSuccess {String} description        Description of the Vacancie.
+* @apiSuccess {int} level_id              ID of the level for Vacancie.
+* @apiSuccess {int} position_id           ID of the position for Vacancie.
+* @apiSuccess {int} project_id            ID of the project for Vacancie.
 * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
 * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
-* @apiSuccess {String} level_id      Level id for vacancy.
-* @apiSuccess {String} position_id   ID of the position for vacancy.
-* @apiSuccess {String} project_id    Id of the project which includes the vacancy.
+
 *
 *
 * @apiSuccessExample {json} Success-Response:
@@ -455,13 +500,13 @@
     "message": "Update vacancy",
     "data": {
         "id": 6,
-        "description": "test1",
+        "description": "test",
         "level_id": 4,
         "project_id": 87,
         "position_id": 4,
-        "status": null,
+        "status": true,
         "created_at": "2017-10-04T11:08:13.287Z",
-        "updated_at": "2017-10-04T11:28:59.890Z"
+        "updated_at": "2017-10-04T11:17:33.480Z"
     }
 }
 * @apiError Unauthorized Returned if the user is not logged in.
@@ -479,15 +524,15 @@
  * @apiHeader {String} content-type application/json; charset=utf-8
  * @apiHeader {String} accept application/json
  *
- *
- * @apiSuccess {String} id  Unique id of the vacancy.
- * @apiSuccess {String} description  Description of the vacancy.
- * @apiSuccess {String} status  Status of the vacancy.
- * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
- * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
- * @apiSuccess {String} level_id      Level id for vacancy.
- * @apiSuccess {String} position_id   ID of the position for vacancy.
- * @apiSuccess {String} project_id    Id of the project which includes the vacancy.
+
+* @apiSuccess {int} id 	          ID of the Vacancies.
+* @apiSuccess{Boolen} status             Status of the Vacancies.
+* @apiSuccess {String} description        Description of the Vacancie.
+* @apiSuccess {int} level_id              ID of the level for Vacancie.
+* @apiSuccess {int} position_id           ID of the position for Vacancie.
+* @apiSuccess {int} project_id            ID of the project for Vacancie.
+* @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+* @apiSuccess {String} updated_at    Mandatory with data of update(By default).
 
  *
  *
@@ -541,18 +586,17 @@
             "updated_at": "2017-10-03T01:24:40.364Z"
         }
 
- * @apiSuccess {String} id  Unique id of the level.
+ * @apiSuccess {int} id  Unique id of the level.
  * @apiSuccess {String} name  Name of the level.
  * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
  * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
 
  *
- * @apiError ProjectNotFound The <code>id</code> of the level was not found.
+ * @apiError levelNotFound The <code>id</code> of the level was not found.
  * @apiError Unauthorized Returned if the user is not logged in.
  *
  */
  *========CreateLevel======
- //todo
   /**
    * @api {post} api/v1/levels/ Create level
    * @apiName PostLevels
@@ -570,7 +614,7 @@
    *     	"name": "Test"
    *     }
    *
-   * @apiSuccess {String} id            The new level-ID.
+   * @apiSuccess {int} id            The new level-ID.
    * @apiSuccess {String} name          Name of the level.
    * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
    * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
@@ -603,7 +647,7 @@
    * @apiHeader {String} content-type application/json; charset=utf-8
    * @apiHeader {String} accept application/json
    *
-   * @apiParam {String} [name]        Optional name of the level.
+   * @apiParam {String} name        Name of the level.
    *
    * @apiParamExample {json} Request-Example:
      {
@@ -611,7 +655,7 @@
       }
    *
    *
-   * @apiSuccess {String} id 	          ID of the level.
+   * @apiSuccess {int} id 	          ID of the level.
    * @apiSuccess {String} name          Name of the level.
    * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
    * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
@@ -645,7 +689,7 @@
 * @apiHeader {String} content-type application/json; charset=utf-8
 * @apiHeader {String} accept application/json
 *
-* @apiParam {String} [name]        Optional name of the level.
+* @apiParam {String} name       Name of the level.
 *
 * @apiParamExample {json} Request-Example:
   {
@@ -653,7 +697,7 @@
    }
 *
 *
-* @apiSuccess {String} id 	          ID of the level.
+* @apiSuccess {int} id 	          ID of the level.
 * @apiSuccess {String} name          Name of the level.
 * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
 * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
@@ -672,7 +716,7 @@
   }
 }
 * @apiError Unauthorized Returned if the user is not logged in.
-* @apiError LeveltNotFound Returned if the project does not exist.
+* @apiError LeveltNotFound Returned if the level does not exist.
 */
 
 *======DeleteLevel=======
@@ -688,7 +732,7 @@
  * @apiHeader {String} accept application/json
  *
  *
- * @apiSuccess {String} id            The Level-ID.
+ * @apiSuccess {int} id            The Level-ID.
  * @apiSuccess {String} name		      Name of the Level.
  * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
  * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
@@ -707,7 +751,7 @@
      }
  }
  * @apiError Unauthorized Returned if the user is not logged in.
- * @apiError LevelNotFound Returned if the project does not exist.
+ * @apiError LevelNotFound Returned if the level does not exist.
  */
 
 
@@ -740,13 +784,13 @@
             "updated_at": "2017-10-03T01:24:40.499Z"
         }
 
-  * @apiSuccess {String} id  Unique id of the Positions.
+  * @apiSuccess {int} id  Unique id of the Positions.
   * @apiSuccess {String} name  Name of the Positions.
   * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
   * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
 
   *
-  * @apiError ProjectNotFound The <code>id</code> of the Project was not found.
+  * @apiError PositionsNotFound The <code>id</code> of the Project was not found.
   * @apiError Unauthorized Returned if the user is not logged in.
   *
   */
@@ -762,14 +806,14 @@
     * @apiHeader {String} accept application/json
     *
     *
-    * @apiParam {String} [name]   Mandatory name of the position.
+    * @apiParam {String} name   Name of the position.
     *
     * @apiParamExample {json} Request-Example:
     *     {
     *     	"name": "Test"
     *     }
     *
-    * @apiSuccess {String} id            The new position-ID.
+    * @apiSuccess {int} id            The new position-ID.
     * @apiSuccess {String} name          Name of the position.
     * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
     * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
@@ -792,7 +836,7 @@
     */
     *=====EditPositions======
     /**
-    * @api {put} api/v1/positions/:id Update level
+    * @api {put} api/v1/positions/:id Update positions
     * @apiName PutPositions
     * @apiGroup Positions
     * @apiDescription Replace parts of existing positions.
@@ -810,7 +854,7 @@
          }
     *
     *
-    * @apiSuccess {String} id 	          ID of the positions.
+    * @apiSuccess {int} id 	          ID of the positions.
     * @apiSuccess {String} name          Name of the positions.
     * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
     * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
@@ -830,12 +874,12 @@
     }
 }
     * @apiError Unauthorized Returned if the user is not logged in.
-    * @apiError PositionstNotFound Returned if the project does not exist.
+    * @apiError PositionstNotFound Returned if the positions does not exist.
     */
 
  *======PachPositions======
  /**
- * @api {pach} api/v1/positions/:id Edit Level
+ * @api {pach} api/v1/positions/:id Edit positions
  * @apiName PatchPositions
  * @apiGroup Positions
  * @apiDescription Replace parts of existing Positions.
@@ -845,7 +889,7 @@
  * @apiHeader {String} content-type application/json; charset=utf-8
  * @apiHeader {String} accept application/json
  *
- * @apiParam {String} [name]        Optional name of the positions.
+ * @apiParam {String} name       Name of the positions.
  *
  * @apiParamExample {json} Request-Example:
  {
@@ -853,7 +897,7 @@
       }
  *
  *
- * @apiSuccess {String} id 	          ID of the positions.
+ * @apiSuccess {int} id 	          ID of the positions.
  * @apiSuccess {String} name          Name of the positions.
  * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
  * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
@@ -890,8 +934,8 @@
   * @apiHeader {String} accept application/json
   *
   *
-  * @apiSuccess {String} id            The Level-ID.
-  * @apiSuccess {String} name		      Name of the Level.
+  * @apiSuccess {int} id            The positions-ID.
+  * @apiSuccess {String} name		      Name of the positions.
   * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
   * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
   *
@@ -909,7 +953,7 @@
       }
   }
   * @apiError Unauthorized Returned if the user is not logged in.
-  * @apiError PositionNotFound Returned if the project does not exist.
+  * @apiError PositionNotFound Returned if the positions does not exist.
   */
 
 
@@ -948,14 +992,15 @@
             "cv": {
                 "url": "/uploads/candidate/cv/8/cv.pdf"
             }
-
-   * @apiSuccess {String} id  Unique id of the Candidate.
-   * @apiSuccess {String} age  Age of the Positions.
+   * @apiSuccess {int} id  Unique id of the Candidate.
+   * @apiSuccess {String} age  Age of the Candidate.
+   * @apiSuccess {String} experience  Candidate`s experience.
+   * @apiSuccess {String} contacts  Candidate`s contacts.
    * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
    * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
-   * @apiSuccess {String} level_id      Level of Candidate.
-  * @apiSuccess {String} position_id    Position of Candidate.
-  * @apiSuccess {String} cv    CV of Candidate.
+   * @apiSuccess {int} level_id      Level of Candidate.
+   * @apiSuccess {int} position_id    Position of Candidate.
+   * @apiSuccess {base64} cv    CV of Candidate.
    *
    * @apiError CandidateNotFound The <code>id</code> of the Candidate was not found.
    * @apiError Unauthorized Returned if the user is not logged in.
@@ -973,11 +1018,12 @@
      * @apiHeader {String} accept application/json
      *
      *
-     * @apiParam {int} level     Candidate`s level.
-     * @apiParam {int} position  Candidate`s position.
-     * @apiParam {String} age  Candidate`s age.
-     * @apiParam {String} experience  Candidate`s experience.
-     * @apiParam {String} contacts  Candidate`s contacts.
+     * @apiParam {int} level_id     Candidate`s level.
+     * @apiParam {int} position_id  Candidate`s position.
+     * @apiParam {String} [age]  Candidate`s age.
+     * @apiParam {String} [experience]  Candidate`s experience.
+     * @apiParam {String} [contacts]  Candidate`s contacts.
+     * @apiParam {base64} [CV]  Candidate`s CV.
      *
      * @apiParamExample {json} Request-Example:
      *
@@ -990,13 +1036,15 @@
       "cv": "data:application/pdf;base64, fw3..."
       }
      *
-     * @apiSuccess {String} id  Unique id of the Candidate.
-     * @apiSuccess {String} age  Age of the Positions.
+     * @apiSuccess {int} id  Unique id of the Candidate.
+     * @apiSuccess {String} age  Age of the Candidate.
+	 * @apiSuccess {String} experience  Candidate`s experience.
+     * @apiSuccess {String} contacts  Candidate`s contacts.
      * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
      * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
-     * @apiSuccess {String} level_id      Level of Candidate.
-    * @apiSuccess {String} position_id    Position of Candidate.
-    * @apiSuccess {String} cv    CV of Candidate.
+     * @apiSuccess {int} level_id      Level of Candidate.
+    * @apiSuccess {int} position_id    Position of Candidate.
+    * @apiSuccess {base64} cv    CV of Candidate.
      *
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200 OK
@@ -1033,11 +1081,12 @@
      * @apiHeader {String} content-type application/json; charset=utf-8
      * @apiHeader {String} accept application/json
      *
-     * @apiParam {int} level     Candidate`s level.
-     * @apiParam {int} position  Candidate`s position.
-     * @apiParam {String} age  Candidate`s age.
-     * @apiParam {String} experience  Candidate`s experience.
-     * @apiParam {String} contacts  Candidate`s contacts.
+     * @apiParam {int} level_id     Candidate`s level.
+     * @apiParam {int} position_id  Candidate`s position.
+     * @apiParam {String} [age]  Candidate`s age.
+     * @apiParam {String} [experience]  Candidate`s experience.
+     * @apiParam {String} [contacts]  Candidate`s contacts.
+     * @apiParam {base64} [CV]  Candidate`s CV.
      *
      * @apiParamExample {json} Request-Example:
      {
@@ -1049,22 +1098,16 @@
       "cv": "data:application/pdf;base64, fw3..."
           }
      *
-
-     * @apiSuccess {String} id  Unique id of the Candidate.
-     * @apiSuccess {String} age  Age of the Positions.
-     * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
-     * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
-     * @apiSuccess {String} level_id      Level of Candidate.
-    * @apiSuccess {String} position_id    Position of Candidate.
-    * @apiSuccess {String} cv    CV of Candidate.
-     *
-     *
-     * @apiSuccess {String} id 	          ID of the positions.
-     * @apiSuccess {String} name          Name of the positions.
-     * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
-     * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
-     *
-     *
+	* @apiSuccess {int} id  Unique id of the Candidate.
+   * @apiSuccess {String} age  Age of the Candidate.   
+   * @apiSuccess {String} experience  Candidate`s experience.
+   * @apiSuccess {String} contacts  Candidate`s contacts.
+   * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+   * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+   * @apiSuccess {int} level_id      Level of Candidate.
+   * @apiSuccess {int} position_id    Position of Candidate.
+   * @apiSuccess {base64} cv    CV of Candidate.
+   *
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200 OK
      *
@@ -1101,12 +1144,12 @@
   * @apiHeader {String} content-type application/json; charset=utf-8
   * @apiHeader {String} accept application/json
   *
-  * @apiParam {int} level     Candidate`s level.
-  * @apiParam {int} position  Candidate`s position.
-  * @apiParam {String} age  Candidate`s age.
-  * @apiParam {String} experience  Candidate`s experience.
-  * @apiParam {String} contacts  Candidate`s contacts.
-
+     * @apiParam {int} position_id  Candidate`s position.
+     * @apiParam {String} [age]  Candidate`s age.
+     * @apiParam {String} [experience]  Candidate`s experience.
+     * @apiParam {String} [contacts]  Candidate`s contacts.
+     * @apiParam {base64} [CV]  Candidate`s CV.
+     *
   * @apiParamExample {json} Request-Example:
   {
   "level_id": 1,
@@ -1116,15 +1159,16 @@
    "contacts": "test",
    "cv": "data:application/pdf;base64, fw3..."
        }
-  *
-  * @apiSuccess {String} id  Unique id of the Candidate.
-  * @apiSuccess {String} age  Age of the Positions.
-  * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
-  * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
-  * @apiSuccess {String} level_id      Level of Candidate.
-  * @apiSuccess {String} position_id    Position of Candidate.
-  * @apiSuccess {String} cv    CV of Candidate.
-  *
+ * @apiSuccess {int} id  Unique id of the Candidate.
+   * @apiSuccess {String} age  Age of the Candidate.
+   * @apiSuccess {String} experience  Candidate`s experience.
+   * @apiSuccess {String} contacts  Candidate`s contacts.
+   * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+   * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+   * @apiSuccess {int} level_id      Level of Candidate.
+   * @apiSuccess {int} position_id    Position of Candidate.
+   * @apiSuccess {base64} cv    CV of Candidate.
+   *
   *
   * @apiSuccessExample {json} Success-Response:
   *     HTTP/1.1 200 OK
@@ -1162,13 +1206,15 @@
    * @apiHeader {String} content-type application/json; charset=utf-8
    * @apiHeader {String} accept application/json
    *
-   * @apiSuccess {String} id  Unique id of the Candidate.
-   * @apiSuccess {String} age  Age of the Positions.
+   * @apiSuccess {int} id  Unique id of the Candidate.
+   * @apiSuccess {String} age  Age of the Candidate.   
+   * @apiSuccess {String} contacts  Candidate`s contacts.
+   * @apiSuccess {String} experience  Candidate`s experience.
    * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
    * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
-   * @apiSuccess {String} level_id      Level of Candidate.
-   * @apiSuccess {String} position_id    Position of Candidate.
-   * @apiSuccess {String} cv    CV of Candidate.
+   * @apiSuccess {int} level_id      Level of Candidate.
+   * @apiSuccess {int} position_id    Position of Candidate.
+   * @apiSuccess {base64} cv    CV of Candidate.
    *
    *
    * @apiSuccessExample {json} Success-Response:
@@ -1191,5 +1237,5 @@
        }
    }
    * @apiError Unauthorized Returned if the user is not logged in.
-   * @apiError PositionNotFound Returned if the project does not exist.
+   * @apiError CandidateNotFound Returned if the candidate does not exist.
    */
