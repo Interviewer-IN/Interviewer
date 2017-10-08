@@ -113,7 +113,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./ap/j.java",
+    "filename": "./j.java",
     "groupTitle": "Candidates"
   },
   {
@@ -231,7 +231,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./ap/j.java",
+    "filename": "./j.java",
     "groupTitle": "Candidates"
   },
   {
@@ -397,7 +397,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./ap/j.java",
+    "filename": "./j.java",
     "groupTitle": "Candidates"
   },
   {
@@ -562,7 +562,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./ap/j.java",
+    "filename": "./j.java",
     "groupTitle": "Candidates"
   },
   {
@@ -735,7 +735,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./ap/j.java",
+    "filename": "./j.java",
     "groupTitle": "Candidates"
   },
   {
@@ -762,8 +762,8 @@ define({ "api": [
     "url": "",
     "version": "0.0.0",
     "filename": "./doc/main.js",
-    "group": "D__APIDoc_Interviewer_public_APIDoc_doc_main_js",
-    "groupTitle": "D__APIDoc_Interviewer_public_APIDoc_doc_main_js",
+    "group": "D__Interviewer_public_APIDoc_ap_doc_main_js",
+    "groupTitle": "D__Interviewer_public_APIDoc_ap_doc_main_js",
     "name": ""
   },
   {
@@ -859,7 +859,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./ap/j.java",
+    "filename": "./j.java",
     "groupTitle": "Levels"
   },
   {
@@ -956,7 +956,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./ap/j.java",
+    "filename": "./j.java",
     "groupTitle": "Levels"
   },
   {
@@ -1073,7 +1073,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./ap/j.java",
+    "filename": "./j.java",
     "groupTitle": "Levels"
   },
   {
@@ -1190,7 +1190,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./ap/j.java",
+    "filename": "./j.java",
     "groupTitle": "Levels"
   },
   {
@@ -1306,7 +1306,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./ap/j.java",
+    "filename": "./j.java",
     "groupTitle": "Levels"
   },
   {
@@ -1396,13 +1396,13 @@ define({ "api": [
             "group": "Error 4xx",
             "optional": false,
             "field": "PositionNotFound",
-            "description": "<p>Returned if the project does not exist.</p>"
+            "description": "<p>Returned if the Positions does not exist.</p>"
           }
         ]
       }
     },
     "version": "0.0.0",
-    "filename": "./ap/j.java",
+    "filename": "./j.java",
     "groupTitle": "Positions"
   },
   {
@@ -1487,7 +1487,7 @@ define({ "api": [
             "group": "Error 4xx",
             "optional": false,
             "field": "ProjectNotFound",
-            "description": "<p>The <code>id</code> of the Project was not found.</p>"
+            "description": "<p>The <code>id</code> of the Positions was not found.</p>"
           },
           {
             "group": "Error 4xx",
@@ -1499,7 +1499,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./ap/j.java",
+    "filename": "./j.java",
     "groupTitle": "Positions"
   },
   {
@@ -1610,13 +1610,13 @@ define({ "api": [
             "group": "Error 4xx",
             "optional": false,
             "field": "PositionstNotFound",
-            "description": "<p>Returned if the project does not exist.</p>"
+            "description": "<p>Returned if the Positions does not exist.</p>"
           }
         ]
       }
     },
     "version": "0.0.0",
-    "filename": "./ap/j.java",
+    "filename": "./j.java",
     "groupTitle": "Positions"
   },
   {
@@ -1720,7 +1720,7 @@ define({ "api": [
             "group": "Error 4xx",
             "optional": false,
             "field": "PositionNotFound",
-            "description": "<p>The <code>id</code> of the Project was not found.</p>"
+            "description": "<p>The <code>id</code> of the Positions was not found.</p>"
           },
           {
             "group": "Error 4xx",
@@ -1732,7 +1732,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./ap/j.java",
+    "filename": "./j.java",
     "groupTitle": "Positions"
   },
   {
@@ -1843,13 +1843,13 @@ define({ "api": [
             "group": "Error 4xx",
             "optional": false,
             "field": "PositionstNotFound",
-            "description": "<p>Returned if the project does not exist.</p>"
+            "description": "<p>Returned if the Positions does not exist.</p>"
           }
         ]
       }
     },
     "version": "0.0.0",
-    "filename": "./ap/j.java",
+    "filename": "./j.java",
     "groupTitle": "Positions"
   },
   {
@@ -1952,7 +1952,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./ap/j.java",
+    "filename": "./j.java",
     "groupTitle": "Projects"
   },
   {
@@ -2049,7 +2049,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./ap/j.java",
+    "filename": "./j.java",
     "groupTitle": "Projects"
   },
   {
@@ -2173,7 +2173,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./ap/j.java",
+    "filename": "./j.java",
     "groupTitle": "Projects"
   },
   {
@@ -2303,7 +2303,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./ap/j.java",
+    "filename": "./j.java",
     "groupTitle": "Projects"
   },
   {
@@ -2427,7 +2427,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./ap/j.java",
+    "filename": "./j.java",
     "groupTitle": "Projects"
   },
   {
@@ -2439,13 +2439,6 @@ define({ "api": [
     "header": {
       "fields": {
         "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "access-key",
-            "description": "<p>Users unique access-key.</p>"
-          },
           {
             "group": "Header",
             "type": "String",
@@ -2585,7 +2578,85 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./ap/j.java",
+    "filename": "./j.java",
+    "groupTitle": "User"
+  },
+  {
+    "type": "delete",
+    "url": "auth/sign_out/",
+    "title": "User logout",
+    "name": "UserLogoutn",
+    "group": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/x-www-form-urlencoded</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "accept",
+            "description": "<p>application/json</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "client",
+            "description": "<p>client which comes in login headers.</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "uid",
+            "description": "<p>uid which comes in login headers.</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "access-token",
+            "description": "<p>Token which comes in login headers.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "   HTTP/1.1 200 OK\n{\n    \"success\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>If URL entered incorrect.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Returned <code>Invalid login credentials. Please try again.</code> if email or password invalid.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./j.java",
     "groupTitle": "User"
   },
   {
@@ -2709,7 +2780,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./ap/j.java",
+    "filename": "./j.java",
     "groupTitle": "Vacancies"
   },
   {
@@ -2834,7 +2905,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./ap/j.java",
+    "filename": "./j.java",
     "groupTitle": "Vacancies"
   },
   {
@@ -2951,7 +3022,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./ap/j.java",
+    "filename": "./j.java",
     "groupTitle": "Vacancies"
   },
   {
@@ -3109,7 +3180,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./ap/j.java",
+    "filename": "./j.java",
     "groupTitle": "Vacancies"
   },
   {
@@ -3254,7 +3325,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./ap/j.java",
+    "filename": "./j.java",
     "groupTitle": "Vacancies"
   }
 ] });
