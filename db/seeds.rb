@@ -14,7 +14,7 @@
 end
 
 Admin.new({:email => "admin@admin.com", :password => "123456", :password_confirmation => "123456" }).save(:validate => false) unless Admin.where(email: "admin@admin.com").exists?
-User.new({:email => "user@user.com", :password => "123456", :password_confirmation => "123456" , :provider => "email", :uid => "user@user.com", :confirmed_at => "22.07.2016" ,:level_id =>3, :position_id => 3}).save(:validate => true) unless User.where(email: "user@user.com").exists?
+User.new({:email => "user@user.com", :password => "123456", :password_confirmation => "123456", :provider => "email", :uid => "user@user.com", :confirmed_at => "22.07.2016 " ,:level_id =>5, :position_id => 5}).save(:validate => true) unless User.where(email: "user@user.com").exists?
 User.new({:email => "user1@user.com", :password => "123456", :password_confirmation => "123456", :provider => "email", :uid => "user@user.com", :confirmed_at => "22.07.2016 " ,:level_id =>3, :position_id => 3 }).save(:validate => true) unless User.where(email: "user1@user.com").exists?
 
 Level.new({:name => "Trainee"}).save(:validate => false)  unless Level.where(name: "Trainee").exists?
@@ -35,6 +35,18 @@ Position.new({:name => "Back-end"}).save(:validate => false)  unless Position.wh
                      position_id: Position.offset(rand(Position.count)).first.id,
                      project_id: Project.offset(rand(Project.count)).first.id
                  })
+end
+
+5.times do
+  Candidate.create({
+                     name: Faker::Name.first_name,
+                     surname: Faker::Name.last_name,
+                     age: rand(19..45),
+                     experience: Faker::Lorem.paragraphs,
+                     contacts: Faker::Address.city + "," + Faker::Address.street_address + ","+ Faker::Address.building_number,
+                     level_id: Level.offset(rand(Level.count)).first.id,
+                     position_id: Position.offset(rand(Position.count)).first.id,
+                   })
 end
 
 
