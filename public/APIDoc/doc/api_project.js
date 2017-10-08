@@ -1,1 +1,14 @@
-define({  "name": "interviewer",  "version": "0.1.0",  "description": "apiDoc basic for interviewer",  "title": "Custom apiDoc browser title",  "url": "https://dev-interviewer.herokuapp.com/",  "sampleUrl": false,  "defaultVersion": "0.0.0",  "apidoc": "0.3.0",  "generator": {    "name": "apidoc",    "time": "2017-10-04T11:35:23.126Z",    "url": "http://apidocjs.com",    "version": "0.17.6"  }});
+define({
+  "name": "",
+  "version": "0.0.0",
+  "description": "",
+  "sampleUrl": false,
+  "defaultVersion": "0.0.0",
+  "apidoc": "0.3.0",
+  "generator": {
+    "name": "apidoc",
+    "time": "2017-10-06T21:36:51.255Z",
+    "url": "http://apidocjs.com",
+    "version": "0.17.6"
+  }
+});
