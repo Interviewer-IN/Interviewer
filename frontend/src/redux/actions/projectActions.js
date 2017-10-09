@@ -13,6 +13,7 @@ function addNewProject(date) {
 }
 
 export function createProject(date) {
+    console.log('CreateProject', date);
     return (dispatch) => {
         fetch("/api/v1/projects",
             {
@@ -59,7 +60,7 @@ function setCurrentProject(project) {
 }
 
 export function showProjects() {
-    return (dispatch) => {
+    return (dispatch) => new Promise((resolve) => {
         fetch("/api/v1/projects",
             {
                 method: 'get',
@@ -72,6 +73,7 @@ export function showProjects() {
             )
             .then(projects => {
                 dispatch(addProjects(projects.data));
+                resolve(projects.data);
             })
             .catch(function(err) {
                 dispatch(makeNote(
@@ -81,8 +83,8 @@ export function showProjects() {
                         hide: false
                     }
                 ));
-            })
-    };
+            });
+    });
 }
 
 export function getProjects(id) {

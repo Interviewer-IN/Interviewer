@@ -1,0 +1,30 @@
+.upload-file {
+  position: relative;
+  margin-bottom: 15px;
+
+  &__custom-btn{
+    float: left;
+    margin-right: 15px;
+  }
+
+
+  &__input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin-bottom: 0;
+    overflow: hidden;
+    display: none;
+  }
+
+  &__result{
+    float: left;
+    line-height: 1.7em;
+  }
+
+}
+
+
+
+
+

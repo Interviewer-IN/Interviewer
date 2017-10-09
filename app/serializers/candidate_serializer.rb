@@ -1,3 +1,4 @@
 class CandidateSerializer < ActiveModel::Serializer
-  attributes :id, :age, :experince, :contacts, :text
+  #TODO wtf text is doing here
+  attributes :id, :age, :experience, :contacts, :text
 end

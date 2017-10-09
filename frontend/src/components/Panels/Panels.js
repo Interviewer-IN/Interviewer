@@ -33,7 +33,15 @@ class Panels extends Component {
     }
 
     onEdit() {
-        this.props.callEdit()
+        this.props.callEdit();
+    }
+
+    onAction() {
+        this.props.callAction();
+    }
+
+    onDouble() {
+        this.props.callDublicate();
     }
 
     render() {
@@ -54,7 +62,7 @@ class Panels extends Component {
         let toShowActionBtn = (showActionBtn, titleBtn) => {
             if (showActionBtn){
               return (
-                  <button type="button" className="btn btn-primary">{titleBtn}</button>
+                  <button type="button" className="btn btn-primary" onClick={() => this.onAction()}>{titleBtn}</button>
               );
             }
         };
@@ -64,8 +72,7 @@ class Panels extends Component {
                 return (
                     <div className="btn btn-primary"
                          id = {editBtnId}
-                         onClick={()=>this.onEdit()}
-                    >
+                         onClick={()=>this.onEdit()}>
                         Edit
                     </div>
                 )
@@ -77,6 +84,7 @@ class Panels extends Component {
                 return (
                     <div className="btn btn-info"
                          id = {dublicateBtnId}
+                        onClick={() => this.onDouble()}
                     >
                         Duplicate
                     </div>
@@ -97,12 +105,19 @@ class Panels extends Component {
             }
         };
 
+        let panelBodyClass  = '';
+        if (showActionBtn){
+            panelBodyClass = 'custom-panel-body';
+        } else {
+            panelBodyClass = 'custom-panel-body full-width';
+        }
+
         return (
             <Panel collapsible header={panelTitle}
                    onClick={(event) => this.handlePanelCollapseClick(event)}
                    id={id}
                 >
-                <div className="custom-panel-body">
+                <div className={panelBodyClass}>
                     <div className="custom-panel-body__left">
                         <div className="vacancy-description">
                             {description}
@@ -142,7 +157,7 @@ Panels.defaultProps = {
 };
 
 Panels.propTypes = {
-    id: PropTypes.number,
+   // id: PropTypes.number,
     showActionBtn: PropTypes.bool,
     showEditBtn: PropTypes.bool,
     showDuplicateBtn: PropTypes.bool,

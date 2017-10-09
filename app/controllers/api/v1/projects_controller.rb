@@ -24,12 +24,17 @@ module Api
      end
 
      def destroy
+       #TODO IN-115
+       #if params[:id].is_a? Integer
        project =Project.find(params[:id])
        if  project.destroy
          render json: {status:"SUCCESS", message: "Project deleted", data:project}, status: :ok
        else
          render json: {status:"ERROR", message: "Project was not deleted", data:project.errors}, status: :not_found
        end
+       #else
+       #render json: {status:"ERROR", message: "ID should be integer"}
+       #end
      end
 
      def update
