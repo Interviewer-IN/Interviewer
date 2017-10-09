@@ -114,7 +114,7 @@ export function authorizationCheck() {
         userData = localStorage.getItem('userData');
     console.log('Im here');
 
-    if (!(accessToken && client && uid && accessToken === null && client === null && uid === null)) {
+    if (!(accessToken && client && uid)) {
         console.log('Im here');
         isUserLogged = false;
         userData = {};
