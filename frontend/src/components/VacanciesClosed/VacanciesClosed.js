@@ -18,7 +18,12 @@ class VacanciesClosed extends Component {
             showModalConfirm: false,
             currentVacancyId: '',
             actionBtnMessage: 'Vacancy was reopened',
-            duplicateMessage: 'Duplicate was added'
+            duplicateMessage: 'Duplicate was added',
+            positionsFilterID: '',
+            levelsFilterID: '',
+            projectsFilterID: '',
+            levelsFilterVal: '',
+            projectFilterVal: ''
         }
 
     }
@@ -64,6 +69,69 @@ class VacanciesClosed extends Component {
         dispatch(createVacancy(duplicateData, successDuplicateMessage))
     }
 
+    getPositionFilterVal(positionFilterVal){
+        let positionsList = this.props.positions,
+            positionFilterId = 0;
+
+        positionFilterId = this.getValueFromArr(positionsList, positionFilterVal, 'name');
+
+        this.setState({
+            positionsFilterID: positionFilterId
+        })
+    }
+
+    getLevelFilterVal(levelFilterVal){
+
+        let levelsList = this.props.levels,
+            levelFilterId = 0;
+
+        levelFilterId = this.getValueFromArr(levelsList, levelFilterVal, 'name');
+
+        this.setState({
+            levelsFilterID: levelFilterId
+        })
+    }
+
+    getProjectFilterVal(projectFilterVal){
+        let projectsList = this.props.projects,
+            projectFilterId = 0;
+
+        projectFilterId = this.getValueFromArr(projectsList, projectFilterVal, 'title');
+
+        this.setState({
+            projectsFilterID: projectFilterId
+        })
+    }
+
+    getValueFromArr(arr, value, nameField) {
+        // arr - array for filter
+        // value - can be [id] as number or [value] as string
+        // nameField - name of column from table. can be [title, name] as string
+
+        if (typeof value === 'string'){
+            let result = arr.find((currentElem) => {
+                return currentElem[nameField] === value
+
+            });
+
+            if (result === undefined){
+                return 0;
+            } else {
+                return result.id;
+            }
+        }
+
+        if (typeof value === 'number'){
+            let result = arr.find((currentElem) => {
+                return currentElem.id === value
+            });
+            return result[nameField];
+        }
+
+
+
+    }
+
     render() {
 
         let vacanciesList = this.props.vacancies,
@@ -77,6 +145,36 @@ class VacanciesClosed extends Component {
 
 
         if (vacanciesList.length && projectsList.length && levelsList.length && positionsList.length) {
+
+            //-- FILTER BY POSITION  --------------------------
+            let positionFilterID = this.state.positionsFilterID;
+
+            if (positionFilterID){
+                vacanciesList = vacanciesList.filter((current)=> {
+                    return (current.position_id === positionFilterID) && (current.status === false);
+                });
+            }
+            //-- END FILTER BY LEVEL -----------------------
+
+            //-- FILTER BY LEVEL  --------------------------
+            let levelFilterID = this.state.levelsFilterID;
+
+            if (levelFilterID){
+                vacanciesList = vacanciesList.filter((current)=> {
+                    return (current.level_id === levelFilterID) && (current.status === false);
+                });
+            }
+            //-- END FILTER BY LEVEL  -----------------------
+
+            //-- FILTER BY PROJECT  --------------------------
+            let projectFilterID = this.state.projectsFilterID;
+
+            if (projectFilterID){
+                vacanciesList = vacanciesList.filter((current)=> {
+                    return (current.project_id === projectFilterID) && (current.status === false);
+                });
+            }
+            //-- END FILTER BY PROJECT  -----------------------
 
             projectsList.forEach((item) => {
                 projectsTitleObj[item.id] = item.title;
@@ -189,6 +287,9 @@ class VacanciesClosed extends Component {
                             position={true}
                             level={true}
                             date={false}
+                            positionFilterVal={(event) => this.getPositionFilterVal(event)}
+                            levelFilterVal={(event) => this.getLevelFilterVal(event)}
+                            projectFilterVal={(event) => this.getProjectFilterVal(event)}
                         />
 
                         <PanelGroup bsClass='custom-panel-group'>
