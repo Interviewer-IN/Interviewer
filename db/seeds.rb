@@ -14,18 +14,26 @@
 end
 
 Admin.new({:email => "admin@admin.com", :password => "123456", :password_confirmation => "123456" }).save(:validate => false) unless Admin.where(email: "admin@admin.com").exists?
-User.new({:email => "user@user.com", :password => "123456", :password_confirmation => "123456", :provider => "email", :uid => "user@user.com", :confirmed_at => "22.07.2016 " ,:level_id =>5, :position_id => 5}).save(:validate => true) unless User.where(email: "user@user.com").exists?
-User.new({:email => "user1@user.com", :password => "123456", :password_confirmation => "123456", :provider => "email", :uid => "user@user.com", :confirmed_at => "22.07.2016 " ,:level_id =>3, :position_id => 3 }).save(:validate => true) unless User.where(email: "user1@user.com").exists?
+User.new({:email => "user@user.com", :password => "123456", :password_confirmation => "123456", :provider => "email", :uid => "user@user.com", :confirmed_at => "22.07.2016 " ,:level_id =>5, :position_id => 5, :confirmation_token => "user"}).save(:validate => true) unless User.where(email: "user@user.com").exists?
+User.new({:email => "user1@user.com", :password => "123456", :password_confirmation => "123456", :provider => "email", :uid => "user1@user.com", :confirmed_at => "22.07.2016 " ,:level_id =>3, :position_id => 3, :confirmation_token => "user1"}).save(:validate => true) unless User.where(email: "user1@user.com").exists?
 
 Level.new({:name => "Trainee"}).save(:validate => false)  unless Level.where(name: "Trainee").exists?
 Level.new({:name => "Junior"}).save(:validate => false)  unless Level.where(name: "Junior").exists?
 Level.new({:name => "Middle"}).save(:validate => false)  unless Level.where(name: "Middle").exists?
 Level.new({:name => "Senior"}).save(:validate => false)  unless Level.where(name: "Senior").exists?
+Level.new({:name => "Lead"}).save(:validate => false)  unless Level.where(name: "Senior").exists?
+
+Rating.new({:grade => "Supa Bad"}).save(:validate => false)  unless Rating.where(grade: "Supa Bad").exists?
+Rating.new({:grade => "Bad"}).save(:validate => false)  unless Rating.where(grade: "Bad").exists?
+Rating.new({:grade => "Neutral"}).save(:validate => false)  unless Rating.where(grade: "Neutral").exists?
+Rating.new({:grade => "Good"}).save(:validate => false)  unless Rating.where(grade: "Good").exists?
+Rating.new({:grade => "Supa Good"}).save(:validate => false)  unless Rating.where(grade: "Supa Good").exists?
 
 Position.new({:name => "QA"}).save(:validate => false)  unless Position.where(name: "QA").exists?
 Position.new({:name => "PM"}).save(:validate => false)  unless Position.where(name: "PM").exists?
 Position.new({:name => "Front-end"}).save(:validate => false)  unless Position.where(name: "Front-end").exists?
 Position.new({:name => "Back-end"}).save(:validate => false)  unless Position.where(name: "Back-end").exists?
+Position.new({:name => "HR"}).save(:validate => false)  unless Position.where(name: "HR").exists?
 
 5.times do
   Vacancy.create({
@@ -49,8 +57,15 @@ end
                    })
 end
 
+5.times do
+  Interview.create({
+                       state: "New",
+                       feedback: Faker::HarryPotter.quote,
+                       date_time: Time.at(0.0 + rand * (Time.now.to_f - 0.0.to_f)),
+                       candidate_id: Candidate.offset(rand(Candidate.count)).first.id,
+                       vacancy_id: Vacancy.offset(rand(Vacancy.count)).first.id,
+                       user_id: User.offset(rand(User.count)).first.id,
+                       rating_id: Rating.offset(rand(Rating.count)).first.id
+                   })
+end
 
-#TODO - index Level and Position by name case insesitive
-#TODO - make params not optional
-#TODO - unique elements
-#TODO - sorry failed to propper commint messages

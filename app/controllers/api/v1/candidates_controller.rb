@@ -45,7 +45,7 @@ module V1
 
     private
     def candidate_params
-      params.permit( :age, :experience, :contacts, :cv, :level_id, :position_id, :name, :surname)
+      params.permit( :age, :experience, :contacts, :cv, :level_id, :position_id, :name, :surname, :notes)
     end
   end
 end
