@@ -112,10 +112,8 @@ export function authorizationCheck() {
         client = cookiesObj['client'],
         isUserLogged = true,
         userData = localStorage.getItem('userData');
-    console.log('Im here');
 
     if (!(accessToken && client && uid)) {
-        console.log('Im here');
         isUserLogged = false;
         userData = {};
 
@@ -127,7 +125,6 @@ export function authorizationCheck() {
 
         localStorage.removeItem('userData');
 
-        console.log('Im here too');
     }
 
 
