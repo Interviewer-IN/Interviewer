@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171004214005) do
+ActiveRecord::Schema.define(version: 20171010221143) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,8 +41,28 @@ ActiveRecord::Schema.define(version: 20171004214005) do
     t.bigint "level_id"
     t.bigint "position_id"
     t.string "cv"
+    t.string "name"
+    t.string "surname"
+    t.text "notes"
     t.index ["level_id"], name: "index_candidates_on_level_id"
     t.index ["position_id"], name: "index_candidates_on_position_id"
+  end
+
+  create_table "interviews", force: :cascade do |t|
+    t.boolean "status", default: true, null: false
+    t.string "state"
+    t.text "feedback"
+    t.datetime "date_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "candidate_id"
+    t.bigint "vacancy_id"
+    t.bigint "user_id"
+    t.bigint "rating_id"
+    t.index ["candidate_id"], name: "index_interviews_on_candidate_id"
+    t.index ["rating_id"], name: "index_interviews_on_rating_id"
+    t.index ["user_id"], name: "index_interviews_on_user_id"
+    t.index ["vacancy_id"], name: "index_interviews_on_vacancy_id"
   end
 
   create_table "levels", force: :cascade do |t|
@@ -60,6 +80,12 @@ ActiveRecord::Schema.define(version: 20171004214005) do
   create_table "projects", force: :cascade do |t|
     t.string "title"
     t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "ratings", force: :cascade do |t|
+    t.string "grade"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -114,6 +140,10 @@ ActiveRecord::Schema.define(version: 20171004214005) do
 
   add_foreign_key "candidates", "levels"
   add_foreign_key "candidates", "positions"
+  add_foreign_key "interviews", "candidates"
+  add_foreign_key "interviews", "ratings"
+  add_foreign_key "interviews", "users"
+  add_foreign_key "interviews", "vacancies"
   add_foreign_key "users", "levels"
   add_foreign_key "users", "positions"
   add_foreign_key "vacancies", "levels"
