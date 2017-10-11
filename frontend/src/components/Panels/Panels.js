@@ -5,7 +5,6 @@ import "./panels.css";
 
 class Panels extends Component {
 
-
     handlePanelCollapseClick(event) {
 
 
@@ -113,10 +112,12 @@ class Panels extends Component {
         }
 
         return (
-            <Panel collapsible header={panelTitle}
-                   onClick={(event) => this.handlePanelCollapseClick(event)}
+            <Panel collapsible
                    id={id}
-                >
+                   header={panelTitle}
+                   defaultExpanded={this.props.defaultExpanded}
+                   onClick={(event) => this.handlePanelCollapseClick(event)}
+            >
                 <div className={panelBodyClass}>
                     <div className="custom-panel-body__left">
                         <div className="vacancy-description">
@@ -133,7 +134,6 @@ class Panels extends Component {
                     </div>
                 </div>
             </Panel>
-
         );
     }
 }
