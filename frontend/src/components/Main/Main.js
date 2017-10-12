@@ -83,9 +83,6 @@ class Main extends Component {
     getUserData() {
         var userData = localStorage.getItem("userData"),
             data = JSON.parse(userData);
-
-        console.log(data);
-
         return data;
     }
 
