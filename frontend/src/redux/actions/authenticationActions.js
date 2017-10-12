@@ -43,8 +43,6 @@ export function doLogin(data) {
                         document.cookie = "uid=" + uid + "; path=/; expires=" + expiry;
                         document.cookie = "client=" + client + "; path=/; expires=" + expiry;
 
-
-                        dispatch(loggedUser(true));
                         return response.json();
 
                     case 401:
@@ -73,6 +71,7 @@ export function doLogin(data) {
                     ));
                 } else {
                     localStorage.setItem('userData', JSON.stringify(data.data));
+                    dispatch(loggedUser(true));
                     dispatch(setUserData(data));
 
                 }
