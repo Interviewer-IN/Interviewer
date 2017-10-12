@@ -68,8 +68,9 @@ class Main extends Component {
 // -- CHECKING USER'S ROLE ----------------
 
     isHR(interview) {
-        let currentUser = this.getCookies();
-        let HR = currentUser.uid === "user@user.com";
+
+        let currentUser = this.getUserData();
+        let HR = currentUser.is_hr;
         switch (HR, interview) {
             case (!HR && !interview):
                 return this.props.history.push('/interviews-upcoming');
@@ -80,14 +81,21 @@ class Main extends Component {
         }
     }
 
-    getCookies() {
-        let cookies = {};
-        for (let cookie of document.cookie.split('; ')) {
-            let [name, value] = cookie.split("=");
-            cookies[name] = decodeURIComponent(value);
-        }
-        return cookies;
+    getUserData() {
+        var userData = localStorage.getItem("userData"),
+            data = JSON.parse(userData);
+        return data;
     }
+
+    // getCookies() {
+    //     let cookies = {};
+    //     for (let cookie of document.cookie.split('; ')) {
+    //         let [name, value] = cookie.split("=");
+    //         cookies[name] = decodeURIComponent(value);
+    //         console.log(cookies[name]);
+    //     }
+    //     return cookies;
+    // }
 
 //--  END CHECKING USER'S ROLE  ----------------
 
