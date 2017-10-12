@@ -68,6 +68,7 @@ class Main extends Component {
 // -- CHECKING USER'S ROLE ----------------
 
     isHR(interview) {
+
         let currentUser = this.getUserData();
         let HR = currentUser.is_hr;
         switch (HR, interview) {

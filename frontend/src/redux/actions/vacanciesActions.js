@@ -1,6 +1,7 @@
 import fetch from "isomorphic-fetch";
 import {makeNote} from "./notificationActions";
 
+const EXPANDED_ELEMENT_INDEX = 1;
 
 function addVacancies(data) {
     return {
@@ -10,7 +11,16 @@ function addVacancies(data) {
     }
 }
 
-export function getVacancies() {
+function addIndexExpandedElement(data) {
+    return {
+        type: 'INDEX_ELEMENT',
+        payload: data
+
+    }
+}
+
+export function getVacancies(indexExpandedElement = false) {
+
     return (dispatch) => {
         fetch('/api/v1/vacancies',
             {
@@ -30,6 +40,7 @@ export function getVacancies() {
                 }
             })
             .then(data => {
+                dispatch(addIndexExpandedElement(indexExpandedElement));
                 dispatch(addVacancies(data));
             })
             .catch((error) => {
@@ -108,8 +119,8 @@ export function createVacancy(data, message, backPath) {
                 }
             })
             .then(data => {
-                dispatch(getVacancies());
                 dispatch(addNewVacancy(data));
+                dispatch(getVacancies(EXPANDED_ELEMENT_INDEX));
                 dispatch(makeNote(
                     {
                         status: "success",
@@ -117,7 +128,7 @@ export function createVacancy(data, message, backPath) {
                         hide: true
                     }
                 ));
-                if (backPath !== undefined){
+                if (backPath){
                     window.location.replace(backPath);
                 }
 

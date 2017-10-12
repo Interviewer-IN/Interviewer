@@ -63,13 +63,13 @@ class VacanciesClosed extends Component {
         dispatch(updateVacancy(statusData, successCloseMessage))
     }
 
-    duplicateVacancy(duplicateData){
+    duplicateVacancy(duplicateData) {
         let successDuplicateMessage = this.state.duplicateMessage;
         const {dispatch} = this.props;
         dispatch(createVacancy(duplicateData, successDuplicateMessage))
     }
 
-    getPositionFilterVal(positionFilterVal){
+    getPositionFilterVal(positionFilterVal) {
         let positionsList = this.props.positions,
             positionFilterId = 0;
 
@@ -80,7 +80,7 @@ class VacanciesClosed extends Component {
         })
     }
 
-    getLevelFilterVal(levelFilterVal){
+    getLevelFilterVal(levelFilterVal) {
 
         let levelsList = this.props.levels,
             levelFilterId = 0;
@@ -92,7 +92,7 @@ class VacanciesClosed extends Component {
         })
     }
 
-    getProjectFilterVal(projectFilterVal){
+    getProjectFilterVal(projectFilterVal) {
         let projectsList = this.props.projects,
             projectFilterId = 0;
 
@@ -108,26 +108,25 @@ class VacanciesClosed extends Component {
         // value - can be [id] as number or [value] as string
         // nameField - name of column from table. can be [title, name] as string
 
-        if (typeof value === 'string'){
+        if (typeof value === 'string') {
             let result = arr.find((currentElem) => {
                 return currentElem[nameField] === value
 
             });
 
-            if (result === undefined){
+            if (result === undefined) {
                 return 0;
             } else {
                 return result.id;
             }
         }
 
-        if (typeof value === 'number'){
+        if (typeof value === 'number') {
             let result = arr.find((currentElem) => {
                 return currentElem.id === value
             });
             return result[nameField];
         }
-
 
 
     }
@@ -141,17 +140,22 @@ class VacanciesClosed extends Component {
             levelsTitleObj = {},
             positionsTitleObj = {},
             projectsTitleObj = {},
-            vacanciesToDisplay = [];
+            vacanciesToDisplay = [],
+            indexExpandedElement = this.props.indexExpandedElement;
 
 
         if (vacanciesList.length && projectsList.length && levelsList.length && positionsList.length) {
 
+            vacanciesList = vacanciesList.filter((current) => {
+                return current.status === false;
+            });
+
             //-- FILTER BY POSITION  --------------------------
             let positionFilterID = this.state.positionsFilterID;
 
-            if (positionFilterID){
-                vacanciesList = vacanciesList.filter((current)=> {
-                    return (current.position_id === positionFilterID) && (current.status === false);
+            if (positionFilterID) {
+                vacanciesList = vacanciesList.filter((current) => {
+                    return (current.position_id === positionFilterID);
                 });
             }
             //-- END FILTER BY LEVEL -----------------------
@@ -159,9 +163,9 @@ class VacanciesClosed extends Component {
             //-- FILTER BY LEVEL  --------------------------
             let levelFilterID = this.state.levelsFilterID;
 
-            if (levelFilterID){
-                vacanciesList = vacanciesList.filter((current)=> {
-                    return (current.level_id === levelFilterID) && (current.status === false);
+            if (levelFilterID) {
+                vacanciesList = vacanciesList.filter((current) => {
+                    return (current.level_id === levelFilterID);
                 });
             }
             //-- END FILTER BY LEVEL  -----------------------
@@ -169,9 +173,9 @@ class VacanciesClosed extends Component {
             //-- FILTER BY PROJECT  --------------------------
             let projectFilterID = this.state.projectsFilterID;
 
-            if (projectFilterID){
-                vacanciesList = vacanciesList.filter((current)=> {
-                    return (current.project_id === projectFilterID) && (current.status === false);
+            if (projectFilterID) {
+                vacanciesList = vacanciesList.filter((current) => {
+                    return (current.project_id === projectFilterID);
                 });
             }
             //-- END FILTER BY PROJECT  -----------------------
@@ -189,81 +193,84 @@ class VacanciesClosed extends Component {
                 positionsTitleObj[item.id] = item.name;
             });
 
-            vacanciesToDisplay = vacanciesList.map((item) => {
+            vacanciesToDisplay = vacanciesList.map((item, index) => {
 
-                let vacancyStatus = item.status;
-                if (!vacancyStatus) {
-                    let vacancyId = item.id,
-                        projectId = item.project_id,
-                        levelId = item.level_id,
-                        positionId = item.position_id,
-                        statusData = {
-                            id: vacancyId,
-                            status: true
-                        },
-                        duplicateData = {
-                            description: item.description,
-                            level_id: levelId,
-                            position_id: positionId,
-                            project_id: projectId,
-                            status: false
-                        };
+                let vacancyId = item.id,
+                    projectId = item.project_id,
+                    levelId = item.level_id,
+                    positionId = item.position_id,
+                    indexElement = ++index,
+                    statusData = {
+                        id: vacancyId,
+                        status: true
+                    },
+                    duplicateData = {
+                        description: item.description,
+                        level_id: levelId,
+                        position_id: positionId,
+                        project_id: projectId,
+                        status: false
+                    };
 
-                    const PAGE_TITLE = (
-                        <div className="custom-panel-title panel-list-item">
-                            <div className="custom-panel-title__right-side">
-                                <div className="panel-collapse-btn">
-                                    <span className="panel-collapse-btn__title btn-js">Expand</span>
-                                    <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
-                                </div>
+                const PAGE_TITLE = (
+                    <div className="custom-panel-title panel-list-item">
+                        <div className="custom-panel-title__right-side">
+                            <div className="panel-collapse-btn">
+                                <span className="panel-collapse-btn__title btn-js">Expand</span>
+                                <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
                             </div>
-                            <div className="custom-panel-title__left-side">
-                                <div className="info-block">
-                                    <div className="info-block__item text-bold--200">
-                                        <span className="text-bold--600">{positionsTitleObj[positionId]}</span>
-                                        <span> </span>
-                                        <span className="text-bold--600">{levelsTitleObj[levelId]}</span>
-                                        <span> for </span>
-                                        <span className="text-bold--600">{projectsTitleObj[projectId]}</span>
-                                        <span> project</span>
-                                    </div>
+                        </div>
+                        <div className="custom-panel-title__left-side">
+                            <div className="info-block">
+                                <div className="info-block__item text-bold--200">
+                                    <span className="text-bold--600">{positionsTitleObj[positionId]}</span>
+                                    <span> </span>
+                                    <span className="text-bold--600">{levelsTitleObj[levelId]}</span>
+                                    <span> for </span>
+                                    <span className="text-bold--600">{projectsTitleObj[projectId]}</span>
+                                    <span> project</span>
                                 </div>
                             </div>
                         </div>
-                    );
+                    </div>
+                );
 
-                    const DESCRIPTION = (
-                        <div className="form-group">
-                            <label className="control-label form-label">Description:</label>
-                            <p className="form-control-static">
-                                {item.description}
-                            </p>
-                        </div>
-                    );
+                const DESCRIPTION = (
+                    <div className="form-group">
+                        <label className="control-label form-label">Description:</label>
+                        <p className="form-control-static">
+                            {item.description}
+                        </p>
+                    </div>
+                );
 
-                    return (
-                        <Panels
-                            key={vacancyId}
-                            id={vacancyId}
-                            showActionBtn={true}
-                            titleForActionBtn='Reopen vacancy'
-                            titleConst={PAGE_TITLE}
-                            description={DESCRIPTION}
-                            showEditBtn={true}
-                            showDuplicateBtn={true}
-                            showDeleteBtn={true}
-                            editBtnId={"edit-vacancy-" + vacancyId}
-                            dublicateBtnId={"dublicate-vacancy-" + vacancyId}
-                            deleteBtnId={"delete-vacancy-" + vacancyId}
-                            callDelete={() => {
-                                this.openModalConfirm(vacancyId)
-                            }}
-                            callEdit={() => this.switchToEditMode(vacancyId)}
-                            callAction={() => this.switchToClose(statusData)}
-                            callDublicate={() => this.duplicateVacancy(duplicateData)}
-                        />
-                    )
-                }
+                let toExpandElement = () => {
+                    return (indexElement === indexExpandedElement) ? (true) : (false);
+                };
+
+                return (
+                    <Panels
+                        key={vacancyId}
+                        id={vacancyId}
+                        defaultExpanded={toExpandElement()}
+                        showActionBtn={true}
+                        titleForActionBtn='Reopen vacancy'
+                        titleConst={PAGE_TITLE}
+                        description={DESCRIPTION}
+                        showEditBtn={true}
+                        showDuplicateBtn={true}
+                        showDeleteBtn={true}
+                        editBtnId={"edit-vacancy-" + vacancyId}
+                        dublicateBtnId={"dublicate-vacancy-" + vacancyId}
+                        deleteBtnId={"delete-vacancy-" + vacancyId}
+                        callDelete={() => {
+                            this.openModalConfirm(vacancyId)
+                        }}
+                        callEdit={() => this.switchToEditMode(vacancyId)}
+                        callAction={() => this.switchToClose(statusData)}
+                        callDublicate={() => this.duplicateVacancy(duplicateData)}
+                    />
+                )
             })
         }
 
@@ -331,7 +338,8 @@ function mapStateToProps(state) {
         vacancies: state.vacancies.vacancies,
         projects: state.project.projects,
         levels: state.levels.levels,
-        positions: state.positions.positions
+        positions: state.positions.positions,
+        indexExpandedElement: state.vacancies.indexExpandedElement
     }
 }
 

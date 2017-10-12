@@ -1,6 +1,7 @@
 const initialState = {
     vacancies: [],
-    currentVacancy: {}
+    currentVacancy: {},
+    indexExpandedElement: false
 };
 
 export default function vacancies (state = initialState, action) {
@@ -17,6 +18,11 @@ export default function vacancies (state = initialState, action) {
             case 'CREATE_VACANCY':
                 return {
                     ...state, vacancies: action.payload
+                };
+
+            case 'INDEX_ELEMENT':
+                return {
+                    ...state, indexExpandedElement: action.payload
                 };
 
 

@@ -3,7 +3,17 @@
 }
 
 .submit-btn {
-  margin-top: 3rem;
+  position: relative;
+  padding-top: 3rem;
+  overflow: auto;
+
+  .custom-error{
+    position: absolute;
+    top: 10px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+  }
 }
 
 .forgot-pass {
