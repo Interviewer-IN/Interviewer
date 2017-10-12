@@ -51,7 +51,7 @@ class Main extends Component {
         this.checkUserStatus();
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         const {dispatch} = this.props;
         dispatch(showSideBar(false));
     }
@@ -69,8 +69,9 @@ class Main extends Component {
 
     isHR(interview) {
         let currentUser = this.getCookies();
+        console.log(currentUser.uid);
         let HR = currentUser.uid === "user@user.com";
-        switch(HR, interview) {
+        switch (HR, interview) {
             case (!HR && !interview):
                 return this.props.history.push('/interviews-upcoming');
             case (!HR && interview):
@@ -85,9 +86,11 @@ class Main extends Component {
         for (let cookie of document.cookie.split('; ')) {
             let [name, value] = cookie.split("=");
             cookies[name] = decodeURIComponent(value);
+            console.log(cookies[name]);
         }
         return cookies;
     }
+
 //--  END CHECKING USER'S ROLE  ----------------
 
     handleMakeNote(status, text, hide) {
@@ -199,8 +202,11 @@ class Main extends Component {
                                 render={(props) => (
                                     isLoggedIn() ?
                                         (<CreateCandidate {...props}
-                                                     callMakeNote={(status, text, hide) =>
-                                                         this.handleMakeNote(status, text, hide)}/>) :
+                                                          callMakeNote={(status, text, hide) =>
+                                                              this.handleMakeNote(status, text, hide)}
+                                                          onCheckUserRole={() => this.isHR()}
+                                        />) :
+
                                         (<Redirect to="/login"/>)
 
                                 )}
