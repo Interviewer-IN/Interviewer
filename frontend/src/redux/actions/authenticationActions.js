@@ -64,13 +64,16 @@ export function doLogin(data) {
             .then((data) => {
 
                 if (data.data === undefined) {
-                    dispatch(makeNote(
-                        {
-                            status: "warning",
-                            text: data.errors[0],
-                            hide: true
-                        }
-                    ));
+
+                    let submitFormGroup = document.querySelector('.submit-btn');
+
+                    let errorElem = document.createElement('span');
+                    errorElem.innerHTML = data.errors[0];
+                    errorElem.classList.add('has-error', 'custom-error');
+
+                    submitFormGroup.appendChild(errorElem);
+                    submitFormGroup.classList.add('has-error');
+
                 } else {
                     localStorage.setItem('userData', JSON.stringify(data.data));
                     dispatch(setUserData(data));
@@ -113,7 +116,9 @@ export function authorizationCheck() {
         isUserLogged = true,
         userData = localStorage.getItem('userData');
 
+
     if (!(accessToken && client && uid)) {
+
         isUserLogged = false;
         userData = {};
 
@@ -124,6 +129,7 @@ export function authorizationCheck() {
         document.cookie = 'uid=; expires=' + date.toUTCString();
 
         localStorage.removeItem('userData');
+
 
     }
 

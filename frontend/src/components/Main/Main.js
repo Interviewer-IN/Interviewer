@@ -69,7 +69,6 @@ class Main extends Component {
 
     isHR(interview) {
         let currentUser = this.getCookies();
-        console.log(currentUser.uid);
         let HR = currentUser.uid === "user@user.com";
         switch (HR, interview) {
             case (!HR && !interview):
@@ -86,7 +85,6 @@ class Main extends Component {
         for (let cookie of document.cookie.split('; ')) {
             let [name, value] = cookie.split("=");
             cookies[name] = decodeURIComponent(value);
-            console.log(cookies[name]);
         }
         return cookies;
     }
