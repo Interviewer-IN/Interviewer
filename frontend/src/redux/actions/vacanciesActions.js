@@ -1,13 +1,12 @@
 import fetch from "isomorphic-fetch";
 import {makeNote} from "./notificationActions";
+import {EXPANDED_ELEMENT_INDEX} from '../../config';
 
-const EXPANDED_ELEMENT_INDEX = 1;
 
 function addVacancies(data) {
     return {
         type: 'ADD_VACANCIES',
         payload: data.data
-
     }
 }
 

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './vacanciesOpen.css';
 import Helmet from "react-helmet";
-import {PanelGroup, Modal, Button, Panel} from 'react-bootstrap';
+import {PanelGroup, Modal, Button} from 'react-bootstrap';
 import {connect} from "react-redux";
 
 import PageTitle from './../../containers/PageTitle';
@@ -29,9 +29,9 @@ class VacanciesOpen extends Component {
     }
 
     componentWillMount() {
+        this.props.onCheckUserRole();
         const {dispatch} = this.props;
         dispatch(getVacancies());
-        this.props.onCheckUserRole();
     }
 
     openModalConfirm(currentID) {
@@ -103,6 +103,7 @@ class VacanciesOpen extends Component {
         })
     }
 
+    // TODO transfer into utils folder
     getValueFromArr(arr, value, nameField) {
         // arr - array for filter
         // value - can be [id] as number or [value] as string
@@ -180,6 +181,7 @@ class VacanciesOpen extends Component {
             }
             //-- END FILTER BY PROJECT  -----------------------
 
+            // TODO transfer into utils folder
             projectsList.forEach((item) => {
                 projectsTitleObj[item.id] = item.title;
             });
@@ -237,7 +239,7 @@ class VacanciesOpen extends Component {
 
                 const DESCRIPTION = (
                     <div className="form-group">
-                        <label className="control-label form-label">Description:</label>
+                        <label className="control-label form-label text-green">Description:</label>
                         <p className="form-control-static">
                             {item.description}
                         </p>
