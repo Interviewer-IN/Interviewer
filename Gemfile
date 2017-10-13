@@ -37,10 +37,6 @@ gem 'carrierwave'
 #Integrating Backend and frontend
 gem "foreman"
 
-#Experimental feature
-gem "graphql"
-gem "graphiql-rails"
-
 #Integrating device token
 gem 'devise_token_auth'
 

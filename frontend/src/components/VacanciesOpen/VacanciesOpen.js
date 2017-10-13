@@ -7,7 +7,7 @@ import {connect} from "react-redux";
 import PageTitle from './../../containers/PageTitle';
 import Filters from './../../components/Filters';
 import Panels from './../../components/Panels';
-import {getVacancies, deleteVacancy, updateVacancy, createVacancy} from "../../redux/actions/vacanciesActions";
+import {getVacancies, deleteVacancy, updateVacancy, createVacancy, addIndexExpandedElement} from "../../redux/actions/vacanciesActions";
 
 class VacanciesOpen extends Component {
 
@@ -32,6 +32,11 @@ class VacanciesOpen extends Component {
         this.props.onCheckUserRole();
         const {dispatch} = this.props;
         dispatch(getVacancies());
+    }
+
+    componentWillUnmount(){
+        const {dispatch} = this.props;
+        dispatch(addIndexExpandedElement(false));
     }
 
     openModalConfirm(currentID) {
