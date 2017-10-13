@@ -11,7 +11,7 @@ function addVacancies(data) {
     }
 }
 
-function addIndexExpandedElement(data) {
+export function addIndexExpandedElement(data) {
     return {
         type: 'INDEX_ELEMENT',
         payload: data
@@ -21,7 +21,7 @@ function addIndexExpandedElement(data) {
 
 export function getVacancies(indexExpandedElement = false) {
 
-    return (dispatch) => {
+    return (dispatch) => new Promise((resolve) =>{
         fetch('/api/v1/vacancies',
             {
                 method: 'GET',
@@ -50,7 +50,7 @@ export function getVacancies(indexExpandedElement = false) {
                     hide: false
                 }))
             })
-    }
+    })
 }
 
 function addVacancy(data) {
