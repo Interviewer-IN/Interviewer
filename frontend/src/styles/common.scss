@@ -20,6 +20,10 @@ select {
 .text-bold {
   font-weight: bold;
 
+  &--100{
+    font-weight: 100;
+  }
+
   &--200{
     font-weight: 200;
   }

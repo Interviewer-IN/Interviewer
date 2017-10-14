@@ -1,6 +1,7 @@
 .download-block{
   display: inline-block;
   overflow: hidden;
+  text-align: left;
 
   span{
     display: inline-block;
@@ -15,6 +16,10 @@
 
   &__title{
     vertical-align: top;
+  }
+
+  &--disabled{
+    cursor: not-allowed;
   }
 }
 

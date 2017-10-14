@@ -10,6 +10,7 @@ import Helmet from 'react-helmet';
 import {connect} from 'react-redux';
 import {getCandidates, deleteCandidate} from '../../redux/actions/candidatesActions'
 import {levelsListName, positionsListName, getValueFromArr} from '../../utils/index';
+import {GET_EMPTY_DATA} from '../../config';
 
 class Candidates extends Component {
 
@@ -133,18 +134,66 @@ class Candidates extends Component {
                                 <span className="download-block__title">Download CV</span>
                             </a>
                         )
+                    } else {
+                        return (
+                            <a className="download-block form-group download-block--disabled text-muted">
+                                <span className="download-block__icon fa fa-download"/>
+                                <span className="download-block__title text-bold--100">Download CV</span>
+                            </a>
+                        )
                     }
                 };
 
-                let checkCandidateNotes = () =>{
-                    if(candidateNotes) {
+                let checkCandidateExperience = () => {
+                    if (candidateExperience) {
                         return (
-                            <div className="form-group">
-                                <label className="control-label form-label text-green">Additional notes:</label>
-                                <p className="form-control-static">
-                                    {candidateNotes}
-                                </p>
-                            </div>
+                            <p className="form-control-static">
+                                {candidateExperience}
+                            </p>
+                        )
+
+                    } else {
+                        return (
+                            <p className="form-control-static text-muted text-bold--100">
+                                {GET_EMPTY_DATA}
+                            </p>
+
+                        )
+                    }
+                };
+
+                let checkCandidateContacts = () => {
+                    if (candidateContacts) {
+                        return (
+                            <p className="form-control-static">
+                                {candidateContacts}
+                            </p>
+                        )
+
+                    } else {
+                        return (
+                            <p className="form-control-static text-muted text-bold--100">
+                                {GET_EMPTY_DATA}
+                            </p>
+
+                        )
+                    }
+                };
+
+                let checkCandidateNotes = () => {
+                    if (candidateNotes) {
+                        return (
+                            <p className="form-control-static">
+                                {candidateNotes}
+                            </p>
+                        )
+
+                    } else {
+                        return (
+                            <p className="form-control-static text-muted text-bold--100">
+                                {GET_EMPTY_DATA}
+                            </p>
+
                         )
                     }
                 };
@@ -166,7 +215,8 @@ class Candidates extends Component {
                                <span className="info-block__position-capture">
                                    Desired position:
                                </span>
-                                        <span className="info-block__position-name">{candidatePosition  + ' ' + candidateLevel}</span>
+                                        <span
+                                            className="info-block__position-name">{candidatePosition + ' ' + candidateLevel}</span>
                                     </div>
                                 </div>
                             </div>
@@ -187,7 +237,7 @@ class Candidates extends Component {
                             <div className="form-group">
                                 <label className="control-label form-label text-green">Desired position:</label>
                                 <p className="form-control-static">
-                                    {candidatePosition  + ' ' + candidateLevel}
+                                    {candidatePosition + ' ' + candidateLevel}
                                 </p>
                             </div>
                         </div>
@@ -197,19 +247,20 @@ class Candidates extends Component {
                         <div className="col-md-12">
                             <div className="form-group">
                                 <label className="control-label form-label text-green">Work experience:</label>
-                                <p className="form-control-static">
-                                    {candidateExperience}
-                                </p>
+                                {checkCandidateExperience()}
                             </div>
 
                             <div className="form-group">
                                 <label className="control-label form-label text-green">Contact info:</label>
-                                <p className="form-control-static">
-                                    {candidateContacts}
-                                </p>
+                                {checkCandidateContacts()}
                             </div>
 
-                            {checkCandidateNotes()}
+                            <div className="form-group">
+                                <label className="control-label form-label text-green">Additional notes:</label>
+                                {checkCandidateNotes()}
+                            </div>
+
+
                         </div>
                     </form>
 
@@ -247,6 +298,7 @@ class Candidates extends Component {
                                    showButton={true}
                                    titleForButton="Add candidate"
                                    linkForButton="/candidates/create-candidate"
+                                   buttonId='add-candidate'
                         />
                         <Filters
                             level={true}
