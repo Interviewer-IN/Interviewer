@@ -1,11 +1,15 @@
-export function getValueFromArr(arr, value, nameField) {
-    // arr - array for filter
-    // value - can be [id] as number or [value] as string
-    // nameField - name of column from table. can be [title, name] as string
+// arrForSearch - array which includes objects where we looking for the necessary value
+// searchByField - can be [id] as number or [value] as string.
+// nameField - name of property which we should get. Can be [title, name] as string.
+// result = value which will be returned
 
-    if (typeof value === 'string') {
-        let result = arr.find((currentElem) => {
-            return currentElem[nameField] === value
+
+
+export function getValueFromArr(arrForSearch, searchByField, nameField) {
+
+    if (typeof searchByField === 'string') {
+        let result = arrForSearch.find((currentElem) => {
+            return currentElem[nameField] === searchByField
 
         });
 
@@ -16,9 +20,9 @@ export function getValueFromArr(arr, value, nameField) {
         }
     }
 
-    if (typeof value === 'number') {
-        let result = arr.find((currentElem) => {
-            return currentElem.id === value
+    if (typeof searchByField === 'number') {
+        let result = arrForSearch.find((currentElem) => {
+            return currentElem.id === searchByField
         });
         return result[nameField];
     }

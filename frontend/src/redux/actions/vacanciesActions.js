@@ -1,6 +1,5 @@
 import fetch from "isomorphic-fetch";
 import {makeNote} from "./notificationActions";
-import {EXPANDED_ELEMENT_INDEX} from '../../config';
 
 
 function addVacancies(data) {
@@ -97,7 +96,7 @@ function addNewVacancy(data) {
 }
 
 
-export function createVacancy(data, message, backPath) {
+export function createVacancy(data, message, backPath, openPanelIndex = 0) {
     let successMessage = message || 'Vacancy was created';
     return (dispatch) => {
         fetch('/api/v1/vacancies',
@@ -119,7 +118,7 @@ export function createVacancy(data, message, backPath) {
             })
             .then(data => {
                 dispatch(addNewVacancy(data));
-                dispatch(getVacancies(EXPANDED_ELEMENT_INDEX));
+                dispatch(getVacancies(openPanelIndex));
                 dispatch(makeNote(
                     {
                         status: "success",

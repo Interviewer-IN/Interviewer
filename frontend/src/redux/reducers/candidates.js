@@ -1,6 +1,6 @@
 let initState = {
-    candidates: []
-
+    candidates: [],
+    currentCandidate: {}
 };
 
 
@@ -14,6 +14,12 @@ export default function candidates(state = initState, action) {
                 return {
                     ...state, candidates: action.payload
                 };
+
+            case 'CURRENT_CANDIDATE':
+                return {
+                    ...state, currentCandidate: action.payload
+                };
+
             default:
                 return state;
         }

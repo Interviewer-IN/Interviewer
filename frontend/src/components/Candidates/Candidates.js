@@ -10,7 +10,7 @@ import Helmet from 'react-helmet';
 import {connect} from 'react-redux';
 import {getCandidates, deleteCandidate} from '../../redux/actions/candidatesActions'
 import {levelsListName, positionsListName, getValueFromArr} from '../../utils/index';
-import {GET_EMPTY_DATA} from '../../config';
+import {GET_EMPTY_DATA, DELETE_CANDIDATE} from '../../config';
 
 class Candidates extends Component {
 
@@ -19,6 +19,7 @@ class Candidates extends Component {
 
         this.state = {
             showModalConfirm: false,
+            deleteCandidateText: DELETE_CANDIDATE,
             currentCandidateId: '',
             positionsFilterID: '',
             levelsFilterID: '',
@@ -30,6 +31,7 @@ class Candidates extends Component {
 
     componentWillMount() {
         this.props.onCheckUserRole();
+
         const {dispatch} = this.props;
         dispatch(getCandidates());
     }
@@ -51,6 +53,10 @@ class Candidates extends Component {
         this.closeModalConfirm();
         const {dispatch} = this.props;
         dispatch(deleteCandidate(this.state.currentCandidateId));
+    }
+
+    switchToEditMode(currentID) {
+        this.props.history.push("/candidates/candidate/" + currentID + "/edit");
     }
 
     getPositionFilterVal(positionFilterVal) {
@@ -78,9 +84,6 @@ class Candidates extends Component {
 
 
     render() {
-
-
-        console.log('Candidate', this.props);
 
         let candidatesList = this.props.candidates,
             levelsList = this.props.levels,
@@ -245,14 +248,15 @@ class Candidates extends Component {
                             {checkCandidateCV()}
                         </div>
                         <div className="col-md-12">
-                            <div className="form-group">
-                                <label className="control-label form-label text-green">Work experience:</label>
-                                {checkCandidateExperience()}
-                            </div>
 
                             <div className="form-group">
                                 <label className="control-label form-label text-green">Contact info:</label>
                                 {checkCandidateContacts()}
+                            </div>
+
+                            <div className="form-group">
+                                <label className="control-label form-label text-green">Work experience:</label>
+                                {checkCandidateExperience()}
                             </div>
 
                             <div className="form-group">
@@ -278,6 +282,7 @@ class Candidates extends Component {
                         callDelete={() => {
                             this.openModalConfirm(candidateId)
                         }}
+                        callEdit={() => this.switchToEditMode(candidateId)}
                     />
                 )
 
@@ -315,7 +320,7 @@ class Candidates extends Component {
                             <Modal.Header closeButton>
                             </Modal.Header>
                             <Modal.Body>
-                                <p>Are you sure you want to delete the candidate?</p>
+                                <p>{this.state.deleteCandidateText}</p>
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button

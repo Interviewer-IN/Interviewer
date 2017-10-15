@@ -8,6 +8,8 @@ import PageTitle from './../../containers/PageTitle';
 import Filters from './../../components/Filters';
 import Panels from './../../components/Panels';
 import {getVacancies, deleteVacancy, updateVacancy, createVacancy, addIndexExpandedElement} from "../../redux/actions/vacanciesActions";
+import {levelsListName, positionsListName, projectsListName, getValueFromArr} from '../../utils/index';
+import {DELETE_VACANCY, DUPLICATE_VACANCY, REOPEN_VACANCY, EXPANDED_ELEMENT_INDEX} from '../../config';
 
 class VacanciesClosed extends Component {
 
@@ -17,8 +19,9 @@ class VacanciesClosed extends Component {
         this.state = {
             showModalConfirm: false,
             currentVacancyId: '',
-            actionBtnMessage: 'Vacancy was reopened',
-            duplicateMessage: 'Duplicate was added',
+            deleteVacancyText: DELETE_VACANCY,
+            actionBtnMessage: REOPEN_VACANCY,
+            duplicateMessage: DUPLICATE_VACANCY,
             positionsFilterID: '',
             levelsFilterID: '',
             projectsFilterID: '',
@@ -71,14 +74,14 @@ class VacanciesClosed extends Component {
     duplicateVacancy(duplicateData) {
         let successDuplicateMessage = this.state.duplicateMessage;
         const {dispatch} = this.props;
-        dispatch(createVacancy(duplicateData, successDuplicateMessage))
+        dispatch(createVacancy(duplicateData, successDuplicateMessage, null, EXPANDED_ELEMENT_INDEX))
     }
 
     getPositionFilterVal(positionFilterVal) {
         let positionsList = this.props.positions,
             positionFilterId = 0;
 
-        positionFilterId = this.getValueFromArr(positionsList, positionFilterVal, 'name');
+        positionFilterId = getValueFromArr(positionsList, positionFilterVal, 'name');
 
         this.setState({
             positionsFilterID: positionFilterId
@@ -90,7 +93,7 @@ class VacanciesClosed extends Component {
         let levelsList = this.props.levels,
             levelFilterId = 0;
 
-        levelFilterId = this.getValueFromArr(levelsList, levelFilterVal, 'name');
+        levelFilterId = getValueFromArr(levelsList, levelFilterVal, 'name');
 
         this.setState({
             levelsFilterID: levelFilterId
@@ -101,40 +104,13 @@ class VacanciesClosed extends Component {
         let projectsList = this.props.projects,
             projectFilterId = 0;
 
-        projectFilterId = this.getValueFromArr(projectsList, projectFilterVal, 'title');
+        projectFilterId = getValueFromArr(projectsList, projectFilterVal, 'title');
 
         this.setState({
             projectsFilterID: projectFilterId
         })
     }
 
-    getValueFromArr(arr, value, nameField) {
-        // arr - array for filter
-        // value - can be [id] as number or [value] as string
-        // nameField - name of column from table. can be [title, name] as string
-
-        if (typeof value === 'string') {
-            let result = arr.find((currentElem) => {
-                return currentElem[nameField] === value
-
-            });
-
-            if (result === undefined) {
-                return 0;
-            } else {
-                return result.id;
-            }
-        }
-
-        if (typeof value === 'number') {
-            let result = arr.find((currentElem) => {
-                return currentElem.id === value
-            });
-            return result[nameField];
-        }
-
-
-    }
 
     render() {
 
@@ -142,9 +118,9 @@ class VacanciesClosed extends Component {
             projectsList = this.props.projects,
             levelsList = this.props.levels,
             positionsList = this.props.positions,
-            levelsTitleObj = {},
-            positionsTitleObj = {},
-            projectsTitleObj = {},
+            levelsTitleObj = levelsListName(levelsList),
+            positionsTitleObj = positionsListName(positionsList),
+            projectsTitleObj = projectsListName(projectsList),
             vacanciesToDisplay = [],
             indexExpandedElement = this.props.indexExpandedElement;
 
@@ -184,19 +160,6 @@ class VacanciesClosed extends Component {
                 });
             }
             //-- END FILTER BY PROJECT  -----------------------
-
-            projectsList.forEach((item) => {
-                projectsTitleObj[item.id] = item.title;
-            });
-
-
-            levelsList.forEach((item) => {
-                levelsTitleObj[item.id] = item.name;
-            });
-
-            positionsList.forEach((item) => {
-                positionsTitleObj[item.id] = item.name;
-            });
 
             vacanciesToDisplay = vacanciesList.map((item, index) => {
 
@@ -313,7 +276,7 @@ class VacanciesClosed extends Component {
                             <Modal.Header closeButton>
                             </Modal.Header>
                             <Modal.Body>
-                                <p>Are you sure you want to delete the vacancy?</p>
+                                <p>{this.state.deleteVacancyText}</p>
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button

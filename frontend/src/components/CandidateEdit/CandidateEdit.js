@@ -1,21 +1,24 @@
 import React, {Component} from 'react';
-import './createCandidate.css';
+import './candidateEdit.css';
 
 import PageTitle from '../../containers/PageTitle';
 import TextareaAutosize from 'react-autosize-textarea';
-import {Modal, Button} from "react-bootstrap";
+import {Modal, Button} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import Helmet from 'react-helmet';
 import {getPositions} from "../../redux/actions/positionActions";
 import {getLevels} from "../../redux/actions/levelsActions";
 import {getValueFromArr, removeCurrentError, candidatesValidationFrom} from '../../utils/index';
-import {createCandidate} from "../../redux/actions/candidatesActions";
+import {getCandidate, updateCandidate} from "../../redux/actions/candidatesActions";
 import {CONFIRM_TEXT} from "../../config";
 
-class CreateCandidate extends Component {
+
+class CandidateEdit extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
+            currentCandidate: {},
             confirmText: CONFIRM_TEXT,
             showModalConfirm: false,
             nameVal: '',
@@ -27,17 +30,61 @@ class CreateCandidate extends Component {
             notesVal: '',
             cvUploadVal: ''
         };
-    }
 
+    }
 
     componentWillMount() {
         this.props.onCheckUserRole();
+
+        this.props.onCheckUserRole();
         const {dispatch} = this.props;
-        dispatch(getPositions());
-        dispatch(getLevels());
+
+        if (this.props.candidates.length || this.props.positions.length || this.props.levels.length) {
+            let candidatesList = this.props.candidates,
+                currentCandidateId = this.props.match.params.id,
+                positions = this.props.positions,
+                levels = this.props.levels,
+                currentCandidate = candidatesList.find((currentItem) => {
+                    return (
+                        currentItem.id === +currentCandidateId
+                    )
+                });
+            this.updateState(currentCandidate, positions, levels);
+        } else {
+            dispatch(getCandidate(this.props.match.params.id)).then(() => {
+                let currentCandidate = this.props.currentCandidate;
+                dispatch(getPositions()).then(() => {
+                    let positions = this.props.positions;
+                    dispatch(getLevels()).then(() => {
+                        let levels = this.props.levels;
+                        this.updateState(currentCandidate, positions, levels);
+                    });
+                });
+
+
+            })
+        }
+
 
     }
 
+    updateState(currentCandidate, positions, levels) {
+
+        let positionValue = getValueFromArr(positions, currentCandidate.position_id, 'name');
+        let levelValue = getValueFromArr(levels, currentCandidate.level_id, 'name');
+
+
+        this.setState({
+            nameVal: currentCandidate.name,
+            surnameVal: currentCandidate.surname,
+            experienceVal: currentCandidate.experience || '',
+            contactVal: currentCandidate.contacts || '',
+            notesVal: currentCandidate.notes || '',
+            cvUploadVal: currentCandidate.cv.url,
+            positionVal: positionValue,
+            levelVal: levelValue,
+        });
+    }
 
     isFieldsNotEmpty() {
         if (this.state.nameVal || this.state.surnameVal || this.state.positionVal || this.state.levelVal || this.state.experienceVal || this.state.contactVal || this.state.notesVal || this.state.cvUploadVal) {
@@ -50,7 +97,6 @@ class CreateCandidate extends Component {
     handleNameChanges(event) {
         this.setState({nameVal: event.target.value.trim()});
         removeCurrentError(event);
-
     }
 
     handleSurnameChanges(event) {
@@ -117,6 +163,7 @@ class CreateCandidate extends Component {
         let validationPass = candidatesValidationFrom.apply(this, [event]);
 
         if (validationPass) {
+
             let positionsList = this.props.positions,
                 positionVal = this.state.positionVal,
                 levelsList = this.props.levels,
@@ -131,7 +178,9 @@ class CreateCandidate extends Component {
                 levelId = getValueFromArr(levelsList, levelVal, 'name');
 
 
-            let formData = {};
+            let formData = {
+                id: this.props.match.params.id,
+            };
 
             nameVal ? formData.name = nameVal : false;
             surnameVal ? formData.surname = surnameVal : false;
@@ -147,7 +196,7 @@ class CreateCandidate extends Component {
                 pathName = window.location.hash,
                 backPath = '#/' + pathName.split('/')[1];
 
-            dispatch(createCandidate(formData, null, backPath));
+            dispatch(updateCandidate(formData, null, backPath));
         }
     }
 
@@ -167,6 +216,7 @@ class CreateCandidate extends Component {
         this.closeModalConfirm();
         this.props.history.goBack();
     }
+
 
     render() {
 
@@ -195,12 +245,12 @@ class CreateCandidate extends Component {
         return (
             <div className="bcgr">
                 <Helmet>
-                    <title>Add candidate</title>
+                    <title>Edit candidate</title>
                 </Helmet>
                 <div className="row sameheight-container">
                     <div className="col-md-12">
                         <PageTitle
-                            pageTitle="Add candidate"
+                            pageTitle="Edit candidate"
                             showBackBtn={true}
                             showButton={false}
                             titleForButton=""
@@ -273,6 +323,7 @@ class CreateCandidate extends Component {
                                     </select>
                                 </div>
 
+
                                 <div className="form-group upload-file">
                                     <label htmlFor="candidate-upload-file" id="candidate-uploadCV"
                                            className="upload-file__custom-btn btn btn-primary btn-sm"> Upload CV
@@ -325,7 +376,6 @@ class CreateCandidate extends Component {
                                     />
                                 </div>
 
-
                                 <div className="form-group">
                                     <label className="control-label form-label">Additional notes</label>
                                     <p className="form-sublabel">
@@ -349,7 +399,7 @@ class CreateCandidate extends Component {
                                         id="create-vacancy-submitBtn"
                                         type="submit"
                                         className="btn btn-primary"
-                                    >Add
+                                    >Save
                                     </button>
                                     <button
                                         id="create-vacancy-resetBtn"
@@ -388,11 +438,14 @@ class CreateCandidate extends Component {
     }
 }
 
-function mapStateToProps(state) {
+function mapStateToProp(state) {
     return {
+        candidates: state.candidates.candidates,
+        currentCandidate: state.candidates.currentCandidate,
         positions: state.positions.positions,
         levels: state.levels.levels
+
     }
 }
 
-export default connect(mapStateToProps)(CreateCandidate);
+export default connect(mapStateToProp)(CandidateEdit);
