@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {Modal, Button, PanelGroup} from "react-bootstrap";
 import Helmet from "react-helmet";
 import "./interviewsUpcoming.css";
-import {showProjects} from "../../redux/actions/projectActions";
+import {showInterviews} from "../../redux/actions/interviewActions";
 import PageTitle from "./../../containers/PageTitle";
 import Panels from "../Panels/Panels";
 import Filters from "./../../components/Filters";
@@ -22,8 +22,8 @@ class InterviewsUpcoming extends Component {
     }
 
     componentWillMount() {
-        const {dispatch} = this.props;
-        dispatch(showProjects());
+        // const {dispatch} = this.props;
+        // dispatch(showInterviews());
         let isUserHR = this.props.onCheckUserRole(true);
         if (isUserHR) {
             this.setState({isHR: true})
@@ -60,7 +60,6 @@ class InterviewsUpcoming extends Component {
     }
 
     addFeedback(currentID) {
-        console.log(currentID);
         this.props.history.push("/interviews-upcoming/" + currentID + "/add-feedback");
     }
 
@@ -371,6 +370,7 @@ class InterviewsUpcoming extends Component {
 
 function mapStateToProps(state) {
     return {
+        newInterview: state.interview,
         notifications: state.notifications
     }
 }
