@@ -116,6 +116,7 @@ class Candidates extends Component {
             //-- END FILTER BY LEVEL  -----------------------
 
             candidatesToDisplay = candidatesList.map((item) => {
+
                 let candidateId = item.id,
                     candidateName = item.name,
                     candidateSurname = item.surname,
@@ -126,7 +127,10 @@ class Candidates extends Component {
                     candidatePosition = positionsTitleObj[candidatePositionId],
                     candidateLevelId = item.level_id,
                     candidateLevel = levelsTitleObj[candidateLevelId],
-                    candidateCV = item.cv.url;
+                    location = window.location.origin,
+                    candidateCV = location + '/#' + item.cv.url;
+
+                console.log(candidateCV);
 
 
                 let checkCandidateCV = () => {

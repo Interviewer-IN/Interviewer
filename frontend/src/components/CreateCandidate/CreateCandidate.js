@@ -8,7 +8,7 @@ import {connect} from 'react-redux';
 import Helmet from 'react-helmet';
 import {getPositions} from "../../redux/actions/positionActions";
 import {getLevels} from "../../redux/actions/levelsActions";
-import {getValueFromArr, removeCurrentError, candidatesValidationFrom} from '../../utils/index';
+import {getValueFromArr, removeCurrentError, candidatesValidationFrom, getBase64} from '../../utils/index';
 import {createCandidate} from "../../redux/actions/candidatesActions";
 import {CONFIRM_TEXT} from "../../config";
 
@@ -25,7 +25,8 @@ class CreateCandidate extends Component {
             experienceVal: '',
             contactVal: '',
             notesVal: '',
-            cvUploadVal: ''
+            cvUploadVal: '',
+            cvData: ''
         };
     }
 
@@ -88,6 +89,18 @@ class CreateCandidate extends Component {
             parentWrapper.classList.remove('has-error');
             hasErrorBlock.remove();
         }
+        console.log(event.target);
+        console.log(event.target.files[0]);
+
+
+        let file = event.target.files[0];
+        getBase64(file).then(data => {
+                this.setState({
+                    cvData: data
+                })
+            }
+        );
+
 
         if (event.target.files.length) {
             this.setState({cvUploadVal: event.target.files[0].name});
@@ -127,9 +140,12 @@ class CreateCandidate extends Component {
                 contactVal = this.state.contactVal,
                 notesVal = this.state.notesVal,
                 uploadVal = this.state.cvUploadVal,
+                cvData = this.state.cvData,
                 positionId = getValueFromArr(positionsList, positionVal, 'name'),
                 levelId = getValueFromArr(levelsList, levelVal, 'name');
 
+
+            console.log(cvData);
 
             let formData = {};
 
@@ -140,7 +156,7 @@ class CreateCandidate extends Component {
             experienceVal ? formData.experience = experienceVal : false;
             contactVal ? formData.contacts = contactVal : false;
             notesVal ? formData.notes = notesVal : false;
-            uploadVal ? formData.cv = uploadVal : false;
+            cvData ? formData.cv = cvData : false;
 
 
             let {dispatch} = this.props,

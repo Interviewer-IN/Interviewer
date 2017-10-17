@@ -8,7 +8,7 @@ import {connect} from 'react-redux';
 import Helmet from 'react-helmet';
 import {getPositions} from "../../redux/actions/positionActions";
 import {getLevels} from "../../redux/actions/levelsActions";
-import {getValueFromArr, removeCurrentError, candidatesValidationFrom} from '../../utils/index';
+import {getValueFromArr, removeCurrentError, candidatesValidationFrom, getBase64} from '../../utils/index';
 import {getCandidate, updateCandidate} from "../../redux/actions/candidatesActions";
 import {CONFIRM_TEXT} from "../../config";
 
@@ -28,7 +28,8 @@ class CandidateEdit extends Component {
             experienceVal: '',
             contactVal: '',
             notesVal: '',
-            cvUploadVal: ''
+            cvUploadVal: '',
+            cvData: ''
         };
 
     }
@@ -72,6 +73,7 @@ class CandidateEdit extends Component {
 
         let positionValue = getValueFromArr(positions, currentCandidate.position_id, 'name');
         let levelValue = getValueFromArr(levels, currentCandidate.level_id, 'name');
+
 
 
         this.setState({
@@ -135,6 +137,18 @@ class CandidateEdit extends Component {
             hasErrorBlock.remove();
         }
 
+        console.log(event.target);
+        console.log(event.target.files[0]);
+
+
+        let file = event.target.files[0];
+        getBase64(file).then(data => {
+                this.setState({
+                    cvData: data
+                })
+            }
+        );
+
         if (event.target.files.length) {
             this.setState({cvUploadVal: event.target.files[0].name});
             resultUploadBlock.innerHTML = event.target.files[0].name;
@@ -174,8 +188,11 @@ class CandidateEdit extends Component {
                 contactVal = this.state.contactVal,
                 notesVal = this.state.notesVal,
                 uploadVal = this.state.cvUploadVal,
+                cvData = this.state.cvData,
                 positionId = getValueFromArr(positionsList, positionVal, 'name'),
                 levelId = getValueFromArr(levelsList, levelVal, 'name');
+
+            console.log(cvData);
 
 
             let formData = {
@@ -189,7 +206,7 @@ class CandidateEdit extends Component {
             experienceVal ? formData.experience = experienceVal : false;
             contactVal ? formData.contacts = contactVal : false;
             notesVal ? formData.notes = notesVal : false;
-            uploadVal ? formData.cv = uploadVal : false;
+            cvData ? formData.cv = cvData : false;
 
 
             let {dispatch} = this.props,

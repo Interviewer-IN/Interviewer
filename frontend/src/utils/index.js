@@ -5,6 +5,7 @@ export {getValueFromArr} from './getValueFromArr/getValueFromArr';
 export {removeCurrentError} from './removeCurrentError/removeCurrentError';
 export {removeAllErrorMessages} from './removeAllErrorMessages/removeAllErrorMessages';
 export {createErrorElem} from './createErrorElem/createErrorElem';
+export {getBase64} from './convertToBase64/convertToBase';
 
 
 //-- CANDIDATES ------
