@@ -23,6 +23,7 @@ class CandidateEdit extends Component {
             showModalConfirm: false,
             nameVal: '',
             surnameVal: '',
+            ageVal: '',
             positionVal: '',
             levelVal: '',
             experienceVal: '',
@@ -75,10 +76,10 @@ class CandidateEdit extends Component {
         let levelValue = getValueFromArr(levels, currentCandidate.level_id, 'name');
 
 
-
         this.setState({
             nameVal: currentCandidate.name,
             surnameVal: currentCandidate.surname,
+            ageVal: currentCandidate.age,
             experienceVal: currentCandidate.experience || '',
             contactVal: currentCandidate.contacts || '',
             notesVal: currentCandidate.notes || '',
@@ -89,7 +90,7 @@ class CandidateEdit extends Component {
     }
 
     isFieldsNotEmpty() {
-        if (this.state.nameVal || this.state.surnameVal || this.state.positionVal || this.state.levelVal || this.state.experienceVal || this.state.contactVal || this.state.notesVal || this.state.cvUploadVal) {
+        if (this.state.nameVal || this.state.surnameVal || this.state.ageVal || this.state.positionVal || this.state.levelVal || this.state.experienceVal || this.state.contactVal || this.state.notesVal || this.state.cvUploadVal) {
             this.openModalConfirm();
         } else {
             this.props.history.goBack();
@@ -103,6 +104,11 @@ class CandidateEdit extends Component {
 
     handleSurnameChanges(event) {
         this.setState({surnameVal: event.target.value.trim()});
+        removeCurrentError(event);
+    }
+
+    handleAgeChanges(event) {
+        this.setState({ageVal: event.target.value.trim()});
         removeCurrentError(event);
     }
 
@@ -169,6 +175,7 @@ class CandidateEdit extends Component {
         this.setState({
             nameVal: this.state.nameVal.trim(),
             surnameVal: this.state.surnameVal.trim(),
+            ageVal: this.state.ageVal,
             experienceVal: this.state.experienceVal.trim(),
             contactVal: this.state.contactVal.trim(),
             notesVal: this.state.notesVal.trim(),
@@ -184,6 +191,7 @@ class CandidateEdit extends Component {
                 levelVal = this.state.levelVal,
                 nameVal = this.state.nameVal,
                 surnameVal = this.state.surnameVal,
+                ageVal = this.state.ageVal,
                 experienceVal = this.state.experienceVal,
                 contactVal = this.state.contactVal,
                 notesVal = this.state.notesVal,
@@ -197,16 +205,18 @@ class CandidateEdit extends Component {
 
             let formData = {
                 id: this.props.match.params.id,
+                name: nameVal,
+                surname: surnameVal,
+                age: ageVal,
+                position_id: positionId,
+                level_id: levelId,
+                experience :experienceVal,
+                contacts: contactVal,
+                notes: notesVal,
+                cv: cvData
             };
 
-            nameVal ? formData.name = nameVal : false;
-            surnameVal ? formData.surname = surnameVal : false;
-            positionId ? formData.position_id = positionId : false;
-            levelId ? formData.level_id = levelId : false;
-            experienceVal ? formData.experience = experienceVal : false;
-            contactVal ? formData.contacts = contactVal : false;
-            notesVal ? formData.notes = notesVal : false;
-            cvData ? formData.cv = cvData : false;
+            console.log(formData);
 
 
             let {dispatch} = this.props,
@@ -292,7 +302,7 @@ class CandidateEdit extends Component {
                                         className="form-control boxed"
                                         maxLength="20"
                                         ref="candidateName"
-                                        value={this.state.nameVal}
+                                        value={this.state.nameVal || ''}
                                         autoFocus
                                         onChange={(event) => this.handleNameChanges(event)}
                                     />
@@ -311,8 +321,26 @@ class CandidateEdit extends Component {
                                         className="form-control boxed"
                                         maxLength="20"
                                         ref="candidateSurname"
-                                        value={this.state.surnameVal}
+                                        value={this.state.surnameVal || ''}
                                         onChange={(event) => this.handleSurnameChanges(event)}
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label className="control-label form-label">Age</label>
+                                    <p className="form-sublabel">
+                                        <small>Only numbers</small>
+                                    </p>
+                                    <input
+                                        id="candidate-age"
+                                        type="text"
+                                        name="candidate-age"
+                                        placeholder='Input age'
+                                        className="form-control boxed"
+                                        maxLength="3"
+                                        ref="candidateAge"
+                                        value={this.state.ageVal || ''}
+                                        onChange={(event) => this.handleAgeChanges(event)}
                                     />
                                 </div>
 
@@ -370,7 +398,7 @@ class CandidateEdit extends Component {
                                         maxLength="1000"
                                         rows={4}
                                         ref="candidateContactInfo"
-                                        value={this.state.contactVal}
+                                        value={this.state.contactVal || ''}
                                         onChange={(event) => this.handleContactChanges(event)}
                                     />
                                 </div>
@@ -388,7 +416,7 @@ class CandidateEdit extends Component {
                                         maxLength="1000"
                                         rows={4}
                                         ref="candidateWorkExp"
-                                        value={this.state.experienceVal}
+                                        value={this.state.experienceVal || ''}
                                         onChange={(event) => this.handleExperienceChanges(event)}
                                     />
                                 </div>
@@ -406,7 +434,7 @@ class CandidateEdit extends Component {
                                         maxLength="3000"
                                         rows={10}
                                         ref="candidateAdditionalNotes"
-                                        value={this.state.notesVal}
+                                        value={this.state.notesVal || ''}
                                         onChange={(event) => this.handleNotesChanges(event)}
                                     />
                                 </div>

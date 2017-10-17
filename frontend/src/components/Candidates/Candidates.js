@@ -120,6 +120,7 @@ class Candidates extends Component {
                 let candidateId = item.id,
                     candidateName = item.name,
                     candidateSurname = item.surname,
+                    candidateAge = item.age,
                     candidateExperience = item.experience,
                     candidateContacts = item.contacts,
                     candidateNotes = item.notes,
@@ -128,7 +129,7 @@ class Candidates extends Component {
                     candidateLevelId = item.level_id,
                     candidateLevel = levelsTitleObj[candidateLevelId],
                     location = window.location.origin,
-                    candidateCV = location + '/#' + item.cv.url;
+                    candidateCV = item.cv.url;
 
                 console.log(candidateCV);
 
@@ -147,6 +148,22 @@ class Candidates extends Component {
                                 <span className="download-block__icon fa fa-download"/>
                                 <span className="download-block__title text-bold--100">Download CV</span>
                             </a>
+                        )
+                    }
+                };
+
+                let checkCandidateAge = () => {
+                    if (candidateAge) {
+                        return (
+                            <p className="form-control-static">
+                                {candidateAge}
+                            </p>
+                        )
+                    } else {
+                        return (
+                            <p className="form-control-static text-muted text-bold--100">
+                                {GET_EMPTY_DATA}
+                            </p>
                         )
                     }
                 };
@@ -246,6 +263,11 @@ class Candidates extends Component {
                                 <p className="form-control-static">
                                     {candidatePosition + ' ' + candidateLevel}
                                 </p>
+                            </div>
+
+                            <div className="form-group">
+                                <label className="control-label form-label text-green">Age:</label>
+                                {checkCandidateAge()}
                             </div>
                         </div>
                         <div className="col-md-6">

@@ -1,6 +1,6 @@
 import {removeAllErrorMessages} from './../../removeAllErrorMessages/removeAllErrorMessages'
 import {createErrorElem} from './../../createErrorElem/createErrorElem';
-import {fieldCharRegex, LETTERS_ONLY} from "../../../config";
+import {fieldCharRegex, LETTERS_ONLY, NUMBERS_ONLY} from "../../../config";
 
 export function candidatesValidationFrom(event){
 
@@ -11,6 +11,9 @@ export function candidatesValidationFrom(event){
         surnameElem = this.refs.candidateSurname,
         surnameVal = this.state.surnameVal,
         surnamePass = false,
+        ageElem = this.refs.candidateAge,
+        ageVal = this.state.ageVal,
+        agePass = true,
         positionElem = this.refs.candidatePosition,
         positionVal = this.state.positionVal,
         positionIndex = this.refs.candidatePosition.options.selectedIndex,
@@ -49,6 +52,10 @@ export function candidatesValidationFrom(event){
                 pattern: LETTERS_ONLY,
                 minLength: 2
             },
+            age: {
+                required: false,
+                pattern: NUMBERS_ONLY,
+            },
             position: {
                 required: true
             },
@@ -81,6 +88,10 @@ export function candidatesValidationFrom(event){
                 required: "Please enter surname",
                 format: "Please use only latin letters",
                 minLength: "Surname should contain minimum 2 characters"
+            },
+            age: {
+                required: "Please enter age",
+                format: "Please use only numbers",
             },
             position: {
                 required: "Please select position"
@@ -144,14 +155,28 @@ export function candidatesValidationFrom(event){
                 surnamePass = false;
             }
 
-
-
         } else {
             surnameElem.parentNode.appendChild(createErrorElem(surnameElem, candidateValidationSettings.messages.surname.required));
             surnamePass = false;
         }
     } else {
         surnamePass = true;
+    }
+
+    if (candidateValidationSettings.rules.age.required || ageVal) {
+        if (ageVal) {
+            if (ageVal.match(candidateValidationSettings.rules.age.pattern)) {
+                agePass = true;
+            } else {
+                ageElem.parentNode.appendChild(createErrorElem(ageElem, candidateValidationSettings.messages.age.format));
+                agePass = false;
+            }
+        } else {
+            ageElem.parentNode.appendChild(createErrorElem(ageElem, candidateValidationSettings.messages.age.required));
+            agePass = false;
+        }
+    } else {
+        agePass = true;
     }
 
 
@@ -240,7 +265,7 @@ export function candidatesValidationFrom(event){
     }
 
 
-    if (namePass && surnamePass && positionPass && levelPass && experiencePass && contactPass && uploadPass && notesPass) {
+    if (namePass && surnamePass && agePass && positionPass && levelPass && experiencePass && contactPass && uploadPass && notesPass) {
         return true;
 
     } else {

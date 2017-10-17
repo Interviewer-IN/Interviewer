@@ -20,6 +20,7 @@ class CreateCandidate extends Component {
             showModalConfirm: false,
             nameVal: '',
             surnameVal: '',
+            ageVal: '',
             positionVal: '',
             levelVal: '',
             experienceVal: '',
@@ -41,7 +42,7 @@ class CreateCandidate extends Component {
 
 
     isFieldsNotEmpty() {
-        if (this.state.nameVal || this.state.surnameVal || this.state.positionVal || this.state.levelVal || this.state.experienceVal || this.state.contactVal || this.state.notesVal || this.state.cvUploadVal) {
+        if (this.state.nameVal || this.state.surnameVal || this.state.ageVal || this.state.positionVal || this.state.levelVal || this.state.experienceVal || this.state.contactVal || this.state.notesVal || this.state.cvUploadVal) {
             this.openModalConfirm();
         } else {
             this.props.history.goBack();
@@ -56,6 +57,11 @@ class CreateCandidate extends Component {
 
     handleSurnameChanges(event) {
         this.setState({surnameVal: event.target.value.trim()});
+        removeCurrentError(event);
+    }
+
+    handleAgeChanges(event) {
+        this.setState({ageVal: event.target.value.trim()});
         removeCurrentError(event);
     }
 
@@ -122,6 +128,7 @@ class CreateCandidate extends Component {
         this.setState({
             nameVal: this.state.nameVal.trim(),
             surnameVal: this.state.surnameVal.trim(),
+            ageVal: this.state.ageVal.trim(),
             experienceVal: this.state.experienceVal.trim(),
             contactVal: this.state.contactVal.trim(),
             notesVal: this.state.notesVal.trim(),
@@ -135,6 +142,7 @@ class CreateCandidate extends Component {
                 levelsList = this.props.levels,
                 levelVal = this.state.levelVal,
                 nameVal = this.state.nameVal,
+                ageVal = this.state.ageVal,
                 surnameVal = this.state.surnameVal,
                 experienceVal = this.state.experienceVal,
                 contactVal = this.state.contactVal,
@@ -151,6 +159,7 @@ class CreateCandidate extends Component {
 
             nameVal ? formData.name = nameVal : false;
             surnameVal ? formData.surname = surnameVal : false;
+            ageVal ? formData.age = ageVal : false;
             positionId ? formData.position_id = positionId : false;
             levelId ? formData.level_id = levelId : false;
             experienceVal ? formData.experience = experienceVal : false;
@@ -262,6 +271,24 @@ class CreateCandidate extends Component {
                                         ref="candidateSurname"
                                         value={this.state.surnameVal}
                                         onChange={(event) => this.handleSurnameChanges(event)}
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label className="control-label form-label">Age</label>
+                                    <p className="form-sublabel">
+                                        <small>Only numbers</small>
+                                    </p>
+                                    <input
+                                        id="candidate-age"
+                                        type="text"
+                                        name="candidate-age"
+                                        placeholder='Input age'
+                                        className="form-control boxed"
+                                        maxLength="3"
+                                        ref="candidateAge"
+                                        value={this.state.ageVal}
+                                        onChange={(event) => this.handleAgeChanges(event)}
                                     />
                                 </div>
 
