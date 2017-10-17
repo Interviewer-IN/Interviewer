@@ -132,8 +132,6 @@ class VacanciesOpen extends Component {
             });
             return result[nameField];
         }
-
-
     }
 
 

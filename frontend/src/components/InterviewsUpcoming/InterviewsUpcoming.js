@@ -4,6 +4,8 @@ import {Modal, Button, PanelGroup} from "react-bootstrap";
 import Helmet from "react-helmet";
 import "./interviewsUpcoming.css";
 import {showInterviews} from "../../redux/actions/interviewActions";
+import {getVacancies} from "../../redux/actions/vacanciesActions";
+import {showProjects, getProjects} from "../../redux/actions/projectActions";
 import PageTitle from "./../../containers/PageTitle";
 import Panels from "../Panels/Panels";
 import Filters from "./../../components/Filters";
@@ -17,17 +19,34 @@ class InterviewsUpcoming extends Component {
         this.state = {
             showModalConfirm: false,
             currentInterviewID: "",
-            isHR: false
+            isHR: false,
+            interviewId: "",
+            candidateId: "",
+            date_time: "",
+            currentProject: "1"
         }
     }
 
     componentWillMount() {
-        // const {dispatch} = this.props;
-        // dispatch(showInterviews());
         let isUserHR = this.props.onCheckUserRole(true);
+        const {dispatch} = this.props;
+        dispatch(showInterviews());
+        dispatch(getVacancies());
+        dispatch(showProjects());
+        dispatch(getProjects("30")).then(() => {
+            let currentProject = this.props.currentProject;
+            this.setStates(currentProject);
+
+        });
+
+
         if (isUserHR) {
             this.setState({isHR: true})
         }
+    }
+
+    setStates(currentProject) {
+        this.setState({currentProject: currentProject});
     }
 
     switchToEditMode(currentID) {
@@ -55,7 +74,7 @@ class InterviewsUpcoming extends Component {
         });
     }
 
-    activateInterview(currentID){
+    activateInterview(currentID) {
 
     }
 
@@ -91,7 +110,7 @@ class InterviewsUpcoming extends Component {
             )
         }
 
-        let filter ;
+        let filter;
         if (this.state.isHR) {
             filter = (
                 <Filters
@@ -116,211 +135,196 @@ class InterviewsUpcoming extends Component {
             )
         }
 
-        let interviews = [
-            {
-                id: 1,
-                time: "10.00",
-                date: "01-10-2017",
-                weekday: "Monday",
-                candidate: "Jane Doe",
-                age: "21",
-                experience: "6",
-                vacancy: "Junior QA for CPrime",
-                interviewer: "K. Makiy",
-                project: "CPrime",
-                position: "QA",
-                level: "Junior"
-            },
-            {
-                id: 2,
-                time: "11.00",
-                date: "02-10-2017",
-                weekday: "Tuesday",
-                candidate: "James Bond",
-                age: "56",
-                experience: "5",
-                vacancy: "Senior Java Developer for Formula-1",
-                interviewer: "A. Larin",
-                project: "Formula-1",
-                position: "Java Developer",
-                level: "Senior"
-            },
-            {
-                id: 3,
-                time: "12.00",
-                date: "02-10-2017",
-                weekday: "Tuesday",
-                candidate: "Bob Marley",
-                age: "28",
-                experience: "1",
-                vacancy: "Intern Front-End Developer for Squadex",
-                interviewer: "T. Grabets",
-                project: "Squadex",
-                position: "Front-End Developer",
-                level: "Intern"
-            }
-        ];
+        let interviews = this.props.interviews.interviews || [],
+            vacancies = this.props.vacancies,
+            projects = this.props.projects,
+            levels = this.props.levels,
+            positions = this.props.positions,
+            dates = [],
+            interviewsByDates;
+        console.log(projects);
 
-        let datesToDisplay,
-            interviewsSortedByDates,
-            currentDate,
-            interviewsToDisplay,
-            sortedInterviews,
-            dates = [];
+        if (vacancies.length && projects.length && levels.length && positions.length) {
 
-        let compareDates = (a, b) => {
-            if (a.date > b.date) return 1;
-            if (a.date < b.date) return -1;
-        };
+            let compareDates = (a, b) => {
+                let dateA = new Date(a.date_time).getTime(),
+                    dateB = new Date(b.date_time).getTime();
 
-        let compareTime = (a, b) => {
-            if (a.time > b.time) return 1;
-            if (a.time < b.time) return -1;
-        };
+                if (dateA > dateB) return 1;
+                if (dateA < dateB) return -1;
+            };
 
-        if (interviews) {
+            let compareTime = (a, b) => {
+                let timeA = new Date(a.date_time).toLocaleString('en-GB', {hour: 'numeric', minute: 'numeric'}),
+                    timeB = new Date(b.date_time).toLocaleString('en-GB', {hour: 'numeric', minute: 'numeric'});
 
-            interviewsSortedByDates = interviews.sort(compareDates) || {};
+                if (timeA > timeB) return 1;
+                if (timeA < timeB) return -1;
+            };
 
-            interviewsSortedByDates.map((value, index) => {
+            if (interviews) {
 
-                if (dates.indexOf(value.date) === -1) {
-                    dates.push(value.date);
-                }
-            });
-
-            datesToDisplay = dates.map((value, index) => {
-                currentDate = value;
-                let todayInterviews = [];
-
+                let interviewsSortedByDates = interviews.sort(compareDates) || {};
                 interviewsSortedByDates.map((value, index) => {
-                    if (value.date === currentDate) {
-                        todayInterviews.push(value);
+
+                    let date = new Date(value.date_time).toLocaleString('en-GB', {
+                        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+                    });
+
+                    if (dates.indexOf(date) === -1) {
+                        dates.push(date);
                     }
                 });
 
-                let currentWeekDay = todayInterviews[0].weekday;
+                interviewsByDates = dates.map((value, index) => {
+                    let todayInterviews = [],
+                        currentDate = value,
+                        dateToDisplay;
 
-                sortedInterviews = todayInterviews.sort(compareTime) || {};
+                    interviewsSortedByDates.map((value, index) => {
+                        let interviewDate = new Date(value.date_time).toLocaleString('en-GB', {
+                            weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+                        });
 
-                interviewsToDisplay = sortedInterviews.map((value, index) => {
+                        if (currentDate === interviewDate) {
+                            todayInterviews.push(value);
+                            dateToDisplay = "" + new Date(value.date_time).toLocaleString('en-GB', {weekday: 'long'}) + ", "
+                                + new Date(value.date_time).toLocaleString('en-GB', {
+                                    day: 'numeric',
+                                    month: 'long'
+                                }) + "";
+                        }
+                    });
 
-                    let id = value.id;
-                    let title;
+                    let sortedInterviews = todayInterviews.sort(compareTime) || {};
+                    let interviewsToDisplay = sortedInterviews.map((value, index) => {
 
-                    if (this.state.isHR) {
-                        title =  value.time + " | " +
-                            value.candidate + " | " +
-                            value.vacancy + " | " +
-                            value.interviewer
-                    } else {
-                        title =  value.time + " | " +
-                            value.candidate + " | " +
-                            value.vacancy
-                    }
+                            let id = value.id,
+                                time = new Date(value.date_time).toLocaleString('en-GB', {
+                                    hour: 'numeric',
+                                    minute: 'numeric'
+                                }),
+                                currentVacancy = vacancies.find(function (item) {
+                                    return value.vacancy_id === item.id
+                                }),
+                                currentProject = projects.find(function (item) {
+                                    return currentVacancy.project_id === item.id
+                                }),
+                                currentLevel = levels.find(function (item) {
+                                    return currentVacancy.level_id === item.id
+                                }),
+                                currentPosition = positions.find(function (item) {
+                                    return currentVacancy.position_id === item.id
+                                }),
+                                panelTitleText;
 
+                            if (this.state.isHR) {
+                                panelTitleText = time + " | " + value.candidate_id + " | " + currentProject.title;
+                            } else {
+                                panelTitleText = time + " | " + value.candidate_id;
+                            }
 
-                    const panelTitle = (
-                            <div className="custom-panel-title panel-list-item">
-                                <div className="custom-panel-title__right-side">
-                                    <div className="panel-collapse-btn">
-                                        <span className="panel-collapse-btn__title btn-js">Expand</span>
-                                        <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
+                            const PANEL_TITLE = (
+                                <div className="custom-panel-title panel-list-item">
+                                    <div className="custom-panel-title__right-side">
+                                        <div className="panel-collapse-btn">
+                                            <span className="panel-collapse-btn__title btn-js">Expand</span>
+                                            <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="custom-panel-title__left-side">
-                                    <div className="vacancy-info-block">
-                                        <div className="vacancy-info-block__item">
-                                            {title}
+                                    <div className="custom-panel-title__left-side">
+                                        <div className="vacancy-info-block">
+                                            <div className="vacancy-info-block__item">
+                                                {panelTitleText}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        );
+                            );
 
-
-
-                        const panelDescription = (
-                            <div>
-                                <div className="clearfix">
-                                    <div className="float-left">
-                                        <p className="interview-details-header"><strong>Candidate</strong></p>
-                                        <p>{"Name: " + value.candidate}</p>
-                                        <p>{"Age: " + value.age}</p>
-                                        <p>{"Experience: " + value.experience}</p>
-                                        <a href="#">View CV</a>
+                            const PANEL_DESCRIPTION = (
+                                <div>
+                                    <div className="clearfix">
+                                        <div className="float-left">
+                                            <p className="interview-details-header"><strong>Candidate</strong></p>
+                                            <p>{"Name: " + value.candidate_id}</p>
+                                            <p>{"Age: " + value.candidate_id}</p>
+                                            <p>{"Experience: " + value.candidate_id}</p>
+                                            <a href="#">View CV</a>
+                                        </div>
+                                        <div className="float-right">
+                                            <p className="interview-details-header"><strong>Project</strong></p>
+                                            <p>{currentProject.title}</p>
+                                            <p className="interview-details-header"><strong>Interviewer</strong></p>
+                                            <p>{currentProject.title}</p>
+                                        </div>
                                     </div>
-                                    <div className="float-right">
-                                        <p className="interview-details-header"><strong>Project</strong></p>
-                                        <p>{value.project}</p>
-                                        <p className="interview-details-header"><strong>Interviewer</strong></p>
-                                        <p>{value.interviewer}</p>
+                                    <div className="interview-details-down">
+                                        <p className="interview-details-header"><strong>Vacancy</strong></p>
+                                        <p>
+                                            <strong>{currentLevel.name + " " +
+                                            currentPosition.name + " for " +
+                                            currentProject.title}
+                                            </strong>
+                                        </p>
+                                        <p>{currentVacancy.description}</p>
                                     </div>
                                 </div>
-                                <div className="interview-details-down">
-                                    <p className="interview-details-header"><strong>Vacancy</strong></p>
-                                    <p><strong>{value.vacancy}</strong></p>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                        Animi atque beatae culpa enim necessitatibus nesciunt perferendis,
-                                        quisquam quod reiciendis temporibus? Distinctio id praesentium quia
-                                        ratione saepe. Asperiores natus similique ullam.</p>
-                                </div>
-                            </div>
-                        );
+                            );
 
-
-                        if (this.state.isHR) {
-                            return (<PanelGroup bsClass='custom-panel-group'
+                            if (this.state.isHR) {
+                                return (<PanelGroup bsClass='custom-panel-group'
+                                                    accordion key={id}
+                                    >
+                                        <Panels
+                                            key={id}
+                                            id={value.id}
+                                            showActionBtn={true}
+                                            titleForActionBtn='Activate'
+                                            titleConst={PANEL_TITLE}
+                                            description={PANEL_DESCRIPTION}
+                                            showEditBtn={true}
+                                            showDeleteBtn={true}
+                                            showDuplicateBtn={true}
+                                            editBtnId={"edit-interview-" + id}
+                                            deleteBtnId={"delete-interview-" + id}
+                                            callDelete={(event) => this.openModalConfirm(id)}
+                                            callEdit={(event) => this.switchToEditMode(id)}
+                                            callAction={(event) => this.activateInterview(id)}
+                                        />
+                                    </PanelGroup>
+                                )
+                            } else {
+                                return (
+                                    <PanelGroup bsClass='custom-panel-group'
                                                 accordion key={id}
-                                >
-                                    <Panels
-                                        key={id}
-                                        id={value.id}
-                                        showActionBtn={true}
-                                        titleForActionBtn='Activate'
-                                        titleConst={panelTitle}
-                                        description={panelDescription}
-                                        showEditBtn={true}
-                                        showDeleteBtn={true}
-                                        showDuplicateBtn={true}
-                                        editBtnId={"edit-interview-" + id}
-                                        deleteBtnId={"delete-interview-" + id}
-                                        callDelete={(event) => this.openModalConfirm(id)}
-                                        callEdit={(event) => this.switchToEditMode(id)}
-                                        callAction={(event) => this.activateInterview(id)}
-                                    />
-                                </PanelGroup>
-                            )
-                        } else {
-                            return (
-                                <PanelGroup bsClass='custom-panel-group'
-                                                accordion key={id}
-                                >
-                                    <Panels
-                                        key={id}
-                                        id={value.id}
-                                        showActionBtn={true}
-                                        titleForActionBtn='Add feedback'
-                                        titleConst={panelTitle}
-                                        description={panelDescription}
-                                        callAction={(event) => this.addFeedback(id)}
-                                    />
-                                </PanelGroup>
-                            )
+                                    >
+                                        <Panels
+                                            key={id}
+                                            id={value.id}
+                                            showActionBtn={true}
+                                            titleForActionBtn='Add feedback'
+                                            titleConst={PANEL_TITLE}
+                                            description={PANEL_DESCRIPTION}
+                                            callAction={(event) => this.addFeedback(id)}
+                                        />
+                                    </PanelGroup>
+                                )
+                            }
                         }
-                    }
-                );
+                    );
 
-                return (
+                    return (
 
-                    <div key={index}>
-                        <p className="interview-dates">{currentWeekDay + ", " + value}</p>
-                        {interviewsToDisplay}
-                    </div>
-                )
-            });
-        } else {
-            datesToDisplay = "No Interviews";
+                        <div key={index}>
+                            <p className="interview-dates">{dateToDisplay}</p>
+                            {interviewsToDisplay}
+                        </div>
+                    )
+                });
+            } else {
+                interviewsByDates = "No Interviews";
+            }
         }
 
         return (
@@ -335,7 +339,7 @@ class InterviewsUpcoming extends Component {
                     </div>
                 </div>
                 <div className="interview-panels-block">
-                    {datesToDisplay}
+                    {interviewsByDates}
                 </div>
 
                 <Modal show={this.state.showModalConfirm}
@@ -370,8 +374,13 @@ class InterviewsUpcoming extends Component {
 
 function mapStateToProps(state) {
     return {
-        newInterview: state.interview,
-        notifications: state.notifications
+        interviews: state.interviews,
+        notifications: state.notifications,
+        vacancies: state.vacancies.vacancies,
+        projects: state.project.projects,
+        levels: state.levels.levels,
+        positions: state.positions.positions,
+        currentProject: state.project.currentProject,
     }
 }
 

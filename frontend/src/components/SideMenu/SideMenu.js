@@ -12,24 +12,33 @@ class SideMenu extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: ""
+            isHR: true
         }
     }
 
 
-    componentWillMount() {
-        let user = this.getCookies();
-        this.setState({user: user})
-    }
+    // componentWillMount() {
+    //     let currentUser = this.getCookies();
+    //     let HR = currentUser.uid === "user@user.com";
+    //     if (HR) {
+    //         this.setState({isHR: true})
+    //     }
+    // }
+    //
+    // getCookies() {
+    //     let cookies = {};
+    //     for (let cookie of document.cookie.split('; ')) {
+    //         let [name, value] = cookie.split("=");
+    //         cookies[name] = decodeURIComponent(value);
+    //     }
+    //     return cookies;
+    // }
 
-    getCookies() {
-        let cookies = {};
-        for (let cookie of document.cookie.split('; ')) {
-            let [name, value] = cookie.split("=");
-            cookies[name] = decodeURIComponent(value);
-        }
-        return cookies;
-    }
+    // getUserData() {
+    //     var userData = localStorage.getItem("userData"),
+    //         data = JSON.parse(userData);
+    //     return data;
+    // }
 
 
     handleCloseSideBarClick() {
@@ -68,7 +77,7 @@ class SideMenu extends Component {
 
             let dashboard;
 
-            if (this.state.user.uid === "user@user.com" ) {
+            if (this.state.isHR ) {
 
                 dashboard = [
                     {
