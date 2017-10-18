@@ -121,12 +121,13 @@ export function removeInterview(id) {
                 res.json()
             )
             .then(date => {
-                let noteData = "'" + date.data.title.slice(0, 20) + "'";
+                console.log(date);
+               // let noteData = "'" + date.data.title.slice(0, 20) + "'";
                 dispatch(showInterviews());
                 dispatch(makeNote(
                     {
                         status: "success",
-                        text: "Interview " + noteData + "... was deleted!",
+                        text: "Interview was deleted!",
                         hide: true
                     }
                 ))

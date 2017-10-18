@@ -3,6 +3,8 @@ import {connect} from "react-redux";
 import {Modal, Button, PanelGroup} from "react-bootstrap";
 import Helmet from "react-helmet";
 import "./interviewsCompleted.css";
+import {showInterviews, removeInterview} from "../../redux/actions/interviewActions";
+import {getVacancies} from "../../redux/actions/vacanciesActions";
 import {showProjects} from "../../redux/actions/projectActions";
 import PageTitle from "./../../containers/PageTitle";
 import Panels from "../Panels/Panels";
@@ -16,27 +18,27 @@ class InterviewsCompleted extends Component {
         super(props);
         this.state = {
             showModalConfirm: false,
-            currentProjectID: "",
+            currentInterviewID: "",
             isHR: false
         }
     }
 
     componentWillMount() {
-        const {dispatch} = this.props;
-        dispatch(showProjects());
         let isUserHR = this.props.onCheckUserRole(true);
+        const {dispatch} = this.props;
+        dispatch(showInterviews());
+        dispatch(getVacancies());
+        dispatch(showProjects());
         if (isUserHR) {
             this.setState({isHR: true})
         }
     }
 
-    switchToEditMode(currentID) {
-        //this.props.history.push("/projects/project/" + currentID + "/edit");
-    }
+
 
     openModalConfirm(currentID) {
         this.setState({
-            currentProjectID: currentID
+            currentInterviewID: currentID
         });
         this.setState({
             showModalConfirm: true
@@ -49,10 +51,10 @@ class InterviewsCompleted extends Component {
         });
     }
 
-    deleteProject() {
-        // this.closeModalConfirm();
-        // const {dispatch} = this.props;
-        // dispatch(removeProject(this.state.currentProjectID));
+    deleteInterview() {
+        this.closeModalConfirm();
+        const {dispatch} = this.props;
+        dispatch(removeInterview(this.state.currentInterviewID));
     }
 
 
@@ -79,116 +81,95 @@ class InterviewsCompleted extends Component {
             )
         }
 
-        let filter ;
-            if (this.state.isHR) {
-                filter = (
-                    <Filters
-                        rating={true}
-                        project={true}
-                        position={true}
-                        level={true}
-                        date={true}
-                        interviewer={true}
+        let filter;
+        if (this.state.isHR) {
+            filter = (
+                <Filters
+                    rating={true}
+                    project={true}
+                    position={true}
+                    level={true}
+                    date={true}
+                    interviewer={true}
 
-                    />
-                )
-            } else {
-                filter = (
-                    <Filters
-                        project={true}
-                        position={true}
-                        level={true}
-                        date={true}
-                        interviewer={false}
-                        rating={true}
-                    />
-                )
-            }
+                />
+            )
+        } else {
+            filter = (
+                <Filters
+                    project={true}
+                    position={true}
+                    level={true}
+                    date={true}
+                    interviewer={false}
+                    rating={true}
+                />
+            )
+        }
 
-        let interviews = [
-            {
-                id: 1,
-                time: "10.00",
-                date: "01-10-2017",
-                weekday: "Monday",
-                candidate: "Jane Doe",
-                age: "21",
-                experience: "6",
-                vacancy: "Junior QA for CPrime",
-                interviewer: "K. Makiy",
-                project: "CPrime",
-                position: "QA",
-                level: "Junior",
-                rating: 2,
-                feedback: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.Animi atque beatae culpa enim necessitatibus nesciunt perferendis,quisquam quod reiciendis temporibus? Distinctio id praesentium quiaratione saepe. Asperiores natus similique ullam."
-            },
-            {
-                id: 2,
-                time: "11.00",
-                date: "02-10-2017",
-                weekday: "Tuesday",
-                candidate: "James Bond",
-                age: "56",
-                experience: "5",
-                vacancy: "Senior Java Developer for Formula-1",
-                interviewer: "A. Larin",
-                project: "Formula-1",
-                position: "Java Developer",
-                level: "Senior",
-                rating: 3,
-                feedback: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.Animi atque beatae culpa enim necessitatibus nesciunt perferendis,quisquam quod reiciendis temporibus? Distinctio id praesentium quiaratione saepe. Asperiores natus similique ullam."
-            },
-            {
-                id: 3,
-                time: "12.00",
-                date: "02-10-2017",
-                weekday: "Tuesday",
-                candidate: "Bob Marley",
-                age: "28",
-                experience: "1",
-                vacancy: "Intern Front-End Developer for Squadex",
-                interviewer: "T. Grabets",
-                project: "Squadex",
-                position: "Front-End Developer",
-                level: "Intern",
-                rating: 1,
-                feedback: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.Animi atque beatae culpa enim necessitatibus nesciunt perferendis,quisquam quod reiciendis temporibus? Distinctio id praesentium quiaratione saepe. Asperiores natus similique ullam."
-            }
-        ];
+        let interviews = this.props.interviews.interviews || [],
+            vacancies = this.props.vacancies,
+            projects = this.props.projects,
+            levels = this.props.levels,
+            positions = this.props.positions,
+            interviewsToDisplay;
 
-        let interviewsSortedByDates,
-            interviewsToDisplay
+        if (vacancies.length && projects.length && levels.length && positions.length) {
+
+            interviews = interviews.filter((current) => {
+                return current.status === false;
+            });
+
+            let compareDates = (a, b) => {
+                let dateA = new Date(a.date_time).getTime(),
+                    dateB = new Date(b.date_time).getTime();
+
+                if (dateA < dateB) return 1;
+                if (dateA > dateB) return -1;
+            };
+
+            if (interviews.length) {
+
+                let interviewsSortedByDates = interviews.sort(compareDates) || {};
+                interviewsToDisplay = interviewsSortedByDates.map((value, index) => {
+
+                    let id = value.id,
+                        currentDate = new Date(value.date_time).toLocaleString('en-GB', {
+                           day: 'numeric', month: 'numeric', year: 'numeric'}),
+                        currentVacancy = vacancies.find(function (item) {
+                            return value.vacancy_id === item.id
+                        }),
+                        currentProject = projects.find(function (item) {
+                            return currentVacancy.project_id === item.id
+                        }),
+                        currentLevel = levels.find(function (item) {
+                            return currentVacancy.level_id === item.id
+                        }),
+                        currentPosition = positions.find(function (item) {
+                            return currentVacancy.position_id === item.id
+                        }),
+                        panelTitleText;
 
 
-        let compareDates= (a, b) => {
-            if (a.date > b.date) return 1;
-            if (a.date < b.date) return -1;
-        };
+                    if (this.state.isHR) {
+                        panelTitleText =
+                            currentDate + " | " +
+                            value.candidate_id + " | " +
+                            currentLevel.name + " - " +
+                            currentPosition.name + " - " +
+                            currentProject.title + " | " +
+                            "rating" + " | " + "some inteviewer";
+                    } else {
+                        panelTitleText =
+                            currentDate + " | " +
+                            value.candidate_id + " | " +
+                            currentLevel.name + " - " +
+                            currentPosition.name + " - " +
+                            currentProject.title + " | " +
+                            "some inteviewer";
+                    }
 
-
-        if (interviews) {
-
-            interviewsSortedByDates = interviews.sort(compareDates) || {};
-            interviewsToDisplay = interviewsSortedByDates.map((value, index) => {
-
-                let id = value.id;
-                let title;
-
-
-                if (this.state.isHR) {
-                    title = value.date + " | " +
-                        value.candidate + " | " +
-                        value.vacancy + " | " +
-                        "Rating: " + value.rating + " | " +
-                        value.interviewer
-                } else {
-                    title = value.date + " | " +
-                        value.candidate + " | " +
-                        value.vacancy + " | " +
-                        "Rating: " + value.rating
-                }
-
-                const panelTitle = (
+                    const panelTitle = (
                         <div className="custom-panel-title panel-list-item">
                             <div className="custom-panel-title__right-side">
                                 <div className="panel-collapse-btn">
@@ -199,50 +180,51 @@ class InterviewsCompleted extends Component {
                             <div className="custom-panel-title__left-side">
                                 <div className="vacancy-info-block">
                                     <div className="vacancy-info-block__item">
-                                        {title}
+                                        {panelTitleText}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     );
 
-                const description = (
-                    <div>
-                        <p className="interview-details-header"><strong>Feedback</strong></p>
-                        {value.feedback}
-                    </div>
-                );
+                    const description = (
+                        <div>
+                            <p className="interview-details-header"><strong>Feedback</strong></p>
+                            {value.feedback}
+                        </div>
+                    );
 
-                if (this.state.isHR) {
+                    if (this.state.isHR) {
 
-                    return (
-                        <Panels
-                            key={id}
-                            id={value.id}
-                            showActionBtn={true}
-                            titleForActionBtn='Activate'
-                            titleConst={panelTitle}
-                            description={description}
-                            showDeleteBtn={true}
-                            deleteBtnId={"delete-feedback-" + id}
-                            callDelete={(event) => this.openModalConfirm(id)}
-                        />
-                    )
-                } else {
-                    return (
-                        <Panels
-                            key={id}
-                            id={value.id}
-                            showActionBtn={false}
-                            titleConst={panelTitle}
-                            description={description}
-                            showDeleteBtn={false}
-                        />
-                    )
-                }
-            });
-        } else {
-            interviewsToDisplay = "No Interviews";
+                        return (
+                            <Panels
+                                key={id}
+                                id={value.id}
+                                showActionBtn={true}
+                                titleForActionBtn='Activate'
+                                titleConst={panelTitle}
+                                description={description}
+                                showDeleteBtn={true}
+                                deleteBtnId={"delete-feedback-" + id}
+                                callDelete={(event) => this.openModalConfirm(id)}
+                            />
+                        )
+                    } else {
+                        return (
+                            <Panels
+                                key={id}
+                                id={value.id}
+                                showActionBtn={false}
+                                titleConst={panelTitle}
+                                description={description}
+                                showDeleteBtn={false}
+                            />
+                        )
+                    }
+                });
+            } else {
+                interviewsToDisplay = "No Interviews";
+            }
         }
 
         return (
@@ -260,7 +242,7 @@ class InterviewsCompleted extends Component {
                     <PanelGroup bsClass='custom-panel-group'
                                 accordion
                     >
-                    {interviewsToDisplay}
+                        {interviewsToDisplay}
                     </PanelGroup>
                 </div>
 
@@ -275,13 +257,13 @@ class InterviewsCompleted extends Component {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button
-                            id={"pd-btn-modal-yes-"+this.state.currentProjectID}
+                            id={"pd-btn-modal-yes-" + this.state.currentProjectID}
                             className="btn btn-primary"
-                            onClick={() => this.deleteProject()}
+                            onClick={() => this.deleteInterview()}
                         >Yes
                         </Button>
                         <Button
-                            id={"pd-btn-modal-no-"+this.state.currentProjectID}
+                            id={"pd-btn-modal-no-" + this.state.currentProjectID}
                             className="btn btn-danger"
                             onClick={() => this.closeModalConfirm()}
                             bsStyle="primary"
@@ -296,7 +278,13 @@ class InterviewsCompleted extends Component {
 
 function mapStateToProps(state) {
     return {
-        notifications: state.notifications
+        interviews: state.interviews,
+        notifications: state.notifications,
+        vacancies: state.vacancies.vacancies,
+        projects: state.project.projects,
+        levels: state.levels.levels,
+        positions: state.positions.positions,
+        currentProject: state.project.currentProject,
     }
 }
 

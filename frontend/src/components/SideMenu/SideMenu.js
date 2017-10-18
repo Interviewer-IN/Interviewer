@@ -18,13 +18,13 @@ class SideMenu extends Component {
 
 
     // componentWillMount() {
-    //     let currentUser = this.getCookies();
-    //     let HR = currentUser.uid === "user@user.com";
+    //     let currentUser = this.getUserData();
+    //     let HR = currentUser.is_hr;
     //     if (HR) {
     //         this.setState({isHR: true})
     //     }
     // }
-    //
+
     // getCookies() {
     //     let cookies = {};
     //     for (let cookie of document.cookie.split('; ')) {

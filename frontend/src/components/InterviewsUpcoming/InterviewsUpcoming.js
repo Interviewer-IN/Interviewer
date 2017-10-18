@@ -1,11 +1,12 @@
 import React, {Component} from "react";
+import {Link} from 'react-router-dom';
 import {connect} from "react-redux";
 import {Modal, Button, PanelGroup} from "react-bootstrap";
 import Helmet from "react-helmet";
 import "./interviewsUpcoming.css";
-import {showInterviews} from "../../redux/actions/interviewActions";
+import {showInterviews, removeInterview} from "../../redux/actions/interviewActions";
 import {getVacancies} from "../../redux/actions/vacanciesActions";
-import {showProjects, getProjects} from "../../redux/actions/projectActions";
+import {showProjects} from "../../redux/actions/projectActions";
 import PageTitle from "./../../containers/PageTitle";
 import Panels from "../Panels/Panels";
 import Filters from "./../../components/Filters";
@@ -33,30 +34,19 @@ class InterviewsUpcoming extends Component {
         dispatch(showInterviews());
         dispatch(getVacancies());
         dispatch(showProjects());
-        dispatch(getProjects("30")).then(() => {
-            let currentProject = this.props.currentProject;
-            this.setStates(currentProject);
-
-        });
-
-
         if (isUserHR) {
             this.setState({isHR: true})
         }
     }
 
-    setStates(currentProject) {
-        this.setState({currentProject: currentProject});
-    }
-
     switchToEditMode(currentID) {
-        //this.props.history.push("/projects/project/" + currentID + "/edit");
+        this.props.history.push("/interviews-upcoming/" + currentID + "/edit");
     }
 
-    deleteProject() {
-        // this.closeModalConfirm();
-        // const {dispatch} = this.props;
-        // dispatch(removeProject(this.state.currentProjectID));
+    deleteInterview() {
+        this.closeModalConfirm();
+        const {dispatch} = this.props;
+        dispatch(removeInterview(this.state.currentInterviewID));
     }
 
     openModalConfirm(currentID) {
@@ -142,9 +132,12 @@ class InterviewsUpcoming extends Component {
             positions = this.props.positions,
             dates = [],
             interviewsByDates;
-        console.log(projects);
 
         if (vacancies.length && projects.length && levels.length && positions.length) {
+
+            interviews = interviews.filter((current) => {
+                return current.status === true;
+            });
 
             let compareDates = (a, b) => {
                 let dateA = new Date(a.date_time).getTime(),
@@ -219,9 +212,18 @@ class InterviewsUpcoming extends Component {
                                 panelTitleText;
 
                             if (this.state.isHR) {
-                                panelTitleText = time + " | " + value.candidate_id + " | " + currentProject.title;
+                                panelTitleText = time + " | " +
+                                    value.candidate_id + " | " +
+                                    currentLevel.name + " - " +
+                                    currentPosition.name + " - " +
+                                    currentProject.title + " | " +
+                                    "some inteviewer";
                             } else {
-                                panelTitleText = time + " | " + value.candidate_id;
+                                panelTitleText = time + " | " +
+                                    value.candidate_id + " | " +
+                                    currentLevel.name + " - " +
+                                    currentPosition.name + " - " +
+                                    currentProject.title;
                             }
 
                             const PANEL_TITLE = (
@@ -355,7 +357,7 @@ class InterviewsUpcoming extends Component {
                         <Button
                             id={"pd-btn-modal-yes-" + this.state.currentProjectID}
                             className="btn btn-primary"
-                            onClick={() => this.deleteProject()}
+                            onClick={() => this.deleteInterview()}
                         >Yes
                         </Button>
                         <Button
