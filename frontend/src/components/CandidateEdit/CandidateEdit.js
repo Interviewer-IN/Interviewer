@@ -143,10 +143,6 @@ class CandidateEdit extends Component {
             hasErrorBlock.remove();
         }
 
-        console.log(event.target);
-        console.log(event.target.files[0]);
-
-
         let file = event.target.files[0];
         getBase64(file).then(data => {
                 this.setState({
@@ -200,7 +196,7 @@ class CandidateEdit extends Component {
                 positionId = getValueFromArr(positionsList, positionVal, 'name'),
                 levelId = getValueFromArr(levelsList, levelVal, 'name');
 
-            console.log(cvData);
+
 
 
             let formData = {
