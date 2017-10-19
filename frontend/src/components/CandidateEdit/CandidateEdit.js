@@ -216,9 +216,6 @@ class CandidateEdit extends Component {
                 cv: cvData
             };
 
-            console.log(formData);
-
-
             let {dispatch} = this.props,
                 pathName = window.location.hash,
                 backPath = '#/' + pathName.split('/')[1];

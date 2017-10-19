@@ -95,8 +95,6 @@ class CreateCandidate extends Component {
             parentWrapper.classList.remove('has-error');
             hasErrorBlock.remove();
         }
-        console.log(event.target);
-        console.log(event.target.files[0]);
 
 
         let file = event.target.files[0];
@@ -152,8 +150,6 @@ class CreateCandidate extends Component {
                 positionId = getValueFromArr(positionsList, positionVal, 'name'),
                 levelId = getValueFromArr(levelsList, levelVal, 'name');
 
-
-            console.log(cvData);
 
             let formData = {};
 

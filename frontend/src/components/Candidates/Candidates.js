@@ -11,6 +11,7 @@ import {connect} from 'react-redux';
 import {getCandidates, deleteCandidate} from '../../redux/actions/candidatesActions'
 import {levelsListName, positionsListName, getValueFromArr} from '../../utils/index';
 import {GET_EMPTY_DATA, DELETE_CANDIDATE} from '../../config';
+import fetch from "isomorphic-fetch";
 
 class Candidates extends Component {
 
@@ -128,16 +129,12 @@ class Candidates extends Component {
                     candidatePosition = positionsTitleObj[candidatePositionId],
                     candidateLevelId = item.level_id,
                     candidateLevel = levelsTitleObj[candidateLevelId],
-                    location = window.location.origin,
                     candidateCV = item.cv.url;
-
-                console.log(candidateCV);
-
 
                 let checkCandidateCV = () => {
                     if (candidateCV) {
                         return (
-                            <a href={candidateCV} className="download-block form-group" download>
+                            <a href={candidateCV} className="download-block form-group text-green text-green--hover" download>
                                 <span className="download-block__icon fa fa-download"/>
                                 <span className="download-block__title">Download CV</span>
                             </a>

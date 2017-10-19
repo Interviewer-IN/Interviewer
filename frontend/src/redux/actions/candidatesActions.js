@@ -179,7 +179,6 @@ export function updateCandidate(data, message, backPath) {
 }
 
 export function deleteCandidate(id) {
-    console.log(id);
     return (dispatch) => {
         fetch('/api/v1/candidates/' + id,
             {
@@ -189,24 +188,39 @@ export function deleteCandidate(id) {
                 }
             })
             .then(response => {
-                console.log(response.status);
                 switch (response.status) {
                     case 200:
                     case 201:
                         return response.json();
+                    case 500:
+                        return response.json();
+
                     default:
                         return {data: []}
                 }
             })
             .then(data => {
-                dispatch(getCandidates());
-                dispatch(makeNote(
-                    {
-                        status: "success",
-                        text: "Candidate was deleted",
-                        hide: true
-                    }
-                ));
+                if (data.data === undefined) {
+                    let error = data.error;
+
+                    dispatch(makeNote({
+                        status: 'danger',
+                        text: 'Error: ' + error,
+                        hide: false
+                    }));
+                } else {
+                    dispatch(getCandidates());
+                    dispatch(makeNote(
+                        {
+                            status: "success",
+                            text: "Candidate was deleted",
+                            hide: true
+                        }
+                    ));
+                }
+
+
+
             })
             .catch((error) => {
                 dispatch(makeNote({

@@ -3,6 +3,10 @@
   overflow: hidden;
   text-align: left;
 
+  &.text-muted:hover{
+    color: #818a91 !important;
+  }
+
   span{
     display: inline-block;
   }
