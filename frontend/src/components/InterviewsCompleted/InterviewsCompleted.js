@@ -6,6 +6,7 @@ import "./interviewsCompleted.css";
 import {showInterviews, removeInterview} from "../../redux/actions/interviewActions";
 import {getVacancies} from "../../redux/actions/vacanciesActions";
 import {showProjects} from "../../redux/actions/projectActions";
+import {getRatings} from "../../redux/actions/ratingActions";
 import PageTitle from "./../../containers/PageTitle";
 import Panels from "../Panels/Panels";
 import Filters from "./../../components/Filters";
@@ -29,11 +30,11 @@ class InterviewsCompleted extends Component {
         dispatch(showInterviews());
         dispatch(getVacancies());
         dispatch(showProjects());
+        dispatch(getRatings());
         if (isUserHR) {
             this.setState({isHR: true})
         }
     }
-
 
 
     openModalConfirm(currentID) {
@@ -112,9 +113,10 @@ class InterviewsCompleted extends Component {
             projects = this.props.projects,
             levels = this.props.levels,
             positions = this.props.positions,
+            ratings = this.props.ratings,
             interviewsToDisplay;
 
-        if (vacancies.length && projects.length && levels.length && positions.length) {
+        if (vacancies.length && projects.length && levels.length && positions.length && ratings.length) {
 
             interviews = interviews.filter((current) => {
                 return current.status === false;
@@ -135,20 +137,16 @@ class InterviewsCompleted extends Component {
 
                     let id = value.id,
                         currentDate = new Date(value.date_time).toLocaleString('en-GB', {
-                           day: 'numeric', month: 'numeric', year: 'numeric'}),
-                        currentVacancy = vacancies.find(function (item) {
-                            return value.vacancy_id === item.id
+                            day: 'numeric', month: 'numeric', year: 'numeric'
                         }),
-                        currentProject = projects.find(function (item) {
-                            return currentVacancy.project_id === item.id
-                        }),
-                        currentLevel = levels.find(function (item) {
-                            return currentVacancy.level_id === item.id
-                        }),
-                        currentPosition = positions.find(function (item) {
-                            return currentVacancy.position_id === item.id
-                        }),
+                        currentVacancy = vacancies.find(item => value.vacancy_id === item.id),
+                        currentProject = projects.find(item => currentVacancy.project_id === item.id),
+                        currentLevel = levels.find(item => currentVacancy.level_id === item.id),
+                        currentPosition = positions.find(item => currentVacancy.position_id === item.id),
+                        currentRating = ratings.find(item => value.rating_id === item.id),
                         panelTitleText;
+
+
 
 
                     if (this.state.isHR) {
@@ -158,7 +156,8 @@ class InterviewsCompleted extends Component {
                             currentLevel.name + " - " +
                             currentPosition.name + " - " +
                             currentProject.title + " | " +
-                            "rating" + " | " + "some inteviewer";
+                            "Rating: " + currentRating.grade + " | " +
+                            "some inteviewer";
                     } else {
                         panelTitleText =
                             currentDate + " | " +
@@ -166,7 +165,7 @@ class InterviewsCompleted extends Component {
                             currentLevel.name + " - " +
                             currentPosition.name + " - " +
                             currentProject.title + " | " +
-                            "some inteviewer";
+                            "Rating: " + currentRating.grade;
                     }
 
                     const panelTitle = (
@@ -284,6 +283,7 @@ function mapStateToProps(state) {
         projects: state.project.projects,
         levels: state.levels.levels,
         positions: state.positions.positions,
+        ratings: state.ratings.ratings,
         currentProject: state.project.currentProject,
     }
 }

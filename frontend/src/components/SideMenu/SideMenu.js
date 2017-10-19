@@ -12,33 +12,24 @@ class SideMenu extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isHR: true
+            isHR: false
         }
     }
 
 
-    // componentWillMount() {
-    //     let currentUser = this.getUserData();
-    //     let HR = currentUser.is_hr;
-    //     if (HR) {
-    //         this.setState({isHR: true})
-    //     }
-    // }
+    componentWillMount() {
+        let currentUser = this.getUserData();
+        let HR = currentUser.is_hr;
+        if (HR) {
+            this.setState({isHR: true})
+        }
+    }
 
-    // getCookies() {
-    //     let cookies = {};
-    //     for (let cookie of document.cookie.split('; ')) {
-    //         let [name, value] = cookie.split("=");
-    //         cookies[name] = decodeURIComponent(value);
-    //     }
-    //     return cookies;
-    // }
-
-    // getUserData() {
-    //     var userData = localStorage.getItem("userData"),
-    //         data = JSON.parse(userData);
-    //     return data;
-    // }
+    getUserData() {
+        var userData = localStorage.getItem("userData"),
+            data = JSON.parse(userData);
+        return data;
+    }
 
 
     handleCloseSideBarClick() {

@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import {showProjects} from "../../redux/actions/projectActions";
 import {getLevels} from "../../redux/actions/levelsActions";
 import {getPositions} from "../../redux/actions/positionActions";
+import {getRatings} from "../../redux/actions/ratingActions";
 
 class Filters extends Component {
 
@@ -13,6 +14,7 @@ class Filters extends Component {
         dispatch(showProjects());
         dispatch(getLevels());
         dispatch(getPositions());
+        dispatch(getRatings());
     }
 
 
@@ -24,6 +26,11 @@ class Filters extends Component {
     getLevelFilterVal(event){
         let levelFilterVal = event.target.value;
         this.props.levelFilterVal(levelFilterVal);
+    }
+
+    getRatingFilterVal(event){
+        let ratingFilterVal = event.target.value;
+        this.props.ratingFilterVal(ratingFilterVal);
     }
 
     getProjectFilterVal(event){
@@ -129,6 +136,31 @@ class Filters extends Component {
 
         };
 
+        let showRatingFilter = (rating) => {
+
+            let ratingsList = this.props.ratings,
+                options = [];
+
+            if (ratingsList.length) {
+                options = ratingsList.map((item, index) => <option key={index}>{item.grade}</option>);
+            }
+
+            if (rating) {
+                return (
+                    <div className="form-group">
+                        <select className="form-control form-control-sm filter-select custom-mode"
+                                id={ratingFilterId}
+                                onChange = {(event) => this.getRatingFilterVal(event)}
+                        >
+                            <option>Rating</option>
+                            {options}
+                        </select>
+                    </div>
+                );
+            }
+
+        };
+
         let showInterviewersFilter = (interviewer) => {
             if (interviewer){
                 return (
@@ -146,25 +178,6 @@ class Filters extends Component {
             }
 
         };
-
-        let showRatingFilter = (rating) => {
-            if (rating){
-                return (
-                    <div className="form-group">
-                        <select className="form-control form-control-sm filter-select"
-                                id={ratingFilterId}
-                        >
-                            <option>Rating</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                        </select>
-                    </div>
-                );
-            }
-
-        };
-
 
         let showDateFilter = (date) => {
             if (date) {
@@ -240,7 +253,8 @@ function mapStateToProps(state) {
     return {
         newProject: state.project,
         levels: state.levels,
-        positions: state.positions
+        positions: state.positions,
+        ratings: state.ratings.ratings,
     }
 }
 

@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import {Link} from 'react-router-dom';
 import {connect} from "react-redux";
 import {Modal, Button, PanelGroup} from "react-bootstrap";
 import Helmet from "react-helmet";
@@ -130,6 +129,7 @@ class InterviewsUpcoming extends Component {
             projects = this.props.projects,
             levels = this.props.levels,
             positions = this.props.positions,
+
             dates = [],
             interviewsByDates;
 
