@@ -53,8 +53,7 @@ export function candidatesValidationFrom(event){
                 minLength: 2
             },
             age: {
-                required: false,
-                pattern: NUMBERS_ONLY,
+                required: false
             },
             position: {
                 required: true
@@ -165,7 +164,7 @@ export function candidatesValidationFrom(event){
 
     if (candidateValidationSettings.rules.age.required || ageVal) {
         if (ageVal) {
-            if (ageVal.match(candidateValidationSettings.rules.age.pattern)) {
+            if (0 < ageVal && ageVal <= 999) {
                 agePass = true;
             } else {
                 ageElem.parentNode.appendChild(createErrorElem(ageElem, candidateValidationSettings.messages.age.format));

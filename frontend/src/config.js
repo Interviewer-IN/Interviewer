@@ -1,6 +1,5 @@
 export const fieldCharRegex = /^[a-zA-Z0-9\s!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
 export const LETTERS_ONLY = /^[a-zA-Z]*$/;
-export const NUMBERS_ONLY = /^[0-9]+$/;
 export const fieldSpaceRegex = /^\s*$/;
 
 
