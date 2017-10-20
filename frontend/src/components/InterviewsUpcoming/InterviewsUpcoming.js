@@ -23,7 +23,10 @@ class InterviewsUpcoming extends Component {
             interviewId: "",
             candidateId: "",
             date_time: "",
-            currentProject: "1"
+            currentProject: "",
+            positionsFilterID: "",
+            levelsFilterID: "",
+            projectsFilterID: "",
         }
     }
 
@@ -71,6 +74,66 @@ class InterviewsUpcoming extends Component {
         this.props.history.push("/interviews-upcoming/" + currentID + "/add-feedback");
     }
 
+    getPositionFilterVal(positionFilterVal) {
+        let positionsList = this.props.positions,
+            positionFilterId = 0;
+
+        positionFilterId = this.getValueFromArr(positionsList, positionFilterVal, 'name');
+
+        this.setState({
+            positionsFilterID: positionFilterId
+        })
+    }
+
+    getLevelFilterVal(levelFilterVal) {
+
+        let levelsList = this.props.levels,
+            levelFilterId = 0;
+
+        levelFilterId = this.getValueFromArr(levelsList, levelFilterVal, 'name');
+
+        this.setState({
+            levelsFilterID: levelFilterId
+        })
+    }
+
+    getProjectFilterVal(projectFilterVal) {
+        let projectsList = this.props.projects,
+            projectFilterId = 0;
+
+        projectFilterId = this.getValueFromArr(projectsList, projectFilterVal, 'title');
+
+        this.setState({
+            projectsFilterID: projectFilterId
+        })
+    }
+
+    getValueFromArr(arr, value, nameField) {
+        // arr - array for filter
+        // value - can be [id] as number or [value] as string
+        // nameField - name of column from table. can be [title, name] as string
+
+        if (typeof value === 'string') {
+            let result = arr.find((currentElem) => {
+                return currentElem[nameField] === value
+
+            });
+
+            if (result === undefined) {
+                return 0;
+            } else {
+                return result.id;
+            }
+        }
+
+        if (typeof value === 'number') {
+            let result = arr.find((currentElem) => {
+                return currentElem.id === value
+            });
+            return result[nameField];
+        }
+    }
+
 
     render() {
 
@@ -109,6 +172,9 @@ class InterviewsUpcoming extends Component {
                     date={true}
                     interviewer={true}
                     rating={false}
+                    positionFilterVal={(event) => this.getPositionFilterVal(event)}
+                    levelFilterVal={(event) => this.getLevelFilterVal(event)}
+                    projectFilterVal={(event) => this.getProjectFilterVal(event)}
                 />
             )
         } else {
@@ -120,6 +186,9 @@ class InterviewsUpcoming extends Component {
                     date={true}
                     interviewer={false}
                     rating={false}
+                    positionFilterVal={(event) => this.getPositionFilterVal(event)}
+                    levelFilterVal={(event) => this.getLevelFilterVal(event)}
+                    projectFilterVal={(event) => this.getProjectFilterVal(event)}
                 />
             )
         }

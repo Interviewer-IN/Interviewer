@@ -12,21 +12,19 @@ class SideMenu extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isHR: false
+            isHr: false
         }
     }
 
 
     componentWillMount() {
-        let currentUser = this.getUserData();
-        let HR = currentUser.is_hr;
-        if (HR) {
-            this.setState({isHR: true})
-        }
+        let user = this.getUserData();
+        let HR = user.is_hr;
+        this.setState({isHr: HR});
     }
 
     getUserData() {
-        var userData = localStorage.getItem("userData"),
+        let userData = localStorage.getItem("userData"),
             data = JSON.parse(userData);
         return data;
     }
@@ -68,7 +66,7 @@ class SideMenu extends Component {
 
             let dashboard;
 
-            if (this.state.isHR ) {
+            if (this.state.isHr) {
 
                 dashboard = [
                     {
