@@ -8,6 +8,7 @@ import levels from './levels'
 import positions from './positions'
 import interviews from './interviews'
 import ratings from './ratings'
+import candidates from './candidates'
 
 
 export default combineReducers({
@@ -19,5 +20,6 @@ export default combineReducers({
     levels,
     positions,
     interviews,
-    ratings
+    ratings,
+    candidates
 })

@@ -6,6 +6,7 @@ import "./interviewsUpcoming.css";
 import {showInterviews, removeInterview} from "../../redux/actions/interviewActions";
 import {getVacancies} from "../../redux/actions/vacanciesActions";
 import {showProjects} from "../../redux/actions/projectActions";
+import {getCandidates} from "../../redux/actions/candidatesActions";
 import PageTitle from "./../../containers/PageTitle";
 import Panels from "../Panels/Panels";
 import Filters from "./../../components/Filters";
@@ -36,6 +37,7 @@ class InterviewsUpcoming extends Component {
         dispatch(showInterviews());
         dispatch(getVacancies());
         dispatch(showProjects());
+        dispatch(getCandidates());
         if (isUserHR) {
             this.setState({isHR: true})
         }
@@ -198,11 +200,11 @@ class InterviewsUpcoming extends Component {
             projects = this.props.projects,
             levels = this.props.levels,
             positions = this.props.positions,
-
+            candidates = this.props.candidates,
             dates = [],
             interviewsByDates;
 
-        if (vacancies.length && projects.length && levels.length && positions.length) {
+        if (vacancies.length && projects.length && levels.length && positions.length && candidates.length) {
 
             interviews = interviews.filter((current) => {
                 return current.status === true;
@@ -266,30 +268,45 @@ class InterviewsUpcoming extends Component {
                                     hour: 'numeric',
                                     minute: 'numeric'
                                 }),
-                                currentVacancy = vacancies.find(function (item) {
-                                    return value.vacancy_id === item.id
-                                }),
-                                currentProject = projects.find(function (item) {
-                                    return currentVacancy.project_id === item.id
-                                }),
-                                currentLevel = levels.find(function (item) {
-                                    return currentVacancy.level_id === item.id
-                                }),
-                                currentPosition = positions.find(function (item) {
-                                    return currentVacancy.position_id === item.id
-                                }),
+                                currentVacancy = vacancies.find(item => value.vacancy_id === item.id),
+                                currentProject = projects.find(item => currentVacancy.project_id === item.id),
+                                currentLevel = levels.find(item => currentVacancy.level_id === item.id),
+                                currentPosition = positions.find(item => currentVacancy.position_id === item.id),
+                                currentCandidate = candidates.find(item => value.candidate_id === item.id),
+                                candidateCV = currentCandidate.cv.url,
                                 panelTitleText;
+
+
+                        let checkCandidateCV = () => {
+                            if (candidateCV) {
+                                return (
+                                    <a href={candidateCV} className="download-block form-group text-green text-green--hover" download>
+                                        <span className="download-block__icon fa fa-download"/>
+                                        <span className="download-block__title">Download CV</span>
+                                    </a>
+                                )
+                            } else {
+                                return (
+                                    <a className="download-block form-group download-block--disabled text-muted">
+                                        <span className="download-block__icon fa fa-download"/>
+                                        <span className="download-block__title text-bold--100">Download CV</span>
+                                    </a>
+                                )
+                            }
+                        };
 
                             if (this.state.isHR) {
                                 panelTitleText = time + " | " +
-                                    value.candidate_id + " | " +
+                                    currentCandidate.name + " " +
+                                    currentCandidate.surname + " | " +
                                     currentLevel.name + " - " +
                                     currentPosition.name + " - " +
                                     currentProject.title + " | " +
-                                    "some inteviewer";
+                                    "some interviewer";
                             } else {
                                 panelTitleText = time + " | " +
-                                    value.candidate_id + " | " +
+                                    currentCandidate.name + " " +
+                                    currentCandidate.surname + " | " +
                                     currentLevel.name + " - " +
                                     currentPosition.name + " - " +
                                     currentProject.title;
@@ -316,18 +333,18 @@ class InterviewsUpcoming extends Component {
                             const PANEL_DESCRIPTION = (
                                 <div>
                                     <div className="clearfix">
-                                        <div className="float-left">
+                                        <div className="float-left interview-details">
                                             <p className="interview-details-header"><strong>Candidate</strong></p>
-                                            <p>{"Name: " + value.candidate_id}</p>
-                                            <p>{"Age: " + value.candidate_id}</p>
-                                            <p>{"Experience: " + value.candidate_id}</p>
-                                            <a href="#">View CV</a>
+                                            <p><strong>Name:</strong>{" " + currentCandidate.name}</p>
+                                            <p><strong>Age:</strong>{" " + currentCandidate.age}</p>
+                                            <p><strong>Experience:</strong>{" " + currentCandidate.experience}</p>
+                                            {checkCandidateCV()}
                                         </div>
                                         <div className="float-right">
                                             <p className="interview-details-header"><strong>Project</strong></p>
                                             <p>{currentProject.title}</p>
                                             <p className="interview-details-header"><strong>Interviewer</strong></p>
-                                            <p>{currentProject.title}</p>
+                                            <p>some interviewer</p>
                                         </div>
                                     </div>
                                     <div className="interview-details-down">
@@ -424,13 +441,13 @@ class InterviewsUpcoming extends Component {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button
-                            id={"pd-btn-modal-yes-" + this.state.currentProjectID}
+                            id={"pd-btn-modal-yes-" + this.state.currentInterviewID}
                             className="btn btn-primary"
                             onClick={() => this.deleteInterview()}
                         >Yes
                         </Button>
                         <Button
-                            id={"pd-btn-modal-no-" + this.state.currentProjectID}
+                            id={"pd-btn-modal-no-" + this.state.currentInterviewID}
                             className="btn btn-danger"
                             onClick={() => this.closeModalConfirm()}
                             bsStyle="primary"
@@ -451,6 +468,7 @@ function mapStateToProps(state) {
         projects: state.project.projects,
         levels: state.levels.levels,
         positions: state.positions.positions,
+        candidates: state.candidates.candidates,
         currentProject: state.project.currentProject,
     }
 }

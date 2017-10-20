@@ -1,6 +1,11 @@
 .download-block{
   display: inline-block;
   overflow: hidden;
+  text-align: left;
+
+  &.text-muted:hover{
+    color: #818a91 !important;
+  }
 
   span{
     display: inline-block;
@@ -15,6 +20,10 @@
 
   &__title{
     vertical-align: top;
+  }
+
+  &--disabled{
+    cursor: not-allowed;
   }
 }
 

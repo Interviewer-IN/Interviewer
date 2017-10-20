@@ -2,25 +2,17 @@ import fetch from "isomorphic-fetch";
 import {makeNote} from "./notificationActions";
 
 
-function addVacancies(data) {
+
+function addCandidates(data) {
     return {
-        type: 'ADD_VACANCIES',
+        type: 'ADD_CANDIDATES',
         payload: data.data
     }
 }
 
-export function addIndexExpandedElement(data) {
-    return {
-        type: 'INDEX_ELEMENT',
-        payload: data
-
-    }
-}
-
-export function getVacancies(indexExpandedElement = false) {
-
-    return (dispatch) => new Promise((resolve) =>{
-        fetch('/api/v1/vacancies',
+export function getCandidates() {
+    return (dispatch) => new Promise((resolve) => {
+        fetch('/api/v1/candidates',
             {
                 method: 'GET',
                 headers: {
@@ -36,32 +28,34 @@ export function getVacancies(indexExpandedElement = false) {
                     default:
                         return {data: []}
                 }
+
             })
             .then(data => {
-                dispatch(addIndexExpandedElement(indexExpandedElement));
-                dispatch(addVacancies(data));
+                dispatch(addCandidates(data));
+                resolve(data.data);
             })
-            .catch((error) => {
+            .catch(error => {
                 dispatch(makeNote({
                     status: 'danger',
                     text: 'Error: ' + error,
                     hide: false
-                }))
+                }));
+                resolve(error);
             })
-    })
+    });
 }
 
-function addVacancy(data) {
+function addCandidate(data) {
     return {
-        type: 'ADD_VACANCY',
+        type: 'CURRENT_CANDIDATE',
         payload: data.data
 
     }
 }
 
-export function getVacancy(vacancyId) {
+export function getCandidate(candidateId) {
     return (dispatch) => new Promise((resolve) => {
-        fetch('/api/v1/vacancies/' + vacancyId)
+        fetch('/api/v1/candidates/' + candidateId)
             .then(response => {
                 switch (response.status) {
                     case 200:
@@ -73,7 +67,7 @@ export function getVacancy(vacancyId) {
                 }
             })
             .then(data => {
-                dispatch(addVacancy(data));
+                dispatch(addCandidate(data));
                 resolve(data.data);
             })
             .catch((error) => {
@@ -88,18 +82,17 @@ export function getVacancy(vacancyId) {
 }
 
 
-function addNewVacancy(data) {
+function addNewCandidate(data) {
     return {
-        type: 'CREATE_VACANCY',
+        type: 'ADD_CANDIDATE',
         payload: data.data
     }
 }
 
-
-export function createVacancy(data, message, backPath, openPanelIndex = 0) {
-    let successMessage = message || 'Vacancy was created';
+export function createCandidate(data, message, backPath) {
+    let successMessage = message || 'Candidate was added';
     return (dispatch) => {
-        fetch('/api/v1/vacancies',
+        fetch('/api/v1/candidates',
             {
                 method: 'POST',
                 body: JSON.stringify(data),
@@ -117,8 +110,8 @@ export function createVacancy(data, message, backPath, openPanelIndex = 0) {
                 }
             })
             .then(data => {
-                dispatch(addNewVacancy(data));
-                dispatch(getVacancies(openPanelIndex));
+                dispatch(addNewCandidate(data));
+                dispatch(getCandidates());
                 dispatch(makeNote(
                     {
                         status: "success",
@@ -141,10 +134,10 @@ export function createVacancy(data, message, backPath, openPanelIndex = 0) {
     }
 }
 
-export function updateVacancy(data, message, backPath) {
-    let successMessage = message || 'vacancy was updated';
+export function updateCandidate(data, message, backPath) {
+    let successMessage = message || 'Candidate was updated';
     return (dispatch) => {
-        fetch('/api/v1/vacancies/' + data.id,
+        fetch('/api/v1/candidates/' + data.id,
             {
                 method: 'PUT',
                 body: JSON.stringify(data),
@@ -162,7 +155,7 @@ export function updateVacancy(data, message, backPath) {
                 }
             })
             .then(data => {
-                dispatch(getVacancies());
+                dispatch(getCandidates());
                 dispatch(makeNote(
                     {
                         status: "success",
@@ -185,9 +178,9 @@ export function updateVacancy(data, message, backPath) {
     }
 }
 
-export function deleteVacancy(id) {
+export function deleteCandidate(id) {
     return (dispatch) => {
-        fetch('/api/v1/vacancies/' + id,
+        fetch('/api/v1/candidates/' + id,
             {
                 method: 'DELETE',
                 headers: {
@@ -199,19 +192,35 @@ export function deleteVacancy(id) {
                     case 200:
                     case 201:
                         return response.json();
+                    case 500:
+                        return response.json();
+
                     default:
                         return {data: []}
                 }
             })
             .then(data => {
-                dispatch(getVacancies());
-                dispatch(makeNote(
-                    {
-                        status: "success",
-                        text: "Vacancy was deleted",
-                        hide: true
-                    }
-                ));
+                if (data.data === undefined) {
+                    let error = data.error;
+
+                    dispatch(makeNote({
+                        status: 'danger',
+                        text: 'Error: ' + error,
+                        hide: false
+                    }));
+                } else {
+                    dispatch(getCandidates());
+                    dispatch(makeNote(
+                        {
+                            status: "success",
+                            text: "Candidate was deleted",
+                            hide: true
+                        }
+                    ));
+                }
+
+
+
             })
             .catch((error) => {
                 dispatch(makeNote({
@@ -222,4 +231,3 @@ export function deleteVacancy(id) {
             })
     }
 }
-

@@ -7,6 +7,7 @@ import {showInterviews, removeInterview} from "../../redux/actions/interviewActi
 import {getVacancies} from "../../redux/actions/vacanciesActions";
 import {showProjects} from "../../redux/actions/projectActions";
 import {getRatings} from "../../redux/actions/ratingActions";
+import {getCandidates} from "../../redux/actions/candidatesActions";
 import PageTitle from "./../../containers/PageTitle";
 import Panels from "../Panels/Panels";
 import Filters from "./../../components/Filters";
@@ -36,6 +37,7 @@ class InterviewsCompleted extends Component {
         dispatch(getVacancies());
         dispatch(showProjects());
         dispatch(getRatings());
+        dispatch(getCandidates());
         if (isUserHR) {
             this.setState({isHR: true})
         }
@@ -154,6 +156,10 @@ class InterviewsCompleted extends Component {
                 <PageTitle
                     pageTitle='Completed Interviews'
                     showBackBtn={false}
+                    showButton={false}
+                    buttonId=""
+                    titleForButton=''
+                    linkForButton=''
                 />
             )
         }
@@ -197,6 +203,7 @@ class InterviewsCompleted extends Component {
             levels = this.props.levels,
             positions = this.props.positions,
             ratings = this.props.ratings,
+            candidates = this.props.candidates,
             interviewsToDisplay;
 
         if (vacancies.length && projects.length && levels.length && positions.length && ratings.length) {
@@ -227,6 +234,7 @@ class InterviewsCompleted extends Component {
                         currentProject = projects.find(item => currentVacancy.project_id === item.id),
                         currentLevel = levels.find(item => currentVacancy.level_id === item.id),
                         currentPosition = positions.find(item => currentVacancy.position_id === item.id),
+                        currentCandidate = candidates.find(item => value.candidate_id === item.id),
                         currentRating = ratings.find(item => value.rating_id === item.id),
                         panelTitleText;
 
@@ -236,7 +244,8 @@ class InterviewsCompleted extends Component {
                     if (this.state.isHR) {
                         panelTitleText =
                             currentDate + " | " +
-                            value.candidate_id + " | " +
+                            currentCandidate.name + " " +
+                            currentCandidate.surname + " | " +
                             currentLevel.name + " - " +
                             currentPosition.name + " - " +
                             currentProject.title + " | " +
@@ -245,7 +254,8 @@ class InterviewsCompleted extends Component {
                     } else {
                         panelTitleText =
                             currentDate + " | " +
-                            value.candidate_id + " | " +
+                            currentCandidate.name + " " +
+                            currentCandidate.surname + " | " +
                             currentLevel.name + " - " +
                             currentPosition.name + " - " +
                             currentProject.title + " | " +
@@ -283,8 +293,7 @@ class InterviewsCompleted extends Component {
                             <Panels
                                 key={id}
                                 id={value.id}
-                                showActionBtn={true}
-                                titleForActionBtn='Activate'
+                                showActionBtn={false}
                                 titleConst={panelTitle}
                                 description={description}
                                 showDeleteBtn={true}
@@ -340,13 +349,13 @@ class InterviewsCompleted extends Component {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button
-                            id={"pd-btn-modal-yes-" + this.state.currentProjectID}
+                            id={"pd-btn-modal-yes-" + this.state.currentInterviewID}
                             className="btn btn-primary"
                             onClick={() => this.deleteInterview()}
                         >Yes
                         </Button>
                         <Button
-                            id={"pd-btn-modal-no-" + this.state.currentProjectID}
+                            id={"pd-btn-modal-no-" + this.state.currentInterviewID}
                             className="btn btn-danger"
                             onClick={() => this.closeModalConfirm()}
                             bsStyle="primary"
@@ -368,6 +377,7 @@ function mapStateToProps(state) {
         levels: state.levels.levels,
         positions: state.positions.positions,
         ratings: state.ratings.ratings,
+        candidates: state.candidates.candidates,
         currentProject: state.project.currentProject,
     }
 }

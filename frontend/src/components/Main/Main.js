@@ -8,6 +8,7 @@ import InterviewsCompleted from "../InterviewsCompleted";
 import InterviewEdit from "../InterviewEdit";
 import Candidates from "./../Candidates";
 import CreateCandidate from "./../CreateCandidate";
+import CandidateEdit from './../CandidateEdit';
 import VacanciesOpen from "./../VacanciesOpen";
 import VacanciesClosed from "./../VacanciesClosed";
 import CreateVacancy from "./../CreateVacancy";
@@ -230,6 +231,19 @@ class Main extends Component {
 
                                         (<Redirect to="/login"/>)
 
+                                )}
+                            />
+                            <Route
+                                exact path="/candidates/candidate/:id/edit"
+                                name="CandidateEdit"
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<CandidateEdit {...props}
+                                                      callMakeNote={(status, text, hide) =>
+                                                          this.handleMakeNote(status, text, hide)}
+                                                      onCheckUserRole={() => this.isHR()}
+                                        />) :
+                                        (<Redirect to="/login"/>)
                                 )}
                             />
                             <Route

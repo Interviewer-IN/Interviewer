@@ -116,7 +116,7 @@ export function authorizationCheck() {
         userData = localStorage.getItem('userData');
 
 
-    if (!(accessToken && client && uid)) {
+    if (!(accessToken && client && uid && userData)) {
 
         isUserLogged = false;
         userData = {};
