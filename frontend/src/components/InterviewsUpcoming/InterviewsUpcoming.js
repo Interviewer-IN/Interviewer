@@ -210,6 +210,37 @@ class InterviewsUpcoming extends Component {
                 return current.status === true;
             });
 
+            //-- FILTER BY POSITION  --------------------------
+            let positionFilterID = this.state.positionsFilterID;
+
+            if (positionFilterID) {
+                interviews = interviews.filter((current) => {
+                    return (current.position_id === positionFilterID);
+                });
+            }
+            //-- END FILTER BY LEVEL -----------------------
+
+            //-- FILTER BY LEVEL  --------------------------
+            let levelFilterID = this.state.levelsFilterID;
+
+            if (levelFilterID) {
+                interviews = interviews.filter((current) => {
+                    return (current.level_id === levelFilterID);
+                });
+            }
+            //-- END FILTER BY LEVEL  -----------------------
+
+            //-- FILTER BY PROJECT  --------------------------
+            let projectFilterID = this.state.projectsFilterID;
+
+            if (projectFilterID) {
+                interviews = interviews.filter((current) => {
+                    return (current.project_id === projectFilterID);
+                });
+            }
+            //-- END FILTER BY PROJECT  -----------------------
+
+
             let compareDates = (a, b) => {
                 let dateA = new Date(a.date_time).getTime(),
                     dateB = new Date(b.date_time).getTime();
