@@ -21,4 +21,6 @@ Rails.application.routes.draw do
     end
 
   end
+
+  get "api/v1/candidates/download_cv/:id" => 'api/v1/candidates#download_cv'
 end

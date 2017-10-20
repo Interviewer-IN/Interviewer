@@ -1,0 +1,29 @@
+.download-block{
+  display: inline-block;
+  overflow: hidden;
+  text-align: left;
+
+  &.text-muted:hover{
+    color: #818a91 !important;
+  }
+
+  span{
+    display: inline-block;
+  }
+
+  &__icon{
+    display: block;
+    width: 40px;
+    font-size: 1.6rem;
+    text-align: center;
+  }
+
+  &__title{
+    vertical-align: top;
+  }
+
+  &--disabled{
+    cursor: not-allowed;
+  }
+}
+
