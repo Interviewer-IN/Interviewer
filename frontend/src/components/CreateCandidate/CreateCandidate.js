@@ -8,9 +8,9 @@ import {connect} from 'react-redux';
 import Helmet from 'react-helmet';
 import {getPositions} from "../../redux/actions/positionActions";
 import {getLevels} from "../../redux/actions/levelsActions";
-import {getValueFromArr, removeCurrentError, candidatesValidationFrom, getBase64} from '../../utils/index';
+import {getValueFromArr, removeCurrentError, candidatesValidationFrom, getBase64, createErrorElem} from '../../utils/index';
 import {createCandidate} from "../../redux/actions/candidatesActions";
-import {CONFIRM_TEXT} from "../../config";
+import {CONFIRM_TEXT, TYPE_FILES, TYPE_FILE_ERROR_TEXT} from "../../config";
 
 class CreateCandidate extends Component {
     constructor(props) {
@@ -97,22 +97,51 @@ class CreateCandidate extends Component {
         }
 
 
-        let file = event.target.files[0];
-        getBase64(file).then(data => {
-                this.setState({
-                    cvData: data
-                })
+        let file = event.target.files[0],
+            arrExtensions = TYPE_FILES.split(','),
+            searchResult = false;
+
+        if (event.target.files.length){
+
+
+            for (let i = 0; i < arrExtensions.length; i++) {
+                let searchPosition = file.name.indexOf(arrExtensions[i]);
+                if (searchPosition !== -1) {
+                    searchResult = true;
+                    break;
+                }
             }
-        );
+
+            if (searchResult){
+
+                getBase64(file).then(data => {
+                        this.setState({
+                            cvData: data
+                        })
+                    }
+                );
+
+                this.setState({cvUploadVal: event.target.files[0].name});
+                resultUploadBlock.innerHTML = event.target.files[0].name;
 
 
-        if (event.target.files.length) {
-            this.setState({cvUploadVal: event.target.files[0].name});
-            resultUploadBlock.innerHTML = event.target.files[0].name;
+            } else {
+                this.setState({cvUploadVal: ''});
+                resultUploadBlock.innerHTML = '';
+                this.setState({
+                    cvData: ''
+                });
+                parentWrapper.appendChild(createErrorElem(event.target.parentNode, TYPE_FILE_ERROR_TEXT));
+            }
         } else {
             this.setState({cvUploadVal: ''});
             resultUploadBlock.innerHTML = '';
+            this.setState({
+                cvData: ''
+            });
         }
+
+
     }
 
     handleNotesChanges(event) {
@@ -318,7 +347,7 @@ class CreateCandidate extends Component {
                                         <input id="candidate-upload-file"
                                                className="form-control upload-file__input"
                                                type="file"
-                                               accept=".pdf,.doc,.docx"
+                                               accept={TYPE_FILES}
                                                ref="candidateCV"
                                                onChange={(event) => this.handleUploadFile(event)}/>
                                     </label>
