@@ -16,7 +16,6 @@ class SideMenu extends Component {
         }
     }
 
-
     componentWillMount() {
         let user = this.getCookies();
         this.setState({user: user})
