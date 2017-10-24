@@ -4,9 +4,11 @@ import project from './project';
 import sideBar from './sideBar';
 import authentication from './authentication';
 import vacancies from './vacancies';
-import levels from './levels';
-import positions from './positions';
-import candidates from './candidates';
+import levels from './levels'
+import positions from './positions'
+import interviews from './interviews'
+import ratings from './ratings'
+import candidates from './candidates'
 
 
 export default combineReducers({
@@ -17,6 +19,7 @@ export default combineReducers({
     vacancies,
     levels,
     positions,
+    interviews,
+    ratings,
     candidates
-
 })

@@ -5,7 +5,7 @@ const initialState = {
 };
 
 
-export default function project(state = initialState, action) {
+export default function notifications(state = initialState, action) {
     switch (action.type) {
 
         case SHOW_NOTE:

@@ -5,6 +5,7 @@ import SideMenu from "./../SideMenu";
 import Interviewers from "./../Interviewers";
 import InterviewsUpcoming from "../InterviewsUpcoming";
 import InterviewsCompleted from "../InterviewsCompleted";
+import InterviewEdit from "../InterviewEdit";
 import Candidates from "./../Candidates";
 import CreateCandidate from "./../CreateCandidate";
 import CandidateEdit from './../CandidateEdit';
@@ -50,6 +51,7 @@ class Main extends Component {
         //-- END CHECKING STATUS OF SIDEBAR ----------------
 
         this.checkUserStatus();
+
     }
 
     componentWillUnmount() {
@@ -83,7 +85,7 @@ class Main extends Component {
     }
 
     getUserData() {
-        var userData = localStorage.getItem("userData"),
+        let userData = localStorage.getItem("userData"),
             data = JSON.parse(userData);
         return data;
     }
@@ -155,6 +157,20 @@ class Main extends Component {
                                                           callMakeNote={(status, text, hide) =>
                                                               this.handleMakeNote(status, text, hide)}
                                                           onCheckUserRole={(interview) => this.isHR(interview)}
+                                        />) :
+                                        (<Redirect to="/login"/>)
+                                )}
+                            />
+
+                            <Route
+                                exact path="/interviews-upcoming/:id/edit"
+                                name="Interview Edit"
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<InterviewEdit {...props}
+                                                      callMakeNote={(status, text, hide) =>
+                                                          this.handleMakeNote(status, text, hide)}
+                                                      onCheckUserRole={(interview) => this.isHR(interview)}
                                         />) :
                                         (<Redirect to="/login"/>)
                                 )}
@@ -335,19 +351,19 @@ class Main extends Component {
                                         (<Redirect to="/login"/>)
                                 )}
                             />
-                            <Route
-                                exact path="/projects/project/:id"
-                                name="Project Details"
-                                render={(props) => (
-                                    isLoggedIn() ?
-                                        (<ProjectDetails {...props}
-                                                         callMakeNote={(status, text, hide) =>
-                                                             this.handleMakeNote(status, text, hide)}
-                                                         onCheckUserRole={() => this.isHR()}
-                                        />) :
-                                        (<Redirect to="/login"/>)
-                                )}
-                            />
+                            {/*<Route*/}
+                                {/*exact path="/projects/project/:id"*/}
+                                {/*name="Project Details"*/}
+                                {/*render={(props) => (*/}
+                                    {/*isLoggedIn() ?*/}
+                                        {/*(<ProjectDetails {...props}*/}
+                                                         {/*callMakeNote={(status, text, hide) =>*/}
+                                                             {/*this.handleMakeNote(status, text, hide)}*/}
+                                                         {/*onCheckUserRole={() => this.isHR()}*/}
+                                        {/*/>) :*/}
+                                        {/*(<Redirect to="/login"/>)*/}
+                                {/*)}*/}
+                            {/*/>*/}
 
                             <Route
                                 exact path="/projects/project/:id/edit"
