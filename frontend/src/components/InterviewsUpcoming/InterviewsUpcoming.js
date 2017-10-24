@@ -3,7 +3,11 @@ import {connect} from "react-redux";
 import {Modal, Button, PanelGroup} from "react-bootstrap";
 import Helmet from "react-helmet";
 import "./interviewsUpcoming.css";
-import {showInterviews} from "../../redux/actions/interviewActions";
+import {showInterviews, removeInterview} from "../../redux/actions/interviewActions";
+import {getVacancies} from "../../redux/actions/vacanciesActions";
+import {showProjects} from "../../redux/actions/projectActions";
+import {getCandidates} from "../../redux/actions/candidatesActions";
+import {getValueFromArr} from "../../utils/index";
 import PageTitle from "./../../containers/PageTitle";
 import Panels from "../Panels/Panels";
 import Filters from "./../../components/Filters";
@@ -17,27 +21,39 @@ class InterviewsUpcoming extends Component {
         this.state = {
             showModalConfirm: false,
             currentInterviewID: "",
-            isHR: false
+            isHR: false,
+            interviewId: "",
+            candidateId: "",
+            date_time: "",
+            positionsFilterID: "",
+            levelsFilterID: "",
+            projectsFilterID: "",
+            dateFromFilter: "",
+            dateToFilter: "",
+            dateErrorMessage: ""
         }
     }
 
     componentWillMount() {
-        // const {dispatch} = this.props;
-        // dispatch(showInterviews());
         let isUserHR = this.props.onCheckUserRole(true);
+        const {dispatch} = this.props;
+        dispatch(showInterviews());
+        dispatch(getVacancies());
+        dispatch(showProjects());
+        dispatch(getCandidates());
         if (isUserHR) {
             this.setState({isHR: true})
         }
     }
 
     switchToEditMode(currentID) {
-        //this.props.history.push("/projects/project/" + currentID + "/edit");
+        this.props.history.push("/interviews-upcoming/" + currentID + "/edit");
     }
 
-    deleteProject() {
-        // this.closeModalConfirm();
-        // const {dispatch} = this.props;
-        // dispatch(removeProject(this.state.currentProjectID));
+    deleteInterview() {
+        this.closeModalConfirm();
+        const {dispatch} = this.props;
+        dispatch(removeInterview(this.state.currentInterviewID));
     }
 
     openModalConfirm(currentID) {
@@ -55,7 +71,7 @@ class InterviewsUpcoming extends Component {
         });
     }
 
-    activateInterview(currentID){
+    activateInterview(currentID) {
 
     }
 
@@ -63,6 +79,50 @@ class InterviewsUpcoming extends Component {
         this.props.history.push("/interviews-upcoming/" + currentID + "/add-feedback");
     }
 
+    getPositionFilterVal(positionFilterVal) {
+        let positionsList = this.props.positions,
+            positionFilterId = 0;
+
+        positionFilterId = getValueFromArr(positionsList, positionFilterVal, 'name');
+
+        this.setState({
+            positionsFilterID: positionFilterId
+        })
+    }
+
+    getLevelFilterVal(levelFilterVal) {
+        let levelsList = this.props.levels,
+            levelFilterId = 0;
+
+        levelFilterId = getValueFromArr(levelsList, levelFilterVal, 'name');
+
+        this.setState({
+            levelsFilterID: levelFilterId
+        })
+    }
+
+    getProjectFilterVal(projectFilterVal) {
+        let projectsList = this.props.projects,
+            projectFilterId = 0;
+
+        projectFilterId = getValueFromArr(projectsList, projectFilterVal, 'title');
+
+        this.setState({
+            projectsFilterID: projectFilterId
+        })
+    }
+
+    getDateFromFilterVal(dateFromFilterVal) {
+        this.setState({
+            dateFromFilter: dateFromFilterVal
+        });
+    }
+
+    getDateToFilterVal(dateToFilterVal) {
+        this.setState({
+            dateToFilter: dateToFilterVal
+        });
+    }
 
     render() {
 
@@ -91,7 +151,312 @@ class InterviewsUpcoming extends Component {
             )
         }
 
-        let filter ;
+
+
+        let interviews = this.props.interviews.interviews,
+            vacancies = this.props.vacancies,
+            projects = this.props.projects,
+            levels = this.props.levels,
+            positions = this.props.positions,
+            candidates = this.props.candidates,
+            dates = [],
+            interviewsByDates,
+            filterErrorMessage;
+
+        if (interviews.length && vacancies.length && projects.length && levels.length && positions.length && candidates.length) {
+
+            interviews = interviews.filter((current) => {
+                return current.status === true;
+            });
+
+            //-- FILTER BY POSITION  --------------------------
+            let positionFilterID = this.state.positionsFilterID;
+
+            if (positionFilterID) {
+                let newInterviews = [];
+                interviews.filter((current) => {
+                    let currentInterview = current;
+                    vacancies.filter((item) => {
+                        if (item.position_id === positionFilterID && currentInterview.vacancy_id === item.id) {
+                            newInterviews.push(currentInterview);
+                        }
+                    });
+                });
+                interviews = newInterviews;
+            }
+            //-- END FILTER BY LEVEL -----------------------
+
+            //-- FILTER BY LEVEL  --------------------------
+            let levelFilterID = this.state.levelsFilterID;
+
+
+            if (levelFilterID) {
+                let newInterviews = [];
+                interviews.filter((current) => {
+                    let currentInterview = current;
+                    vacancies.filter((item) => {
+                        if (item.level_id === levelFilterID && currentInterview.vacancy_id === item.id) {
+                            newInterviews.push(currentInterview);
+                        }
+                    });
+                });
+                interviews = newInterviews;
+            }
+            //-- END FILTER BY LEVEL  -----------------------
+
+            //-- FILTER BY PROJECT  --------------------------
+            let projectFilterID = this.state.projectsFilterID;
+
+            if (projectFilterID) {
+                let newInterviews = [];
+                interviews.filter((current) => {
+                    let currentInterview = current;
+                    vacancies.filter((item) => {
+                        if (item.project_id === projectFilterID && currentInterview.vacancy_id === item.id) {
+                            newInterviews.push(currentInterview);
+                        }
+                    });
+                });
+                interviews = newInterviews;
+            }
+            //-- END FILTER BY PROJECT  -----------------------
+
+            //-- FILTER BY DATE --------------------------
+            let dateFromFilter = this.state.dateFromFilter,
+                dateToFilter = this.state.dateToFilter,
+                isDateFilterValid = dateFromFilter <= dateToFilter ||
+                    (dateFromFilter && !dateToFilter) ||
+                    (!dateFromFilter && dateToFilter) ||
+                    (!dateFromFilter && !dateToFilter);
+
+            if (dateFromFilter && isDateFilterValid) {
+                interviews = interviews.filter((current) => {
+                    let currentDate = new Date(current.date_time).getTime();
+                    return (currentDate > dateFromFilter);
+                });
+            }
+
+            if (dateToFilter && isDateFilterValid) {
+                interviews = interviews.filter((current) => {
+                    let currentDate = new Date(current.date_time).getTime();
+                    return (currentDate < dateToFilter);
+                });
+            }
+
+            if (!isDateFilterValid) {
+                filterErrorMessage = "Invalid date range"
+            }
+
+            //-- END FILTER DATE -----------------------
+
+
+            let compareDates = (a, b) => {
+                let dateA = new Date(a.date_time).getTime(),
+                    dateB = new Date(b.date_time).getTime();
+
+                if (dateA > dateB) return 1;
+                if (dateA < dateB) return -1;
+            };
+
+            let compareTime = (a, b) => {
+                let timeA = new Date(a.date_time).toLocaleString('en-GB', {hour: 'numeric', minute: 'numeric'}),
+                    timeB = new Date(b.date_time).toLocaleString('en-GB', {hour: 'numeric', minute: 'numeric'});
+
+                if (timeA > timeB) return 1;
+                if (timeA < timeB) return -1;
+            };
+
+            if (interviews && interviews.length) {
+
+                let interviewsSortedByDates = interviews.sort(compareDates) || {};
+                interviewsSortedByDates.map((value, index) => {
+
+                    let date = new Date(value.date_time).toLocaleString('en-GB', {
+                        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+                    });
+
+                    if (dates.indexOf(date) === -1) {
+                        dates.push(date);
+                    }
+                });
+
+                interviewsByDates = dates.map((value, index) => {
+                    let todayInterviews = [],
+                        currentDate = value,
+                        dateToDisplay;
+
+                    interviewsSortedByDates.map((value, index) => {
+                        let interviewDate = new Date(value.date_time).toLocaleString('en-GB', {
+                            weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+                        });
+
+                        if (currentDate === interviewDate) {
+                            todayInterviews.push(value);
+                            dateToDisplay = "" + new Date(value.date_time).toLocaleString('en-GB', {weekday: 'long'}) + ", "
+                                + new Date(value.date_time).toLocaleString('en-GB', {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric'
+                                }) + "";
+                        }
+                    });
+
+                    let sortedInterviews = todayInterviews.sort(compareTime) || {};
+                    let interviewsToDisplay = sortedInterviews.map((value, index) => {
+
+                            let id = value.id,
+                                time = new Date(value.date_time).toLocaleString('en-GB', {
+                                    hour: 'numeric',
+                                    minute: 'numeric'
+                                }),
+                                currentVacancy = vacancies.find(item => value.vacancy_id === item.id),
+                                currentProject = projects.find(item => currentVacancy.project_id === item.id),
+                                currentLevel = levels.find(item => currentVacancy.level_id === item.id),
+                                currentPosition = positions.find(item => currentVacancy.position_id === item.id),
+                                currentCandidate = candidates.find(item => value.candidate_id === item.id),
+                                candidateCV = currentCandidate.cv.url,
+                                panelTitleText;
+
+
+                        let checkCandidateCV = () => {
+                            if (candidateCV) {
+                                return (
+                                    <a href={candidateCV} className="download-block form-group text-green text-green--hover" download>
+                                        <span className="download-block__icon fa fa-download"/>
+                                        <span className="download-block__title">Download CV</span>
+                                    </a>
+                                )
+                            } else {
+                                return (
+                                    <a className="download-block form-group download-block--disabled text-muted">
+                                        <span className="download-block__icon fa fa-download"/>
+                                        <span className="download-block__title text-bold--100">Download CV</span>
+                                    </a>
+                                )
+                            }
+                        };
+
+                            if (this.state.isHR) {
+                                panelTitleText = time + " | " +
+                                    currentCandidate.name + " " +
+                                    currentCandidate.surname + " | " +
+                                    currentLevel.name + " - " +
+                                    currentPosition.name + " - " +
+                                    currentProject.title + " | " +
+                                    this.state.dateToFilter;
+                            } else {
+                                panelTitleText = time + " | " +
+                                    currentCandidate.name + " " +
+                                    currentCandidate.surname + " | " +
+                                    currentLevel.name + " - " +
+                                    currentPosition.name + " - " +
+                                    currentProject.title;
+                            }
+
+                            const PANEL_TITLE = (
+                                <div className="custom-panel-title panel-list-item">
+                                    <div className="custom-panel-title__right-side">
+                                        <div className="panel-collapse-btn">
+                                            <span className="panel-collapse-btn__title btn-js">Expand</span>
+                                            <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
+                                        </div>
+                                    </div>
+                                    <div className="custom-panel-title__left-side">
+                                        <div className="vacancy-info-block">
+                                            <div className="vacancy-info-block__item">
+                                                {panelTitleText}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+
+                            const PANEL_DESCRIPTION = (
+                                <div>
+                                    <div className="clearfix">
+                                        <div className="float-left interview-details">
+                                            <p className="interview-details-header"><strong>Candidate</strong></p>
+                                            <p><strong>Name:</strong>{" " + currentCandidate.name}</p>
+                                            <p><strong>Age:</strong>{" " + currentCandidate.age}</p>
+                                            <p><strong>Experience:</strong>{" " + currentCandidate.experience}</p>
+                                            {checkCandidateCV()}
+                                        </div>
+                                        <div className="float-right">
+                                            <p className="interview-details-header"><strong>Project</strong></p>
+                                            <p>{currentProject.title}</p>
+                                            <p className="interview-details-header"><strong>Interviewer</strong></p>
+                                            <p>some interviewer</p>
+                                        </div>
+                                    </div>
+                                    <div className="interview-details-down">
+                                        <p className="interview-details-header"><strong>Vacancy</strong></p>
+                                        <p>
+                                            <strong>{currentLevel.name + " " +
+                                            currentPosition.name + " for " +
+                                            currentProject.title}
+                                            </strong>
+                                        </p>
+                                        <p>{currentVacancy.description}</p>
+                                    </div>
+                                </div>
+                            );
+
+                            if (this.state.isHR) {
+                                return (<PanelGroup bsClass='custom-panel-group'
+                                                    accordion key={id}
+                                    >
+                                        <Panels
+                                            key={id}
+                                            id={value.id}
+                                            showActionBtn={true}
+                                            titleForActionBtn='Activate'
+                                            titleConst={PANEL_TITLE}
+                                            description={PANEL_DESCRIPTION}
+                                            showEditBtn={true}
+                                            showDeleteBtn={true}
+                                            showDuplicateBtn={true}
+                                            editBtnId={"edit-interview-" + id}
+                                            deleteBtnId={"delete-interview-" + id}
+                                            callDelete={(event) => this.openModalConfirm(id)}
+                                            callEdit={(event) => this.switchToEditMode(id)}
+                                            callAction={(event) => this.activateInterview(id)}
+                                        />
+                                    </PanelGroup>
+                                )
+                            } else {
+                                return (
+                                    <PanelGroup bsClass='custom-panel-group'
+                                                accordion key={id}
+                                    >
+                                        <Panels
+                                            key={id}
+                                            id={value.id}
+                                            showActionBtn={true}
+                                            titleForActionBtn='Add feedback'
+                                            titleConst={PANEL_TITLE}
+                                            description={PANEL_DESCRIPTION}
+                                            callAction={(event) => this.addFeedback(id)}
+                                        />
+                                    </PanelGroup>
+                                )
+                            }
+                        }
+                    );
+                    return (
+                        <div key={index}>
+                            <p className="interview-dates">{dateToDisplay}</p>
+                            {interviewsToDisplay}
+                        </div>
+                    )
+                });
+            } else {
+                interviewsByDates = "No Interviews";
+            }
+        }
+
+        let filter;
+
         if (this.state.isHR) {
             filter = (
                 <Filters
@@ -101,6 +466,12 @@ class InterviewsUpcoming extends Component {
                     date={true}
                     interviewer={true}
                     rating={false}
+                    positionFilterVal={(event) => this.getPositionFilterVal(event)}
+                    levelFilterVal={(event) => this.getLevelFilterVal(event)}
+                    projectFilterVal={(event) => this.getProjectFilterVal(event)}
+                    dateFromFilterVal={(event) => this.getDateFromFilterVal(event)}
+                    dateToFilterVal={(event) => this.getDateToFilterVal(event)}
+                    dateErrorMessage={filterErrorMessage}
                 />
             )
         } else {
@@ -112,215 +483,14 @@ class InterviewsUpcoming extends Component {
                     date={true}
                     interviewer={false}
                     rating={false}
+                    positionFilterVal={(event) => this.getPositionFilterVal(event)}
+                    levelFilterVal={(event) => this.getLevelFilterVal(event)}
+                    projectFilterVal={(event) => this.getProjectFilterVal(event)}
+                    dateFromFilterVal={(event) => this.getDateFromFilterVal(event)}
+                    dateToFilterVal={(event) => this.getDateToFilterVal(event)}
+                    dateErrorMessage={filterErrorMessage}
                 />
             )
-        }
-
-        let interviews = [
-            {
-                id: 1,
-                time: "10.00",
-                date: "01-10-2017",
-                weekday: "Monday",
-                candidate: "Jane Doe",
-                age: "21",
-                experience: "6",
-                vacancy: "Junior QA for CPrime",
-                interviewer: "K. Makiy",
-                project: "CPrime",
-                position: "QA",
-                level: "Junior"
-            },
-            {
-                id: 2,
-                time: "11.00",
-                date: "02-10-2017",
-                weekday: "Tuesday",
-                candidate: "James Bond",
-                age: "56",
-                experience: "5",
-                vacancy: "Senior Java Developer for Formula-1",
-                interviewer: "A. Larin",
-                project: "Formula-1",
-                position: "Java Developer",
-                level: "Senior"
-            },
-            {
-                id: 3,
-                time: "12.00",
-                date: "02-10-2017",
-                weekday: "Tuesday",
-                candidate: "Bob Marley",
-                age: "28",
-                experience: "1",
-                vacancy: "Intern Front-End Developer for Squadex",
-                interviewer: "T. Grabets",
-                project: "Squadex",
-                position: "Front-End Developer",
-                level: "Intern"
-            }
-        ];
-
-        let datesToDisplay,
-            interviewsSortedByDates,
-            currentDate,
-            interviewsToDisplay,
-            sortedInterviews,
-            dates = [];
-
-        let compareDates = (a, b) => {
-            if (a.date > b.date) return 1;
-            if (a.date < b.date) return -1;
-        };
-
-        let compareTime = (a, b) => {
-            if (a.time > b.time) return 1;
-            if (a.time < b.time) return -1;
-        };
-
-        if (interviews) {
-
-            interviewsSortedByDates = interviews.sort(compareDates) || {};
-
-            interviewsSortedByDates.map((value, index) => {
-
-                if (dates.indexOf(value.date) === -1) {
-                    dates.push(value.date);
-                }
-            });
-
-            datesToDisplay = dates.map((value, index) => {
-                currentDate = value;
-                let todayInterviews = [];
-
-                interviewsSortedByDates.map((value, index) => {
-                    if (value.date === currentDate) {
-                        todayInterviews.push(value);
-                    }
-                });
-
-                let currentWeekDay = todayInterviews[0].weekday;
-
-                sortedInterviews = todayInterviews.sort(compareTime) || {};
-
-                interviewsToDisplay = sortedInterviews.map((value, index) => {
-
-                    let id = value.id;
-                    let title;
-
-                    if (this.state.isHR) {
-                        title =  value.time + " | " +
-                            value.candidate + " | " +
-                            value.vacancy + " | " +
-                            value.interviewer
-                    } else {
-                        title =  value.time + " | " +
-                            value.candidate + " | " +
-                            value.vacancy
-                    }
-
-
-                    const panelTitle = (
-                            <div className="custom-panel-title panel-list-item">
-                                <div className="custom-panel-title__right-side">
-                                    <div className="panel-collapse-btn">
-                                        <span className="panel-collapse-btn__title btn-js">Expand</span>
-                                        <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
-                                    </div>
-                                </div>
-                                <div className="custom-panel-title__left-side">
-                                    <div className="vacancy-info-block">
-                                        <div className="vacancy-info-block__item">
-                                            {title}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        );
-
-
-
-                        const panelDescription = (
-                            <div>
-                                <div className="clearfix">
-                                    <div className="float-left">
-                                        <p className="interview-details-header"><strong>Candidate</strong></p>
-                                        <p>{"Name: " + value.candidate}</p>
-                                        <p>{"Age: " + value.age}</p>
-                                        <p>{"Experience: " + value.experience}</p>
-                                        <a href="#">View CV</a>
-                                    </div>
-                                    <div className="float-right">
-                                        <p className="interview-details-header"><strong>Project</strong></p>
-                                        <p>{value.project}</p>
-                                        <p className="interview-details-header"><strong>Interviewer</strong></p>
-                                        <p>{value.interviewer}</p>
-                                    </div>
-                                </div>
-                                <div className="interview-details-down">
-                                    <p className="interview-details-header"><strong>Vacancy</strong></p>
-                                    <p><strong>{value.vacancy}</strong></p>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                        Animi atque beatae culpa enim necessitatibus nesciunt perferendis,
-                                        quisquam quod reiciendis temporibus? Distinctio id praesentium quia
-                                        ratione saepe. Asperiores natus similique ullam.</p>
-                                </div>
-                            </div>
-                        );
-
-
-                        if (this.state.isHR) {
-                            return (<PanelGroup bsClass='custom-panel-group'
-                                                accordion key={id}
-                                >
-                                    <Panels
-                                        key={id}
-                                        id={value.id}
-                                        showActionBtn={true}
-                                        titleForActionBtn='Activate'
-                                        titleConst={panelTitle}
-                                        description={panelDescription}
-                                        showEditBtn={true}
-                                        showDeleteBtn={true}
-                                        showDuplicateBtn={true}
-                                        editBtnId={"edit-interview-" + id}
-                                        deleteBtnId={"delete-interview-" + id}
-                                        callDelete={(event) => this.openModalConfirm(id)}
-                                        callEdit={(event) => this.switchToEditMode(id)}
-                                        callAction={(event) => this.activateInterview(id)}
-                                    />
-                                </PanelGroup>
-                            )
-                        } else {
-                            return (
-                                <PanelGroup bsClass='custom-panel-group'
-                                                accordion key={id}
-                                >
-                                    <Panels
-                                        key={id}
-                                        id={value.id}
-                                        showActionBtn={true}
-                                        titleForActionBtn='Add feedback'
-                                        titleConst={panelTitle}
-                                        description={panelDescription}
-                                        callAction={(event) => this.addFeedback(id)}
-                                    />
-                                </PanelGroup>
-                            )
-                        }
-                    }
-                );
-
-                return (
-
-                    <div key={index}>
-                        <p className="interview-dates">{currentWeekDay + ", " + value}</p>
-                        {interviewsToDisplay}
-                    </div>
-                )
-            });
-        } else {
-            datesToDisplay = "No Interviews";
         }
 
         return (
@@ -335,7 +505,7 @@ class InterviewsUpcoming extends Component {
                     </div>
                 </div>
                 <div className="interview-panels-block">
-                    {datesToDisplay}
+                    {interviewsByDates}
                 </div>
 
                 <Modal show={this.state.showModalConfirm}
@@ -349,13 +519,13 @@ class InterviewsUpcoming extends Component {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button
-                            id={"pd-btn-modal-yes-" + this.state.currentProjectID}
+                            id={"pd-btn-modal-yes-" + this.state.currentInterviewID}
                             className="btn btn-primary"
-                            onClick={() => this.deleteProject()}
+                            onClick={() => this.deleteInterview()}
                         >Yes
                         </Button>
                         <Button
-                            id={"pd-btn-modal-no-" + this.state.currentProjectID}
+                            id={"pd-btn-modal-no-" + this.state.currentInterviewID}
                             className="btn btn-danger"
                             onClick={() => this.closeModalConfirm()}
                             bsStyle="primary"
@@ -370,8 +540,14 @@ class InterviewsUpcoming extends Component {
 
 function mapStateToProps(state) {
     return {
-        newInterview: state.interview,
-        notifications: state.notifications
+        interviews: state.interviews,
+        notifications: state.notifications,
+        vacancies: state.vacancies.vacancies,
+        projects: state.project.projects,
+        levels: state.levels.levels,
+        positions: state.positions.positions,
+        candidates: state.candidates.candidates,
+        currentProject: state.project.currentProject,
     }
 }
 
