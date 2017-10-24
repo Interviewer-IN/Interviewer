@@ -16,8 +16,8 @@ class SideMenu extends Component {
         }
     }
 
-    componentWillMount() {
-        let user = this.getUserData();
+    componentDidMount() {
+        let user = this.getUserData() || {};
         let HR = user.is_hr;
         this.setState({isHr: HR});
     }

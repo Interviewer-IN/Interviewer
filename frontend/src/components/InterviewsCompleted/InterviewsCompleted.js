@@ -43,6 +43,18 @@ class InterviewsCompleted extends Component {
         }
     }
 
+    handleStartDateChange(date) {
+        this.setState({
+            startDate: date
+        });
+    }
+
+    handleEndDateChange(date) {
+        this.setState({
+            endDate: date
+        });
+    }
+
 
     openModalConfirm(currentID) {
         this.setState({
@@ -103,7 +115,7 @@ class InterviewsCompleted extends Component {
         let ratingList = this.props.ratings,
             ratingFilterID = 0;
 
-        ratingFilterID = this.getValueFromArr(ratingList, ratingFilterVal, 'title');
+        ratingFilterID = this.getValueFromArr(ratingList, ratingFilterVal, 'grade');
 
         this.setState({
             ratingFilterID: ratingFilterID
@@ -206,7 +218,7 @@ class InterviewsCompleted extends Component {
             candidates = this.props.candidates,
             interviewsToDisplay;
 
-        if (vacancies.length && projects.length && levels.length && positions.length && ratings.length) {
+        if (interviews.length && vacancies.length && projects.length && levels.length && positions.length && ratings.length) {
 
             interviews = interviews.filter((current) => {
                 return current.status === false;
@@ -216,19 +228,34 @@ class InterviewsCompleted extends Component {
             let positionFilterID = this.state.positionsFilterID;
 
             if (positionFilterID) {
-                interviews = interviews.filter((current) => {
-                    return (current.position_id === positionFilterID);
+                let newInterviews = [];
+                interviews.filter((current) => {
+                    let currentInterview = current;
+                    vacancies.filter((item) => {
+                        if (item.position_id === positionFilterID && currentInterview.vacancy_id === item.id) {
+                            newInterviews.push(currentInterview);
+                        }
+                    });
                 });
+                interviews = newInterviews;
             }
             //-- END FILTER BY LEVEL -----------------------
 
             //-- FILTER BY LEVEL  --------------------------
             let levelFilterID = this.state.levelsFilterID;
 
+
             if (levelFilterID) {
-                interviews = interviews.filter((current) => {
-                    return (current.level_id === levelFilterID);
+                let newInterviews = [];
+                interviews.filter((current) => {
+                    let currentInterview = current;
+                    vacancies.filter((item) => {
+                        if (item.level_id === levelFilterID && currentInterview.vacancy_id === item.id) {
+                            newInterviews.push(currentInterview);
+                        }
+                    });
                 });
+                interviews = newInterviews;
             }
             //-- END FILTER BY LEVEL  -----------------------
 
@@ -236,9 +263,16 @@ class InterviewsCompleted extends Component {
             let projectFilterID = this.state.projectsFilterID;
 
             if (projectFilterID) {
-                interviews = interviews.filter((current) => {
-                    return (current.project_id === projectFilterID);
+                let newInterviews = [];
+                interviews.filter((current) => {
+                    let currentInterview = current;
+                    vacancies.filter((item) => {
+                        if (item.project_id === projectFilterID && currentInterview.vacancy_id === item.id) {
+                            newInterviews.push(currentInterview);
+                        }
+                    });
                 });
+                interviews = newInterviews;
             }
             //-- END FILTER BY PROJECT  -----------------------
 

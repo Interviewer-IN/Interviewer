@@ -7,6 +7,7 @@ import {showInterviews, removeInterview} from "../../redux/actions/interviewActi
 import {getVacancies} from "../../redux/actions/vacanciesActions";
 import {showProjects} from "../../redux/actions/projectActions";
 import {getCandidates} from "../../redux/actions/candidatesActions";
+import {getValueFromArr} from "../../utils/index";
 import PageTitle from "./../../containers/PageTitle";
 import Panels from "../Panels/Panels";
 import Filters from "./../../components/Filters";
@@ -24,10 +25,12 @@ class InterviewsUpcoming extends Component {
             interviewId: "",
             candidateId: "",
             date_time: "",
-            currentProject: "",
             positionsFilterID: "",
             levelsFilterID: "",
             projectsFilterID: "",
+            dateFromFilter: "",
+            dateToFilter: "",
+            dateErrorMessage: ""
         }
     }
 
@@ -80,7 +83,7 @@ class InterviewsUpcoming extends Component {
         let positionsList = this.props.positions,
             positionFilterId = 0;
 
-        positionFilterId = this.getValueFromArr(positionsList, positionFilterVal, 'name');
+        positionFilterId = getValueFromArr(positionsList, positionFilterVal, 'name');
 
         this.setState({
             positionsFilterID: positionFilterId
@@ -88,11 +91,10 @@ class InterviewsUpcoming extends Component {
     }
 
     getLevelFilterVal(levelFilterVal) {
-
         let levelsList = this.props.levels,
             levelFilterId = 0;
 
-        levelFilterId = this.getValueFromArr(levelsList, levelFilterVal, 'name');
+        levelFilterId = getValueFromArr(levelsList, levelFilterVal, 'name');
 
         this.setState({
             levelsFilterID: levelFilterId
@@ -103,39 +105,24 @@ class InterviewsUpcoming extends Component {
         let projectsList = this.props.projects,
             projectFilterId = 0;
 
-        projectFilterId = this.getValueFromArr(projectsList, projectFilterVal, 'title');
+        projectFilterId = getValueFromArr(projectsList, projectFilterVal, 'title');
 
         this.setState({
             projectsFilterID: projectFilterId
         })
     }
 
-    getValueFromArr(arr, value, nameField) {
-        // arr - array for filter
-        // value - can be [id] as number or [value] as string
-        // nameField - name of column from table. can be [title, name] as string
-
-        if (typeof value === 'string') {
-            let result = arr.find((currentElem) => {
-                return currentElem[nameField] === value
-
-            });
-
-            if (result === undefined) {
-                return 0;
-            } else {
-                return result.id;
-            }
-        }
-
-        if (typeof value === 'number') {
-            let result = arr.find((currentElem) => {
-                return currentElem.id === value
-            });
-            return result[nameField];
-        }
+    getDateFromFilterVal(dateFromFilterVal) {
+        this.setState({
+            dateFromFilter: dateFromFilterVal
+        });
     }
 
+    getDateToFilterVal(dateToFilterVal) {
+        this.setState({
+            dateToFilter: dateToFilterVal
+        });
+    }
 
     render() {
 
@@ -164,47 +151,19 @@ class InterviewsUpcoming extends Component {
             )
         }
 
-        let filter;
-        if (this.state.isHR) {
-            filter = (
-                <Filters
-                    project={true}
-                    position={true}
-                    level={true}
-                    date={true}
-                    interviewer={true}
-                    rating={false}
-                    positionFilterVal={(event) => this.getPositionFilterVal(event)}
-                    levelFilterVal={(event) => this.getLevelFilterVal(event)}
-                    projectFilterVal={(event) => this.getProjectFilterVal(event)}
-                />
-            )
-        } else {
-            filter = (
-                <Filters
-                    project={true}
-                    position={true}
-                    level={true}
-                    date={true}
-                    interviewer={false}
-                    rating={false}
-                    positionFilterVal={(event) => this.getPositionFilterVal(event)}
-                    levelFilterVal={(event) => this.getLevelFilterVal(event)}
-                    projectFilterVal={(event) => this.getProjectFilterVal(event)}
-                />
-            )
-        }
 
-        let interviews = this.props.interviews.interviews || [],
+
+        let interviews = this.props.interviews.interviews,
             vacancies = this.props.vacancies,
             projects = this.props.projects,
             levels = this.props.levels,
             positions = this.props.positions,
             candidates = this.props.candidates,
             dates = [],
-            interviewsByDates;
+            interviewsByDates,
+            filterErrorMessage;
 
-        if (vacancies.length && projects.length && levels.length && positions.length && candidates.length) {
+        if (interviews.length && vacancies.length && projects.length && levels.length && positions.length && candidates.length) {
 
             interviews = interviews.filter((current) => {
                 return current.status === true;
@@ -214,19 +173,34 @@ class InterviewsUpcoming extends Component {
             let positionFilterID = this.state.positionsFilterID;
 
             if (positionFilterID) {
-                interviews = interviews.filter((current) => {
-                    return (current.position_id === positionFilterID);
+                let newInterviews = [];
+                interviews.filter((current) => {
+                    let currentInterview = current;
+                    vacancies.filter((item) => {
+                        if (item.position_id === positionFilterID && currentInterview.vacancy_id === item.id) {
+                            newInterviews.push(currentInterview);
+                        }
+                    });
                 });
+                interviews = newInterviews;
             }
             //-- END FILTER BY LEVEL -----------------------
 
             //-- FILTER BY LEVEL  --------------------------
             let levelFilterID = this.state.levelsFilterID;
 
+
             if (levelFilterID) {
-                interviews = interviews.filter((current) => {
-                    return (current.level_id === levelFilterID);
+                let newInterviews = [];
+                interviews.filter((current) => {
+                    let currentInterview = current;
+                    vacancies.filter((item) => {
+                        if (item.level_id === levelFilterID && currentInterview.vacancy_id === item.id) {
+                            newInterviews.push(currentInterview);
+                        }
+                    });
                 });
+                interviews = newInterviews;
             }
             //-- END FILTER BY LEVEL  -----------------------
 
@@ -234,11 +208,46 @@ class InterviewsUpcoming extends Component {
             let projectFilterID = this.state.projectsFilterID;
 
             if (projectFilterID) {
-                interviews = interviews.filter((current) => {
-                    return (current.project_id === projectFilterID);
+                let newInterviews = [];
+                interviews.filter((current) => {
+                    let currentInterview = current;
+                    vacancies.filter((item) => {
+                        if (item.project_id === projectFilterID && currentInterview.vacancy_id === item.id) {
+                            newInterviews.push(currentInterview);
+                        }
+                    });
                 });
+                interviews = newInterviews;
             }
             //-- END FILTER BY PROJECT  -----------------------
+
+            //-- FILTER BY DATE --------------------------
+            let dateFromFilter = this.state.dateFromFilter,
+                dateToFilter = this.state.dateToFilter,
+                isDateFilterValid = dateFromFilter <= dateToFilter ||
+                    (dateFromFilter && !dateToFilter) ||
+                    (!dateFromFilter && dateToFilter) ||
+                    (!dateFromFilter && !dateToFilter);
+
+            if (dateFromFilter && isDateFilterValid) {
+                interviews = interviews.filter((current) => {
+                    let currentDate = new Date(current.date_time).getTime();
+                    return (currentDate > dateFromFilter);
+                });
+            }
+
+            if (dateToFilter && isDateFilterValid) {
+                interviews = interviews.filter((current) => {
+                    let currentDate = new Date(current.date_time).getTime();
+                    return (currentDate < dateToFilter);
+                });
+            }
+
+            if (!isDateFilterValid) {
+                filterErrorMessage = "Invalid date range"
+            }
+
+            //-- END FILTER DATE -----------------------
 
 
             let compareDates = (a, b) => {
@@ -257,7 +266,7 @@ class InterviewsUpcoming extends Component {
                 if (timeA < timeB) return -1;
             };
 
-            if (interviews) {
+            if (interviews && interviews.length) {
 
                 let interviewsSortedByDates = interviews.sort(compareDates) || {};
                 interviewsSortedByDates.map((value, index) => {
@@ -286,7 +295,8 @@ class InterviewsUpcoming extends Component {
                             dateToDisplay = "" + new Date(value.date_time).toLocaleString('en-GB', {weekday: 'long'}) + ", "
                                 + new Date(value.date_time).toLocaleString('en-GB', {
                                     day: 'numeric',
-                                    month: 'long'
+                                    month: 'long',
+                                    year: 'numeric'
                                 }) + "";
                         }
                     });
@@ -333,7 +343,7 @@ class InterviewsUpcoming extends Component {
                                     currentLevel.name + " - " +
                                     currentPosition.name + " - " +
                                     currentProject.title + " | " +
-                                    "some interviewer";
+                                    this.state.dateToFilter;
                             } else {
                                 panelTitleText = time + " | " +
                                     currentCandidate.name + " " +
@@ -355,6 +365,7 @@ class InterviewsUpcoming extends Component {
                                         <div className="vacancy-info-block">
                                             <div className="vacancy-info-block__item">
                                                 {panelTitleText}
+
                                             </div>
                                         </div>
                                     </div>
@@ -432,9 +443,7 @@ class InterviewsUpcoming extends Component {
                             }
                         }
                     );
-
                     return (
-
                         <div key={index}>
                             <p className="interview-dates">{dateToDisplay}</p>
                             {interviewsToDisplay}
@@ -444,6 +453,44 @@ class InterviewsUpcoming extends Component {
             } else {
                 interviewsByDates = "No Interviews";
             }
+        }
+
+        let filter;
+
+        if (this.state.isHR) {
+            filter = (
+                <Filters
+                    project={true}
+                    position={true}
+                    level={true}
+                    date={true}
+                    interviewer={true}
+                    rating={false}
+                    positionFilterVal={(event) => this.getPositionFilterVal(event)}
+                    levelFilterVal={(event) => this.getLevelFilterVal(event)}
+                    projectFilterVal={(event) => this.getProjectFilterVal(event)}
+                    dateFromFilterVal={(event) => this.getDateFromFilterVal(event)}
+                    dateToFilterVal={(event) => this.getDateToFilterVal(event)}
+                    dateErrorMessage={filterErrorMessage}
+                />
+            )
+        } else {
+            filter = (
+                <Filters
+                    project={true}
+                    position={true}
+                    level={true}
+                    date={true}
+                    interviewer={false}
+                    rating={false}
+                    positionFilterVal={(event) => this.getPositionFilterVal(event)}
+                    levelFilterVal={(event) => this.getLevelFilterVal(event)}
+                    projectFilterVal={(event) => this.getProjectFilterVal(event)}
+                    dateFromFilterVal={(event) => this.getDateFromFilterVal(event)}
+                    dateToFilterVal={(event) => this.getDateToFilterVal(event)}
+                    dateErrorMessage={filterErrorMessage}
+                />
+            )
         }
 
         return (

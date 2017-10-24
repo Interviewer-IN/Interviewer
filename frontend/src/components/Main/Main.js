@@ -51,6 +51,7 @@ class Main extends Component {
         //-- END CHECKING STATUS OF SIDEBAR ----------------
 
         this.checkUserStatus();
+
     }
 
     componentWillUnmount() {
