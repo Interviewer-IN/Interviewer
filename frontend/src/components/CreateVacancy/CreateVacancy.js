@@ -223,7 +223,7 @@ class CreateVacancy extends Component {
                 <section className="section">
                     <div className="row sameheight-container">
                         <div className="col-md-12">
-                            <form onSubmit={(event) => this.handleSubmitForm(event)}>
+                            <form className="custom-form" onSubmit={(event) => this.handleSubmitForm(event)}>
 
                                 <div className="form-group form-filter-block">
                                     <label className="form-filter-block__title">Vacancy parameters</label>

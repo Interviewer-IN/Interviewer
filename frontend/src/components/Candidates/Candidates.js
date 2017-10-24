@@ -246,8 +246,8 @@ class Candidates extends Component {
                 );
 
                 const DESCRIPTION = (
-                    <form>
-                        <div className="col-md-6">
+                    <form className="custom-form">
+                        <div className="col-md-6 no-padding">
                             <div className="form-group">
                                 <label className="control-label form-label text-green">Name:</label>
                                 <p className="form-control-static">
@@ -267,10 +267,10 @@ class Candidates extends Component {
                                 {checkCandidateAge()}
                             </div>
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-md-6 no-padding">
                             {checkCandidateCV()}
                         </div>
-                        <div className="col-md-12">
+                        <div className="col-md-12 no-padding">
 
                             <div className="form-group">
                                 <label className="control-label form-label text-green">Contact info:</label>

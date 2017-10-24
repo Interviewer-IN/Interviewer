@@ -20,6 +20,35 @@ $text-color-primary: #4f5f6f;
 
     @media (max-width: 420px) {
       float: none;
+
+      .info-block{
+        &__item{
+          margin-right: 0;
+          width: 100%;
+        }
+
+        &__project{
+          margin: 0;
+          display: block;
+        }
+
+        .separate-line{
+          padding: 0;
+          width: 100%;
+          &:before{
+            display: none;
+          }
+
+          span{
+            display: block;
+          }
+        }
+
+        &__position-capture{
+          width: 100%;
+          display: block;
+        }
+      }
     }
   }
 
@@ -33,7 +62,16 @@ $text-color-primary: #4f5f6f;
     @media (max-width: 420px) {
       float: none;
       text-align: right;
-      margin-bottom: 15px;
+
+
+      .panel-collapse-btn{
+        &__title{
+          display: none;
+        }
+        &__arrow{
+          position: relative;
+        }
+      }
     }
   }
 
@@ -123,6 +161,7 @@ $text-color-primary: #4f5f6f;
     @media (max-width: 420px) {
       float: none;
       width: 100%;
+      padding-right: 0;
     }
 
   }
@@ -149,7 +188,19 @@ $text-color-primary: #4f5f6f;
 
   &__vacancy-controls {
     width: 100%;
-    margin-top: 40px;
+    margin-top: 20px;
+
+    @media (max-width: 420px) {
+      .btn{
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+
+        &:last-child{
+          margin-bottom: 0;
+        }
+      }
+    }
   }
 
 }

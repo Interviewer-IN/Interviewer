@@ -260,10 +260,10 @@ class CreateCandidate extends Component {
                 </div>
                 <section>
                     <div className="row sameheight-container">
-                        <form onSubmit={(event) => this.handleSubmitForm(event)}>
+                        <form className="custom-form" onSubmit={(event) => this.handleSubmitForm(event)}>
                             <div className="col-md-6">
                                 <div className="form-group">
-                                    <label className="control-label form-label">Name</label>
+                                    <label className="control-label form-label">Name <span className="required">*</span></label>
                                     <p className="form-sublabel">
                                         <small>Maximum 20 characters</small>
                                     </p>
@@ -282,7 +282,7 @@ class CreateCandidate extends Component {
                                 </div>
 
                                 <div className="form-group">
-                                    <label className="control-label form-label">Surname</label>
+                                    <label className="control-label form-label">Surname <span className="required">*</span></label>
                                     <p className="form-sublabel">
                                         <small>Maximum 20 characters</small>
                                     </p>
@@ -318,7 +318,7 @@ class CreateCandidate extends Component {
                                 </div>
 
                                 <div className="form-group">
-                                    <label className="form-filter-block__title">Desired position</label>
+                                    <label>Desired position <span className="required">*</span></label>
                                     <select id="candidate-position"
                                             className="form-control form-control-sm custom-mode"
                                             ref="candidatePosition"
@@ -330,7 +330,7 @@ class CreateCandidate extends Component {
                                 </div>
 
                                 <div className="form-group">
-                                    <label className="form-filter-block__title">Level</label>
+                                    <label>Level <span className="required">*</span></label>
                                     <select id="candidate-level"
                                             className="form-control form-control-sm custom-mode"
                                             ref="candidateLevel"
@@ -358,7 +358,7 @@ class CreateCandidate extends Component {
                             <div className="col-md-12">
 
                                 <div className="form-group">
-                                    <label className="control-label form-label">Contact info</label>
+                                    <label className="control-label form-label">Contact info <span className="required">*</span></label>
                                     <p className="form-sublabel">
                                         <small>Maximum 1000 characters</small>
                                     </p>
