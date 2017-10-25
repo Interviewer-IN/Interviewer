@@ -4,6 +4,13 @@ import PageTitle from "./../../containers/PageTitle";
 import {Modal, Button} from "react-bootstrap";
 import "./CreateInterview.css";
 import {connect} from "react-redux";
+import DatePicker from "react-datepicker";
+import {showInterviews, createInterview} from "../../redux/actions/interviewActions";
+import {getVacancies} from "../../redux/actions/vacanciesActions";
+import {getCandidates} from "../../redux/actions/candidatesActions";
+import {showProjects} from "../../redux/actions/projectActions";
+import {getPositions} from "../../redux/actions/positionActions";
+import {getLevels} from "../../redux/actions/levelsActions";
 
 class CreateInterview extends Component {
 
@@ -11,9 +18,8 @@ class CreateInterview extends Component {
         super(props);
         this.state = {
             date: "",
-            time: "",
-            candidate:"",
-            vacancy: "",
+            candidate: "Choose candidate",
+            vacancy: "Choose vacancy",
             interviewer: "",
             dateError: "",
             timeError: "",
@@ -28,18 +34,20 @@ class CreateInterview extends Component {
 
     componentWillMount() {
         this.props.onCheckUserRole(true);
+        const {dispatch} = this.props;
+        dispatch(showInterviews());
+        dispatch(getVacancies());
+        dispatch(showProjects());
+        dispatch(getCandidates());
+        dispatch(getPositions());
+        dispatch(getLevels());
     }
 
+    handleDateChange(date) {
+        this.setState({date: date});
 
-    handleDateChange(event) {
-        this.setState({date: event.target.value});
-        this.setState({dateError: ""});
     }
 
-    handleTimeChange(event) {
-        this.setState({time: event.target.value});
-        this.setState({timeError: ""});
-    }
 
     handleCandidateChange(event) {
         this.setState({candidate: event.target.value});
@@ -69,23 +77,16 @@ class CreateInterview extends Component {
     }
 
     validateFormFields(event) {
-        let date = this.state.date;
-        let time = this.state.time;
-        let candidate = this.state.candidate;
-        let vacancy = this.state.vacancy;
-        let interviewer = this.state.interviewer;
-        let emptyFieldMessage = "Please, choose an option";
+        let date = this.state.date,
+            vacancy = this.state.vacancy,
+            candidate = this.state.candidate,
+            interviewer = this.state.interviewer,
+            emptyFieldMessage = "Please, choose an option";
 
         if (!date) {
             event.preventDefault();
             this.setState({
                 dateError: emptyFieldMessage
-            });
-        }
-        if (!time) {
-            event.preventDefault();
-            this.setState({
-                timeError: emptyFieldMessage
             });
         }
         if (!candidate) {
@@ -107,13 +108,29 @@ class CreateInterview extends Component {
             });
         }
         if (date &&
-            time &&
             candidate &&
-            vacancy &&
-            interviewer) {
+            vacancy) {
+            let candidateID = this.getOptionID("candidate");
+            let vacancyID = this.getOptionID("vacancy");
             event.preventDefault();
             this.props.history.push("/interviews-upcoming");
+            const {dispatch} = this.props;
+            dispatch(createInterview(
+                {
+                    // date_time: date,
+                    candidateID: candidateID,
+                    vacancyID: vacancyID,
+                    userID: 19,
+                    ratingID: 1
+                }
+            ));
         }
+    }
+
+    getOptionID(selectId) {
+        let e = document.getElementById(selectId);
+        let selectedOptionID = e.options[e.selectedIndex].id;
+        return +selectedOptionID;
     }
 
     leaveForm() {
@@ -136,7 +153,7 @@ class CreateInterview extends Component {
             this.state.time ||
             this.state.candidate ||
             this.state.vacancy ||
-            this.state.interviewer ) {
+            this.state.interviewer) {
             this.setState({
                 confirmText: "Are you sure you want to cancel without saving changes?"
             });
@@ -146,8 +163,97 @@ class CreateInterview extends Component {
         }
     }
 
-
     render() {
+
+        let interviews = this.props.interviews.interviews,
+            candidates = this.props.candidates,
+            vacancies = this.props.vacancies,
+            projects = this.props.projects,
+            levels = this.props.levels,
+            positions = this.props.positions,
+            vacancy = this.state.vacancy,
+            candidate = this.state.candidate;
+
+
+        let showCandidates = (candidate) => {
+            if (candidate) {
+
+                let options = [];
+
+                if (candidates.length) {
+                    let compareSurname = (a, b) => {
+                            if (a.surname > b.surname) return 1;
+                            if (a.surname < b.surname) return -1;
+                        },
+                        sortedCandidates = candidates.sort(compareSurname) || {};
+
+                    options = sortedCandidates.map((item, index) => {
+                        let currentCandidate = "" + item.surname + " " + item.name + "";
+                        return (
+                            <option key={index} id={item.id}>{currentCandidate}</option>
+                        )
+                    });
+                }
+
+                return (
+                    <div className="form-group">
+                        <label className="control-label">Candidate</label>
+                        <select className="form-control form-control-sm filter-select custom-mode"
+                                id="candidate"
+                                onChange={(event) => this.handleCandidateChange(event)}
+                        >
+                            <option>Choose candidate</option>
+                            {options}
+                        </select>
+                    </div>
+                );
+            }
+        };
+
+        let showVacancies = (vacancy) => {
+            if (vacancy) {
+
+                let options = [];
+
+                if (vacancies.length && positions.length && projects.length && levels.length) {
+
+                    let comparePositions = (a, b) => {
+                            let first = positions.find(item => a.position_id === item.id);
+                            let second = positions.find(item => b.position_id === item.id);
+
+                            if (first.name > second.name) return 1;
+                            if (first.name < second.name) return -1;
+                        },
+                        sortedVacancies = vacancies.sort(comparePositions) || {};
+
+                    options = sortedVacancies.map((item, index) => {
+                        let currentProject = projects.find(current => item.project_id === current.id),
+                            currentLevel = levels.find(current => item.level_id === current.id),
+                            currentPosition = positions.find(current => item.position_id === current.id);
+
+
+                        let position = "" + currentPosition.name + " " + currentLevel.name + " " + currentProject.title;
+                        return (
+                            <option key={index} id={item.id}>{position}</option>
+                        )
+                    });
+                }
+
+                return (
+                    <div className="form-group">
+                        <label className="control-label">Vacancy</label>
+                        <select className="form-control form-control-sm filter-select custom-mode"
+                                id="vacancy"
+                                onChange={(event) => this.handleVacancyChange(event)}
+                        >
+                            <option>Choose vacancy</option>
+                            {options}
+                        </select>
+                    </div>
+                );
+            }
+        };
+
 
         return (
             <div>
@@ -168,70 +274,38 @@ class CreateInterview extends Component {
                         <form onSubmit={(event) => this.validateFormFields(event)}>
 
                             <div className="clearfix form-group">
-                                <div className="float-left create-interview-select">
+                                <div className="create-interview-select">
                                     <label className="control-label">Date</label>
-                                    <select className="form-control form-control-sm filter-select"
-                                            onChange={(event)=>this.handleDateChange(event)}
-                                    >
-                                        <option>01-10-2017</option>
-                                        <option>02-10-2017</option>
-                                        <option>03-10-2017</option>
-                                        <option>04-10-2017</option>
-                                    </select>
+                                    <DatePicker
+                                        className="form-control form-control-sm filter-select"
+                                        placeholderText="Date"
+                                        selected={this.state.date}
+                                        onChange={(event) => this.handleDateChange(event)}
+                                        showTimeSelect
+                                        timeFormat="HH:mm"
+                                        timeIntervals={15}
+                                        dateFormat="LLL"
+                                    />
                                     <span className="has-error error-message">{this.state.dateError}</span>
                                 </div>
-                                <div className="float-left">
-                                    <label className="control-label">Time</label>
-                                    <select className="form-control form-control-sm filter-select"
-                                            onChange={(event)=>this.handleTimeChange(event)}
-                                    >
-                                        <option>10:00</option>
-                                        <option>11:00</option>
-                                        <option>12:00</option>
-                                        <option>13:00</option>
-                                    </select>
-                                    <span className="has-error error-message">{this.state.timeError}</span>
-                                </div>
                             </div>
-                            <div className="form-group">
-                                <div>
-                                    <label className="control-label">Candidate</label>
-                                    <select className="form-control form-control-sm create-interview-select-long"
-                                            onChange={(event)=>this.handleCandidateChange(event)}
-                                    >
-                                        <option>Sponge Bob</option>
-                                        <option>Sandy</option>
-                                        <option>Bob</option>
-                                    </select>
-                                    <span className="has-error error-message">{this.state.candidateError}</span>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <div>
-                                    <label className="control-label">Vacancy</label>
-                                    <select className="form-control form-control-sm create-interview-select-long"
-                                            onChange={(event)=>this.handleVacancyChange(event)}
-                                    >
-                                        <option>Chief Cooker for The Krusty Krab</option>
-                                        <option>Regular Waiter for Formula-1</option>
-                                        <option>Intern Babysitter for Home</option>
-                                    </select>
-                                    <span className="has-error error-message">{this.state.vacancyError}</span>
-                                </div>
-                            </div>
-                            <div className="form-group form-field-margin">
-                                <div>
-                                    <label className="control-label">Interviewer</label>
-                                    <select className="form-control form-control-sm create-interview-select-long"
-                                            onChange={(event)=>this.handleInterviewerChange(event)}
-                                    >
-                                        <option>K. Makiy</option>
-                                        <option>A. Larin</option>
-                                        <option>T. Grabets</option>
-                                    </select>
-                                    <span className="has-error error-message">{this.state.interviewerError}</span>
-                                </div>
-                            </div>
+
+                            {showCandidates(candidate)}
+                            {showVacancies(vacancy)}
+
+                            {/*<div className="form-group form-field-margin">*/}
+                            {/*<div>*/}
+                            {/*<label className="control-label">Interviewer</label>*/}
+                            {/*<select className="form-control form-control-sm create-interview-select-long"*/}
+                            {/*onChange={(event) => this.handleInterviewerChange(event)}*/}
+                            {/*>*/}
+                            {/*<option>K. Makiy</option>*/}
+                            {/*<option>A. Larin</option>*/}
+                            {/*<option>T. Grabets</option>*/}
+                            {/*</select>*/}
+                            {/*<span className="has-error error-message">{this.state.interviewerError}</span>*/}
+                            {/*</div>*/}
+                            {/*</div>*/}
                             <div className="form-group">
                                 <button
                                     id="create-interview-submitBtn"
@@ -278,8 +352,14 @@ class CreateInterview extends Component {
     }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
     return {
+        interviews: state.interviews,
+        vacancies: state.vacancies.vacancies,
+        candidates: state.candidates.candidates,
+        projects: state.project.projects,
+        levels: state.levels.levels,
+        positions: state.positions.positions,
     }
 }
 

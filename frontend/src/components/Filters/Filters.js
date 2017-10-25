@@ -187,8 +187,11 @@ class Filters extends Component {
 
             if (ratingsList.length) {
                 let compareGrade = (a, b) => {
-                        if (a.grade > b.grade) return 1;
-                        if (a.grade < b.grade) return -1;
+                    let first = +a.grade;
+                    let second = +b.grade;
+
+                        if (first> second) return 1;
+                        if (first < second) return -1;
                     },
                     sortedRatings = ratingsList.sort(compareGrade) || {};
                 options = sortedRatings.map((item, index) => <option key={index}>{item.grade}</option>);
@@ -238,9 +241,10 @@ class Filters extends Component {
                                     id={dateFromFilterId}
                                     className="form-control form-control-sm filter-select"
                                     placeholderText="From"
+                                    dateFormat="DD/MM/YYYY"
+                                    isClearable={true}
                                     selected={this.state.startDate}
                                     onChange={(event) => this.getDateFromFilterVal(event)}
-                                    isClearable={true}
                                 />
                             </div>
                             <div className="form-group float-left">
@@ -248,9 +252,10 @@ class Filters extends Component {
                                     id={dateToFilterId}
                                     className="form-control form-control-sm filter-select custom-mode"
                                     placeholderText="To"
+                                    dateFormat="DD/MM/YYYY"
+                                    isClearable={true}
                                     selected={this.state.endDate}
                                     onChange={(event) => this.getDateToFilterVal(event)}
-                                    isClearable={true}
                                 />
                             </div>
                             <p className="error-message">{dateFilterErrorMessage}</p>

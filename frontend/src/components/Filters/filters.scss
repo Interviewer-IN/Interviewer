@@ -128,9 +128,21 @@
     background-color: #d7dde4 !important;
 
   }
+
+  &__time-list-item--selected {
+    background-color: #85CE36 !important;
+  }
+
+  &-time__header {
+    color: #55595c !important;
+  }
 }
 
-.date-massage {
-
+.react-datepicker-popper[data-placement^="bottom"] {
+  margin-top: 0 !important;
 }
 
+.react-datepicker__time-container .react-datepicker__time
+.react-datepicker__time-box ul.react-datepicker__time-list {
+  padding: 0px !important;
+}

@@ -10,7 +10,8 @@ function addNewInterview(date) {
     return { type: CREATE_INTERVIEW, payload: date.data};
 }
 
-export function createInterview(date) {
+export function createInterview(date, message) {
+    let successMessage = message || 'Interview was created';
     return (dispatch) => {
         fetch("/api/v1/interviews",
             {
@@ -24,13 +25,13 @@ export function createInterview(date) {
                 res.json()
             )
             .then(date => {
-                let noteData = "'" + date.data.title.slice(0, 20) + "'";
+                //let noteData = "'" + date.data.title.slice(0, 20) + "'";
                 dispatch(addNewInterview(date));
                 dispatch(showInterviews());
                 dispatch(makeNote(
                     {
                         status: "success",
-                        text: "Interview " + noteData + "... was created!",
+                        text: successMessage,
                         hide: true
                     }
                 ))
