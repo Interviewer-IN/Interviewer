@@ -12,13 +12,6 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "access-key",
-            "description": "<p>Users unique access-key.</p>"
-          },
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
             "field": "content-type",
             "description": "<p>application/json; charset=utf-8</p>"
           },
@@ -97,13 +90,34 @@ define({ "api": [
             "optional": false,
             "field": "cv",
             "description": "<p>CV of Candidate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of candidate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "surname",
+            "description": "<p>Surname of candidate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "notes",
+            "description": "<p>Some notes for candidate.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": " HTTP/1.1 200 OK\n{\n    \"status\": \"SUCCESS\",\n    \"message\": \"Candidate deleted\",\n    \"data\": {\n        \"id\": 14,\n        \"age\": 30,\n        \"experience\": \"test\",\n        \"contacts\": \"test\",\n        \"created_at\": \"2017-10-06T21:11:23.538Z\",\n        \"updated_at\": \"2017-10-06T21:20:19.074Z\",\n        \"level_id\": 1,\n        \"position_id\": 2,\n        \"cv\": {\n            \"url\": \"/uploads/candidate/cv/14/cv.pdf\"\n        }\n    }\n}",
+          "content": "    HTTP/1.1 200 OK\n {\n    \"status\": \"SUCCESS\",\n    \"message\": \"Candidate deleted\",\n    \"data\": {\n        \"id\": 69,\n        \"age\": 30,\n        \"experience\": \"test\",\n        \"contacts\": \"test\",\n        \"created_at\": \"2017-10-25T20:49:00.195Z\",\n        \"updated_at\": \"2017-10-25T20:53:50.191Z\",\n        \"level_id\": 1,\n        \"position_id\": 2,\n        \"cv\": {\n            \"url\": \"/uploads/candidate/cv/69/cv.pdf\"\n        },\n        \"name\": \"Jim\",\n        \"surname\": \"Jimson\",\n        \"notes\": \"Some notes about Jim Jimson\"\n    }\n}",
           "type": "json"
         }
       ]
@@ -144,13 +158,6 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "access-key",
-            "description": "<p>Users unique access-key.</p>"
-          },
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
             "field": "content-type",
             "description": "<p>application/json; charset=utf-8</p>"
           },
@@ -168,7 +175,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "   HTTP/1.1 200 OK\n{\n   \"status\": \"SUCCESS\",\n   \"message\": \"Candidates loaded\",\n   \"data\": [\n       {\n           \"id\": 8,\n           \"age\": 30,\n           \"experience\": null,\n           \"contacts\": \"sss@qqq.com +15407788878\",\n           \"created_at\": \"2017-10-04T11:37:47.627Z\",\n           \"updated_at\": \"2017-10-04T11:37:47.627Z\",\n           \"level_id\": 1,\n           \"position_id\": 1,\n           \"cv\": {\n               \"url\": \"/uploads/candidate/cv/8/cv.pdf\"\n           }",
+          "content": "   HTTP/1.1 200 OK\n{\n   \"status\": \"SUCCESS\",\n   \"message\": \"Candidates loaded\",\n   \"data\": [\n       {\n           \"id\": 67,\n           \"age\": 30,\n           \"experience\": \"Some kind of freelance...\",\n           \"contacts\": \"skype: abcde; email: abcde@a.com; phone: 6509048934\",\n           \"created_at\": \"2017-10-25T19:00:06.208Z\",\n           \"updated_at\": \"2017-10-25T19:03:16.849Z\",\n           \"level_id\": 1,\n           \"position_id\": 2,\n           \"cv\": {\n               \"url\": null\n           },\n           \"name\": \"Justin\",\n           \"surname\": \"Bieber\",\n           \"notes\": \"just some notes. nothing interesting...\"\n       }\n  }",
           "type": "json"
         }
       ],
@@ -186,7 +193,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "age",
-            "description": "<p>Age of the Candidate.</p>"
+            "description": "<p>Age of the candidate.</p>"
           },
           {
             "group": "Success 200",
@@ -221,21 +228,42 @@ define({ "api": [
             "type": "int",
             "optional": false,
             "field": "level_id",
-            "description": "<p>Level of Candidate.</p>"
+            "description": "<p>Level of candidate.</p>"
           },
           {
             "group": "Success 200",
             "type": "int",
             "optional": false,
             "field": "position_id",
-            "description": "<p>Position of Candidate.</p>"
+            "description": "<p>Position of candidate.</p>"
           },
           {
             "group": "Success 200",
             "type": "base64",
             "optional": false,
             "field": "cv",
-            "description": "<p>CV of Candidate.</p>"
+            "description": "<p>CV of candidate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of candidate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "surname",
+            "description": "<p>Surname of candidate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "notes",
+            "description": "<p>Some notes for candidate.</p>"
           }
         ]
       }
@@ -263,7 +291,7 @@ define({ "api": [
     "groupTitle": "Candidates"
   },
   {
-    "type": "pach",
+    "type": "patch",
     "url": "api/v1/candidate/:id",
     "title": "Edit candidate",
     "name": "PatchCandidates",
@@ -272,13 +300,6 @@ define({ "api": [
     "header": {
       "fields": {
         "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "access-key",
-            "description": "<p>Users unique access-key.</p>"
-          },
           {
             "group": "Header",
             "type": "String",
@@ -323,7 +344,7 @@ define({ "api": [
           {
             "group": "Parameter",
             "type": "String",
-            "optional": true,
+            "optional": false,
             "field": "contacts",
             "description": "<p>Candidate`s contacts.</p>"
           },
@@ -333,13 +354,34 @@ define({ "api": [
             "optional": true,
             "field": "CV",
             "description": "<p>Candidate`s CV.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of candidate.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "surname",
+            "description": "<p>Surname of candidate.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "notes",
+            "description": "<p>Some notes for candidate.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n\"level_id\": 1,\n \"position_id\": 2,\n \"age\": \"30\",\n \"experience\": \"test\",\n \"contacts\": \"test\",\n \"cv\": \"data:application/pdf;base64, fw3...\"\n     }",
+          "content": "    {\n      \"level_id\": 1,\n      \"position_id\": 2,\n      \"age\": \"30\",\n      \"experience\": \"test\",\n      \"contacts\": \"test\",\n      \"cv\": \"data:application/pdf;base64, fw3...\",\n\t  \"name\": \"Jim\",\n\t  \"surname\": \"Jimson\",\n\t  \"notes\": \"Some notes about Jim Jimson fot pach\"\n      }",
           "type": "json"
         }
       ]
@@ -409,13 +451,34 @@ define({ "api": [
             "optional": false,
             "field": "cv",
             "description": "<p>CV of Candidate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of candidate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "surname",
+            "description": "<p>Surname of candidate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "notes",
+            "description": "<p>Some notes for candidate.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "  HTTP/1.1 200 OK\n\n{\n  \"status\": \"SUCCESS\",\n  \"message\": \"Update candidate\",\n  \"data\": {\n      \"id\": 14,\n      \"age\": 30,\n      \"experience\": \"test\",\n      \"contacts\": \"test\",\n      \"cv\": {\n          \"url\": \"/uploads/candidate/cv/14/cv.pdf\"\n      },\n      \"level_id\": 1,\n      \"position_id\": 2,\n      \"created_at\": \"2017-10-06T21:11:23.538Z\",\n      \"updated_at\": \"2017-10-06T21:16:20.338Z\"\n  }\n}",
+          "content": "    HTTP/1.1 200 OK\n\n  {\n    \"status\": \"SUCCESS\",\n    \"message\": \"Update candidate\",\n    \"data\": {\n        \"id\": 69,\n        \"age\": 30,\n        \"experience\": \"test\",\n        \"contacts\": \"test\",\n        \"cv\": {\n            \"url\": \"/uploads/candidate/cv/69/cv.pdf\"\n        },\n        \"level_id\": 1,\n        \"position_id\": 2,\n        \"name\": \"Jim\",\n        \"surname\": \"Jimson\",\n        \"notes\": \"Some notes about Jim Jimson fot patch\",\n        \"created_at\": \"2017-10-25T20:49:00.195Z\",\n        \"updated_at\": \"2017-10-25T20:51:38.429Z\"\n    }\n}",
           "type": "json"
         }
       ]
@@ -451,13 +514,6 @@ define({ "api": [
     "header": {
       "fields": {
         "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "access-key",
-            "description": "<p>Users unique access-key.</p>"
-          },
           {
             "group": "Header",
             "type": "String",
@@ -509,7 +565,7 @@ define({ "api": [
           {
             "group": "Parameter",
             "type": "String",
-            "optional": true,
+            "optional": false,
             "field": "contacts",
             "description": "<p>Candidate`s contacts.</p>"
           },
@@ -519,13 +575,34 @@ define({ "api": [
             "optional": true,
             "field": "CV",
             "description": "<p>Candidate`s CV.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of candidate.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "surname",
+            "description": "<p>Surname of candidate.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "notes",
+            "description": "<p>Some notes of candidate.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "\n{\n \"level_id\": 1,\n \"position_id\": 2,\n \"age\": \"30\",\n \"experience\": \"test\",\n \"contacts\": \"test\",\n \"cv\": \"data:application/pdf;base64, fw3...\"\n }",
+          "content": "\n     {\n      \"level_id\": 1,\n      \"position_id\": 2,\n      \"age\": \"30\",\n      \"experience\": \"test\",\n      \"contacts\": \"test\",\n      \"cv\": \"data:application/pdf;base64, fw3...\",\n\t  \"name\": \"Jim\",\n\t  \"surname\": \"Jimson\",\n\t  \"notes\": \"Some notes about Jim Jimson\"\n      }",
           "type": "json"
         }
       ]
@@ -595,13 +672,34 @@ define({ "api": [
             "optional": false,
             "field": "cv",
             "description": "<p>CV of Candidate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of candidate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "surname",
+            "description": "<p>Surname of candidate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "notes",
+            "description": "<p>Some notes for candidate.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n {\n     \"status\": \"SUCCESS\",\n     \"message\": \"Saved candidate\",\n     \"data\": {\n         \"id\": 14,\n         \"age\": 30,\n         \"experience\": \"test\",\n         \"contacts\": \"test\",\n         \"created_at\": \"2017-10-06T21:11:23.538Z\",\n         \"updated_at\": \"2017-10-06T21:11:23.538Z\",\n         \"level_id\": 1,\n         \"position_id\": 2,\n         \"cv\": {\n             \"url\": \"/uploads/candidate/cv/14/cv.pdf\"\n         }\n     }\n }",
+          "content": "    HTTP/1.1 200 OK\n    {\n    \"status\": \"SUCCESS\",\n    \"message\": \"Saved candidate\",\n    \"data\": {\n        \"id\": 69,\n        \"age\": 30,\n        \"experience\": \"test\",\n        \"contacts\": \"test\",\n        \"created_at\": \"2017-10-25T20:49:00.195Z\",\n        \"updated_at\": \"2017-10-25T20:49:00.195Z\",\n        \"level_id\": 1,\n        \"position_id\": 2,\n        \"cv\": {\n            \"url\": \"/uploads/candidate/cv/69/cv.pdf\"\n        },\n        \"name\": \"Jim\",\n        \"surname\": \"Jimson\",\n        \"notes\": \"Some notes about Jim Jimson\"\n    }\n}",
           "type": "json"
         }
       ]
@@ -642,13 +740,6 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "access-key",
-            "description": "<p>Users unique access-key.</p>"
-          },
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
             "field": "content-type",
             "description": "<p>application/json; charset=utf-8</p>"
           },
@@ -696,7 +787,7 @@ define({ "api": [
           {
             "group": "Parameter",
             "type": "String",
-            "optional": true,
+            "optional": false,
             "field": "contacts",
             "description": "<p>Candidate`s contacts.</p>"
           },
@@ -706,13 +797,34 @@ define({ "api": [
             "optional": true,
             "field": "CV",
             "description": "<p>Candidate`s CV.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of candidate.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "surname",
+            "description": "<p>Surname of candidate.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "notes",
+            "description": "<p>Some notes for candidate.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n\"level_id\": 1,\n \"position_id\": 2,\n \"age\": \"30\",\n \"experience\": \"test\",\n \"contacts\": \"test\",\n \"cv\": \"data:application/pdf;base64, fw3...\"\n     }",
+          "content": "      {\n      \"level_id\": 1,\n      \"position_id\": 2,\n      \"age\": \"30\",\n      \"experience\": \"test\",\n      \"contacts\": \"test\",\n      \"cv\": \"data:application/pdf;base64, fw3...\",\n\t  \"name\": \"Jim\",\n\t  \"surname\": \"Jimson\",\n\t  \"notes\": \"Some notes about Jim Jimson fot put\"\n      }",
           "type": "json"
         }
       ]
@@ -782,13 +894,34 @@ define({ "api": [
             "optional": false,
             "field": "cv",
             "description": "<p>CV of Candidate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Name of candidate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "surname",
+            "description": "<p>Surname of candidate.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "notes",
+            "description": "<p>Some notes for candidate.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": " HTTP/1.1 200 OK\n\n  {\n    \"status\": \"SUCCESS\",\n    \"message\": \"Update candidate\",\n    \"data\": {\n        \"id\": 14,\n        \"age\": 30,\n        \"experience\": \"test\",\n        \"contacts\": \"test\",\n        \"cv\": {\n            \"url\": \"/uploads/candidate/cv/14/cv.pdf\"\n        },\n        \"level_id\": 1,\n        \"position_id\": 2,\n        \"created_at\": \"2017-10-06T21:11:23.538Z\",\n        \"updated_at\": \"2017-10-06T21:16:20.338Z\"\n    }\n}",
+          "content": "    HTTP/1.1 200 OK\n\n    {\n    \"status\": \"SUCCESS\",\n    \"message\": \"Update candidate\",\n    \"data\": {\n        \"id\": 69,\n        \"age\": 30,\n        \"experience\": \"test\",\n        \"contacts\": \"test\",\n        \"cv\": {\n            \"url\": \"/uploads/candidate/cv/69/cv.pdf\"\n        },\n        \"level_id\": 1,\n        \"position_id\": 2,\n        \"name\": \"Jim\",\n        \"surname\": \"Jimson\",\n        \"notes\": \"Some notes about Jim Jimson fot put\",\n        \"created_at\": \"2017-10-25T20:49:00.195Z\",\n        \"updated_at\": \"2017-10-25T20:53:50.191Z\"\n    }\n}",
           "type": "json"
         }
       ]
@@ -817,10 +950,10 @@ define({ "api": [
   },
   {
     "type": "delete",
-    "url": "api/v1/levels/:id",
-    "title": "Delete Level",
-    "name": "DeleteLevels",
-    "group": "Levels",
+    "url": "api/v1/interviews/:id",
+    "title": "Delete Interviews",
+    "name": "DeleteInterviews",
+    "group": "Interviews",
     "header": {
       "fields": {
         "Header": [
@@ -828,9 +961,902 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "access-key",
-            "description": "<p>Users unique access-key.</p>"
+            "field": "content-type",
+            "description": "<p>application/json; charset=utf-8</p>"
           },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "accept",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Unique id of the Interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolen",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Status of the Interviews(true/false).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "state",
+            "description": "<p>State of the Interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "feedback",
+            "description": "<p>Feedback for Interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "date_time",
+            "description": "<p>Mandatory with data of interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Mandatory with data of creating(By default).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Mandatory with data of update(By default).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "candidate_id",
+            "description": "<p>ID of candidate for this interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "vacancy_id",
+            "description": "<p>ID of vacancy for this interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>ID of user for this interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "rating_id",
+            "description": "<p>ID of rating for this interviews.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n{\n    \"status\": \"SUCCESS\",\n    \"message\": \"Interview deleted\",\n    \"data\": {\n        \"id\": 22,\n        \"status\": false,\n        \"state\": \"Non new2\",\n        \"feedback\": \"We’ve all got both light and dark inside us. What matters is the part we choose to act on. That’s who we really are.Patch\",\n        \"date_time\": \"2017-10-16T00:40:00.000Z\",\n        \"created_at\": \"2017-10-24T06:02:51.719Z\",\n        \"updated_at\": \"2017-10-24T06:11:05.592Z\",\n        \"candidate_id\": 3,\n        \"vacancy_id\": 3,\n        \"user_id\": 19,\n        \"rating_id\": 2\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Returned if the user is not logged in.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "InterviewsNotFound",
+            "description": "<p>Returned if the Interviews does not exist.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./j.java",
+    "groupTitle": "Interviews"
+  },
+  {
+    "name": "GetInterviews",
+    "group": "Interviews",
+    "type": "get",
+    "url": "api/v1/interviews/:id",
+    "title": "Get Interviews",
+    "description": "<p>Returns all Interviews which are visible for the currently logged in user.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json; charset=utf-8</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "accept",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n{\n    \"status\": \"SUCCESS\",\n    \"message\": \"Interviews loaded\",\n    \"data\": [\n        {\n            \"id\": 20,\n            \"status\": false,\n            \"state\": \"New\",\n            \"feedback\": \"We’ve all got both light and dark inside us. What matters is the part we choose to act on. That’s who we really are.\",\n            \"date_time\": \"2017-10-16T00:40:00.000Z\",\n            \"created_at\": \"2017-10-19T17:21:18.896Z\",\n            \"updated_at\": \"2017-10-22T18:48:16.703Z\",\n            \"candidate_id\": 20,\n            \"vacancy_id\": 47,\n            \"user_id\": 19,\n            \"rating_id\": 1\n        }\n   }",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Unique id of the Interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolen",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Status of the Interviews(true/false).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "state",
+            "description": "<p>State of the Interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "feedback",
+            "description": "<p>Feedback for Interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "date_time",
+            "description": "<p>Mandatory with data of interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Mandatory with data of creating(By default).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Mandatory with data of update(By default).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "candidate_id",
+            "description": "<p>ID of candidate for this interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "vacancy_id",
+            "description": "<p>ID of vacancy for this interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>ID of user for this interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "rating_id",
+            "description": "<p>ID of rating for this interviews.</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "InterviewsNotFound",
+            "description": "<p>The <code>id</code> of the Interview was not found.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Returned if the user is not logged in.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./j.java",
+    "groupTitle": "Interviews"
+  },
+  {
+    "type": "pach",
+    "url": "api/v1/interviews/:id",
+    "title": "Edit Interviews",
+    "name": "PatchInterviews",
+    "group": "Interviews",
+    "description": "<p>Replace parts of existing Interviews.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json; charset=utf-8</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "accept",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Boolen",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Status of the Interviews(true/false).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "state",
+            "description": "<p>State of the Interviews.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "feedback",
+            "description": "<p>Feedback for Interviews.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "date_time",
+            "description": "<p>Mandatory with data of interviews.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "candidate_id",
+            "description": "<p>ID of candidate for this interviews.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "vacancy_id",
+            "description": "<p>ID of vacancy for this interviews.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>ID of user for this interviews.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "rating_id",
+            "description": "<p>ID of rating for this interviews.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "    {\n\t \"status\": false,\n     \"state\": \"Not new\",\n     \"feedback\": \"We’ve all got both light and dark inside us. What matters is the part we choose to act on. That’s who we really are.EDIT\",\n    \"date_time\": \"2017-10-16T00:40:00.000Z\",\n\t\"candidate_id\": 3,\n\t\"vacancy_id\": 3,\n\t\"user_id\": 19,\n\t\"rating_id\": 2\n\t\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Unique id of the Interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolen",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Status of the Interviews(true/false).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "state",
+            "description": "<p>State of the Interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "feedback",
+            "description": "<p>Feedback for Interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "date_time",
+            "description": "<p>Mandatory with data of interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Mandatory with data of creating(By default).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Mandatory with data of update(By default).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "candidate_id",
+            "description": "<p>ID of candidate for this interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "vacancy_id",
+            "description": "<p>ID of vacancy for this interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>ID of user for this interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "rating_id",
+            "description": "<p>ID of rating for this interviews.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n\n{\n    \"status\": \"SUCCESS\",\n    \"message\": \"Update interview\",\n    \"data\": {\n        \"id\": 22,\n        \"status\": false,\n        \"state\": \"Not new\",\n        \"feedback\": \"We’ve all got both light and dark inside us. What matters is the part we choose to act on. That’s who we really are.EDIT\",\n        \"date_time\": \"2017-10-16T00:40:00.000Z\",\n        \"candidate_id\": 3,\n        \"vacancy_id\": 3,\n        \"user_id\": 19,\n        \"rating_id\": 2,\n        \"created_at\": \"2017-10-24T06:02:51.719Z\",\n        \"updated_at\": \"2017-10-24T06:09:11.774Z\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Returned if the user is not logged in.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "InterviewsNotFound",
+            "description": "<p>Returned if the Interviews does not exist.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./j.java",
+    "groupTitle": "Interviews"
+  },
+  {
+    "type": "post",
+    "url": "api/v1/interviews/",
+    "title": "Create Interviews",
+    "name": "PostInterviews",
+    "group": "Interviews",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json; charset=utf-8</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "accept",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Boolen",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Status of the Interviews(true/false).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "state",
+            "description": "<p>State of the Interviews.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "feedback",
+            "description": "<p>Feedback for Interviews.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "date_time",
+            "description": "<p>Mandatory with data of interviews.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "candidate_id",
+            "description": "<p>ID of candidate for this interviews.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "vacancy_id",
+            "description": "<p>ID of vacancy for this interviews.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>ID of user for this interviews.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "rating_id",
+            "description": "<p>ID of rating for this interviews.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "\n {\n\t \"status\": false,\n     \"state\": \"New\",\n     \"feedback\": \"We’ve all got both light and dark inside us. What matters is the part we choose to act on. That’s who we really are.\",\n    \"date_time\": \"2017-10-16T00:40:00.000Z\",\n\t\"candidate_id\": 3,\n\t\"vacancy_id\": 3,\n\t\"user_id\": 19,\n\t\"rating_id\": 2\n\t\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Unique id of the Interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolen",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Status of the Interviews(true/false).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "state",
+            "description": "<p>State of the Interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "feedback",
+            "description": "<p>Feedback for Interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "date_time",
+            "description": "<p>Mandatory with data of interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Mandatory with data of creating(By default).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Mandatory with data of update(By default).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "candidate_id",
+            "description": "<p>ID of candidate for this interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "vacancy_id",
+            "description": "<p>ID of vacancy for this interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>ID of user for this interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "rating_id",
+            "description": "<p>ID of rating for this interviews.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n{\n    \"status\": \"SUCCESS\",\n    \"message\": \"Saved interview\",\n    \"data\": {\n        \"id\": 22,\n        \"status\": false,\n        \"state\": \"New\",\n        \"feedback\": \"We’ve all got both light and dark inside us. What matters is the part we choose to act on. That’s who we really are.\",\n        \"date_time\": \"2017-10-16T00:40:00.000Z\",\n        \"created_at\": \"2017-10-24T06:02:51.719Z\",\n        \"updated_at\": \"2017-10-24T06:02:51.719Z\",\n        \"candidate_id\": 3,\n        \"vacancy_id\": 3,\n        \"user_id\": 19,\n        \"rating_id\": 2\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "InterviewsNotFound",
+            "description": "<p>The <code>id</code> of the Interviews was not found.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Returned if the user is not logged in.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./j.java",
+    "groupTitle": "Interviews"
+  },
+  {
+    "type": "put",
+    "url": "api/v1/interviews/:id",
+    "title": "Update Interviews",
+    "name": "PutInterviews",
+    "group": "Interviews",
+    "description": "<p>Replace parts of existing Rating.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json; charset=utf-8</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "accept",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Boolen",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Status of the Interviews(true/false).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "state",
+            "description": "<p>State of the Interviews.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "feedback",
+            "description": "<p>Feedback for Interviews.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "date_time",
+            "description": "<p>Mandatory with data of interviews.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "candidate_id",
+            "description": "<p>ID of candidate for this interviews.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "vacancy_id",
+            "description": "<p>ID of vacancy for this interviews.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>ID of user for this interviews.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "rating_id",
+            "description": "<p>ID of rating for this interviews.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "    {\n\t \"status\": false,\n     \"state\": \"Not new\",\n     \"feedback\": \"We’ve all got both light and dark inside us. What matters is the part we choose to act on. That’s who we really are.EDIT\",\n    \"date_time\": \"2017-10-16T00:40:00.000Z\",\n\t\"candidate_id\": 3,\n\t\"vacancy_id\": 3,\n\t\"user_id\": 19,\n\t\"rating_id\": 2\n\t\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Unique id of the Interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolen",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Status of the Interviews(true/false).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "state",
+            "description": "<p>State of the Interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "feedback",
+            "description": "<p>Feedback for Interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "date_time",
+            "description": "<p>Mandatory with data of interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Mandatory with data of creating(By default).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Mandatory with data of update(By default).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "candidate_id",
+            "description": "<p>ID of candidate for this interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "vacancy_id",
+            "description": "<p>ID of vacancy for this interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>ID of user for this interviews.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "rating_id",
+            "description": "<p>ID of rating for this interviews.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n\n{\n    \"status\": \"SUCCESS\",\n    \"message\": \"Update interview\",\n    \"data\": {\n        \"id\": 22,\n        \"status\": false,\n        \"state\": \"Not new\",\n        \"feedback\": \"We’ve all got both light and dark inside us. What matters is the part we choose to act on. That’s who we really are.EDIT\",\n        \"date_time\": \"2017-10-16T00:40:00.000Z\",\n        \"candidate_id\": 3,\n        \"vacancy_id\": 3,\n        \"user_id\": 19,\n        \"rating_id\": 2,\n        \"created_at\": \"2017-10-24T06:02:51.719Z\",\n        \"updated_at\": \"2017-10-24T06:09:11.774Z\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Returned if the user is not logged in.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "InterviewsNotFound",
+            "description": "<p>Returned if the Interviews does not exist.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./j.java",
+    "groupTitle": "Interviews"
+  },
+  {
+    "type": "delete",
+    "url": "api/v1/levels/:id",
+    "title": "Delete Level",
+    "name": "DeleteLevels",
+    "group": "Levels",
+    "header": {
+      "fields": {
+        "Header": [
           {
             "group": "Header",
             "type": "String",
@@ -925,13 +1951,6 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "access-key",
-            "description": "<p>Users unique access-key.</p>"
-          },
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
             "field": "content-type",
             "description": "<p>application/json; charset=utf-8</p>"
           },
@@ -1018,13 +2037,6 @@ define({ "api": [
     "header": {
       "fields": {
         "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "access-key",
-            "description": "<p>Users unique access-key.</p>"
-          },
           {
             "group": "Header",
             "type": "String",
@@ -1139,13 +2151,6 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "access-key",
-            "description": "<p>Users unique access-key.</p>"
-          },
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
             "field": "content-type",
             "description": "<p>application/json; charset=utf-8</p>"
           },
@@ -1251,13 +2256,6 @@ define({ "api": [
     "header": {
       "fields": {
         "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "access-key",
-            "description": "<p>Users unique access-key.</p>"
-          },
           {
             "group": "Header",
             "type": "String",
@@ -1371,13 +2369,6 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "access-key",
-            "description": "<p>Users unique access-key.</p>"
-          },
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
             "field": "content-type",
             "description": "<p>application/json; charset=utf-8</p>"
           },
@@ -1460,17 +2451,10 @@ define({ "api": [
     "type": "get",
     "url": "api/v1/positions/:id",
     "title": "Get Positions",
-    "description": "<p>Returns all Positions which are visible for the currently logged in user.</p>",
+    "description": "<p>Returns all Positions which are visible for the currently logged in user, with ID in URL- returns one position which match ID.</p>",
     "header": {
       "fields": {
         "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "access-key",
-            "description": "<p>Users unique access-key.</p>"
-          },
           {
             "group": "Header",
             "type": "String",
@@ -1552,7 +2536,7 @@ define({ "api": [
     "groupTitle": "Positions"
   },
   {
-    "type": "pach",
+    "type": "patch",
     "url": "api/v1/positions/:id",
     "title": "Edit positions",
     "name": "PatchPositions",
@@ -1561,13 +2545,6 @@ define({ "api": [
     "header": {
       "fields": {
         "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "access-key",
-            "description": "<p>Users unique access-key.</p>"
-          },
           {
             "group": "Header",
             "type": "String",
@@ -1677,13 +2654,6 @@ define({ "api": [
     "header": {
       "fields": {
         "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "access-key",
-            "description": "<p>Users unique access-key.</p>"
-          },
           {
             "group": "Header",
             "type": "String",
@@ -1798,13 +2768,6 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "access-key",
-            "description": "<p>Users unique access-key.</p>"
-          },
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
             "field": "content-type",
             "description": "<p>application/json; charset=utf-8</p>"
           },
@@ -1914,13 +2877,6 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "access-key",
-            "description": "<p>Users unique access-key.</p>"
-          },
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
             "field": "content-type",
             "description": "<p>application/json; charset=utf-8</p>"
           },
@@ -2018,13 +2974,6 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "access-key",
-            "description": "<p>Users unique access-key.</p>"
-          },
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
             "field": "content-type",
             "description": "<p>application/json; charset=utf-8</p>"
           },
@@ -2111,13 +3060,6 @@ define({ "api": [
     "header": {
       "fields": {
         "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "access-key",
-            "description": "<p>Users unique access-key.</p>"
-          },
           {
             "group": "Header",
             "type": "String",
@@ -2234,13 +3176,6 @@ define({ "api": [
     "header": {
       "fields": {
         "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "access-key",
-            "description": "<p>Users unique access-key.</p>"
-          },
           {
             "group": "Header",
             "type": "String",
@@ -2369,13 +3304,6 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "access-key",
-            "description": "<p>Users unique access-key.</p>"
-          },
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
             "field": "content-type",
             "description": "<p>application/json; charset=utf-8</p>"
           },
@@ -2480,6 +3408,514 @@ define({ "api": [
     "groupTitle": "Projects"
   },
   {
+    "type": "delete",
+    "url": "api/v1/ratings/:id",
+    "title": "Delete Rating",
+    "name": "DeleteRating",
+    "group": "Ratings",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json; charset=utf-8</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "accept",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Unique id of rating.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "grade",
+            "description": "<p>Grade of the rating.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Mandatory with data of creating(By default).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Mandatory with data of update(By default).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n  {\n    \"status\": \"SUCCESS\",\n    \"message\": \"Rating deleted\",\n    \"data\": {\n        \"id\": 6,\n        \"grade\": \"test2\",\n        \"created_at\": \"2017-10-23T18:16:48.015Z\",\n        \"updated_at\": \"2017-10-23T18:45:13.614Z\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Returned if the user is not logged in.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "RatingNotFound",
+            "description": "<p>Returned if the rating does not exist.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./j.java",
+    "groupTitle": "Ratings"
+  },
+  {
+    "name": "GetRatings",
+    "group": "Ratings",
+    "type": "get",
+    "url": "api/v1/ratings/:id",
+    "title": "Get Ratings",
+    "description": "<p>Returns all Ratings which are visible for the currently logged in user.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json; charset=utf-8</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "accept",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "   HTTP/1.1 200 OK\n{\n   \"status\": \"SUCCESS\",\n   \"message\": \"Ratings loaded\",\n   \"data\": [\n       {\n           \"id\": 5,\n           \"grade\": \"Supa Good\",\n           \"created_at\": \"2017-10-10T23:23:08.582Z\",\n           \"updated_at\": \"2017-10-20T12:17:10.368Z\"\n       }}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Unique id of the Rating.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "grade",
+            "description": "<p>Grade of the Rating.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Mandatory with data of creating(By default).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Mandatory with data of update(By default).</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "RatingNotFound",
+            "description": "<p>The <code>id</code> of the Rating was not found.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Returned if the user is not logged in.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./j.java",
+    "groupTitle": "Ratings"
+  },
+  {
+    "type": "pach",
+    "url": "api/v1/ratings/:id",
+    "title": "Edit rating",
+    "name": "PatchRating",
+    "group": "Ratings",
+    "description": "<p>Replace parts of existing rating.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json; charset=utf-8</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "accept",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "grade",
+            "description": "<p>Grade of ratings.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "      {\n\t\"grade\": \"test1\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Unique id of rating.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "grade",
+            "description": "<p>Grade of the rating.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Mandatory with data of creating(By default).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Mandatory with data of update(By default).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n\n{\n    \"status\": \"SUCCESS\",\n    \"message\": \"Update rating\",\n    \"data\": {\n        \"id\": 6,\n        \"grade\": \"test2\",\n        \"created_at\": \"2017-10-23T18:16:48.015Z\",\n        \"updated_at\": \"2017-10-23T18:45:13.614Z\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Returned if the user is not logged in.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "RatingNotFound",
+            "description": "<p>Returned if the rating does not exist.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./j.java",
+    "groupTitle": "Ratings"
+  },
+  {
+    "type": "post",
+    "url": "api/v1/ratings/",
+    "title": "Create Rating",
+    "name": "PostRating",
+    "group": "Ratings",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json; charset=utf-8</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "accept",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "grade",
+            "description": "<p>Grade of ratings.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "\n     {\n\t\"grade\": \"test\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Unique id of rating.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "grade",
+            "description": "<p>Grade of the rating.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Mandatory with data of creating(By default).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Mandatory with data of update(By default).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n     {\n    \"status\": \"SUCCESS\",\n    \"message\": \"Saved rating\",\n    \"data\": {\n        \"id\": 7,\n        \"grade\": \"test\",\n        \"created_at\": \"2017-10-23T18:17:39.083Z\",\n        \"updated_at\": \"2017-10-23T18:17:39.083Z\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "RatingNotFound",
+            "description": "<p>The <code>id</code> of the Rating was not found.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Returned if the user is not logged in.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./j.java",
+    "groupTitle": "Ratings"
+  },
+  {
+    "type": "put",
+    "url": "api/v1/ratings/:id",
+    "title": "Update Rating",
+    "name": "PutRating",
+    "group": "Ratings",
+    "description": "<p>Replace parts of existing Rating.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json; charset=utf-8</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "accept",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "grade",
+            "description": "<p>Grade of ratings.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "      {\n\t\"grade\": \"test1\"\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Unique id of rating.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "grade",
+            "description": "<p>Grade of the rating.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Mandatory with data of creating(By default).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Mandatory with data of update(By default).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n\n  {\n    \"status\": \"SUCCESS\",\n    \"message\": \"Update rating\",\n    \"data\": {\n        \"id\": 6,\n        \"grade\": \"test1\",\n        \"created_at\": \"2017-10-23T18:16:48.015Z\",\n        \"updated_at\": \"2017-10-23T18:29:17.152Z\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Returned if the user is not logged in.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "RatingNotFound",
+            "description": "<p>Returned if the rating does not exist.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./j.java",
+    "groupTitle": "Ratings"
+  },
+  {
     "type": "post",
     "url": "auth/sign_in/",
     "title": "User login",
@@ -2493,14 +3929,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "content-type",
-            "description": "<p>application/x-www-form-urlencoded</p>"
-          },
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "accept",
-            "description": "<p>application/json</p>"
+            "description": "<p>aapplication/json</p>"
           }
         ]
       }
@@ -2673,13 +4102,6 @@ define({ "api": [
             "optional": false,
             "field": "uid",
             "description": "<p>uid which comes in login headers.</p>"
-          },
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "access-token",
-            "description": "<p>Token which comes in login headers.</p>"
           }
         ]
       }
@@ -2724,13 +4146,6 @@ define({ "api": [
     "header": {
       "fields": {
         "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "access-key",
-            "description": "<p>Users unique access-key.</p>"
-          },
           {
             "group": "Header",
             "type": "String",
@@ -2853,13 +4268,6 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "access-key",
-            "description": "<p>Users unique access-key.</p>"
-          },
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
             "field": "content-type",
             "description": "<p>application/json; charset=utf-8</p>"
           },
@@ -2974,13 +4382,6 @@ define({ "api": [
     "header": {
       "fields": {
         "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "access-key",
-            "description": "<p>Users unique access-key.</p>"
-          },
           {
             "group": "Header",
             "type": "String",
@@ -3150,13 +4551,6 @@ define({ "api": [
             "group": "Header",
             "type": "String",
             "optional": false,
-            "field": "access-key",
-            "description": "<p>Users unique access-key.</p>"
-          },
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
             "field": "content-type",
             "description": "<p>application/json; charset=utf-8</p>"
           },
@@ -3193,13 +4587,20 @@ define({ "api": [
             "optional": false,
             "field": "position_id",
             "description": "<p>Mandatory position of the vacancy.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Description of the Vacancie.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n        \"level_id\": 4,\n        \"project_id\": 87,\n        \"position_id\": 4\n    }",
+          "content": "{\n\t    \"description\": \"Test description of vacancie\",\n        \"level_id\": 4,\n        \"project_id\": 87,\n        \"position_id\": 4\n    }",
           "type": "json"
         }
       ]
@@ -3305,13 +4706,6 @@ define({ "api": [
     "header": {
       "fields": {
         "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "access-key",
-            "description": "<p>Users unique access-key.</p>"
-          },
           {
             "group": "Header",
             "type": "String",

@@ -9,7 +9,6 @@
  *
  * @apiDescription Returns all projects which are visible for the currently logged in user.
  *
- * @apiHeader {String} access-key Users unique access-key.
  * @apiHeader {String} content-type application/json; charset=utf-8
  * @apiHeader {String} accept application/json
  *
@@ -26,7 +25,7 @@
             	 "created_at": "2017-08-22T11:32:34.824Z",
             	 "updated_at": "2017-08-22T11:32:34.824Z"
         }
-*}
+}
  * @apiSuccess {String} title Title of the Projects.
  * @apiSuccess {String} description  Description of the Projects.
  * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
@@ -44,7 +43,6 @@
  * @apiName PostProjects
  * @apiGroup Projects
  *
- * @apiHeader {String} access-key Users unique access-key.
  * @apiHeader {String} content-type application/json; charset=utf-8
  * @apiHeader {String} accept application/json
  *
@@ -93,7 +91,6 @@
  * @apiDescription Replace the entire project with the new representation provided.
  *
  *
- * @apiHeader {String} access-key Users unique access-key.
  * @apiHeader {String} content-type application/json; charset=utf-8
  * @apiHeader {String} accept application/json
  *
@@ -140,7 +137,6 @@
  * @apiDescription Replace parts of existing project.
  *
  *
- * @apiHeader {String} access-key Users unique access-key.
  * @apiHeader {String} content-type application/json; charset=utf-8
  * @apiHeader {String} accept application/json
  *
@@ -186,7 +182,6 @@
  *
  *
  *
- * @apiHeader {String} access-key Users unique access-key.
  * @apiHeader {String} content-type application/json; charset=utf-8
  * @apiHeader {String} accept application/json
  *
@@ -226,9 +221,7 @@
   * @apiName UserLogin
   * @apiGroup User
   *
-  * @apiHeader {String} content-type application/x-www-form-urlencoded
-  * @apiHeader {String} accept application/json
-  *
+  * @apiHeader {String} content-type aapplication/json
   *
   * @apiParam {String} email        Email of register user.
   * @apiParam {String} password     User`s password.
@@ -282,7 +275,6 @@
  * @apiHeader {String} accept application/json
  * @apiHeader {String} client       client which comes in login headers.
  * @apiHeader {String} uid          uid which comes in login headers.
- * @apiHeader {String} access-token Token which comes in login headers.
  *
  *
  *
@@ -308,7 +300,6 @@
  *
  * @apiDescription Returns all vacancies which are visible for the currently logged in user.
  *
- * @apiHeader {String} access-key Users unique access-key.
  * @apiHeader {String} content-type application/json; charset=utf-8
  * @apiHeader {String} accept application/json
  *
@@ -350,7 +341,6 @@
   * @apiName PostVacancy
   * @apiGroup Vacancies
   *
-  * @apiHeader {String} access-key Users unique access-key.
   * @apiHeader {String} content-type application/json; charset=utf-8
   * @apiHeader {String} accept application/json
   *
@@ -358,9 +348,11 @@
   * @apiParam {int} level_id       Mandatory level of the vacancy.
   * @apiParam {int} project_id    Mandatory project of the vacancy.
   * @apiParam {int} position_id    Mandatory position of the vacancy.
+  * @apiParam {String} description        Description of the Vacancie.
   *
   * @apiParamExample {json} Request-Example:
   * {
+	    "description": "Test description of vacancie",
         "level_id": 4,
         "project_id": 87,
         "position_id": 4
@@ -406,7 +398,6 @@
 * @apiDescription Replace parts of existing Vacancies.
 *
 *
-* @apiHeader {String} access-key Users unique access-key.
 * @apiHeader {String} content-type application/json; charset=utf-8
 * @apiHeader {String} accept application/json
 *
@@ -462,7 +453,6 @@
 * @apiName PutVacancies
 * @apiGroup Vacancies
 * @apiDescription Replace the entire project with the new representation provided.
-* @apiHeader {String} access-key Users unique access-key.
 * @apiHeader {String} content-type application/json; charset=utf-8
 * @apiHeader {String} accept application/json
 *
@@ -520,7 +510,6 @@
  *
  *
  *
- * @apiHeader {String} access-key Users unique access-key.
  * @apiHeader {String} content-type application/json; charset=utf-8
  * @apiHeader {String} accept application/json
  *
@@ -568,7 +557,6 @@
  *
  * @apiDescription Returns all levels which are visible for the currently logged in user.
  *
- * @apiHeader {String} access-key Users unique access-key.
  * @apiHeader {String} content-type application/json; charset=utf-8
  * @apiHeader {String} accept application/json
  *
@@ -602,7 +590,6 @@
    * @apiName PostLevels
    * @apiGroup Levels
    *
-   * @apiHeader {String} access-key Users unique access-key.
    * @apiHeader {String} content-type application/json; charset=utf-8
    * @apiHeader {String} accept application/json
    *
@@ -643,7 +630,6 @@
    * @apiDescription Replace parts of existing levels.
    *
    *
-   * @apiHeader {String} access-key Users unique access-key.
    * @apiHeader {String} content-type application/json; charset=utf-8
    * @apiHeader {String} accept application/json
    *
@@ -685,7 +671,6 @@
 * @apiDescription Replace parts of existing Levels.
 *
 *
-* @apiHeader {String} access-key Users unique access-key.
 * @apiHeader {String} content-type application/json; charset=utf-8
 * @apiHeader {String} accept application/json
 *
@@ -727,7 +712,6 @@
  *
  *
  *
- * @apiHeader {String} access-key Users unique access-key.
  * @apiHeader {String} content-type application/json; charset=utf-8
  * @apiHeader {String} accept application/json
  *
@@ -765,9 +749,8 @@
   * @api {get} api/v1/positions/:id Get Positions
   *
   *
-  * @apiDescription Returns all Positions which are visible for the currently logged in user.
+  * @apiDescription Returns all Positions which are visible for the currently logged in user, with ID in URL- returns one position which match ID. 
   *
-  * @apiHeader {String} access-key Users unique access-key.
   * @apiHeader {String} content-type application/json; charset=utf-8
   * @apiHeader {String} accept application/json
   *
@@ -801,7 +784,6 @@
     * @apiName PostPositions
     * @apiGroup Positions
     *
-    * @apiHeader {String} access-key Users unique access-key.
     * @apiHeader {String} content-type application/json; charset=utf-8
     * @apiHeader {String} accept application/json
     *
@@ -842,7 +824,6 @@
     * @apiDescription Replace parts of existing positions.
     *
     *
-    * @apiHeader {String} access-key Users unique access-key.
     * @apiHeader {String} content-type application/json; charset=utf-8
     * @apiHeader {String} accept application/json
     *
@@ -877,15 +858,14 @@
     * @apiError PositionstNotFound Returned if the positions does not exist.
     */
 
- *======PachPositions======
+ *======PatchPositions======
  /**
- * @api {pach} api/v1/positions/:id Edit positions
+ * @api {patch} api/v1/positions/:id Edit positions
  * @apiName PatchPositions
  * @apiGroup Positions
  * @apiDescription Replace parts of existing Positions.
  *
  *
- * @apiHeader {String} access-key Users unique access-key.
  * @apiHeader {String} content-type application/json; charset=utf-8
  * @apiHeader {String} accept application/json
  *
@@ -929,7 +909,6 @@
   *
   *
   *
-  * @apiHeader {String} access-key Users unique access-key.
   * @apiHeader {String} content-type application/json; charset=utf-8
   * @apiHeader {String} accept application/json
   *
@@ -969,7 +948,6 @@
    *
    * @apiDescription Returns all Candidates which are visible for the currently logged in user.
    *
-   * @apiHeader {String} access-key Users unique access-key.
    * @apiHeader {String} content-type application/json; charset=utf-8
    * @apiHeader {String} accept application/json
    *
@@ -981,26 +959,34 @@
     "message": "Candidates loaded",
     "data": [
         {
-            "id": 8,
+            "id": 67,
             "age": 30,
-            "experience": null,
-            "contacts": "sss@qqq.com +15407788878",
-            "created_at": "2017-10-04T11:37:47.627Z",
-            "updated_at": "2017-10-04T11:37:47.627Z",
+            "experience": "Some kind of freelance...",
+            "contacts": "skype: abcde; email: abcde@a.com; phone: 6509048934",
+            "created_at": "2017-10-25T19:00:06.208Z",
+            "updated_at": "2017-10-25T19:03:16.849Z",
             "level_id": 1,
-            "position_id": 1,
+            "position_id": 2,
             "cv": {
-                "url": "/uploads/candidate/cv/8/cv.pdf"
-            }
+                "url": null
+            },
+            "name": "Justin",
+            "surname": "Bieber",
+            "notes": "just some notes. nothing interesting..."
+        }
+   }
    * @apiSuccess {int} id  Unique id of the Candidate.
-   * @apiSuccess {String} age  Age of the Candidate.
+   * @apiSuccess {String} age  Age of the candidate.
    * @apiSuccess {String} experience  Candidate`s experience.
    * @apiSuccess {String} contacts  Candidate`s contacts.
    * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
    * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
-   * @apiSuccess {int} level_id      Level of Candidate.
-   * @apiSuccess {int} position_id    Position of Candidate.
-   * @apiSuccess {base64} cv    CV of Candidate.
+   * @apiSuccess {int} level_id      Level of candidate.
+   * @apiSuccess {int} position_id    Position of candidate.
+   * @apiSuccess {base64} cv    CV of candidate.
+   * @apiSuccess {String} name    Name of candidate.
+   * @apiSuccess {String} surname    Surname of candidate.
+   * @apiSuccess {String} notes    Some notes for candidate.
    *
    * @apiError CandidateNotFound The <code>id</code> of the Candidate was not found.
    * @apiError Unauthorized Returned if the user is not logged in.
@@ -1013,7 +999,6 @@
      * @apiName PostCandidates
      * @apiGroup Candidates
      *
-     * @apiHeader {String} access-key Users unique access-key.
      * @apiHeader {String} content-type application/json; charset=utf-8
      * @apiHeader {String} accept application/json
      *
@@ -1022,9 +1007,12 @@
      * @apiParam {int} position_id  Candidate`s position.
      * @apiParam {String} [age]  Candidate`s age.
      * @apiParam {String} [experience]  Candidate`s experience.
-     * @apiParam {String} [contacts]  Candidate`s contacts.
+     * @apiParam {String} contacts  Candidate`s contacts.
      * @apiParam {base64} [CV]  Candidate`s CV.
-     *
+     * @apiParam {String} name    Name of candidate.
+     * @apiParam {String} surname    Surname of candidate.
+     * @apiParam {String} notes    Some notes of candidate.
+	 
      * @apiParamExample {json} Request-Example:
      *
      {
@@ -1033,7 +1021,10 @@
       "age": "30",
       "experience": "test",
       "contacts": "test",
-      "cv": "data:application/pdf;base64, fw3..."
+      "cv": "data:application/pdf;base64, fw3...",
+	  "name": "Jim",
+	  "surname": "Jimson",
+	  "notes": "Some notes about Jim Jimson"
       }
      *
      * @apiSuccess {int} id  Unique id of the Candidate.
@@ -1045,26 +1036,32 @@
      * @apiSuccess {int} level_id      Level of Candidate.
     * @apiSuccess {int} position_id    Position of Candidate.
     * @apiSuccess {base64} cv    CV of Candidate.
+     * @apiSuccess {String} name    Name of candidate.
+     * @apiSuccess {String} surname    Surname of candidate.
+     * @apiSuccess {String} notes    Some notes for candidate.
      *
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200 OK
-     {
-         "status": "SUCCESS",
-         "message": "Saved candidate",
-         "data": {
-             "id": 14,
-             "age": 30,
-             "experience": "test",
-             "contacts": "test",
-             "created_at": "2017-10-06T21:11:23.538Z",
-             "updated_at": "2017-10-06T21:11:23.538Z",
-             "level_id": 1,
-             "position_id": 2,
-             "cv": {
-                 "url": "/uploads/candidate/cv/14/cv.pdf"
-             }
-         }
-     }
+    {
+    "status": "SUCCESS",
+    "message": "Saved candidate",
+    "data": {
+        "id": 69,
+        "age": 30,
+        "experience": "test",
+        "contacts": "test",
+        "created_at": "2017-10-25T20:49:00.195Z",
+        "updated_at": "2017-10-25T20:49:00.195Z",
+        "level_id": 1,
+        "position_id": 2,
+        "cv": {
+            "url": "/uploads/candidate/cv/69/cv.pdf"
+        },
+        "name": "Jim",
+        "surname": "Jimson",
+        "notes": "Some notes about Jim Jimson"
+    }
+}
    *
      * @apiError CandidateNotFound The <code>id</code> of the Candidate was not found.
      * @apiError Unauthorized Returned if the user is not logged in.
@@ -1077,7 +1074,6 @@
      * @apiDescription Replace parts of existing candidate.
      *
      *
-     * @apiHeader {String} access-key Users unique access-key.
      * @apiHeader {String} content-type application/json; charset=utf-8
      * @apiHeader {String} accept application/json
      *
@@ -1085,18 +1081,24 @@
      * @apiParam {int} position_id  Candidate`s position.
      * @apiParam {String} [age]  Candidate`s age.
      * @apiParam {String} [experience]  Candidate`s experience.
-     * @apiParam {String} [contacts]  Candidate`s contacts.
+     * @apiParam {String} contacts  Candidate`s contacts.
      * @apiParam {base64} [CV]  Candidate`s CV.
+     * @apiParam {String} name    Name of candidate.
+     * @apiParam {String} surname    Surname of candidate.
+     * @apiParam {String} notes    Some notes for candidate.
      *
      * @apiParamExample {json} Request-Example:
-     {
-     "level_id": 1,
+      {
+      "level_id": 1,
       "position_id": 2,
       "age": "30",
       "experience": "test",
       "contacts": "test",
-      "cv": "data:application/pdf;base64, fw3..."
-          }
+      "cv": "data:application/pdf;base64, fw3...",
+	  "name": "Jim",
+	  "surname": "Jimson",
+	  "notes": "Some notes about Jim Jimson fot put"
+      }
      *
 	* @apiSuccess {int} id  Unique id of the Candidate.
    * @apiSuccess {String} age  Age of the Candidate.   
@@ -1107,58 +1109,70 @@
    * @apiSuccess {int} level_id      Level of Candidate.
    * @apiSuccess {int} position_id    Position of Candidate.
    * @apiSuccess {base64} cv    CV of Candidate.
+     * @apiSuccess {String} name    Name of candidate.
+     * @apiSuccess {String} surname    Surname of candidate.
+     * @apiSuccess {String} notes    Some notes for candidate.
    *
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200 OK
      *
-     {
-       "status": "SUCCESS",
-       "message": "Update candidate",
-       "data": {
-           "id": 14,
-           "age": 30,
-           "experience": "test",
-           "contacts": "test",
-           "cv": {
-               "url": "/uploads/candidate/cv/14/cv.pdf"
-           },
-           "level_id": 1,
-           "position_id": 2,
-           "created_at": "2017-10-06T21:11:23.538Z",
-           "updated_at": "2017-10-06T21:16:20.338Z"
-       }
-   }
+    {
+    "status": "SUCCESS",
+    "message": "Update candidate",
+    "data": {
+        "id": 69,
+        "age": 30,
+        "experience": "test",
+        "contacts": "test",
+        "cv": {
+            "url": "/uploads/candidate/cv/69/cv.pdf"
+        },
+        "level_id": 1,
+        "position_id": 2,
+        "name": "Jim",
+        "surname": "Jimson",
+        "notes": "Some notes about Jim Jimson fot put",
+        "created_at": "2017-10-25T20:49:00.195Z",
+        "updated_at": "2017-10-25T20:53:50.191Z"
+    }
+}
      * @apiError Unauthorized Returned if the user is not logged in.
      * @apiError CandidateNotFound Returned if the candidate does not exist.
      */
 
-  *======PachCandidate======
+  *======PatchCandidate======
   /**
-  * @api {pach} api/v1/candidate/:id Edit candidate
+  * @api {patch} api/v1/candidate/:id Edit candidate
   * @apiName PatchCandidates
   * @apiGroup Candidates
   * @apiDescription Replace parts of existing candidate.
   *
   *
-  * @apiHeader {String} access-key Users unique access-key.
   * @apiHeader {String} content-type application/json; charset=utf-8
   * @apiHeader {String} accept application/json
   *
      * @apiParam {int} position_id  Candidate`s position.
      * @apiParam {String} [age]  Candidate`s age.
      * @apiParam {String} [experience]  Candidate`s experience.
-     * @apiParam {String} [contacts]  Candidate`s contacts.
+     * @apiParam {String} contacts  Candidate`s contacts.
      * @apiParam {base64} [CV]  Candidate`s CV.
+     * @apiParam {String} name    Name of candidate.
+     * @apiParam {String} surname    Surname of candidate.
+     * @apiParam {String} notes    Some notes for candidate.
      *
   * @apiParamExample {json} Request-Example:
-  {
-  "level_id": 1,
-   "position_id": 2,
-   "age": "30",
-   "experience": "test",
-   "contacts": "test",
-   "cv": "data:application/pdf;base64, fw3..."
-       }
+    {
+      "level_id": 1,
+      "position_id": 2,
+      "age": "30",
+      "experience": "test",
+      "contacts": "test",
+      "cv": "data:application/pdf;base64, fw3...",
+	  "name": "Jim",
+	  "surname": "Jimson",
+	  "notes": "Some notes about Jim Jimson fot pach"
+      }
+	  
  * @apiSuccess {int} id  Unique id of the Candidate.
    * @apiSuccess {String} age  Age of the Candidate.
    * @apiSuccess {String} experience  Candidate`s experience.
@@ -1168,6 +1182,9 @@
    * @apiSuccess {int} level_id      Level of Candidate.
    * @apiSuccess {int} position_id    Position of Candidate.
    * @apiSuccess {base64} cv    CV of Candidate.
+     * @apiSuccess {String} name    Name of candidate.
+     * @apiSuccess {String} surname    Surname of candidate.
+     * @apiSuccess {String} notes    Some notes for candidate.
    *
   *
   * @apiSuccessExample {json} Success-Response:
@@ -1177,19 +1194,22 @@
     "status": "SUCCESS",
     "message": "Update candidate",
     "data": {
-        "id": 14,
+        "id": 69,
         "age": 30,
         "experience": "test",
         "contacts": "test",
         "cv": {
-            "url": "/uploads/candidate/cv/14/cv.pdf"
+            "url": "/uploads/candidate/cv/69/cv.pdf"
         },
         "level_id": 1,
         "position_id": 2,
-        "created_at": "2017-10-06T21:11:23.538Z",
-        "updated_at": "2017-10-06T21:16:20.338Z"
+        "name": "Jim",
+        "surname": "Jimson",
+        "notes": "Some notes about Jim Jimson fot patch",
+        "created_at": "2017-10-25T20:49:00.195Z",
+        "updated_at": "2017-10-25T20:51:38.429Z"
     }
-  }
+}
   * @apiError Unauthorized Returned if the user is not logged in.
   * @apiError CandidateNotFound Returned if the candidate does not exist.
   */
@@ -1202,7 +1222,6 @@
    *
    *
    *
-   * @apiHeader {String} access-key Users unique access-key.
    * @apiHeader {String} content-type application/json; charset=utf-8
    * @apiHeader {String} accept application/json
    *
@@ -1215,27 +1234,548 @@
    * @apiSuccess {int} level_id      Level of Candidate.
    * @apiSuccess {int} position_id    Position of Candidate.
    * @apiSuccess {base64} cv    CV of Candidate.
+   
+     * @apiSuccess {String} name    Name of candidate.
+     * @apiSuccess {String} surname    Surname of candidate.
+     * @apiSuccess {String} notes    Some notes for candidate.
    *
    *
    * @apiSuccessExample {json} Success-Response:
    *     HTTP/1.1 200 OK
-   {
-       "status": "SUCCESS",
-       "message": "Candidate deleted",
-       "data": {
-           "id": 14,
-           "age": 30,
-           "experience": "test",
-           "contacts": "test",
-           "created_at": "2017-10-06T21:11:23.538Z",
-           "updated_at": "2017-10-06T21:20:19.074Z",
-           "level_id": 1,
-           "position_id": 2,
-           "cv": {
-               "url": "/uploads/candidate/cv/14/cv.pdf"
-           }
-       }
-   }
+ {
+    "status": "SUCCESS",
+    "message": "Candidate deleted",
+    "data": {
+        "id": 69,
+        "age": 30,
+        "experience": "test",
+        "contacts": "test",
+        "created_at": "2017-10-25T20:49:00.195Z",
+        "updated_at": "2017-10-25T20:53:50.191Z",
+        "level_id": 1,
+        "position_id": 2,
+        "cv": {
+            "url": "/uploads/candidate/cv/69/cv.pdf"
+        },
+        "name": "Jim",
+        "surname": "Jimson",
+        "notes": "Some notes about Jim Jimson"
+    }
+}
    * @apiError Unauthorized Returned if the user is not logged in.
    * @apiError CandidateNotFound Returned if the candidate does not exist.
+   */ 
+   
+   
+   
+   
+  * ======================Interviews=====================
+  *=====get======
+
+  /**
+   * @apiName GetInterviews
+   * @apiGroup Interviews
+   *
+   * @api {get} api/v1/interviews/:id Get Interviews
+   *
+   *
+   * @apiDescription Returns all Interviews which are visible for the currently logged in user.
+   *
+   * @apiHeader {String} content-type application/json; charset=utf-8
+   * @apiHeader {String} accept application/json
+   *
+   *
+   * @apiSuccessExample {json} Success-Response:
+   *     HTTP/1.1 200 OK
+   * {
+    "status": "SUCCESS",
+    "message": "Interviews loaded",
+    "data": [
+        {
+            "id": 20,
+            "status": false,
+            "state": "New",
+            "feedback": "We’ve all got both light and dark inside us. What matters is the part we choose to act on. That’s who we really are.",
+            "date_time": "2017-10-16T00:40:00.000Z",
+            "created_at": "2017-10-19T17:21:18.896Z",
+            "updated_at": "2017-10-22T18:48:16.703Z",
+            "candidate_id": 20,
+            "vacancy_id": 47,
+            "user_id": 19,
+            "rating_id": 1
+        }
+   }
+		
+   * @apiSuccess {int} id  Unique id of the Interviews.
+   * @apiSuccess {Boolen} status  Status of the Interviews(true/false).
+   * @apiSuccess {String} state  State of the Interviews.
+   * @apiSuccess {String} feedback  Feedback for Interviews.
+   * @apiSuccess {String} date_time   Mandatory with data of interviews.
+   * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+   * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+   * @apiSuccess {int} candidate_id ID of candidate for this interviews.
+   * @apiSuccess {int} vacancy_id  ID of vacancy for this interviews.
+   * @apiSuccess {int} user_id  ID of user for this interviews.
+   * @apiSuccess {int} rating_id  ID of rating for this interviews.
+
+   *
+   * @apiError InterviewsNotFound The <code>id</code> of the Interview was not found.
+   * @apiError Unauthorized Returned if the user is not logged in.
+   *
+   */
+
+   *========CreateInterviews======
+    /**
+     * @api {post} api/v1/interviews/ Create Interviews
+     * @apiName PostInterviews
+     * @apiGroup Interviews
+     *
+     * @apiHeader {String} content-type application/json; charset=utf-8
+     * @apiHeader {String} accept application/json
+     *
+     * @apiParam {Boolen} status  Status of the Interviews(true/false).
+	 * @apiParam {String} state  State of the Interviews.
+	 * @apiParam {String} feedback  Feedback for Interviews.
+	 * @apiParam {String} date_time   Mandatory with data of interviews.
+	 * @apiParam {int} candidate_id  ID of candidate for this interviews.
+     * @apiParam {int} vacancy_id  ID of vacancy for this interviews.
+     * @apiParam  {int} user_id  ID of user for this interviews.
+     * @apiParam  {int} rating_id  ID of rating for this interviews.
+     *
+     * @apiParamExample {json} Request-Example:
+     *
+ {
+	 "status": false,
+     "state": "New",
+     "feedback": "We’ve all got both light and dark inside us. What matters is the part we choose to act on. That’s who we really are.",
+    "date_time": "2017-10-16T00:40:00.000Z",
+	"candidate_id": 3,
+	"vacancy_id": 3,
+	"user_id": 19,
+	"rating_id": 2
+	
+}
+ *
+		
+   * @apiSuccess {int} id  Unique id of the Interviews.
+   * @apiSuccess {Boolen} status  Status of the Interviews(true/false).
+   * @apiSuccess {String} state  State of the Interviews.
+   * @apiSuccess {String} feedback  Feedback for Interviews.
+   * @apiSuccess {String} date_time   Mandatory with data of interviews.
+   * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+   * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+   * @apiSuccess {int} candidate_id  ID of candidate for this interviews.
+   * @apiSuccess {int} vacancy_id  ID of vacancy for this interviews.
+   * @apiSuccess {int} user_id  ID of user for this interviews.
+   * @apiSuccess {int} rating_id  ID of rating for this interviews.
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200 OK
+{
+    "status": "SUCCESS",
+    "message": "Saved interview",
+    "data": {
+        "id": 22,
+        "status": false,
+        "state": "New",
+        "feedback": "We’ve all got both light and dark inside us. What matters is the part we choose to act on. That’s who we really are.",
+        "date_time": "2017-10-16T00:40:00.000Z",
+        "created_at": "2017-10-24T06:02:51.719Z",
+        "updated_at": "2017-10-24T06:02:51.719Z",
+        "candidate_id": 3,
+        "vacancy_id": 3,
+        "user_id": 19,
+        "rating_id": 2
+    }
+}
+   *
+     * @apiError InterviewsNotFound The <code>id</code> of the Interviews was not found.
+     * @apiError Unauthorized Returned if the user is not logged in.
+     */
+     *=====EditInterviews======
+     /**
+     * @api {put} api/v1/interviews/:id Update Interviews
+     * @apiName PutInterviews
+     * @apiGroup Interviews
+     * @apiDescription Replace parts of existing Rating.
+     *
+     *
+     * @apiHeader {String} content-type application/json; charset=utf-8
+     * @apiHeader {String} accept application/json
+     *
+	      *
+     * @apiParam {Boolen} status  Status of the Interviews(true/false).
+	 * @apiParam {String} state  State of the Interviews.
+	 * @apiParam {String} feedback  Feedback for Interviews.
+	 * @apiParam {String} date_time   Mandatory with data of interviews.
+	 * @apiParam {int} candidate_id  ID of candidate for this interviews.
+     * @apiParam {int} vacancy_id  ID of vacancy for this interviews.
+     * @apiParam  {int} user_id  ID of user for this interviews.
+     * @apiParam  {int} rating_id  ID of rating for this interviews.
+     *
+     * @apiParamExample {json} Request-Example:
+    {
+	 "status": false,
+     "state": "Not new",
+     "feedback": "We’ve all got both light and dark inside us. What matters is the part we choose to act on. That’s who we really are.EDIT",
+    "date_time": "2017-10-16T00:40:00.000Z",
+	"candidate_id": 3,
+	"vacancy_id": 3,
+	"user_id": 19,
+	"rating_id": 2
+	
+	}
+     *
+	 
+   * @apiSuccess {int} id  Unique id of the Interviews.
+   * @apiSuccess {Boolen} status  Status of the Interviews(true/false).
+   * @apiSuccess {String} state  State of the Interviews.
+   * @apiSuccess {String} feedback  Feedback for Interviews.
+   * @apiSuccess {String} date_time   Mandatory with data of interviews.
+   * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+   * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+   * @apiSuccess {int} candidate_id  ID of candidate for this interviews.
+   * @apiSuccess {int} vacancy_id  ID of vacancy for this interviews.
+   * @apiSuccess {int} user_id  ID of user for this interviews.
+   * @apiSuccess {int} rating_id  ID of rating for this interviews.
+   *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200 OK
+     *
+{
+    "status": "SUCCESS",
+    "message": "Update interview",
+    "data": {
+        "id": 22,
+        "status": false,
+        "state": "Not new",
+        "feedback": "We’ve all got both light and dark inside us. What matters is the part we choose to act on. That’s who we really are.EDIT",
+        "date_time": "2017-10-16T00:40:00.000Z",
+        "candidate_id": 3,
+        "vacancy_id": 3,
+        "user_id": 19,
+        "rating_id": 2,
+        "created_at": "2017-10-24T06:02:51.719Z",
+        "updated_at": "2017-10-24T06:09:11.774Z"
+    }
+}
+     * @apiError Unauthorized Returned if the user is not logged in.
+     * @apiError InterviewsNotFound Returned if the Interviews does not exist.
+     */
+
+  *======PachInterviews======
+  /**
+  * @api {pach} api/v1/interviews/:id Edit Interviews
+  * @apiName PatchInterviews
+  * @apiGroup Interviews
+  * @apiDescription Replace parts of existing Interviews.
+  *
+  *
+     * @apiHeader {String} content-type application/json; charset=utf-8
+     * @apiHeader {String} accept application/json
+     *
+	      *
+     * @apiParam {Boolen} status  Status of the Interviews(true/false).
+	 * @apiParam {String} state  State of the Interviews.
+	 * @apiParam {String} feedback  Feedback for Interviews.
+	 * @apiParam {String} date_time   Mandatory with data of interviews.
+	 * @apiParam {int} candidate_id  ID of candidate for this interviews.
+     * @apiParam {int} vacancy_id  ID of vacancy for this interviews.
+     * @apiParam  {int} user_id  ID of user for this interviews.
+     * @apiParam  {int} rating_id  ID of rating for this interviews.
+     *
+     * @apiParamExample {json} Request-Example:
+    {
+	 "status": false,
+     "state": "Not new",
+     "feedback": "We’ve all got both light and dark inside us. What matters is the part we choose to act on. That’s who we really are.EDIT",
+    "date_time": "2017-10-16T00:40:00.000Z",
+	"candidate_id": 3,
+	"vacancy_id": 3,
+	"user_id": 19,
+	"rating_id": 2
+	
+	}
+     *
+	 
+   * @apiSuccess {int} id  Unique id of the Interviews.
+   * @apiSuccess {Boolen} status  Status of the Interviews(true/false).
+   * @apiSuccess {String} state  State of the Interviews.
+   * @apiSuccess {String} feedback  Feedback for Interviews.
+   * @apiSuccess {String} date_time   Mandatory with data of interviews.
+   * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+   * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+   * @apiSuccess {int} candidate_id  ID of candidate for this interviews.
+   * @apiSuccess {int} vacancy_id  ID of vacancy for this interviews.
+   * @apiSuccess {int} user_id  ID of user for this interviews.
+   * @apiSuccess {int} rating_id  ID of rating for this interviews.
+	 
+   *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200 OK
+     *
+{
+    "status": "SUCCESS",
+    "message": "Update interview",
+    "data": {
+        "id": 22,
+        "status": false,
+        "state": "Not new",
+        "feedback": "We’ve all got both light and dark inside us. What matters is the part we choose to act on. That’s who we really are.EDIT",
+        "date_time": "2017-10-16T00:40:00.000Z",
+        "candidate_id": 3,
+        "vacancy_id": 3,
+        "user_id": 19,
+        "rating_id": 2,
+        "created_at": "2017-10-24T06:02:51.719Z",
+        "updated_at": "2017-10-24T06:09:11.774Z"
+    }
+}
+     * @apiError Unauthorized Returned if the user is not logged in.
+     * @apiError InterviewsNotFound Returned if the Interviews does not exist.
+     */
+
+  *======DeleteInterviews=======
+  /**
+   * @api {delete} api/v1/interviews/:id Delete Interviews
+   * @apiName DeleteInterviews
+   * @apiGroup Interviews
+   *
+   *
+   *
+   * @apiHeader {String} content-type application/json; charset=utf-8
+   * @apiHeader {String} accept application/json
+   *
+ 
+   * @apiSuccess {int} id  Unique id of the Interviews.
+   * @apiSuccess {Boolen} status  Status of the Interviews(true/false).
+   * @apiSuccess {String} state  State of the Interviews.
+   * @apiSuccess {String} feedback  Feedback for Interviews.
+   * @apiSuccess {String} date_time   Mandatory with data of interviews.
+   * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+   * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+   * @apiSuccess {int} candidate_id  ID of candidate for this interviews.
+   * @apiSuccess {int} vacancy_id  ID of vacancy for this interviews.
+   * @apiSuccess {int} user_id  ID of user for this interviews.
+   * @apiSuccess {int} rating_id  ID of rating for this interviews. 
+   *
+   *
+   * @apiSuccessExample {json} Success-Response:
+   *     HTTP/1.1 200 OK
+{
+    "status": "SUCCESS",
+    "message": "Interview deleted",
+    "data": {
+        "id": 22,
+        "status": false,
+        "state": "Non new2",
+        "feedback": "We’ve all got both light and dark inside us. What matters is the part we choose to act on. That’s who we really are.Patch",
+        "date_time": "2017-10-16T00:40:00.000Z",
+        "created_at": "2017-10-24T06:02:51.719Z",
+        "updated_at": "2017-10-24T06:11:05.592Z",
+        "candidate_id": 3,
+        "vacancy_id": 3,
+        "user_id": 19,
+        "rating_id": 2
+    }
+}
+  * @apiError Unauthorized Returned if the user is not logged in.
+   * @apiError InterviewsNotFound Returned if the Interviews does not exist.
+   */
+
+
+   
+   
+   
+   
+     * =======================Ratings====================
+  *=====get======
+
+  /**
+   * @apiName GetRatings
+   * @apiGroup Ratings
+   *
+   * @api {get} api/v1/ratings/:id Get Ratings
+   *
+   *
+   * @apiDescription Returns all Ratings which are visible for the currently logged in user.
+   *
+   * @apiHeader {String} content-type application/json; charset=utf-8
+   * @apiHeader {String} accept application/json
+   *
+   *
+   * @apiSuccessExample {json} Success-Response:
+   *     HTTP/1.1 200 OK
+   *  {
+    "status": "SUCCESS",
+    "message": "Ratings loaded",
+    "data": [
+        {
+            "id": 5,
+            "grade": "Supa Good",
+            "created_at": "2017-10-10T23:23:08.582Z",
+            "updated_at": "2017-10-20T12:17:10.368Z"
+        }}
+		
+   * @apiSuccess {int} id  Unique id of the Rating.
+   * @apiSuccess {String} grade  Grade of the Rating.
+   * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+   * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+   *
+   * @apiError RatingNotFound The <code>id</code> of the Rating was not found.
+   * @apiError Unauthorized Returned if the user is not logged in.
+   *
+   */
+
+   *========CreateRating======
+    /**
+     * @api {post} api/v1/ratings/ Create Rating
+     * @apiName PostRating
+     * @apiGroup Ratings
+     *
+     * @apiHeader {String} content-type application/json; charset=utf-8
+     * @apiHeader {String} accept application/json
+     *
+     * @apiParam {String} grade  Grade of ratings.
+     *
+     * @apiParamExample {json} Request-Example:
+     *
+     {
+	"grade": "test"
+	}
+     *
+     * @apiSuccess {int} id  Unique id of rating.
+     * @apiSuccess {String} grade  Grade of the rating.
+     * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+     * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200 OK
+     {
+    "status": "SUCCESS",
+    "message": "Saved rating",
+    "data": {
+        "id": 7,
+        "grade": "test",
+        "created_at": "2017-10-23T18:17:39.083Z",
+        "updated_at": "2017-10-23T18:17:39.083Z"
+    }
+}
+   *
+     * @apiError RatingNotFound The <code>id</code> of the Rating was not found.
+     * @apiError Unauthorized Returned if the user is not logged in.
+     */
+     *=====EditRating======
+     /**
+     * @api {put} api/v1/ratings/:id Update Rating
+     * @apiName PutRating
+     * @apiGroup Ratings
+     * @apiDescription Replace parts of existing Rating.
+     *
+     *
+     * @apiHeader {String} content-type application/json; charset=utf-8
+     * @apiHeader {String} accept application/json
+     *
+	 * @apiParam {String} grade  Grade of ratings.
+     *
+     * @apiParamExample {json} Request-Example:
+      {
+	"grade": "test1"
+	}
+     *
+     * @apiSuccess {int} id  Unique id of rating.
+     * @apiSuccess {String} grade  Grade of the rating.
+     * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+     * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+   *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200 OK
+     *
+  {
+    "status": "SUCCESS",
+    "message": "Update rating",
+    "data": {
+        "id": 6,
+        "grade": "test1",
+        "created_at": "2017-10-23T18:16:48.015Z",
+        "updated_at": "2017-10-23T18:29:17.152Z"
+    }
+}
+     * @apiError Unauthorized Returned if the user is not logged in.
+     * @apiError RatingNotFound Returned if the rating does not exist.
+     */
+
+  *======PachRating======
+  /**
+  * @api {pach} api/v1/ratings/:id Edit rating
+  * @apiName PatchRating
+  * @apiGroup Ratings
+  * @apiDescription Replace parts of existing rating.
+  *
+  *
+     * @apiHeader {String} content-type application/json; charset=utf-8
+     * @apiHeader {String} accept application/json
+     *
+	 * @apiParam {String} grade  Grade of ratings.
+     *
+     * @apiParamExample {json} Request-Example:
+      {
+	"grade": "test1"
+	}
+     *
+     * @apiSuccess {int} id  Unique id of rating.
+     * @apiSuccess {String} grade  Grade of the rating.
+     * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+     * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+   *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200 OK
+     *
+{
+    "status": "SUCCESS",
+    "message": "Update rating",
+    "data": {
+        "id": 6,
+        "grade": "test2",
+        "created_at": "2017-10-23T18:16:48.015Z",
+        "updated_at": "2017-10-23T18:45:13.614Z"
+    }
+}
+     * @apiError Unauthorized Returned if the user is not logged in.
+     * @apiError RatingNotFound Returned if the rating does not exist.
+     */
+
+  *======DeleteRating=======
+  /**
+   * @api {delete} api/v1/ratings/:id Delete Rating
+   * @apiName DeleteRating
+   * @apiGroup Ratings
+   *
+   *
+   *
+   * @apiHeader {String} content-type application/json; charset=utf-8
+   * @apiHeader {String} accept application/json
+   *
+  * @apiSuccess {int} id  Unique id of rating.
+     * @apiSuccess {String} grade  Grade of the rating.
+     * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+     * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+    
+   *
+   *
+   * @apiSuccessExample {json} Success-Response:
+   *     HTTP/1.1 200 OK
+  {
+    "status": "SUCCESS",
+    "message": "Rating deleted",
+    "data": {
+        "id": 6,
+        "grade": "test2",
+        "created_at": "2017-10-23T18:16:48.015Z",
+        "updated_at": "2017-10-23T18:45:13.614Z"
+    }
+}
+
+  * @apiError Unauthorized Returned if the user is not logged in.
+   * @apiError RatingNotFound Returned if the rating does not exist.
    */
