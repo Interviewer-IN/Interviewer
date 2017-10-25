@@ -381,7 +381,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "    {\n      \"level_id\": 1,\n      \"position_id\": 2,\n      \"age\": \"30\",\n      \"experience\": \"test\",\n      \"contacts\": \"test\",\n      \"cv\": \"data:application/pdf;base64, fw3...\",\n\t  \"name\": \"Jim\",\n\t  \"surname\": \"Jimson\",\n\t  \"notes\": \"Some notes about Jim Jimson fot pach\"\n      }",
+          "content": "    {\n      \"level_id\": 1,\n      \"position_id\": 2,\n      \"age\": \"30\",\n      \"experience\": \"test\",\n      \"contacts\": \"test\",\n      \"cv\": \"data:application/pdf;base64, fw3...\",\n\t  \"name\": \"Jim\",\n\t  \"surname\": \"Jimson\",\n\t  \"notes\": \"Some notes about Jim Jimson fot patch\"\n      }",
           "type": "json"
         }
       ]
@@ -1226,7 +1226,7 @@ define({ "api": [
     "groupTitle": "Interviews"
   },
   {
-    "type": "pach",
+    "type": "patch",
     "url": "api/v1/interviews/:id",
     "title": "Edit Interviews",
     "name": "PatchInterviews",
@@ -3587,7 +3587,7 @@ define({ "api": [
     "groupTitle": "Ratings"
   },
   {
-    "type": "pach",
+    "type": "patch",
     "url": "api/v1/ratings/:id",
     "title": "Edit rating",
     "name": "PatchRating",

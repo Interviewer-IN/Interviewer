@@ -663,7 +663,7 @@
    * @apiError LeveltNotFound Returned if the level does not exist.
    */
 
-*======PachLevel======
+*======PatchLevel======
 /**
 * @api {patch} api/v1/levels/:id Edit Level
 * @apiName PatchLevels
@@ -1170,7 +1170,7 @@
       "cv": "data:application/pdf;base64, fw3...",
 	  "name": "Jim",
 	  "surname": "Jimson",
-	  "notes": "Some notes about Jim Jimson fot pach"
+	  "notes": "Some notes about Jim Jimson fot patch"
       }
 	  
  * @apiSuccess {int} id  Unique id of the Candidate.
@@ -1463,9 +1463,9 @@
      * @apiError InterviewsNotFound Returned if the Interviews does not exist.
      */
 
-  *======PachInterviews======
+  *======PatchInterviews======
   /**
-  * @api {pach} api/v1/interviews/:id Edit Interviews
+  * @api {patch} api/v1/interviews/:id Edit Interviews
   * @apiName PatchInterviews
   * @apiGroup Interviews
   * @apiDescription Replace parts of existing Interviews.
@@ -1705,9 +1705,9 @@
      * @apiError RatingNotFound Returned if the rating does not exist.
      */
 
-  *======PachRating======
+  *======PatchRating======
   /**
-  * @api {pach} api/v1/ratings/:id Edit rating
+  * @api {patch} api/v1/ratings/:id Edit rating
   * @apiName PatchRating
   * @apiGroup Ratings
   * @apiDescription Replace parts of existing rating.
