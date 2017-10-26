@@ -63,6 +63,11 @@ class InterviewsUpcoming extends Component {
         dispatch(removeInterview(this.state.currentInterviewID));
     }
 
+    duplicateInterview(duplicateData) {
+        let successDuplicateMessage = "Interview was duplicated";
+        const {dispatch} = this.props;
+        dispatch(createInterview(duplicateData, successDuplicateMessage));
+    }
 
 
     openModalConfirm(currentID) {
@@ -134,6 +139,8 @@ class InterviewsUpcoming extends Component {
     }
 
     render() {
+
+
 
         let pageTitle;
         if (this.state.isHR) {
@@ -270,6 +277,14 @@ class InterviewsUpcoming extends Component {
                                 candidateCV = currentCandidate.cv.url,
                                 panelTitleText;
 
+                            let duplicateData = {
+                                date_time: value.date_time,
+                                candidate_id: value.candidate_id,
+                                vacancy_id: value.vacancy_id,
+                                user_id: value.user_id,
+                                rating_id: 12
+                            };
+
 
                         let checkCandidateCV = () => {
                             if (candidateCV) {
@@ -374,6 +389,7 @@ class InterviewsUpcoming extends Component {
                                             callDelete={(event) => this.openModalConfirm(id)}
                                             callEdit={(event) => this.switchToEditMode(id)}
                                             callAction={(event) => this.activateInterview(id)}
+                                            callDublicate={() => this.duplicateInterview(duplicateData)}
                                         />
                                     </PanelGroup>
                                 )
@@ -500,7 +516,7 @@ function mapStateToProps(state) {
         levels: state.levels.levels,
         positions: state.positions.positions,
         candidates: state.candidates.candidates,
-        currentProject: state.project.currentProject,
+      //  currentProject: state.project.currentProject,
     }
 }
 

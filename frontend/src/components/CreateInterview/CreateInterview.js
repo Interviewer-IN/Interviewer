@@ -5,6 +5,7 @@ import {Modal, Button} from "react-bootstrap";
 import "./CreateInterview.css";
 import {connect} from "react-redux";
 import DatePicker from "react-datepicker";
+
 import {showInterviews, createInterview} from "../../redux/actions/interviewActions";
 import {getVacancies} from "../../redux/actions/vacanciesActions";
 import {getCandidates} from "../../redux/actions/candidatesActions";
@@ -35,7 +36,6 @@ class CreateInterview extends Component {
     componentWillMount() {
         this.props.onCheckUserRole(true);
         const {dispatch} = this.props;
-        dispatch(showInterviews());
         dispatch(getVacancies());
         dispatch(showProjects());
         dispatch(getCandidates());
@@ -110,18 +110,18 @@ class CreateInterview extends Component {
         if (date &&
             candidate &&
             vacancy) {
-            let candidateID = this.getOptionID("candidate");
-            let vacancyID = this.getOptionID("vacancy");
+            let candidateID = this.getOptionID("candidate"),
+                vacancyID = this.getOptionID("vacancy");
             event.preventDefault();
             this.props.history.push("/interviews-upcoming");
             const {dispatch} = this.props;
             dispatch(createInterview(
                 {
-                    // date_time: date,
-                    candidateID: candidateID,
-                    vacancyID: vacancyID,
-                    userID: 19,
-                    ratingID: 1
+                    date_time: date,
+                    candidate_id: candidateID,
+                    vacancy_id: vacancyID,
+                    user_id: 19,
+                    rating_id: 12
                 }
             ));
         }
@@ -150,7 +150,6 @@ class CreateInterview extends Component {
     isFieldsNotEmpty(event) {
         event.preventDefault();
         if (this.state.date ||
-            this.state.time ||
             this.state.candidate ||
             this.state.vacancy ||
             this.state.interviewer) {
@@ -165,8 +164,7 @@ class CreateInterview extends Component {
 
     render() {
 
-        let interviews = this.props.interviews.interviews,
-            candidates = this.props.candidates,
+        let candidates = this.props.candidates,
             vacancies = this.props.vacancies,
             projects = this.props.projects,
             levels = this.props.levels,
