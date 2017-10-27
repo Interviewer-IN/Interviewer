@@ -3,8 +3,8 @@ import {CREATE_PROJECT, SHOW_PROJECTS, SET_PROJECT} from "../actions/projectActi
 const initialState = {
     projects: [],
     newProject: {
-        projectTitle: "initTitle",
-        projectDescription: "initDiscr",
+        projectTitle: "",
+        projectDescription: "",
     },
     currentProject: {}
 };

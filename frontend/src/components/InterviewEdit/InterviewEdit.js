@@ -1,45 +1,51 @@
 import React, {Component} from "react";
 import Helmet from "react-helmet";
-import TextareaAutosize from "react-autosize-textarea";
 import {Modal, Button} from "react-bootstrap";
 import {connect} from "react-redux";
-
+import DatePicker from "react-datepicker";
+import moment from 'moment';
 import "./InterviewEdit.css";
 import PageTitle from "./../../containers/PageTitle";
-import {updateProject, getProjects} from "../../redux/actions/projectActions";
-import {fieldCharRegex, fieldSpaceRegex} from "../../config"
+import {getInterviews, updateInterview} from "../../redux/actions/interviewActions";
+import {getVacancies} from "../../redux/actions/vacanciesActions";
+import {getCandidates} from "../../redux/actions/candidatesActions";
+import {showProjects} from "../../redux/actions/projectActions";
+import {getPositions} from "../../redux/actions/positionActions";
+import {getLevels} from "../../redux/actions/levelsActions";
 
 class InterviewEdit extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            currentProject: "",
-            projectTitle: "",
-            initProjectTitle: "",
-            projectDescription: "",
+            date: "",
+            currentInterview: "",
             showModalConfirm: false,
             confirmText: "",
-            titleError:"",
-            descriptionError: "",
+            dateError: "",
             isHR: false,
         }
     }
 
     componentWillMount() {
+        this.props.onCheckUserRole();
         const {dispatch} = this.props;
-        if (this.props.projects.length < 1) {
-            dispatch(getProjects(this.props.match.params.id)).then(() => {
-                let currentProject = this.props.currentProject;
-                this.setStates(currentProject);
+        dispatch(getVacancies());
+        dispatch(showProjects());
+        dispatch(getCandidates());
+        dispatch(getPositions());
+        dispatch(getLevels());
+
+        if (this.props.interviews.interviews.length < 1) {
+            dispatch(getInterviews(this.props.match.params.id)).then(() => {
+                let currentInterview = this.props.interviews.currentInterview;
+                this.setStates(currentInterview);
             });
         } else {
-            let projects = this.props.projects;
-            let projectId = this.props.match.params.id;
-            let currentProject = projects.find(function (currentProject) {
-                    return currentProject.id === +projectId;
-                }) || {};
-            this.setStates(currentProject);
+            let interviews = this.props.interviews.interviews;
+            let interviewId = this.props.match.params.id;
+            let currentInterview = interviews.find(currentInterview => currentInterview.id === +interviewId) || {};
+            this.setStates(currentInterview);
         }
 
         let isUserHR = this.props.onCheckUserRole(true);
@@ -48,27 +54,30 @@ class InterviewEdit extends Component {
         }
     }
 
-    setStates(currentProject) {
-        this.setState({currentProject: currentProject});
-        this.setState({projectTitle: currentProject.title});
-        this.setState({projectDescription: currentProject.description});
+    setStates(currentInterview) {
+        this.setState({currentInterview: currentInterview});
+        this.setState({date: moment(currentInterview.date_time)});
     }
 
-    handleTitleChange(event) {
-        this.setState({projectTitle: event.target.value});
-        this.setState({titleError:""});
+    handleDateChange(date) {
+        this.setState({date: date});
+        this.setState({dateError: ""});
+
     }
 
-    handleDescrChange(event) {
-        this.setState({projectDescription: event.target.value});
-        this.setState({descriptionError:""});
+    handleCandidateChange(event) {
+        this.setState({candidate: event.target.value});
+        this.setState({candidateError: ""});
     }
 
-    showMConfirmMessage() {
-        this.setState({
-            confirmText: "Are you sure you want to cancel without saving changes?"
-        });
-        this.openModalConfirm();
+    handleVacancyChange(event) {
+        this.setState({vacancy: event.target.value});
+        this.setState({vacancyError: ""});
+    }
+
+    handleInterviewerChange(event) {
+        this.setState({interviewer: event.target.value});
+        this.setState({interviewerError: ""});
     }
 
     openModalConfirm() {
@@ -85,74 +94,164 @@ class InterviewEdit extends Component {
 
     leaveEdit() {
         this.closeModalConfirm();
-        this.props.history.push("/projects/");
+        this.props.history.push("/interviews-upcoming/");
     }
 
     validateFormFields(event) {
-        let id = this.state.currentProject.id;
-        let title = this.state.projectTitle;
-        let description = this.state.projectDescription;
-        let wrongCharMessage = "Please use only latin letters, numbers and special symbols";
-        let emptyFieldMessage = "Please fill the field";
-        let existTitleMessage = "This title already exists. Please, use only unique titles";
-        let emptyTitle = !title || title.match(fieldSpaceRegex);
-        let emptyDescription = !description || description.match(fieldSpaceRegex)
-        if (!fieldCharRegex.test(title)) {
+        let date = this.state.date,
+            emptyFieldMessage = "Please, choose an option";
+
+        if (!date) {
             event.preventDefault();
             this.setState({
-                titleError: wrongCharMessage
+                dateError: emptyFieldMessage
             });
         }
-        if (!fieldCharRegex.test(description)) {
+
+        if (date) {
+            let candidateID = this.getOptionID("candidate"),
+                vacancyID = this.getOptionID("vacancy"),
+                interviewID = this.state.currentInterview.id;
             event.preventDefault();
-            this.setState({
-                descriptionError: wrongCharMessage
-            });
-        }
-        if (!this.isTitleUnique()) {
-            event.preventDefault();
-            this.setState({
-                titleError: existTitleMessage
-            });
-        }
-        if (emptyTitle) {
-            event.preventDefault();
-            this.setState({
-                titleError: emptyFieldMessage
-            });
-        }
-        if (emptyDescription) {
-            event.preventDefault();
-            this.setState({
-                descriptionError: emptyFieldMessage
-            });
-        }
-        if (!emptyTitle && !emptyDescription &&
-            fieldCharRegex.test(title) &&
-            fieldCharRegex.test(description) &&
-            this.isTitleUnique()) {
-            event.preventDefault();
+            this.props.history.push("/interviews-upcoming");
             const {dispatch} = this.props;
-            dispatch(updateProject({id: id, title: title.trim(), description: description.trim()}));
-            this.props.history.push("/projects/");
+            dispatch(updateInterview(
+                {
+                    id: interviewID,
+                    date_time: date,
+                    candidate_id: candidateID,
+                    vacancy_id: vacancyID,
+                    user_id: 19,
+                    rating_id: 12
+                }
+            ));
         }
     }
 
-    isTitleUnique() {
-        let projects = this.props.projects;
-        let id = this.state.currentProject.id;
-        let isUnique = true;
-        let title = this.state.projectTitle;
-        projects.forEach(function(item) {
-            if (item.title === title && item.id !== id) {
-                isUnique = false;
-            }
-        });
-        return (isUnique) ? true: false;
+    getOptionID(selectId) {
+        let e = document.getElementById(selectId);
+        let selectedOptionID = e.options[e.selectedIndex].id;
+        return +selectedOptionID;
     }
+
+    isFieldsNotEmpty(event) {
+        event.preventDefault();
+        if (this.state.date ||
+            this.state.candidate ||
+            this.state.vacancy ||
+            this.state.interviewer) {
+            this.setState({
+                confirmText: "Are you sure you want to cancel without saving changes?"
+            });
+            this.openModalConfirm();
+        } else {
+            this.props.history.push("/interviews-upcoming");
+        }
+    }
+
 
     render() {
-        let id = this.state.currentProject.id;
+
+        let candidates = this.props.candidates,
+            vacancies = this.props.vacancies,
+            projects = this.props.projects,
+            levels = this.props.levels,
+            positions = this.props.positions,
+            currentCandidateObj = candidates.find(item => this.state.currentInterview.candidate_id === item.id) || "",
+            currentVacancyObj = vacancies.find(item => this.state.currentInterview.vacancy_id === item.id) || "";
+
+        let showCandidates = (candidate) => {
+            if (candidate) {
+
+                let options = [],
+                    selectedCandidate;
+
+                if (candidates.length) {
+                    let compareSurname = (a, b) => {
+                            if (a.surname > b.surname) return 1;
+                            if (a.surname < b.surname) return -1;
+                        },
+                        sortedCandidates = candidates.sort(compareSurname) || {};
+
+                    options = sortedCandidates.map((item, index) => {
+                        let currentCandidate = "" + item.surname + " " + item.name + "";
+                        return (
+                            <option key={index} id={item.id}>{currentCandidate}</option>
+                        )
+                    });
+                    selectedCandidate = " " + currentCandidateObj.surname + " " + currentCandidateObj.name + " ";
+                }
+
+                return (
+                    <div className="form-group">
+                        <label className="control-label">Candidate</label>
+                        <select className="form-control form-control-sm filter-select custom-mode"
+                                id="candidate"
+                                onChange={(event) => this.handleCandidateChange(event)}
+                        >
+                            <option id={candidate.id}>{selectedCandidate}</option>
+                            {options}
+                        </select>
+                    </div>
+                );
+            }
+        };
+
+        let showVacancies = (vacancy) => {
+            if (vacancy) {
+
+                let options = [],
+                    selectedVacancy;
+
+                if (vacancies.length && positions.length && projects.length && levels.length) {
+
+                    let comparePositions = (a, b) => {
+                            let first = positions.find(item => a.position_id === item.id);
+                            let second = positions.find(item => b.position_id === item.id);
+
+                            if (first.name > second.name) return 1;
+                            if (first.name < second.name) return -1;
+                        },
+                        sortedVacancies = vacancies.sort(comparePositions) || {};
+
+                    options = sortedVacancies.map((item, index) => {
+                        let currentProject = projects.find(current => item.project_id === current.id),
+                            currentLevel = levels.find(current => item.level_id === current.id),
+                            currentPosition = positions.find(current => item.position_id === current.id);
+
+
+                        let position = "" + currentPosition.name + " " + currentLevel.name + " " + currentProject.title;
+                        return (
+                            <option key={index} id={item.id}>{position}</option>
+                        )
+                    });
+
+                    let selectedProject = projects.find(current => vacancy.project_id === current.id),
+                        selectedLevel = levels.find(current => vacancy.level_id === current.id),
+                        selectedPosition = positions.find(current => vacancy.position_id === current.id);
+
+                    selectedVacancy = " " + selectedPosition.name + " " +
+                        selectedLevel.name + " " +
+                        selectedProject.title + " ";
+                }
+
+                return (
+                    <div className="form-group">
+                        <label className="control-label">Vacancy</label>
+                        <select className="form-control form-control-sm filter-select custom-mode"
+                                id="vacancy"
+                                onChange={(event) => this.handleVacancyChange(event)}
+                        >
+                            <option id={vacancy.id}>{selectedVacancy}</option>
+                            {options}
+                        </select>
+                    </div>
+                );
+            }
+        };
+
+
+        let id = this.state.currentInterview.id;
 
         return (
             <div>
@@ -160,51 +259,107 @@ class InterviewEdit extends Component {
                     <title>{this.state.projectTitle}</title>
                 </Helmet>
                 <div className="row sameheight-container custom-btn-group">
-                    <div className="col-md-12 component-container">
+                    <div className="col-md-12">
                         <PageTitle
                             pageTitle='Edit Interview'
                             showBackBtn={true}
                             showButton={false}
-                            backBtnId="back-from-edit"
+                            backBtnId="back-create-interview"
                             titleForButton=''
                             linkForButton=''
                         />
 
+                        <form onSubmit={(event) => this.validateFormFields(event)}>
+
+                            <div className="clearfix form-group">
+                                <div className="create-interview-select">
+                                    <label className="control-label">Date</label>
+                                    <DatePicker
+                                        className="form-control form-control-sm filter-select"
+                                        placeholderText="Date"
+                                        selected={this.state.date}
+                                        onChange={(event) => this.handleDateChange(event)}
+                                        showTimeSelect
+                                        timeFormat="HH:mm"
+                                        timeIntervals={15}
+                                        dateFormat="LLL"
+                                    />
+                                    <span className="has-error error-message">{this.state.dateError}</span>
+                                </div>
+                            </div>
+
+                            {showCandidates(currentCandidateObj)}
+                            {showVacancies(currentVacancyObj)}
+
+                            {/*<div className="form-group form-field-margin">*/}
+                            {/*<div>*/}
+                            {/*<label className="control-label">Interviewer</label>*/}
+                            {/*<select className="form-control form-control-sm create-interview-select-long"*/}
+                            {/*onChange={(event) => this.handleInterviewerChange(event)}*/}
+                            {/*>*/}
+                            {/*<option>K. Makiy</option>*/}
+                            {/*<option>A. Larin</option>*/}
+                            {/*<option>T. Grabets</option>*/}
+                            {/*</select>*/}
+                            {/*<span className="has-error error-message">{this.state.interviewerError}</span>*/}
+                            {/*</div>*/}
+                            {/*</div>*/}
+                            <div className="form-group">
+                                <button
+                                    id="create-interview-submitBtn"
+                                    type="submit"
+                                    className="btn btn-primary"
+                                >Save
+                                </button>
+                                <button
+                                    id="create-interview-resetBtn"
+                                    className="btn btn-danger"
+                                    onClick={(event) => this.isFieldsNotEmpty(event)}
+                                >Cancel
+                                </button>
+                            </div>
+                        </form>
 
                     </div>
+                    <Modal className="custom-btn-group"
+                           show={this.state.showModalConfirm}
+                           onHide={() => this.closeModalConfirm()}>
+                        <Modal.Header closeButton>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <p>{this.state.confirmText}</p>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button
+                                id={"pe-btn-modal-yes-" + id}
+                                className="btn btn-primary"
+                                onClick={() => this.leaveEdit()}
+                            >Yes
+                            </Button>
+                            <Button
+                                id={"pe-btn-modal-no-" + id}
+                                className="btn btn-danger"
+                                onClick={() => this.closeModalConfirm()}
+                            >No
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
                 </div>
-                <Modal className="custom-btn-group"
-                       show={this.state.showModalConfirm}
-                       onHide={() => this.closeModalConfirm()}>
-                    <Modal.Header closeButton>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <p>{this.state.confirmText}</p>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button
-                            id={"pe-btn-modal-yes-"+id}
-                            className="btn btn-primary"
-                            onClick={() => this.leaveEdit()}
-                        >Yes
-                        </Button>
-                        <Button
-                            id={"pe-btn-modal-no-"+id}
-                            className="btn btn-danger"
-                            onClick={() => this.closeModalConfirm()}
-                        >No
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
             </div>
         )
     }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
     return {
+        interviews: state.interviews,
+        currentInterview: state.interviews.currentInterview,
+        vacancies: state.vacancies.vacancies,
+        candidates: state.candidates.candidates,
         projects: state.project.projects,
-        currentProject: state.project.currentProject,
+        levels: state.levels.levels,
+        positions: state.positions.positions,
+
     }
 }
 

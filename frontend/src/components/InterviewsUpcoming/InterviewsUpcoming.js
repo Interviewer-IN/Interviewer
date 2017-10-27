@@ -3,11 +3,18 @@ import {connect} from "react-redux";
 import {Modal, Button, PanelGroup} from "react-bootstrap";
 import Helmet from "react-helmet";
 import "./interviewsUpcoming.css";
-import {showInterviews, removeInterview} from "../../redux/actions/interviewActions";
+import {showInterviews, removeInterview, createInterview} from "../../redux/actions/interviewActions";
 import {getVacancies} from "../../redux/actions/vacanciesActions";
 import {showProjects} from "../../redux/actions/projectActions";
 import {getCandidates} from "../../redux/actions/candidatesActions";
-import {getValueFromArr} from "../../utils/index";
+import {
+    getValueFromArr,
+    filterByDates,
+    setErrorDateMessage,
+    filterByPosition,
+    filterByLevel,
+    filterByProject
+} from "../../utils/index";
 import PageTitle from "./../../containers/PageTitle";
 import Panels from "../Panels/Panels";
 import Filters from "./../../components/Filters";
@@ -70,6 +77,13 @@ class InterviewsUpcoming extends Component {
         const {dispatch} = this.props;
         dispatch(removeInterview(this.state.currentInterviewID));
     }
+
+    duplicateInterview(duplicateData) {
+        let successDuplicateMessage = "Interview was duplicated";
+        const {dispatch} = this.props;
+        dispatch(createInterview(duplicateData, successDuplicateMessage));
+    }
+
 
     openModalConfirm(currentID) {
         this.setState({
@@ -141,6 +155,8 @@ class InterviewsUpcoming extends Component {
 
     render() {
 
+
+
         let pageTitle;
         if (this.state.isHR) {
             pageTitle = (
@@ -166,8 +182,6 @@ class InterviewsUpcoming extends Component {
             )
         }
 
-
-
         let interviews = this.props.interviews.interviews,
             vacancies = this.props.vacancies,
             projects = this.props.projects,
@@ -184,85 +198,33 @@ class InterviewsUpcoming extends Component {
                 return current.status === true;
             });
 
-            //-- FILTER BY POSITION  --------------------------
-            let positionFilterID = this.state.positionsFilterID;
+            //-- FILTERS  --------------------------
+
+            let positionFilterID = this.state.positionsFilterID,
+                levelFilterID = this.state.levelsFilterID,
+                projectFilterID = this.state.projectsFilterID,
+                dateFromFilter = this.state.dateFromFilter,
+                dateToFilter = this.state.dateToFilter;
+
 
             if (positionFilterID) {
-                let newInterviews = [];
-                interviews.filter((current) => {
-                    let currentInterview = current;
-                    vacancies.filter((item) => {
-                        if (item.position_id === positionFilterID && currentInterview.vacancy_id === item.id) {
-                            newInterviews.push(currentInterview);
-                        }
-                    });
-                });
-                interviews = newInterviews;
+                interviews = filterByPosition(positionFilterID, interviews, vacancies);
             }
-            //-- END FILTER BY LEVEL -----------------------
-
-            //-- FILTER BY LEVEL  --------------------------
-            let levelFilterID = this.state.levelsFilterID;
-
 
             if (levelFilterID) {
-                let newInterviews = [];
-                interviews.filter((current) => {
-                    let currentInterview = current;
-                    vacancies.filter((item) => {
-                        if (item.level_id === levelFilterID && currentInterview.vacancy_id === item.id) {
-                            newInterviews.push(currentInterview);
-                        }
-                    });
-                });
-                interviews = newInterviews;
+                interviews = filterByLevel(levelFilterID, interviews, vacancies);
             }
-            //-- END FILTER BY LEVEL  -----------------------
-
-            //-- FILTER BY PROJECT  --------------------------
-            let projectFilterID = this.state.projectsFilterID;
 
             if (projectFilterID) {
-                let newInterviews = [];
-                interviews.filter((current) => {
-                    let currentInterview = current;
-                    vacancies.filter((item) => {
-                        if (item.project_id === projectFilterID && currentInterview.vacancy_id === item.id) {
-                            newInterviews.push(currentInterview);
-                        }
-                    });
-                });
-                interviews = newInterviews;
-            }
-            //-- END FILTER BY PROJECT  -----------------------
-
-            //-- FILTER BY DATE --------------------------
-            let dateFromFilter = this.state.dateFromFilter,
-                dateToFilter = this.state.dateToFilter,
-                isDateFilterValid = dateFromFilter <= dateToFilter ||
-                    (dateFromFilter && !dateToFilter) ||
-                    (!dateFromFilter && dateToFilter) ||
-                    (!dateFromFilter && !dateToFilter);
-
-            if (dateFromFilter && isDateFilterValid) {
-                interviews = interviews.filter((current) => {
-                    let currentDate = new Date(current.date_time).getTime();
-                    return (currentDate > dateFromFilter);
-                });
+                interviews = filterByProject(projectFilterID, interviews, vacancies);
             }
 
-            if (dateToFilter && isDateFilterValid) {
-                interviews = interviews.filter((current) => {
-                    let currentDate = new Date(current.date_time).getTime();
-                    return (currentDate < dateToFilter);
-                });
+            if (dateFromFilter || dateToFilter) {
+                interviews = filterByDates(dateFromFilter, dateToFilter, interviews);
+                filterErrorMessage = setErrorDateMessage(dateFromFilter, dateToFilter);
             }
 
-            if (!isDateFilterValid) {
-                filterErrorMessage = "Invalid date range"
-            }
-
-            //-- END FILTER DATE -----------------------
+            //-- FILTERS  END--------------------------
 
 
             let compareDates = (a, b) => {
@@ -285,7 +247,6 @@ class InterviewsUpcoming extends Component {
 
                 let interviewsSortedByDates = interviews.sort(compareDates) || {};
                 interviewsSortedByDates.map((value, index) => {
-
                     let date = new Date(value.date_time).toLocaleString('en-GB', {
                         weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
                     });
@@ -311,7 +272,6 @@ class InterviewsUpcoming extends Component {
                                 + new Date(value.date_time).toLocaleString('en-GB', {
                                     day: 'numeric',
                                     month: 'long',
-                                    year: 'numeric'
                                 }) + "";
                         }
                     });
@@ -331,6 +291,14 @@ class InterviewsUpcoming extends Component {
                                 currentCandidate = candidates.find(item => value.candidate_id === item.id),
                                 candidateCV = currentCandidate.cv.url,
                                 panelTitleText;
+
+                            let duplicateData = {
+                                date_time: value.date_time,
+                                candidate_id: value.candidate_id,
+                                vacancy_id: value.vacancy_id,
+                                user_id: value.user_id,
+                                rating_id: 12
+                            };
 
 
                         let checkCandidateCV = () => {
@@ -358,7 +326,7 @@ class InterviewsUpcoming extends Component {
                                     currentLevel.name + " - " +
                                     currentPosition.name + " - " +
                                     currentProject.title + " | " +
-                                    this.state.dateToFilter;
+                                    "some inteviewer";
                             } else {
                                 panelTitleText = time + " | " +
                                     currentCandidate.name + " " +
@@ -436,6 +404,7 @@ class InterviewsUpcoming extends Component {
                                             callDelete={(event) => this.openModalConfirm(id)}
                                             callEdit={(event) => this.switchToEditMode(id)}
                                             callAction={(event) => this.activateInterview(id)}
+                                            callDublicate={() => this.duplicateInterview(duplicateData)}
                                         />
                                     </PanelGroup>
                                 )
@@ -562,7 +531,7 @@ function mapStateToProps(state) {
         levels: state.levels.levels,
         positions: state.positions.positions,
         candidates: state.candidates.candidates,
-        currentProject: state.project.currentProject,
+      //  currentProject: state.project.currentProject,
     }
 }
 

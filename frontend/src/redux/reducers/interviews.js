@@ -3,9 +3,14 @@ import {CREATE_INTERVIEW, SHOW_INTERVIEWS, SET_INTERVIEW} from "../actions/inter
 const initialState = {
     interviews: [],
     newInterview: {
-        interviewId:"",
-        candidateId:"",
-        date_time:""
+        state: "",
+        date_time:"",
+        candidateID:"",
+        vacancyID:"",
+        userID: "",
+        ratingID:"",
+
+
     },
     currentInterview: {}
 };
@@ -18,7 +23,11 @@ export default function interviews (state = initialState, action) {
             return {
                 ...state,
                 newInterview: {...state,
-
+                    date_time: action.payload.date_time,
+                    candidateID: action.payload.candidateID,
+                    vacancyID: action.payload.vacancyID,
+                    userID: action.payload.userID,
+                    ratingID: action.payload.ratingID
                 }
             };
         case SHOW_INTERVIEWS:
