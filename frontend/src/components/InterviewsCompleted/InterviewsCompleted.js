@@ -33,11 +33,29 @@ class InterviewsCompleted extends Component {
     componentWillMount() {
         let isUserHR = this.props.onCheckUserRole(true);
         const {dispatch} = this.props;
-        dispatch(showInterviews());
-        dispatch(getVacancies());
-        dispatch(showProjects());
-        dispatch(getRatings());
-        dispatch(getCandidates());
+
+        console.log(this.props);
+
+        if (!this.props.interviews.interviews.length){
+            dispatch(showInterviews());
+        }
+
+        if (!this.props.vacancies.length){
+            dispatch(getVacancies());
+        }
+
+        if (!this.props.projects.length){
+            dispatch(showProjects());
+        }
+
+        if (!this.props.ratings.langth){
+            dispatch(getRatings());
+        }
+
+        if (!this.props.candidates.length){
+            dispatch(getCandidates());
+        }
+
         if (isUserHR) {
             this.setState({isHR: true})
         }

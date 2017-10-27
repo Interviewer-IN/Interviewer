@@ -37,8 +37,6 @@ class CandidateEdit extends Component {
 
     componentWillMount() {
         this.props.onCheckUserRole();
-
-        this.props.onCheckUserRole();
         const {dispatch} = this.props;
 
         if (this.props.candidates.length || this.props.positions.length || this.props.levels.length) {

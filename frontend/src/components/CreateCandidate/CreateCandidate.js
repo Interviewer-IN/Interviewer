@@ -35,8 +35,22 @@ class CreateCandidate extends Component {
     componentWillMount() {
         this.props.onCheckUserRole();
         const {dispatch} = this.props;
-        dispatch(getPositions());
-        dispatch(getLevels());
+
+
+
+        console.log('Create Candidate',this.props);
+        console.log(this.state.positionVal);
+
+        if (!this.props.positions.length){
+            dispatch(getPositions());
+        }
+
+        if (!this.props.levels.length){
+            dispatch(getLevels());
+        }
+
+
+
 
     }
 

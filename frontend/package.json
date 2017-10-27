@@ -2,8 +2,8 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:3001",
-  "dependencies": {
+  "proxy": "http://dev-interviewer.herokuapp.com",
+"dependencies": {
     "autosize": "^4.0.0",
     "es6-promise": "^4.1.1",
     "expect": "^1.20.2",

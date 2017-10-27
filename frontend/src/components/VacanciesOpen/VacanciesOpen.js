@@ -34,7 +34,9 @@ class VacanciesOpen extends Component {
     componentWillMount() {
         this.props.onCheckUserRole();
         const {dispatch} = this.props;
-        dispatch(getVacancies());
+        if (!this.props.vacancies.length){
+            dispatch(getVacancies());
+        }
     }
 
     componentWillUnmount(){

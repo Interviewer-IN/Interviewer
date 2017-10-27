@@ -31,10 +31,16 @@ class Candidates extends Component {
     }
 
     componentWillMount() {
+
         this.props.onCheckUserRole();
 
-        const {dispatch} = this.props;
-        dispatch(getCandidates());
+        console.info('Candidates', this);
+
+        if (!this.props.candidates.length) {
+            const {dispatch} = this.props;
+            dispatch(getCandidates());
+        }
+
     }
 
     openModalConfirm(currentID) {
@@ -134,7 +140,8 @@ class Candidates extends Component {
                 let checkCandidateCV = () => {
                     if (candidateCV) {
                         return (
-                            <a href={candidateCV} className="download-block form-group text-green text-green--hover" download>
+                            <a href={candidateCV} className="download-block form-group text-green text-green--hover"
+                               download>
                                 <span className="download-block__icon fa fa-download"/>
                                 <span className="download-block__title">Download CV</span>
                             </a>
