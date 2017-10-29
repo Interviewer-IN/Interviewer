@@ -36,11 +36,27 @@ class CreateInterview extends Component {
     componentWillMount() {
         this.props.onCheckUserRole(true);
         const {dispatch} = this.props;
-        dispatch(getVacancies());
-        dispatch(showProjects());
-        dispatch(getCandidates());
-        dispatch(getPositions());
-        dispatch(getLevels());
+
+        if (!this.props.vacancies.length){
+            dispatch(getVacancies());
+        }
+
+        if (!this.props.projects.length){
+            dispatch(showProjects());
+        }
+
+        if (!this.props.candidates.length){
+            dispatch(getCandidates());
+        }
+
+
+        if (!this.props.positions.length){
+            dispatch(getPositions());
+        }
+
+        if (!this.props.levels.length){
+            dispatch(getLevels());
+        }
     }
 
     handleDateChange(date) {
