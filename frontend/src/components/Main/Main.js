@@ -3,6 +3,8 @@ import {Switch, Route, Redirect} from "react-router-dom";
 import Header from "./../Header";
 import SideMenu from "./../SideMenu";
 import Interviewers from "./../Interviewers";
+import CreateInterviewers from './../CreateInterviewers';
+import InterviewersEdit from './../InterviewersEdit';
 import InterviewsUpcoming from "../InterviewsUpcoming";
 import InterviewsCompleted from "../InterviewsCompleted";
 import InterviewEdit from "../InterviewEdit";
@@ -17,7 +19,6 @@ import CreateProject from "./../CreateProject";
 import CreateInterview from "./../CreateInterview";
 import CreateInterviewFeedback from "./../CreateInterviewFeedback";
 import ProjectsList from "./../ProjectsList";
-import ProjectDetails from "./../ProjectDetails";
 import ProjectEdit from "./../ProjectEdit";
 import Username from "./../Username";
 import Password from "./../Password";
@@ -200,6 +201,34 @@ class Main extends Component {
                                                        callMakeNote={(status, text, hide) =>
                                                            this.handleMakeNote(status, text, hide)}
                                                        onCheckUserRole={() => this.isHR()}
+                                        />) :
+                                        (<Redirect to="/login"/>)
+
+                                )}
+                            />
+                            <Route
+                                exact path="/interviewers/create-interviewers"
+                                name="CreateInterviewers"
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<CreateInterviewers {...props}
+                                                       callMakeNote={(status, text, hide) =>
+                                                           this.handleMakeNote(status, text, hide)}
+                                                       onCheckUserRole={() => this.isHR()}
+                                        />) :
+                                        (<Redirect to="/login"/>)
+
+                                )}
+                            />
+                            <Route
+                                exact path="/interviewers/edit"
+                                name="InterviewersEdit"
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<InterviewersEdit {...props}
+                                                             callMakeNote={(status, text, hide) =>
+                                                                 this.handleMakeNote(status, text, hide)}
+                                                             onCheckUserRole={() => this.isHR()}
                                         />) :
                                         (<Redirect to="/login"/>)
 

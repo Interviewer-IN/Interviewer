@@ -12,3 +12,6 @@ export {filterByPosition, filterByLevel, filterByProject, filterByRating} from '
 
 //-- CANDIDATES ------
 export {candidatesValidationFrom} from './candidates/candidatesValidationForm/candidatesValidationForm';
+
+//-- INTERVIEWERS ------
+export {interviewersValidationForm} from './interviewers/interviewersValidationForm/interviewerValidationForm';
