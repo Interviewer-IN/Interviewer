@@ -8,6 +8,7 @@ export {createErrorElem} from './createErrorElem/createErrorElem';
 export {getBase64} from './convertToBase64/convertToBase';
 export {filterByDates, setErrorDateMessage} from './filtersUtils/filterByDate';
 export {filterByPosition, filterByLevel, filterByProject, filterByRating} from './filtersUtils/filtersForInterviews';
+export {createSearchBox, searchByLi} from './searchBox/searchBox';
 
 
 //-- CANDIDATES ------
