@@ -305,7 +305,7 @@ class InterviewsCompleted extends Component {
                         return (
                             <Panels
                                 key={id}
-                                id={value.id}
+                                id={"intCompl" + value.id}
                                 showActionBtn={false}
                                 titleConst={panelTitle}
                                 description={description}
@@ -318,7 +318,7 @@ class InterviewsCompleted extends Component {
                         return (
                             <Panels
                                 key={id}
-                                id={value.id}
+                                id={"intCompl" + value.id}
                                 showActionBtn={false}
                                 titleConst={panelTitle}
                                 description={description}

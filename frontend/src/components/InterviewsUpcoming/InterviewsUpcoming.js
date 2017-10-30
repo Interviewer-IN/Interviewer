@@ -45,8 +45,6 @@ class InterviewsUpcoming extends Component {
         let isUserHR = this.props.onCheckUserRole(true);
         const {dispatch} = this.props;
 
-        console.log(this.props);
-
         if (!this.props.interviews.interviews.length){
             dispatch(showInterviews());
         }
@@ -391,7 +389,7 @@ class InterviewsUpcoming extends Component {
                                     >
                                         <Panels
                                             key={id}
-                                            id={value.id}
+                                            id={"intUpcom" + value.id}
                                             showActionBtn={true}
                                             titleForActionBtn='Activate'
                                             titleConst={PANEL_TITLE}
@@ -401,6 +399,7 @@ class InterviewsUpcoming extends Component {
                                             showDuplicateBtn={true}
                                             editBtnId={"edit-interview-" + id}
                                             deleteBtnId={"delete-interview-" + id}
+                                            dublicateBtnId={"duplicate-interview" + id}
                                             callDelete={(event) => this.openModalConfirm(id)}
                                             callEdit={(event) => this.switchToEditMode(id)}
                                             callAction={(event) => this.activateInterview(id)}
@@ -415,7 +414,7 @@ class InterviewsUpcoming extends Component {
                                     >
                                         <Panels
                                             key={id}
-                                            id={value.id}
+                                            id={"intUpcom" + value.id}
                                             showActionBtn={true}
                                             titleForActionBtn='Add feedback'
                                             titleConst={PANEL_TITLE}

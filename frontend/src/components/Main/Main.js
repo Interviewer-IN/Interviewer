@@ -90,16 +90,6 @@ class Main extends Component {
         return data;
     }
 
-    // getCookies() {
-    //     let cookies = {};
-    //     for (let cookie of document.cookie.split('; ')) {
-    //         let [name, value] = cookie.split("=");
-    //         cookies[name] = decodeURIComponent(value);
-    //         console.log(cookies[name]);
-    //     }
-    //     return cookies;
-    // }
-
 //--  END CHECKING USER'S ROLE  ----------------
 
     handleMakeNote(status, text, hide) {

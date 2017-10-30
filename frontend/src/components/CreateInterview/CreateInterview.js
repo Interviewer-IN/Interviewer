@@ -5,13 +5,14 @@ import {Modal, Button} from "react-bootstrap";
 import "./CreateInterview.css";
 import {connect} from "react-redux";
 import DatePicker from "react-datepicker";
-
-import {showInterviews, createInterview} from "../../redux/actions/interviewActions";
+import {createInterview} from "../../redux/actions/interviewActions";
 import {getVacancies} from "../../redux/actions/vacanciesActions";
 import {getCandidates} from "../../redux/actions/candidatesActions";
 import {showProjects} from "../../redux/actions/projectActions";
 import {getPositions} from "../../redux/actions/positionActions";
 import {getLevels} from "../../redux/actions/levelsActions";
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 
 class CreateInterview extends Component {
 
@@ -30,6 +31,7 @@ class CreateInterview extends Component {
             showModalAlert: false,
             showModalConfirm: false,
             showModaLCreateAlert: false,
+            selectValue: ""
         };
     }
 
@@ -62,22 +64,6 @@ class CreateInterview extends Component {
     handleDateChange(date) {
         this.setState({date: date});
 
-    }
-
-
-    handleCandidateChange(event) {
-        this.setState({candidate: event.target.value});
-        this.setState({candidateError: ""});
-    }
-
-    handleVacancyChange(event) {
-        this.setState({vacancy: event.target.value});
-        this.setState({vacancyError: ""});
-    }
-
-    handleInterviewerChange(event) {
-        this.setState({interviewer: event.target.value});
-        this.setState({interviewerError: ""});
     }
 
     openModalConfirm() {
@@ -126,8 +112,8 @@ class CreateInterview extends Component {
         if (date &&
             candidate &&
             vacancy) {
-            let candidateID = this.getOptionID("candidate"),
-                vacancyID = this.getOptionID("vacancy");
+            let candidateID = this.state.candidate.value,
+                vacancyID = this.state.vacancy.value;
             event.preventDefault();
             this.props.history.push("/interviews-upcoming");
             const {dispatch} = this.props;
@@ -143,11 +129,6 @@ class CreateInterview extends Component {
         }
     }
 
-    getOptionID(selectId) {
-        let e = document.getElementById(selectId);
-        let selectedOptionID = e.options[e.selectedIndex].id;
-        return +selectedOptionID;
-    }
 
     leaveForm() {
         this.resetFormFields();
@@ -189,8 +170,7 @@ class CreateInterview extends Component {
             candidate = this.state.candidate;
 
 
-        let showCandidates = (candidate) => {
-            if (candidate) {
+        let showCandidates = () => {
 
                 let options = [];
 
@@ -201,31 +181,30 @@ class CreateInterview extends Component {
                         },
                         sortedCandidates = candidates.sort(compareSurname) || {};
 
-                    options = sortedCandidates.map((item, index) => {
-                        let currentCandidate = "" + item.surname + " " + item.name + "";
-                        return (
-                            <option key={index} id={item.id}>{currentCandidate}</option>
-                        )
+
+                    sortedCandidates.map((item, index) => {
+                        let currentCandidate = {value: item.id,
+                            label:"" + item.surname + " " + item.name + "", className: "option-class"};
+                        options.push(currentCandidate);
                     });
                 }
 
                 return (
-                    <div className="form-group">
+
+                    <div className="form-group search-box_input">
                         <label className="control-label">Candidate</label>
-                        <select className="form-control form-control-sm filter-select custom-mode"
-                                id="candidate"
-                                onChange={(event) => this.handleCandidateChange(event)}
-                        >
-                            <option>Choose candidate</option>
-                            {options}
-                        </select>
+                        <Select
+                            name="university"
+                            options={options}
+                            onChange={(candidate) => this.setState({ candidate })}
+                            value={this.state.candidate}
+                            placeholder={'Start typing for search...'}
+                        />
                     </div>
                 );
-            }
         };
 
-        let showVacancies = (vacancy) => {
-            if (vacancy) {
+        let showVacancies = () => {
 
                 let options = [];
 
@@ -240,34 +219,32 @@ class CreateInterview extends Component {
                         },
                         sortedVacancies = vacancies.sort(comparePositions) || {};
 
-                    options = sortedVacancies.map((item, index) => {
+                    sortedVacancies.map((item, index) => {
                         let currentProject = projects.find(current => item.project_id === current.id),
-                            currentLevel = levels.find(current => item.level_id === current.id),
-                            currentPosition = positions.find(current => item.position_id === current.id);
+                        currentLevel = levels.find(current => item.level_id === current.id),
+                        currentPosition = positions.find(current => item.position_id === current.id);
 
-
-                        let position = "" + currentPosition.name + " " + currentLevel.name + " " + currentProject.title;
-                        return (
-                            <option key={index} id={item.id}>{position}</option>
-                        )
+                        let currentVacancy = {value: item.id,
+                            label: "" + currentPosition.name + " " + currentLevel.name + " " + currentProject.title,
+                            className: "option-class"};
+                        options.push(currentVacancy);
                     });
                 }
 
                 return (
-                    <div className="form-group">
+
+                    <div className="form-group search-box_input">
                         <label className="control-label">Vacancy</label>
-                        <select className="form-control form-control-sm filter-select custom-mode"
-                                id="vacancy"
-                                onChange={(event) => this.handleVacancyChange(event)}
-                        >
-                            <option>Choose vacancy</option>
-                            {options}
-                        </select>
+                        <Select
+                            name="university"
+                            options={options}
+                            onChange={(vacancy) => this.setState({ vacancy })}
+                            value={this.state.vacancy}
+                            placeholder={'Start typing for search...'}
+                        />
                     </div>
                 );
-            }
         };
-
 
         return (
             <div>
@@ -291,6 +268,7 @@ class CreateInterview extends Component {
                                 <div className="create-interview-select">
                                     <label className="control-label">Date</label>
                                     <DatePicker
+                                        id="create-int-datePick"
                                         className="form-control form-control-sm filter-select"
                                         placeholderText="Date"
                                         selected={this.state.date}
@@ -304,8 +282,8 @@ class CreateInterview extends Component {
                                 </div>
                             </div>
 
-                            {showCandidates(candidate)}
-                            {showVacancies(vacancy)}
+                            {showCandidates()}
+                            {showVacancies()}
 
                             {/*<div className="form-group form-field-margin">*/}
                             {/*<div>*/}
@@ -347,13 +325,13 @@ class CreateInterview extends Component {
                         </Modal.Body>
                         <Modal.Footer>
                             <Button
-                                id="modal-confirm-yes"
+                                id="modal-confirm-create-int-yes"
                                 className="btn btn-primary"
                                 onClick={() => this.leaveForm()}
                             >Yes
                             </Button>
                             <Button
-                                id="modal-confirm-no"
+                                id="modal-confirm-create-int-no"
                                 className="btn btn-danger"
                                 onClick={() => this.closeModalConfirm()} bsStyle="primary"
                             >No
