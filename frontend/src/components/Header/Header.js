@@ -28,7 +28,7 @@ class Header extends Component {
 
         let toggleActiveDashboard = () => {
             let path = window.location.hash;
-            if (path.indexOf('#/username') !== 0 && path.indexOf('#/password') !== 0) {
+            if (path.indexOf('#/user-info') !== 0 && path.indexOf('#/password') !== 0) {
                 return (
                     <Link to="/interviews-upcoming" id="headerDashboard" className="active">Dashboard</Link>
                 );
@@ -41,13 +41,13 @@ class Header extends Component {
 
         let toggleActiveSettings = () => {
             let path = window.location.hash;
-            if (path.indexOf('#/username') === 0 || path.indexOf('#/password') === 0) {
+            if (path.indexOf('#/user-info') === 0 || path.indexOf('#/password') === 0) {
                 return (
-                    <Link to="/username" className="active" id="headerSettings">My settings</Link>
+                    <Link to="/user-info" className="active" id="headerSettings">My settings</Link>
                 );
             } else {
                 return (
-                    <Link to="/username" id="headerSettings">My settings</Link>
+                    <Link to="/user-info" id="headerSettings">My settings</Link>
                 );
             }
         };

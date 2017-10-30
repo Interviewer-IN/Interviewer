@@ -13,3 +13,6 @@ export {createSearchBox, searchByLi} from './searchBox/searchBox';
 
 //-- CANDIDATES ------
 export {candidatesValidationFrom} from './candidates/candidatesValidationForm/candidatesValidationForm';
+
+//-- USER-INFO ------
+export {userInfoValidationForm} from './userInfo/userInfoValidationForm/userInfoValidationForm';

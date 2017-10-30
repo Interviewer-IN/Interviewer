@@ -371,7 +371,7 @@ class Main extends Component {
                                 )}
                             />
                             <Route
-                                exact path="/username"
+                                exact path="/user-info"
                                 name="Username"
                                 render={(props) => (
                                     isLoggedIn() ?
