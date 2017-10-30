@@ -32,9 +32,13 @@ class VacanciesClosed extends Component {
     }
 
     componentWillMount() {
-        const {dispatch} = this.props;
-        dispatch(getVacancies());
         this.props.onCheckUserRole();
+        const {dispatch} = this.props;
+
+        if (!this.props.vacancies.length){
+            dispatch(getVacancies());
+        }
+
     }
 
     componentWillUnmount(){
@@ -204,12 +208,14 @@ class VacanciesClosed extends Component {
                 );
 
                 const DESCRIPTION = (
-                    <div className="form-group">
-                        <label className="control-label form-label text-green">Description:</label>
-                        <p className="form-control-static">
-                            {item.description}
-                        </p>
-                    </div>
+                    <form className="custom-form">
+                        <div className="form-group">
+                            <label className="control-label form-label text-green">Description:</label>
+                            <p className="form-control-static">
+                                {item.description}
+                            </p>
+                        </div>
+                    </form>
                 );
 
                 let toExpandElement = () => {

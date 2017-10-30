@@ -31,10 +31,16 @@ class Candidates extends Component {
     }
 
     componentWillMount() {
+
         this.props.onCheckUserRole();
 
-        const {dispatch} = this.props;
-        dispatch(getCandidates());
+        console.info('Candidates', this);
+
+        if (!this.props.candidates.length) {
+            const {dispatch} = this.props;
+            dispatch(getCandidates());
+        }
+
     }
 
     openModalConfirm(currentID) {
@@ -134,7 +140,8 @@ class Candidates extends Component {
                 let checkCandidateCV = () => {
                     if (candidateCV) {
                         return (
-                            <a href={candidateCV} className="download-block form-group text-green text-green--hover" download>
+                            <a href={candidateCV} className="download-block form-group text-green text-green--hover"
+                               download>
                                 <span className="download-block__icon fa fa-download"/>
                                 <span className="download-block__title">Download CV</span>
                             </a>
@@ -246,8 +253,8 @@ class Candidates extends Component {
                 );
 
                 const DESCRIPTION = (
-                    <form>
-                        <div className="col-md-6">
+                    <form className="custom-form">
+                        <div className="col-md-6 no-padding">
                             <div className="form-group">
                                 <label className="control-label form-label text-green">Name:</label>
                                 <p className="form-control-static">
@@ -267,10 +274,10 @@ class Candidates extends Component {
                                 {checkCandidateAge()}
                             </div>
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-md-6 no-padding">
                             {checkCandidateCV()}
                         </div>
-                        <div className="col-md-12">
+                        <div className="col-md-12 no-padding">
 
                             <div className="form-group">
                                 <label className="control-label form-label text-green">Contact info:</label>

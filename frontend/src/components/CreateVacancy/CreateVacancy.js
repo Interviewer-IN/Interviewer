@@ -35,9 +35,20 @@ class CreateVacancy extends Component {
     componentWillMount() {
         this.props.onCheckUserRole();
         const {dispatch} = this.props;
-        dispatch(showProjects());
-        dispatch(getLevels());
-        dispatch(getPositions());
+
+        console.log(this.props);
+
+        if (!this.props.newProject.length){
+            dispatch(showProjects());
+        }
+
+        if (!this.props.positions.length){
+            dispatch(getPositions());
+        }
+
+        if (!this.props.levels.length){
+            dispatch(getLevels());
+        }
     }
 
     handleSubmitForm(event) {
@@ -223,7 +234,7 @@ class CreateVacancy extends Component {
                 <section className="section">
                     <div className="row sameheight-container">
                         <div className="col-md-12">
-                            <form onSubmit={(event) => this.handleSubmitForm(event)}>
+                            <form className="custom-form" onSubmit={(event) => this.handleSubmitForm(event)}>
 
                                 <div className="form-group form-filter-block">
                                     <label className="form-filter-block__title">Vacancy parameters</label>

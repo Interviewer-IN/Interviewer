@@ -23,10 +23,23 @@ class Filters extends Component {
 
     componentWillMount() {
         const {dispatch} = this.props;
-        dispatch(showProjects());
-        dispatch(getLevels());
-        dispatch(getPositions());
-        dispatch(getRatings());
+
+        if (!this.props.newProject.projects.length){
+            dispatch(showProjects());
+        }
+
+        if (!this.props.positions.length){
+            dispatch(getPositions());
+        }
+
+        if (!this.props.levels.length){
+            dispatch(getLevels());
+        }
+
+        if (!this.props.ratings.length){
+            dispatch(getRatings());
+        }
+
     }
 
     getDateFromFilterVal(date) {
@@ -122,7 +135,7 @@ class Filters extends Component {
 
         let showPositionFilter = (position) => {
 
-            let positionsList = this.props.positions.positions,
+            let positionsList = this.props.positions,
                 options = [];
 
 
@@ -152,7 +165,7 @@ class Filters extends Component {
 
         let showLevelFilter = (level) => {
 
-            let levelsList = this.props.levels.levels,
+            let levelsList = this.props.levels,
                 options = [];
 
             if (levelsList.length) {
@@ -308,8 +321,8 @@ Filters.propTypes = {
 function mapStateToProps(state) {
     return {
         newProject: state.project,
-        levels: state.levels,
-        positions: state.positions,
+        levels: state.levels.levels,
+        positions: state.positions.positions,
         ratings: state.ratings.ratings,
     }
 }

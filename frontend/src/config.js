@@ -2,6 +2,10 @@ export const fieldCharRegex = /^[a-zA-Z0-9\s!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]
 export const LETTERS_ONLY = /^[a-zA-Z]*$/;
 export const fieldSpaceRegex = /^\s*$/;
 
+export const TYPE_FILES = '.pdf,.doc,.docx';
+
+export const TYPE_FILE_ERROR_TEXT = 'Please, choose the file with ' + TYPE_FILES + ' extensions';
+
 
 
 

@@ -11,10 +11,8 @@ import {getCandidates} from "../../redux/actions/candidatesActions";
 import {showProjects} from "../../redux/actions/projectActions";
 import {getPositions} from "../../redux/actions/positionActions";
 import {getLevels} from "../../redux/actions/levelsActions";
-import VirtualizedSelect from "react-virtualized-select";
-import "react-select/dist/react-select.css";
-import "react-virtualized/styles.css";
-import "react-virtualized-select/styles.css";
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 
 class CreateInterview extends Component {
 
@@ -40,11 +38,27 @@ class CreateInterview extends Component {
     componentWillMount() {
         this.props.onCheckUserRole(true);
         const {dispatch} = this.props;
-        dispatch(getVacancies());
-        dispatch(showProjects());
-        dispatch(getCandidates());
-        dispatch(getPositions());
-        dispatch(getLevels());
+
+        if (!this.props.vacancies.length){
+            dispatch(getVacancies());
+        }
+
+        if (!this.props.projects.length){
+            dispatch(showProjects());
+        }
+
+        if (!this.props.candidates.length){
+            dispatch(getCandidates());
+        }
+
+
+        if (!this.props.positions.length){
+            dispatch(getPositions());
+        }
+
+        if (!this.props.levels.length){
+            dispatch(getLevels());
+        }
     }
 
     handleDateChange(date) {
@@ -115,11 +129,6 @@ class CreateInterview extends Component {
         }
     }
 
-    getOptionID(selectId) {
-        let e = document.getElementById(selectId);
-        let selectedOptionID = e.options[e.selectedIndex].id;
-        return +selectedOptionID;
-    }
 
     leaveForm() {
         this.resetFormFields();
@@ -150,8 +159,6 @@ class CreateInterview extends Component {
         }
     }
 
-
-
     render() {
 
         let candidates = this.props.candidates,
@@ -163,7 +170,7 @@ class CreateInterview extends Component {
             candidate = this.state.candidate;
 
 
-        let showCandidates = (candidate) => {
+        let showCandidates = () => {
 
                 let options = [];
 
@@ -177,30 +184,27 @@ class CreateInterview extends Component {
 
                     sortedCandidates.map((item, index) => {
                         let currentCandidate = {value: item.id,
-                            label:"" + item.surname + " " + item.name + ""};
+                            label:"" + item.surname + " " + item.name + "", className: "option-class"};
                         options.push(currentCandidate);
                     });
                 }
-
-                // https://swizec.com/blog/dropdown-inputs-react/swizec/7224
 
                 return (
 
                     <div className="form-group search-box_input">
                         <label className="control-label">Candidate</label>
-                        <VirtualizedSelect
+                        <Select
                             name="university"
                             options={options}
                             onChange={(candidate) => this.setState({ candidate })}
                             value={this.state.candidate}
+                            placeholder={'Start typing for search...'}
                         />
                     </div>
                 );
-
         };
 
-        let showVacancies = (vacancy) => {
-            if (vacancy) {
+        let showVacancies = () => {
 
                 let options = [];
 
@@ -221,56 +225,26 @@ class CreateInterview extends Component {
                         currentPosition = positions.find(current => item.position_id === current.id);
 
                         let currentVacancy = {value: item.id,
-                            label: "" + currentPosition.name + " " + currentLevel.name + " " + currentProject.title};
+                            label: "" + currentPosition.name + " " + currentLevel.name + " " + currentProject.title,
+                            className: "option-class"};
                         options.push(currentVacancy);
                     });
                 }
-
-                // https://swizec.com/blog/dropdown-inputs-react/swizec/7224
 
                 return (
 
                     <div className="form-group search-box_input">
                         <label className="control-label">Vacancy</label>
-                        <VirtualizedSelect
+                        <Select
                             name="university"
                             options={options}
                             onChange={(vacancy) => this.setState({ vacancy })}
                             value={this.state.vacancy}
+                            placeholder={'Start typing for search...'}
                         />
                     </div>
                 );
-
-
-
-                    {/*options = sortedVacancies.map((item, index) => {*/}
-                        {/*let currentProject = projects.find(current => item.project_id === current.id),*/}
-                            {/*currentLevel = levels.find(current => item.level_id === current.id),*/}
-                            {/*currentPosition = positions.find(current => item.position_id === current.id);*/}
-
-
-                        {/*let position = "" + currentPosition.name + " " + currentLevel.name + " " + currentProject.title;*/}
-                        {/*return (*/}
-                            {/*<option key={index} id={item.id}>{position}</option>*/}
-                        {/*)*/}
-                    {/*});*/}
-                // }
-                //
-                // return (
-                //     <div className="form-group">
-                //         <label className="control-label">Vacancy</label>
-                //         <select className="form-control form-control-sm filter-select custom-mode"
-                //                 id="vacancy"
-                //                 onChange={(event) => this.handleVacancyChange(event)}
-                //         >
-                //             <option>Choose vacancy</option>
-                //             {options}
-                //         </select>
-                //     </div>
-                // );
-            }
         };
-
 
         return (
             <div>
@@ -294,6 +268,7 @@ class CreateInterview extends Component {
                                 <div className="create-interview-select">
                                     <label className="control-label">Date</label>
                                     <DatePicker
+                                        id="create-int-datePick"
                                         className="form-control form-control-sm filter-select"
                                         placeholderText="Date"
                                         selected={this.state.date}
@@ -307,10 +282,8 @@ class CreateInterview extends Component {
                                 </div>
                             </div>
 
-
-
-                            {showCandidates(candidate)}
-                            {showVacancies(vacancy)}
+                            {showCandidates()}
+                            {showVacancies()}
 
                             {/*<div className="form-group form-field-margin">*/}
                             {/*<div>*/}
@@ -352,13 +325,13 @@ class CreateInterview extends Component {
                         </Modal.Body>
                         <Modal.Footer>
                             <Button
-                                id="modal-confirm-yes"
+                                id="modal-confirm-create-int-yes"
                                 className="btn btn-primary"
                                 onClick={() => this.leaveForm()}
                             >Yes
                             </Button>
                             <Button
-                                id="modal-confirm-no"
+                                id="modal-confirm-create-int-no"
                                 className="btn btn-danger"
                                 onClick={() => this.closeModalConfirm()} bsStyle="primary"
                             >No

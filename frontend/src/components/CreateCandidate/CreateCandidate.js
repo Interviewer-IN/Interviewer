@@ -8,9 +8,9 @@ import {connect} from 'react-redux';
 import Helmet from 'react-helmet';
 import {getPositions} from "../../redux/actions/positionActions";
 import {getLevels} from "../../redux/actions/levelsActions";
-import {getValueFromArr, removeCurrentError, candidatesValidationFrom, getBase64} from '../../utils/index';
+import {getValueFromArr, removeCurrentError, candidatesValidationFrom, getBase64, createErrorElem} from '../../utils/index';
 import {createCandidate} from "../../redux/actions/candidatesActions";
-import {CONFIRM_TEXT} from "../../config";
+import {CONFIRM_TEXT, TYPE_FILES, TYPE_FILE_ERROR_TEXT} from "../../config";
 
 class CreateCandidate extends Component {
     constructor(props) {
@@ -35,8 +35,22 @@ class CreateCandidate extends Component {
     componentWillMount() {
         this.props.onCheckUserRole();
         const {dispatch} = this.props;
-        dispatch(getPositions());
-        dispatch(getLevels());
+
+
+
+        console.log('Create Candidate',this.props);
+        console.log(this.state.positionVal);
+
+        if (!this.props.positions.length){
+            dispatch(getPositions());
+        }
+
+        if (!this.props.levels.length){
+            dispatch(getLevels());
+        }
+
+
+
 
     }
 
@@ -97,22 +111,51 @@ class CreateCandidate extends Component {
         }
 
 
-        let file = event.target.files[0];
-        getBase64(file).then(data => {
-                this.setState({
-                    cvData: data
-                })
+        let file = event.target.files[0],
+            arrExtensions = TYPE_FILES.split(','),
+            searchResult = false;
+
+        if (event.target.files.length){
+
+
+            for (let i = 0; i < arrExtensions.length; i++) {
+                let searchPosition = file.name.indexOf(arrExtensions[i]);
+                if (searchPosition !== -1) {
+                    searchResult = true;
+                    break;
+                }
             }
-        );
+
+            if (searchResult){
+
+                getBase64(file).then(data => {
+                        this.setState({
+                            cvData: data
+                        })
+                    }
+                );
+
+                this.setState({cvUploadVal: event.target.files[0].name});
+                resultUploadBlock.innerHTML = event.target.files[0].name;
 
 
-        if (event.target.files.length) {
-            this.setState({cvUploadVal: event.target.files[0].name});
-            resultUploadBlock.innerHTML = event.target.files[0].name;
+            } else {
+                this.setState({cvUploadVal: ''});
+                resultUploadBlock.innerHTML = '';
+                this.setState({
+                    cvData: ''
+                });
+                parentWrapper.appendChild(createErrorElem(event.target.parentNode, TYPE_FILE_ERROR_TEXT));
+            }
         } else {
             this.setState({cvUploadVal: ''});
             resultUploadBlock.innerHTML = '';
+            this.setState({
+                cvData: ''
+            });
         }
+
+
     }
 
     handleNotesChanges(event) {
@@ -231,10 +274,10 @@ class CreateCandidate extends Component {
                 </div>
                 <section>
                     <div className="row sameheight-container">
-                        <form onSubmit={(event) => this.handleSubmitForm(event)}>
+                        <form className="custom-form" onSubmit={(event) => this.handleSubmitForm(event)}>
                             <div className="col-md-6">
                                 <div className="form-group">
-                                    <label className="control-label form-label">Name</label>
+                                    <label className="control-label form-label">Name <span className="required-field">*</span></label>
                                     <p className="form-sublabel">
                                         <small>Maximum 20 characters</small>
                                     </p>
@@ -253,7 +296,7 @@ class CreateCandidate extends Component {
                                 </div>
 
                                 <div className="form-group">
-                                    <label className="control-label form-label">Surname</label>
+                                    <label className="control-label form-label">Surname <span className="required-field">*</span></label>
                                     <p className="form-sublabel">
                                         <small>Maximum 20 characters</small>
                                     </p>
@@ -289,7 +332,7 @@ class CreateCandidate extends Component {
                                 </div>
 
                                 <div className="form-group">
-                                    <label className="form-filter-block__title">Desired position</label>
+                                    <label>Desired position <span className="required-field">*</span></label>
                                     <select id="candidate-position"
                                             className="form-control form-control-sm custom-mode"
                                             ref="candidatePosition"
@@ -301,7 +344,7 @@ class CreateCandidate extends Component {
                                 </div>
 
                                 <div className="form-group">
-                                    <label className="form-filter-block__title">Level</label>
+                                    <label>Level <span className="required-field">*</span></label>
                                     <select id="candidate-level"
                                             className="form-control form-control-sm custom-mode"
                                             ref="candidateLevel"
@@ -318,7 +361,7 @@ class CreateCandidate extends Component {
                                         <input id="candidate-upload-file"
                                                className="form-control upload-file__input"
                                                type="file"
-                                               accept=".pdf,.doc,.docx"
+                                               accept={TYPE_FILES}
                                                ref="candidateCV"
                                                onChange={(event) => this.handleUploadFile(event)}/>
                                     </label>
@@ -329,7 +372,7 @@ class CreateCandidate extends Component {
                             <div className="col-md-12">
 
                                 <div className="form-group">
-                                    <label className="control-label form-label">Contact info</label>
+                                    <label className="control-label form-label">Contact info <span className="required-field">*</span></label>
                                     <p className="form-sublabel">
                                         <small>Maximum 1000 characters</small>
                                     </p>

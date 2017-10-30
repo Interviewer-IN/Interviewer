@@ -44,10 +44,23 @@ class InterviewsUpcoming extends Component {
     componentWillMount() {
         let isUserHR = this.props.onCheckUserRole(true);
         const {dispatch} = this.props;
-        dispatch(showInterviews());
-        dispatch(getVacancies());
-        dispatch(showProjects());
-        dispatch(getCandidates());
+
+        if (!this.props.interviews.interviews.length){
+            dispatch(showInterviews());
+        }
+
+        if (!this.props.vacancies.length){
+            dispatch(getVacancies());
+        }
+
+        if (!this.props.projects.length){
+            dispatch(showProjects());
+        }
+
+        if (!this.props.candidates.length){
+            dispatch(getCandidates());
+        }
+
         if (isUserHR) {
             this.setState({isHR: true})
         }
@@ -376,7 +389,7 @@ class InterviewsUpcoming extends Component {
                                     >
                                         <Panels
                                             key={id}
-                                            id={value.id}
+                                            id={"intUpcom" + value.id}
                                             showActionBtn={true}
                                             titleForActionBtn='Activate'
                                             titleConst={PANEL_TITLE}
@@ -386,6 +399,7 @@ class InterviewsUpcoming extends Component {
                                             showDuplicateBtn={true}
                                             editBtnId={"edit-interview-" + id}
                                             deleteBtnId={"delete-interview-" + id}
+                                            dublicateBtnId={"duplicate-interview" + id}
                                             callDelete={(event) => this.openModalConfirm(id)}
                                             callEdit={(event) => this.switchToEditMode(id)}
                                             callAction={(event) => this.activateInterview(id)}
@@ -400,7 +414,7 @@ class InterviewsUpcoming extends Component {
                                     >
                                         <Panels
                                             key={id}
-                                            id={value.id}
+                                            id={"intUpcom" + value.id}
                                             showActionBtn={true}
                                             titleForActionBtn='Add feedback'
                                             titleConst={PANEL_TITLE}
