@@ -4,7 +4,9 @@ import {Modal, Button} from "react-bootstrap";
 import {connect} from "react-redux";
 import PageTitle from "./../../containers/PageTitle";
 import "./CreateInterviewFeedback.css";
-import {fieldCharRegex, fieldSpaceRegex} from "../../config"
+import {fieldSpaceRegex} from "../../config";
+import {getRatings} from "../../redux/actions/ratingActions";
+import TextareaAutosize from "react-autosize-textarea";
 
 
 class CreateInterviewFeedback extends Component {
@@ -16,10 +18,15 @@ class CreateInterviewFeedback extends Component {
             question1: "",
             question2: "",
             question3: "",
-            ratingError: "",
+            question4: "",
+            question5: "",
+            question6: "",
             question1Error: "",
             question2Error: "",
             question3Error: "",
+            question4Error: "",
+            question5Error: "",
+            question6Error: "",
             showModalAlert: false,
             showModalConfirm: false,
             showModaLCreateAlert: false,
@@ -27,10 +34,14 @@ class CreateInterviewFeedback extends Component {
     }
 
     componentWillMount() {
-        this.props.onCheckUserRole(true);
         let isUserHR = this.props.onCheckUserRole(true);
         if (isUserHR) {
             this.props.history.push('/interviews-upcoming');
+        }
+
+        const {dispatch} = this.props;
+        if (!this.props.ratings.langth){
+            dispatch(getRatings());
         }
     }
 
@@ -41,20 +52,74 @@ class CreateInterviewFeedback extends Component {
 
     handleQuestion1Change(event) {
         this.setState({question1: event.target.value});
-        this.setState({question1Error: ""});
-
+        this.clearSpan(event.target.id);
     }
 
     handleQuestion2Change(event) {
         this.setState({question2: event.target.value});
-        this.setState({question2Error: ""});
+        this.clearSpan(event.target.id);
     }
 
     handleQuestion3Change(event) {
         this.setState({question3: event.target.value});
-        this.setState({question3Error: ""});
+        this.clearSpan(event.target.id);
     }
 
+    handleQuestion4Change(event) {
+        this.setState({question4: event.target.value});
+        this.clearSpan(event.target.id);
+    }
+
+    handleQuestion5Change(event) {
+        this.setState({question5: event.target.value});
+        this.clearSpan(event.target.id);
+    }
+
+    handleQuestion6Change(event) {
+        this.setState({question6: event.target.value});
+        this.clearSpan(event.target.id);
+    }
+
+    clearSpan(inputID) {
+        let spanID = inputID.split("-")[1] + "-span",
+            spanElement = document.getElementById(spanID);
+        spanElement.innerHTML = "";
+    }
+
+    isFieldsEmpty() {
+        let rating = this.state.rating,
+            question1 = this.state.question1,
+            question2 = this.state.question2,
+            question3 = this.state.question3,
+            question4 = this.state.question4,
+            question5 = this.state.question5,
+            question6 = this.state.question6,
+            emptyFieldMessage = "Please, fill the field",
+            questions = [question1, question2, question3, question4, question5, question6],
+            emptyQuestions = [],
+            fieldsEmpty = true;
+
+        if(!rating) {
+            this.setState({ratingError: emptyFieldMessage});
+        }
+
+        questions.forEach((item, i) => {
+            let question = item,
+                emptyQuestion = !question || question.match(fieldSpaceRegex),
+                fieldId = "question"+(i+1)+"-span";
+            emptyQuestions.push(emptyQuestion);
+            if (emptyQuestion) {
+                let spanError = document.getElementById(fieldId);
+                spanError.innerHTML = emptyFieldMessage;
+            }
+        });
+
+        if(!emptyQuestions.includes(true) && rating) {
+            fieldsEmpty = false;
+        }
+
+        return fieldsEmpty;
+    }
 
     openModalConfirm() {
         this.setState({
@@ -68,103 +133,27 @@ class CreateInterviewFeedback extends Component {
         });
     }
 
-    validateFormFields(event) {
+    submitForm(event) {
         event.preventDefault();
-        let rating = this.state.rating,
-            question1 = this.state.question1,
-            question2 = this.state.question2,
-            question3 = this.state.question3,
-            emptyRating = !rating || rating.match(fieldSpaceRegex),
-            emptyQuestion1 = !question1 || question1.match(fieldSpaceRegex),
-            emptyQuestion2 = !question2 || question2.match(fieldSpaceRegex),
-            emptyQuestion3 = !question3 || question3.match(fieldSpaceRegex),
-            wrongCharMessage = "Please, use only latin letters, numbers and special symbols",
-            emptyFieldMessage = "Please, fill the field";
-
-        if (emptyRating) {
-            event.preventDefault();
-            this.setState({
-                ratingError: emptyFieldMessage
-            });
-        }
-        if (emptyQuestion1) {
-            event.preventDefault();
-            this.setState({
-                question1Error: emptyFieldMessage
-            });
-        }
-        if (emptyQuestion2) {
-            event.preventDefault();
-            this.setState({
-                question2Error: emptyFieldMessage
-            });
-        }
-        if (emptyQuestion3) {
-            event.preventDefault();
-            this.setState({
-                question3Error: emptyFieldMessage
-            });
-        }
-
-        if (!fieldCharRegex.test(this.state.rating)) {
-            event.preventDefault();
-            this.setState({
-                question1Error: wrongCharMessage
-            });
-        }
-        if (!fieldCharRegex.test(this.state.question1)) {
-            event.preventDefault();
-            this.setState({
-                question1Error: wrongCharMessage
-            });
-        }
-        if (!fieldCharRegex.test(this.state.question2)) {
-            event.preventDefault();
-            this.setState({
-                question2Error: wrongCharMessage
-            });
-        }
-        if (!fieldCharRegex.test(this.state.question3)) {
-            event.preventDefault();
-            this.setState({
-                question3Error: wrongCharMessage
-            });
-        }
-
-
-        if (!emptyQuestion1 &&
-            !emptyQuestion2 &&
-            !emptyQuestion3 &&
-            fieldCharRegex.test(this.state.rating) &&
-            fieldCharRegex.test(this.state.question1) &&
-            fieldCharRegex.test(this.state.question2) &&
-            fieldCharRegex.test(this.state.question3)) {
-            event.preventDefault();
+        if (!this.isFieldsEmpty()) {
             this.props.history.push("/interviews-upcoming");
         }
     }
 
     leaveForm() {
-        this.resetFormFields();
         this.closeModalConfirm();
         this.props.history.push("/interviews-upcoming");
     }
 
-    resetFormFields() {
-        this.setState({date: ""});
-        this.setState({time: ""});
-        this.setState({candidate: ""});
-        this.setState({vacancy: ""});
-        this.setState({interviewer: ""});
-    }
-
     isFieldsNotEmpty(event) {
         event.preventDefault();
-        if (this.state.date ||
-            this.state.time ||
-            this.state.candidate ||
-            this.state.vacancy ||
-            this.state.interviewer ) {
+        if (this.state.rating ||
+            this.state.question1 ||
+            this.state.question2 ||
+            this.state.question3 ||
+            this.state.question4 ||
+            this.state.question5 ||
+            this.state.question6){
             this.setState({
                 confirmText: "Are you sure you want to cancel without saving changes?"
             });
@@ -174,8 +163,36 @@ class CreateInterviewFeedback extends Component {
         }
     }
 
-
     render() {
+
+        let showRatingSelect = () => {
+
+            let ratingsList = this.props.ratings,
+                options = [];
+
+            if (ratingsList.length) {
+                let compareGrade = (a, b) => {
+                        let first = +a.grade;
+                        let second = +b.grade;
+
+                        if (first > second) return 1;
+                        if (first < second) return -1;
+                    },
+                    sortedRatings = ratingsList.sort(compareGrade) || {};
+                options = sortedRatings.map((item, index) => <option key={index}>{item.grade}</option>);
+            }
+
+            return (
+                <div className="form-group margin-none">
+                    <select className="form-control form-control-sm filter-select custom-mode"
+                            onChange={(event) => this.handleRatingChange(event)}
+                    >
+                        <option></option>
+                        {options}
+                    </select>
+                </div>
+            );
+        };
 
         return (
             <div>
@@ -194,69 +211,124 @@ class CreateInterviewFeedback extends Component {
                             linkForButton=''
                         />
 
-                        <form name="addFeedback" onSubmit={(event) => this.validateFormFields(event)}>
+                        <form name="addFeedback" onSubmit={(event) => this.submitForm(event)}>
 
                             <div className="clearfix form-group">
                                 <div className="float-left create-interview-select">
                                     <label className="control-label">Rate the candidate</label>
-                                    <select className="form-control form-control-sm filter-select"
-                                            id="interview-rating"
-                                            onChange={(event)=>this.handleRatingChange(event)}
-                                    >
-                                        <option>0</option>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                    </select>
+                                    {showRatingSelect()}
                                     <span className="has-error error-message">{this.state.ratingError}</span>
                                 </div>
                             </div>
 
                             <div className="form-group has-error">
                                 <label className="control-label form-label">Question 1</label>
-                                <p className="form-sublabel back-link">Maximum 60 characters</p>
-                                <input
+                                <p className="form-sublabel back-link">Maximum 2000 characters</p>
+                                <TextareaAutosize
                                     id="interview-question1"
                                     type="text"
                                     name="question1"
                                     placeholder='Input your '
                                     className="form-control boxed"
-                                    maxLength="60"
+                                    maxLength="2000"
                                     value={this.state.question1}
                                     onChange={(event) => this.handleQuestion1Change(event)}
                                     autoFocus
                                 />
-                                <span className="has-error error-message">{this.state.question1Error}</span>
+                                <span
+                                    id="question1-span"
+                                    className="has-error error-message">
+                                </span>
                             </div>
 
                             <div className="form-group form-field-margin">
                                 <label className="control-label form-label">Question 2</label>
-                                <p className="form-sublabel back-link">Maximum 3000 characters</p>
+                                <p className="form-sublabel back-link">Maximum 2000 characters</p>
                                 <input
                                     id="interview-question2"
                                     name="question2"
                                     placeholder="Input Description"
                                     className="form-control boxed"
-                                    maxLength="3000"
+                                    maxLength="2000"
                                     value={this.state.question2}
                                     onChange={(event) => this.handleQuestion2Change(event)}
                                 />
-                                <span className="has-error error-message">{this.state.question2Error}</span>
+                                <span
+                                    id="question2-span"
+                                    className="has-error error-message">
+                                </span>
                             </div>
 
                             <div className="form-group form-field-margin">
                                 <label className="control-label form-label">Question 3</label>
-                                <p className="form-sublabel back-link">Maximum 3000 characters</p>
-                                <input
+                                <p className="form-sublabel back-link">Maximum 2000 characters</p>
+                                <TextareaAutosize
                                     id="interview-question3"
                                     name="question3"
                                     placeholder="Input Description"
                                     className="form-control boxed"
-                                    maxLength="3000"
+                                    maxLength="2000"
                                     value={this.state.question3}
                                     onChange={(event) => this.handleQuestion3Change(event)}
                                 />
-                                <span className="has-error error-message">{this.state.question3Error}</span>
+                                <span
+                                    id="question3-span"
+                                    className="has-error error-message">
+                                </span>
+                            </div>
+
+                            <div className="form-group form-field-margin">
+                                <label className="control-label form-label">Question 4</label>
+                                <p className="form-sublabel back-link">Maximum 2000 characters</p>
+                                <TextareaAutosize
+                                    id="interview-question4"
+                                    name="question4"
+                                    placeholder="Input Description"
+                                    className="form-control boxed"
+                                    maxLength="2000"
+                                    value={this.state.question4}
+                                    onChange={(event) => this.handleQuestion4Change(event)}
+                                />
+                                <span
+                                    id="question4-span"
+                                    className="has-error error-message">
+                                </span>
+                            </div>
+
+                            <div className="form-group form-field-margin">
+                                <label className="control-label form-label">Question 5</label>
+                                <p className="form-sublabel back-link">Maximum 2000 characters</p>
+                                <TextareaAutosize
+                                    id="interview-question5"
+                                    name="question5"
+                                    placeholder="Input Description"
+                                    className="form-control boxed"
+                                    maxLength="2000"
+                                    value={this.state.question5}
+                                    onChange={(event) => this.handleQuestion5Change(event)}
+                                />
+                                <span
+                                    id="question5-span"
+                                    className="has-error error-message">
+                                </span>
+                            </div>
+
+                            <div className="form-group form-field-margin">
+                                <label className="control-label form-label">Question 6</label>
+                                <p className="form-sublabel back-link">Maximum 2000 characters</p>
+                                <TextareaAutosize
+                                    id="interview-question6"
+                                    name="question6"
+                                    placeholder="Input Description"
+                                    className="form-control boxed"
+                                    maxLength="2000"
+                                    value={this.state.question6}
+                                    onChange={(event) => this.handleQuestion6Change(event)}
+                                />
+                                <span
+                                    id="question6-span"
+                                    className="has-error error-message">
+                                </span>
                             </div>
 
                             <div className="form-group">
@@ -268,6 +340,7 @@ class CreateInterviewFeedback extends Component {
                                 </button>
                                 <button
                                     id="create-interview-resetBtn"
+                                    type="reset"
                                     className="btn btn-danger"
                                     onClick={(event) => this.isFieldsNotEmpty(event)}
                                 >Cancel
@@ -307,6 +380,7 @@ class CreateInterviewFeedback extends Component {
 
 function mapStateToProps (state) {
     return {
+        ratings: state.ratings.ratings,
     }
 }
 

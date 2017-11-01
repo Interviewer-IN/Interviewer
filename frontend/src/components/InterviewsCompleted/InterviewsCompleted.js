@@ -45,8 +45,6 @@ class InterviewsCompleted extends Component {
         let isUserHR = this.props.onCheckUserRole(true);
         const {dispatch} = this.props;
 
-        console.log(this.props);
-
         if (!this.props.interviews.interviews.length){
             dispatch(showInterviews());
         }
@@ -295,7 +293,7 @@ class InterviewsCompleted extends Component {
 
                     const description = (
                         <div>
-                            <p className="interview-details-header"><strong>Feedback</strong></p>
+                            <p className="interview-details__header"><strong>Feedback</strong></p>
                             {value.feedback}
                         </div>
                     );

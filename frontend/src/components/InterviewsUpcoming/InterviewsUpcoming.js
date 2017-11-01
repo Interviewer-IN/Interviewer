@@ -355,23 +355,23 @@ class InterviewsUpcoming extends Component {
 
                             const PANEL_DESCRIPTION = (
                                 <div>
-                                    <div className="clearfix">
-                                        <div className="float-left interview-details">
-                                            <p className="interview-details-header"><strong>Candidate</strong></p>
+                                    <div className="interview-details clearfix">
+                                        <div className="interview-details__left">
+                                            <p className="interview-details__header"><strong>Candidate</strong></p>
                                             <p><strong>Name:</strong>{" " + currentCandidate.name}</p>
                                             <p><strong>Age:</strong>{" " + currentCandidate.age}</p>
                                             <p><strong>Experience:</strong>{" " + currentCandidate.experience}</p>
                                             {checkCandidateCV()}
                                         </div>
-                                        <div className="float-right">
-                                            <p className="interview-details-header"><strong>Project</strong></p>
+                                        <div className="interview-details__right">
+                                            <p className="interview-details__header"><strong>Project</strong></p>
                                             <p>{currentProject.title}</p>
-                                            <p className="interview-details-header"><strong>Interviewer</strong></p>
+                                            <p className="interview-details__header"><strong>Interviewer</strong></p>
                                             <p>some interviewer</p>
                                         </div>
                                     </div>
-                                    <div className="interview-details-down">
-                                        <p className="interview-details-header"><strong>Vacancy</strong></p>
+                                    <div className="interview-details__down">
+                                        <p className="interview-details__header"><strong>Vacancy</strong></p>
                                         <p>
                                             <strong>{currentLevel.name + " " +
                                             currentPosition.name + " for " +
@@ -498,7 +498,7 @@ class InterviewsUpcoming extends Component {
                     <Modal.Header closeButton>
                     </Modal.Header>
                     <Modal.Body>
-                        <p>Are you sure you want to delete a project?</p>
+                        <p>Are you sure you want to delete an interview?</p>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button
