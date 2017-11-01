@@ -20,11 +20,10 @@ class CreateInterview extends Component {
         super(props);
         this.state = {
             date: "",
-            candidate: "Choose candidate",
-            vacancy: "Choose vacancy",
+            candidate: "",
+            vacancy: "",
             interviewer: "",
             dateError: "",
-            timeError: "",
             candidateError: "",
             vacancyError: "",
             interviewerError: "",
@@ -63,7 +62,17 @@ class CreateInterview extends Component {
 
     handleDateChange(date) {
         this.setState({date: date});
+        this.setState({dateError: ""});
+    }
 
+    handleCandidateChange(candidate) {
+        this.setState({candidate: candidate.candidate});
+        this.setState({candidateError: ""});
+    }
+
+    handleVacancyChange(vacancy) {
+        this.setState({vacancy: vacancy.vacancy});
+        this.setState({vacancyError: ""});
     }
 
     openModalConfirm() {
@@ -196,10 +205,11 @@ class CreateInterview extends Component {
                         <Select
                             name="university"
                             options={options}
-                            onChange={(candidate) => this.setState({ candidate })}
+                            onChange={(candidate) => this.handleCandidateChange({ candidate })}
                             value={this.state.candidate}
                             placeholder={'Start typing for search...'}
                         />
+                        <span className="has-error error-message">{this.state.candidateError}</span>
                     </div>
                 );
         };
@@ -238,10 +248,11 @@ class CreateInterview extends Component {
                         <Select
                             name="university"
                             options={options}
-                            onChange={(vacancy) => this.setState({ vacancy })}
+                            onChange={(vacancy) => this.handleVacancyChange({ vacancy })}
                             value={this.state.vacancy}
                             placeholder={'Start typing for search...'}
                         />
+                        <span className="has-error error-message">{this.state.vacancyError}</span>
                     </div>
                 );
         };
