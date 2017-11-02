@@ -206,7 +206,7 @@ class CreateInterviewFeedback extends Component {
                             pageTitle='Add Feedback'
                             showBackBtn={true}
                             showButton={false}
-                            backBtnId="back-create-interview"
+                            backBtnId="back-create-feedback"
                             titleForButton=''
                             linkForButton=''
                         />
@@ -225,7 +225,7 @@ class CreateInterviewFeedback extends Component {
                                 <label className="control-label form-label">Question 1</label>
                                 <p className="form-sublabel back-link">Maximum 2000 characters</p>
                                 <TextareaAutosize
-                                    id="interview-question1"
+                                    id="feedback-question1"
                                     type="text"
                                     name="question1"
                                     placeholder='Input your '
@@ -244,8 +244,8 @@ class CreateInterviewFeedback extends Component {
                             <div className="form-group form-field-margin">
                                 <label className="control-label form-label">Question 2</label>
                                 <p className="form-sublabel back-link">Maximum 2000 characters</p>
-                                <input
-                                    id="interview-question2"
+                                <TextareaAutosize
+                                    id="feedback-question2"
                                     name="question2"
                                     placeholder="Input Description"
                                     className="form-control boxed"
@@ -263,7 +263,7 @@ class CreateInterviewFeedback extends Component {
                                 <label className="control-label form-label">Question 3</label>
                                 <p className="form-sublabel back-link">Maximum 2000 characters</p>
                                 <TextareaAutosize
-                                    id="interview-question3"
+                                    id="feedback-question3"
                                     name="question3"
                                     placeholder="Input Description"
                                     className="form-control boxed"
@@ -281,7 +281,7 @@ class CreateInterviewFeedback extends Component {
                                 <label className="control-label form-label">Question 4</label>
                                 <p className="form-sublabel back-link">Maximum 2000 characters</p>
                                 <TextareaAutosize
-                                    id="interview-question4"
+                                    id="feedback-question4"
                                     name="question4"
                                     placeholder="Input Description"
                                     className="form-control boxed"
@@ -299,7 +299,7 @@ class CreateInterviewFeedback extends Component {
                                 <label className="control-label form-label">Question 5</label>
                                 <p className="form-sublabel back-link">Maximum 2000 characters</p>
                                 <TextareaAutosize
-                                    id="interview-question5"
+                                    id="feedback-question5"
                                     name="question5"
                                     placeholder="Input Description"
                                     className="form-control boxed"
@@ -317,7 +317,7 @@ class CreateInterviewFeedback extends Component {
                                 <label className="control-label form-label">Question 6</label>
                                 <p className="form-sublabel back-link">Maximum 2000 characters</p>
                                 <TextareaAutosize
-                                    id="interview-question6"
+                                    id="feedback-question6"
                                     name="question6"
                                     placeholder="Input Description"
                                     className="form-control boxed"
@@ -333,13 +333,13 @@ class CreateInterviewFeedback extends Component {
 
                             <div className="form-group">
                                 <button
-                                    id="create-interview-submitBtn"
+                                    id="create-feedback-submitBtn"
                                     type="submit"
                                     className="btn btn-primary"
                                 >Create
                                 </button>
                                 <button
-                                    id="create-interview-resetBtn"
+                                    id="create-feedback-resetBtn"
                                     type="reset"
                                     className="btn btn-danger"
                                     onClick={(event) => this.isFieldsNotEmpty(event)}
