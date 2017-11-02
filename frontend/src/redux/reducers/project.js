@@ -3,14 +3,14 @@ import {CREATE_PROJECT, SHOW_PROJECTS, SET_PROJECT} from "../actions/projectActi
 const initialState = {
     projects: [],
     newProject: {
-        projectTitle: "initTitle",
-        projectDescription: "initDiscr",
+        projectTitle: "",
+        projectDescription: "",
     },
     currentProject: {}
 };
 
 
-export default function project(state = initialState, action) {
+export default function project (state = initialState, action) {
 
     switch (action.type) {
         case CREATE_PROJECT:

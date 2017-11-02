@@ -20,9 +20,13 @@ class ProjectsList extends Component {
     }
 
     componentWillMount() {
-        const {dispatch} = this.props;
-        dispatch(showProjects());
         this.props.onCheckUserRole();
+        const {dispatch} = this.props;
+
+        if (!this.props.newProject.projects.length){
+            dispatch(showProjects());
+        }
+
     }
 
     switchToEditMode(currentID) {

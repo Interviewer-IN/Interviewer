@@ -16,10 +16,10 @@ class SideMenu extends Component {
         }
     }
 
-    componentWillMount() {
-    //    let user = this.getUserData();
-    //    let HR = user.is_hr;
-    //    this.setState({isHr: HR});
+    componentDidMount() {
+        let user = this.getUserData() || {};
+        let HR = user.is_hr;
+        this.setState({isHr: HR});
     }
 
     getUserData() {
@@ -27,6 +27,7 @@ class SideMenu extends Component {
             data = JSON.parse(userData);
         return data;
     }
+
 
     handleCloseSideBarClick() {
         this.props.pageActions.hideSideBar(false);
