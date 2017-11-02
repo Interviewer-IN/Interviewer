@@ -6,6 +6,7 @@ import Interviewers from "./../Interviewers";
 import InterviewsUpcoming from "../InterviewsUpcoming";
 import InterviewsCompleted from "../InterviewsCompleted";
 import InterviewEdit from "../InterviewEdit";
+import InterviewFeedbackEdit from "../InterviewFeedbackEdit";
 import Candidates from "./../Candidates";
 import CreateCandidate from "./../CreateCandidate";
 import CandidateEdit from './../CandidateEdit';
@@ -17,7 +18,6 @@ import CreateProject from "./../CreateProject";
 import CreateInterview from "./../CreateInterview";
 import CreateInterviewFeedback from "./../CreateInterviewFeedback";
 import ProjectsList from "./../ProjectsList";
-import ProjectDetails from "./../ProjectDetails";
 import ProjectEdit from "./../ProjectEdit";
 import Username from "./../Username";
 import Password from "./../Password";
@@ -181,6 +181,23 @@ class Main extends Component {
 
                                 )}
                             />
+
+                            <Route
+                                exact path="/interviews-completed/edit-feedback"
+                                name="InterviewsCompleted"
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<InterviewFeedbackEdit {...props}
+                                                              callMakeNote={(status, text, hide) =>
+                                                                  this.handleMakeNote(status, text, hide)}
+                                                              onCheckUserRole={(interview) => this.isHR(interview)}
+
+                                        />) :
+                                        (<Redirect to="/login"/>)
+
+                                )}
+                            />
+
                             <Route
                                 exact path="/interviewers"
                                 name="Interviewers"

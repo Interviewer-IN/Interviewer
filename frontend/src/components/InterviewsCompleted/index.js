@@ -1,3 +1,3 @@
-import InterviewsCompleted from './InterviewsCompleted';
+import InterviewsCompleted from './InterviewCompleted';
 
 export default InterviewsCompleted;
