@@ -45,19 +45,19 @@ class InterviewsUpcoming extends Component {
         let isUserHR = this.props.onCheckUserRole(true);
         const {dispatch} = this.props;
 
-        if (!this.props.interviews.interviews.length){
+        if (!this.props.interviews.interviews.length) {
             dispatch(showInterviews());
         }
 
-        if (!this.props.vacancies.length){
+        if (!this.props.vacancies.length) {
             dispatch(getVacancies());
         }
 
-        if (!this.props.projects.length){
+        if (!this.props.projects.length) {
             dispatch(showProjects());
         }
 
-        if (!this.props.candidates.length){
+        if (!this.props.candidates.length) {
             dispatch(getCandidates());
         }
 
@@ -152,7 +152,6 @@ class InterviewsUpcoming extends Component {
     }
 
     render() {
-
 
 
         let pageTitle;
@@ -270,9 +269,13 @@ class InterviewsUpcoming extends Component {
                                 + new Date(value.date_time).toLocaleString('en-GB', {
                                     day: 'numeric',
                                     month: 'long',
+                                    year: 'numeric',
                                 }) + "";
                         }
                     });
+
+                    //-- Creating Interview Card--------------------------
+
 
                     let sortedInterviews = todayInterviews.sort(compareTime) || {};
                     let interviewsToDisplay = sortedInterviews.map((value, index) => {
@@ -298,24 +301,39 @@ class InterviewsUpcoming extends Component {
                                 rating_id: 12
                             };
 
+                            let overdueInterview = () => {
+                                let dateNow = Date.now(),
+                                    interviewDate = new Date(value.date_time).getTime();
 
-                        let checkCandidateCV = () => {
-                            if (candidateCV) {
-                                return (
-                                    <a href={candidateCV} className="download-block form-group text-green text-green--hover" download>
-                                        <span className="download-block__icon fa fa-download"/>
-                                        <span className="download-block__title">Download CV</span>
-                                    </a>
-                                )
-                            } else {
-                                return (
-                                    <a className="download-block form-group download-block--disabled text-muted">
-                                        <span className="download-block__icon fa fa-download"/>
-                                        <span className="download-block__title text-bold--100">Download CV</span>
-                                    </a>
-                                )
-                            }
-                        };
+                                if(interviewDate < dateNow) {
+                                    return (
+                                        <i className="interview-icon tooltip-icon fa fa-bell">
+                                            <span className="tooltip-icon__text">This interview is overdue</span>
+                                        </i>
+                                    )
+                                }
+                            };
+
+
+
+                            let checkCandidateCV = () => {
+                                if (candidateCV) {
+                                    return (
+                                        <a href={candidateCV}
+                                           className="download-block form-group text-green text-green--hover" download>
+                                            <span className="download-block__icon fa fa-download"/>
+                                            <span className="download-block__title">Download CV</span>
+                                        </a>
+                                    )
+                                } else {
+                                    return (
+                                        <a className="download-block form-group download-block--disabled text-muted">
+                                            <span className="download-block__icon fa fa-download"/>
+                                            <span className="download-block__title text-bold--100">Download CV</span>
+                                        </a>
+                                    )
+                                }
+                            };
 
                             if (this.state.isHR) {
                                 panelTitleText = time + " | " +
@@ -324,14 +342,14 @@ class InterviewsUpcoming extends Component {
                                     currentLevel.name + " - " +
                                     currentPosition.name + " - " +
                                     currentProject.title + " | " +
-                                    "some inteviewer";
+                                    "some inteviewer" + " | ";
                             } else {
                                 panelTitleText = time + " | " +
                                     currentCandidate.name + " " +
                                     currentCandidate.surname + " | " +
                                     currentLevel.name + " - " +
                                     currentPosition.name + " - " +
-                                    currentProject.title;
+                                    currentProject.title + " | ";
                             }
 
                             const PANEL_TITLE = (
@@ -346,7 +364,7 @@ class InterviewsUpcoming extends Component {
                                         <div className="vacancy-info-block">
                                             <div className="vacancy-info-block__item">
                                                 {panelTitleText}
-
+                                                {overdueInterview()}
                                             </div>
                                         </div>
                                     </div>
@@ -425,6 +443,8 @@ class InterviewsUpcoming extends Component {
                                 )
                             }
                         }
+
+                        //-- End Creating Interview Card--------------------------
                     );
                     return (
                         <div key={index}>
@@ -530,7 +550,7 @@ function mapStateToProps(state) {
         levels: state.levels.levels,
         positions: state.positions.positions,
         candidates: state.candidates.candidates,
-      //  currentProject: state.project.currentProject,
+        //  currentProject: state.project.currentProject,
     }
 }
 
