@@ -1,16 +1,18 @@
 import React, {Component} from 'react';
 import './createVacancy.css';
+import Helmet from 'react-helmet'
 import PageTitle from './../../containers/PageTitle';
 import TextareaAutosize from "react-autosize-textarea";
 import {Modal, Button} from "react-bootstrap";
 import {createBrowserHistory} from 'history';
 import {connect} from "react-redux";
-import {fieldCharRegex} from "../../config"
-import Helmet from 'react-helmet'
+import {fieldCharRegex, CONFIRM_TEXT} from "../../config"
+import {removeCurrentError, removeAllErrorMessages, createErrorElem, getValueFromArr} from '../../utils/index';
 import {showProjects} from "../../redux/actions/projectActions";
 import {getLevels} from "../../redux/actions/levelsActions";
 import {getPositions} from "../../redux/actions/positionActions";
 import {createVacancy} from "../../redux/actions/vacanciesActions";
+
 
 const history = createBrowserHistory();
 
@@ -19,7 +21,7 @@ class CreateVacancy extends Component {
         super(props);
         this.state = {
             vacancyDescription: "",
-            confirmText: "Are you sure you want to cancel without saving changes?",
+            confirmText: CONFIRM_TEXT,
             wrongCharMessage: "Please use only latin letters, numbers and special symbols",
             emptySelectsMessage: "Please set the parameter",
             showModalConfirm: false,
@@ -33,9 +35,20 @@ class CreateVacancy extends Component {
     componentWillMount() {
         this.props.onCheckUserRole();
         const {dispatch} = this.props;
-        dispatch(showProjects());
-        dispatch(getLevels());
-        dispatch(getPositions());
+
+        console.log(this.props);
+
+        if (!this.props.newProject.length){
+            dispatch(showProjects());
+        }
+
+        if (!this.props.positions.length){
+            dispatch(getPositions());
+        }
+
+        if (!this.props.levels.length){
+            dispatch(getLevels());
+        }
     }
 
     handleSubmitForm(event) {
@@ -43,30 +56,7 @@ class CreateVacancy extends Component {
 
         let currentForm = event.target;
 
-        let removeAllErrorMessage = (currentForm) => {
-            let allErrorMessages = currentForm.querySelectorAll('span.has-error'),
-                allErrorTitles = currentForm.querySelectorAll('div.has-error');
-
-            for (let i = 0; i < allErrorTitles.length; i++) {
-                allErrorTitles[i].classList.remove('has-error');
-            }
-
-            for (let i = 0; i < allErrorMessages.length; i++) {
-                allErrorMessages[i].remove();
-            }
-        };
-
-        let createErrorElem = (errorMessage) => {
-            let errorElem = document.createElement('span');
-            errorElem.innerHTML = errorMessage;
-            errorElem.classList.add('has-error');
-            errorElem.classList.add('custom-error');
-
-            return errorElem;
-        };
-
-
-        removeAllErrorMessage(currentForm);
+        removeAllErrorMessages(currentForm);
 
         //THE SELECTS BOXES CHECKING
         let mainSelectsDiv = document.getElementById('select-block'),
@@ -82,8 +72,7 @@ class CreateVacancy extends Component {
 
             if (!index) {
                 counter -= 1;
-                selectItem.parentNode.classList.add('has-error');
-                selectItem.parentNode.appendChild(createErrorElem(this.state.emptySelectsMessage));
+                selectItem.parentNode.appendChild(createErrorElem(selectItem, this.state.emptySelectsMessage));
             } else {
                 counter += 1;
             }
@@ -104,8 +93,7 @@ class CreateVacancy extends Component {
 
         if (!fieldCharRegex.test(descriptionValue)) {
             descriptionPassValidation = false;
-            descriptionField.parentNode.classList.add('has-error');
-            descriptionField.parentNode.appendChild(createErrorElem(this.state.wrongCharMessage));
+            descriptionField.parentNode.appendChild(createErrorElem(descriptionField, this.state.wrongCharMessage));
         } else {
             descriptionPassValidation = true;
         }
@@ -121,27 +109,16 @@ class CreateVacancy extends Component {
                 projectsList = this.props.newProject,
                 positionsList = this.props.positions,
                 levelsList = this.props.levels,
-                projectsTitleObj = {},
-                levelsTitleObj = {},
-                positionsTitleObj = {};
+                levelId = getValueFromArr(levelsList,levelSelectVal, 'name'),
+                positionId = getValueFromArr(positionsList, positionSelectVal, 'name'),
+                projectId = getValueFromArr(projectsList, projectSelectVal, 'title');
 
-            projectsList.forEach((item) => {
-                projectsTitleObj[item.title] = item.id;
-            });
-
-            levelsList.forEach((item) => {
-                levelsTitleObj[item.name] = item.id;
-            });
-
-            positionsList.forEach((item) => {
-                positionsTitleObj[item.name] = item.id;
-            });
 
             let formData = {
                 description: descriptionValue,
-                level_id: levelsTitleObj[levelSelectVal],
-                position_id: positionsTitleObj[positionSelectVal],
-                project_id: projectsTitleObj[projectSelectVal]
+                level_id: levelId,
+                position_id: positionId,
+                project_id: projectId
             };
 
 
@@ -155,35 +132,26 @@ class CreateVacancy extends Component {
         }
         //--  END PREPARE FORM DATA FOR SENDING TO SERVER  -----------
 
-
-    }
-
-
-    removeCurrentError(event) {
-        if (event.target.nextSibling !== null) {
-            event.target.parentNode.classList.remove('has-error');
-            event.target.nextSibling.remove();
-        }
     }
 
     handlePositionChange(event) {
-        this.removeCurrentError(event);
+        removeCurrentError(event);
         this.setState({positionVal: event.target.value});
     }
 
     handleLevelChange(event) {
-        this.removeCurrentError(event);
+        removeCurrentError(event);
         this.setState({levelVal: event.target.value});
     }
 
     handleProjectChange(event) {
-        this.removeCurrentError(event);
+        removeCurrentError(event);
         this.setState({projectVal: event.target.value});
     }
 
 
     handleDescriptionChange(event) {
-        this.removeCurrentError(event);
+        removeCurrentError(event);
         this.setState({vacancyDescription: event.target.value});
     }
 
@@ -266,7 +234,7 @@ class CreateVacancy extends Component {
                 <section className="section">
                     <div className="row sameheight-container">
                         <div className="col-md-12">
-                            <form onSubmit={(event) => this.handleSubmitForm(event)}>
+                            <form className="custom-form" onSubmit={(event) => this.handleSubmitForm(event)}>
 
                                 <div className="form-group form-filter-block">
                                     <label className="form-filter-block__title">Vacancy parameters</label>
@@ -349,7 +317,7 @@ class CreateVacancy extends Component {
                                 <Modal.Header closeButton>
                                 </Modal.Header>
                                 <Modal.Body>
-                                    <p>Are you sure you want to cancel without saving changes?</p>
+                                    <p>{this.state.confirmText}</p>
                                 </Modal.Body>
                                 <Modal.Footer>
                                     <div className="custom-btn-group">

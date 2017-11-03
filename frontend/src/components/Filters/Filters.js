@@ -2,19 +2,60 @@ import React, {Component} from "react";
 import "./filters.css";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
+import DatePicker from "react-datepicker";
+import 'react-datepicker/dist/react-datepicker.css';
+
 import {showProjects} from "../../redux/actions/projectActions";
 import {getLevels} from "../../redux/actions/levelsActions";
 import {getPositions} from "../../redux/actions/positionActions";
+import {getRatings} from "../../redux/actions/ratingActions";
 
 class Filters extends Component {
 
-    componentWillMount() {
-        const {dispatch} = this.props;
-        dispatch(showProjects());
-        dispatch(getLevels());
-        dispatch(getPositions());
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            startDate: "",
+            endDate: ""
+        }
     }
 
+    componentWillMount() {
+        const {dispatch} = this.props;
+
+        if (!this.props.newProject.projects.length){
+            dispatch(showProjects());
+        }
+
+        if (!this.props.positions.length){
+            dispatch(getPositions());
+        }
+
+        if (!this.props.levels.length){
+            dispatch(getLevels());
+        }
+
+        if (!this.props.ratings.length){
+            dispatch(getRatings());
+        }
+
+    }
+
+    getDateFromFilterVal(date) {
+        this.setState({
+            startDate: date
+        });
+        this.props.dateFromFilterVal(date);
+    }
+
+    getDateToFilterVal(date) {
+        this.setState({
+            endDate: date
+        });
+        this.props.dateToFilterVal(date);
+
+    }
 
     getPositionFilterVal(event){
         let positionFilterVal = event.target.value;
@@ -24,6 +65,11 @@ class Filters extends Component {
     getLevelFilterVal(event){
         let levelFilterVal = event.target.value;
         this.props.levelFilterVal(levelFilterVal);
+    }
+
+    getRatingFilterVal(event){
+        let ratingFilterVal = event.target.value;
+        this.props.ratingFilterVal(ratingFilterVal);
     }
 
     getProjectFilterVal(event){
@@ -45,7 +91,8 @@ class Filters extends Component {
             interviewerFilterId = this.props.interviewerId,
             ratingFilterId = this.props.ratingId,
             dateFromFilterId = this.props.dateFromId,
-            dateToFilterId = this.props.dateToId;
+            dateToFilterId = this.props.dateToId,
+            dateFilterErrorMessage = this.props.dateErrorMessage;
 
 
         let showProjectFilter = (project) => {
@@ -55,7 +102,14 @@ class Filters extends Component {
                     options = [];
 
                 if (projectList.length) {
-                    options = projectList.map((item, index) => {
+                    let compareTitle = (a, b) => {
+                            if (a.title > b.title) return 1;
+                            if (a.title < b.title) return -1;
+                        },
+                        sortedProjects = projectList.sort(compareTitle) || {};
+
+                    options = sortedProjects.map((item, index) => {
+
 
                         let title =  item.title.length < 20 ? item.title : item.title.slice(0, 10) + "...";
 
@@ -81,12 +135,17 @@ class Filters extends Component {
 
         let showPositionFilter = (position) => {
 
-            let positionsList = this.props.positions.positions,
+            let positionsList = this.props.positions,
                 options = [];
 
 
             if (positionsList.length) {
-                options = positionsList.map((item, index) => <option key={index}>{item.name}</option>);
+                let compareName = (a, b) => {
+                        if (a.name > b.name) return 1;
+                        if (a.name < b.name) return -1;
+                    },
+                    sortedPositions = positionsList.sort(compareName) || {};
+                options = sortedPositions.map((item, index) => <option key={index}>{item.name}</option>);
             }
 
             if (position) {
@@ -106,11 +165,16 @@ class Filters extends Component {
 
         let showLevelFilter = (level) => {
 
-            let levelsList = this.props.levels.levels,
+            let levelsList = this.props.levels,
                 options = [];
 
             if (levelsList.length) {
-                options = levelsList.map((item, index) => <option key={index}>{item.name}</option>);
+                let compareName = (a, b) => {
+                        if (a.name > b.name) return 1;
+                        if (a.name < b.name) return -1;
+                    },
+                    sortedLevels = levelsList.sort(compareName) || {};
+                options = sortedLevels.map((item, index) => <option key={index}>{item.name}</option>);
             }
 
             if (level) {
@@ -126,7 +190,38 @@ class Filters extends Component {
                     </div>
                 );
             }
+        };
 
+        let showRatingFilter = (rating) => {
+
+            let ratingsList = this.props.ratings,
+                options = [];
+
+            if (ratingsList.length) {
+                let compareGrade = (a, b) => {
+                    let first = +a.grade;
+                    let second = +b.grade;
+
+                        if (first> second) return 1;
+                        if (first < second) return -1;
+                    },
+                    sortedRatings = ratingsList.sort(compareGrade) || {};
+                options = sortedRatings.map((item, index) => <option key={index}>{item.grade}</option>);
+            }
+
+            if (rating) {
+                return (
+                    <div className="form-group">
+                        <select className="form-control form-control-sm filter-select custom-mode"
+                                id={ratingFilterId}
+                                onChange = {(event) => this.getRatingFilterVal(event)}
+                        >
+                            <option>Rating</option>
+                            {options}
+                        </select>
+                    </div>
+                );
+            }
         };
 
         let showInterviewersFilter = (interviewer) => {
@@ -147,49 +242,35 @@ class Filters extends Component {
 
         };
 
-        let showRatingFilter = (rating) => {
-            if (rating){
-                return (
-                    <div className="form-group">
-                        <select className="form-control form-control-sm filter-select"
-                                id={ratingFilterId}
-                        >
-                            <option>Rating</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                        </select>
-                    </div>
-                );
-            }
-
-        };
-
-
         let showDateFilter = (date) => {
             if (date) {
                 return (
-                    <div className="filter-block filter-block--date">
+                    <div className="filter-block filter-block--date clearfix">
                         <div className="filter-block__title filter-date">Date:</div>
                         <div className="filter-block__selects">
                             <div className="form-group float-left">
-                                <select className="form-control form-control-sm filter-select custom-mode"
-                                        id={dateFromFilterId}>
-                                    <option>01-10-2017</option>
-                                    <option>02-10-2017</option>
-                                    <option>03-10-2017</option>
-                                    <option>04-10-2017</option>
-                                </select>
+                                <DatePicker
+                                    id={dateFromFilterId}
+                                    className="form-control form-control-sm filter-select"
+                                    placeholderText="From"
+                                    dateFormat="DD/MM/YYYY"
+                                    isClearable={true}
+                                    selected={this.state.startDate}
+                                    onChange={(event) => this.getDateFromFilterVal(event)}
+                                />
                             </div>
                             <div className="form-group float-left">
-                                <select className="form-control form-control-sm filter-select custom-mode"
-                                        id={dateToFilterId}>
-                                    <option>01-10-2017</option>
-                                    <option>02-10-2017</option>
-                                    <option>03-10-2017</option>
-                                    <option>04-10-2017</option>
-                                </select>
+                                <DatePicker
+                                    id={dateToFilterId}
+                                    className="form-control form-control-sm filter-select custom-mode"
+                                    placeholderText="To"
+                                    dateFormat="DD/MM/YYYY"
+                                    isClearable={true}
+                                    selected={this.state.endDate}
+                                    onChange={(event) => this.getDateToFilterVal(event)}
+                                />
                             </div>
+                            <p className="error-message">{dateFilterErrorMessage}</p>
                         </div>
                     </div>
                 );
@@ -231,7 +312,8 @@ Filters.propTypes = {
     interviewerFilterId:PropTypes.string,
     ratingFilterId:PropTypes.string,
     dateFromFilterId: PropTypes.string,
-    dateToFilterId: PropTypes.string
+    dateToFilterId: PropTypes.string,
+    dateFilterErrorMessage: PropTypes.string
 
 };
 
@@ -239,8 +321,9 @@ Filters.propTypes = {
 function mapStateToProps(state) {
     return {
         newProject: state.project,
-        levels: state.levels,
-        positions: state.positions
+        levels: state.levels.levels,
+        positions: state.positions.positions,
+        ratings: state.ratings.ratings,
     }
 }
 

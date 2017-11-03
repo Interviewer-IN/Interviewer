@@ -6,12 +6,20 @@ function addVacancies(data) {
     return {
         type: 'ADD_VACANCIES',
         payload: data.data
+    }
+}
+
+export function addIndexExpandedElement(data) {
+    return {
+        type: 'INDEX_ELEMENT',
+        payload: data
 
     }
 }
 
-export function getVacancies() {
-    return (dispatch) => {
+export function getVacancies(indexExpandedElement = false) {
+
+    return (dispatch) => new Promise((resolve) =>{
         fetch('/api/v1/vacancies',
             {
                 method: 'GET',
@@ -30,6 +38,7 @@ export function getVacancies() {
                 }
             })
             .then(data => {
+                dispatch(addIndexExpandedElement(indexExpandedElement));
                 dispatch(addVacancies(data));
             })
             .catch((error) => {
@@ -39,7 +48,7 @@ export function getVacancies() {
                     hide: false
                 }))
             })
-    }
+    })
 }
 
 function addVacancy(data) {
@@ -87,7 +96,7 @@ function addNewVacancy(data) {
 }
 
 
-export function createVacancy(data, message, backPath) {
+export function createVacancy(data, message, backPath, openPanelIndex = 0) {
     let successMessage = message || 'Vacancy was created';
     return (dispatch) => {
         fetch('/api/v1/vacancies',
@@ -108,8 +117,8 @@ export function createVacancy(data, message, backPath) {
                 }
             })
             .then(data => {
-                dispatch(getVacancies());
                 dispatch(addNewVacancy(data));
+                dispatch(getVacancies(openPanelIndex));
                 dispatch(makeNote(
                     {
                         status: "success",
@@ -117,7 +126,7 @@ export function createVacancy(data, message, backPath) {
                         hide: true
                     }
                 ));
-                if (backPath !== undefined){
+                if (backPath){
                     window.location.replace(backPath);
                 }
 

@@ -7,7 +7,9 @@ import {connect} from "react-redux";
 import PageTitle from './../../containers/PageTitle';
 import Filters from './../../components/Filters';
 import Panels from './../../components/Panels';
-import {getVacancies, deleteVacancy, updateVacancy, createVacancy} from "../../redux/actions/vacanciesActions";
+import {getVacancies, deleteVacancy, updateVacancy, createVacancy, addIndexExpandedElement} from "../../redux/actions/vacanciesActions";
+import {levelsListName, positionsListName, projectsListName, getValueFromArr} from '../../utils/index';
+import {DELETE_VACANCY, DUPLICATE_VACANCY, REOPEN_VACANCY, EXPANDED_ELEMENT_INDEX} from '../../config';
 
 class VacanciesClosed extends Component {
 
@@ -17,8 +19,9 @@ class VacanciesClosed extends Component {
         this.state = {
             showModalConfirm: false,
             currentVacancyId: '',
-            actionBtnMessage: 'Vacancy was reopened',
-            duplicateMessage: 'Duplicate was added',
+            deleteVacancyText: DELETE_VACANCY,
+            actionBtnMessage: REOPEN_VACANCY,
+            duplicateMessage: DUPLICATE_VACANCY,
             positionsFilterID: '',
             levelsFilterID: '',
             projectsFilterID: '',
@@ -29,9 +32,18 @@ class VacanciesClosed extends Component {
     }
 
     componentWillMount() {
-        const {dispatch} = this.props;
-        dispatch(getVacancies());
         this.props.onCheckUserRole();
+        const {dispatch} = this.props;
+
+        if (!this.props.vacancies.length){
+            dispatch(getVacancies());
+        }
+
+    }
+
+    componentWillUnmount(){
+        const {dispatch} = this.props;
+        dispatch(addIndexExpandedElement(false));
     }
 
     openModalConfirm(currentID) {
@@ -63,74 +75,46 @@ class VacanciesClosed extends Component {
         dispatch(updateVacancy(statusData, successCloseMessage))
     }
 
-    duplicateVacancy(duplicateData){
+    duplicateVacancy(duplicateData) {
         let successDuplicateMessage = this.state.duplicateMessage;
         const {dispatch} = this.props;
-        dispatch(createVacancy(duplicateData, successDuplicateMessage))
+        dispatch(createVacancy(duplicateData, successDuplicateMessage, null, EXPANDED_ELEMENT_INDEX))
     }
 
-    getPositionFilterVal(positionFilterVal){
+    getPositionFilterVal(positionFilterVal) {
         let positionsList = this.props.positions,
             positionFilterId = 0;
 
-        positionFilterId = this.getValueFromArr(positionsList, positionFilterVal, 'name');
+        positionFilterId = getValueFromArr(positionsList, positionFilterVal, 'name');
 
         this.setState({
             positionsFilterID: positionFilterId
         })
     }
 
-    getLevelFilterVal(levelFilterVal){
+    getLevelFilterVal(levelFilterVal) {
 
         let levelsList = this.props.levels,
             levelFilterId = 0;
 
-        levelFilterId = this.getValueFromArr(levelsList, levelFilterVal, 'name');
+        levelFilterId = getValueFromArr(levelsList, levelFilterVal, 'name');
 
         this.setState({
             levelsFilterID: levelFilterId
         })
     }
 
-    getProjectFilterVal(projectFilterVal){
+    getProjectFilterVal(projectFilterVal) {
         let projectsList = this.props.projects,
             projectFilterId = 0;
 
-        projectFilterId = this.getValueFromArr(projectsList, projectFilterVal, 'title');
+        projectFilterId = getValueFromArr(projectsList, projectFilterVal, 'title');
 
         this.setState({
             projectsFilterID: projectFilterId
         })
     }
 
-    getValueFromArr(arr, value, nameField) {
-        // arr - array for filter
-        // value - can be [id] as number or [value] as string
-        // nameField - name of column from table. can be [title, name] as string
-
-        if (typeof value === 'string'){
-            let result = arr.find((currentElem) => {
-                return currentElem[nameField] === value
-
-            });
-
-            if (result === undefined){
-                return 0;
-            } else {
-                return result.id;
-            }
-        }
-
-        if (typeof value === 'number'){
-            let result = arr.find((currentElem) => {
-                return currentElem.id === value
-            });
-            return result[nameField];
-        }
-
-
-
-    }
 
     render() {
 
@@ -138,20 +122,25 @@ class VacanciesClosed extends Component {
             projectsList = this.props.projects,
             levelsList = this.props.levels,
             positionsList = this.props.positions,
-            levelsTitleObj = {},
-            positionsTitleObj = {},
-            projectsTitleObj = {},
-            vacanciesToDisplay = [];
+            levelsTitleObj = levelsListName(levelsList),
+            positionsTitleObj = positionsListName(positionsList),
+            projectsTitleObj = projectsListName(projectsList),
+            vacanciesToDisplay = [],
+            indexExpandedElement = this.props.indexExpandedElement;
 
 
         if (vacanciesList.length && projectsList.length && levelsList.length && positionsList.length) {
 
+            vacanciesList = vacanciesList.filter((current) => {
+                return current.status === false;
+            });
+
             //-- FILTER BY POSITION  --------------------------
             let positionFilterID = this.state.positionsFilterID;
 
-            if (positionFilterID){
-                vacanciesList = vacanciesList.filter((current)=> {
-                    return (current.position_id === positionFilterID) && (current.status === false);
+            if (positionFilterID) {
+                vacanciesList = vacanciesList.filter((current) => {
+                    return (current.position_id === positionFilterID);
                 });
             }
             //-- END FILTER BY LEVEL -----------------------
@@ -159,9 +148,9 @@ class VacanciesClosed extends Component {
             //-- FILTER BY LEVEL  --------------------------
             let levelFilterID = this.state.levelsFilterID;
 
-            if (levelFilterID){
-                vacanciesList = vacanciesList.filter((current)=> {
-                    return (current.level_id === levelFilterID) && (current.status === false);
+            if (levelFilterID) {
+                vacanciesList = vacanciesList.filter((current) => {
+                    return (current.level_id === levelFilterID);
                 });
             }
             //-- END FILTER BY LEVEL  -----------------------
@@ -169,101 +158,93 @@ class VacanciesClosed extends Component {
             //-- FILTER BY PROJECT  --------------------------
             let projectFilterID = this.state.projectsFilterID;
 
-            if (projectFilterID){
-                vacanciesList = vacanciesList.filter((current)=> {
-                    return (current.project_id === projectFilterID) && (current.status === false);
+            if (projectFilterID) {
+                vacanciesList = vacanciesList.filter((current) => {
+                    return (current.project_id === projectFilterID);
                 });
             }
             //-- END FILTER BY PROJECT  -----------------------
 
-            projectsList.forEach((item) => {
-                projectsTitleObj[item.id] = item.title;
-            });
+            vacanciesToDisplay = vacanciesList.map((item, index) => {
 
+                let vacancyId = item.id,
+                    projectId = item.project_id,
+                    levelId = item.level_id,
+                    positionId = item.position_id,
+                    indexElement = ++index,
+                    statusData = {
+                        id: vacancyId,
+                        status: true
+                    },
+                    duplicateData = {
+                        description: item.description,
+                        level_id: levelId,
+                        position_id: positionId,
+                        project_id: projectId,
+                        status: false
+                    };
 
-            levelsList.forEach((item) => {
-                levelsTitleObj[item.id] = item.name;
-            });
-
-            positionsList.forEach((item) => {
-                positionsTitleObj[item.id] = item.name;
-            });
-
-            vacanciesToDisplay = vacanciesList.map((item) => {
-
-                let vacancyStatus = item.status;
-                if (!vacancyStatus) {
-                    let vacancyId = item.id,
-                        projectId = item.project_id,
-                        levelId = item.level_id,
-                        positionId = item.position_id,
-                        statusData = {
-                            id: vacancyId,
-                            status: true
-                        },
-                        duplicateData = {
-                            description: item.description,
-                            level_id: levelId,
-                            position_id: positionId,
-                            project_id: projectId,
-                            status: false
-                        };
-
-                    const PAGE_TITLE = (
-                        <div className="custom-panel-title panel-list-item">
-                            <div className="custom-panel-title__right-side">
-                                <div className="panel-collapse-btn">
-                                    <span className="panel-collapse-btn__title btn-js">Expand</span>
-                                    <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
-                                </div>
+                const PAGE_TITLE = (
+                    <div className="custom-panel-title panel-list-item">
+                        <div className="custom-panel-title__right-side">
+                            <div className="panel-collapse-btn">
+                                <span className="panel-collapse-btn__title btn-js">Expand</span>
+                                <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
                             </div>
-                            <div className="custom-panel-title__left-side">
-                                <div className="info-block">
-                                    <div className="info-block__item text-bold--200">
-                                        <span className="text-bold--600">{positionsTitleObj[positionId]}</span>
-                                        <span> </span>
-                                        <span className="text-bold--600">{levelsTitleObj[levelId]}</span>
-                                        <span> for </span>
-                                        <span className="text-bold--600">{projectsTitleObj[projectId]}</span>
-                                        <span> project</span>
-                                    </div>
+                        </div>
+                        <div className="custom-panel-title__left-side">
+                            <div className="info-block">
+                                <div className="info-block__item text-bold--200">
+                                    <span className="text-bold--600">{positionsTitleObj[positionId]}</span>
+                                    <span> </span>
+                                    <span className="text-bold--600">{levelsTitleObj[levelId]}</span>
+                                    <span> for </span>
+                                    <span className="text-bold--600">{projectsTitleObj[projectId]}</span>
+                                    <span> project</span>
                                 </div>
                             </div>
                         </div>
-                    );
+                    </div>
+                );
 
-                    const DESCRIPTION = (
+                const DESCRIPTION = (
+                    <form className="custom-form">
                         <div className="form-group">
-                            <label className="control-label form-label">Description:</label>
+                            <label className="control-label form-label text-green">Description:</label>
                             <p className="form-control-static">
                                 {item.description}
                             </p>
                         </div>
-                    );
+                    </form>
+                );
 
-                    return (
-                        <Panels
-                            key={vacancyId}
-                            id={vacancyId}
-                            showActionBtn={true}
-                            titleForActionBtn='Reopen vacancy'
-                            titleConst={PAGE_TITLE}
-                            description={DESCRIPTION}
-                            showEditBtn={true}
-                            showDuplicateBtn={true}
-                            showDeleteBtn={true}
-                            editBtnId={"edit-vacancy-" + vacancyId}
-                            dublicateBtnId={"dublicate-vacancy-" + vacancyId}
-                            deleteBtnId={"delete-vacancy-" + vacancyId}
-                            callDelete={() => {
-                                this.openModalConfirm(vacancyId)
-                            }}
-                            callEdit={() => this.switchToEditMode(vacancyId)}
-                            callAction={() => this.switchToClose(statusData)}
-                            callDublicate={() => this.duplicateVacancy(duplicateData)}
-                        />
-                    )
-                }
+                let toExpandElement = () => {
+                    return (indexElement === indexExpandedElement) ? (true) : (false);
+                };
+
+                return (
+                    <Panels
+                        key={vacancyId}
+                        id={vacancyId}
+                        defaultExpanded={toExpandElement()}
+                        showActionBtn={true}
+                        titleForActionBtn='Reopen vacancy'
+                        titleConst={PAGE_TITLE}
+                        description={DESCRIPTION}
+                        showEditBtn={true}
+                        showDuplicateBtn={true}
+                        showDeleteBtn={true}
+                        editBtnId={"edit-vacancy-" + vacancyId}
+                        dublicateBtnId={"dublicate-vacancy-" + vacancyId}
+                        deleteBtnId={"delete-vacancy-" + vacancyId}
+                        callDelete={() => {
+                            this.openModalConfirm(vacancyId)
+                        }}
+                        callEdit={() => this.switchToEditMode(vacancyId)}
+                        callAction={() => this.switchToClose(statusData)}
+                        callDublicate={() => this.duplicateVacancy(duplicateData)}
+                    />
+                )
             })
         }
 
@@ -301,7 +282,7 @@ class VacanciesClosed extends Component {
                             <Modal.Header closeButton>
                             </Modal.Header>
                             <Modal.Body>
-                                <p>Are you sure you want to delete the vacancy?</p>
+                                <p>{this.state.deleteVacancyText}</p>
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button
@@ -331,7 +312,8 @@ function mapStateToProps(state) {
         vacancies: state.vacancies.vacancies,
         projects: state.project.projects,
         levels: state.levels.levels,
-        positions: state.positions.positions
+        positions: state.positions.positions,
+        indexExpandedElement: state.vacancies.indexExpandedElement
     }
 }
 

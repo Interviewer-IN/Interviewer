@@ -15,9 +15,12 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   namespace 'api' do
     namespace 'v1' do
-      resources :projects, :vacancies,:positions, :levels, :candidates
+      resources :projects, :vacancies, :positions, :levels,
+                :candidates, :ratings, :interviews
 
     end
 
   end
+
+  get "api/v1/candidates/download_cv/:id" => 'api/v1/candidates#download_cv'
 end
