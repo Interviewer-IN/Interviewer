@@ -45,8 +45,6 @@ class InterviewsCompleted extends Component {
         let isUserHR = this.props.onCheckUserRole(true);
         const {dispatch} = this.props;
 
-        console.log(this.props);
-
         if (!this.props.interviews.interviews.length){
             dispatch(showInterviews());
         }
@@ -148,6 +146,10 @@ class InterviewsCompleted extends Component {
         this.setState({
             dateToFilter: dateToFilterVal
         });
+    }
+
+    switchToEditMode(currentID) {
+        this.props.history.push("/interviews-completed/edit-feedback");
     }
 
 
@@ -275,7 +277,7 @@ class InterviewsCompleted extends Component {
                             "Rating: " + currentRating.grade;
                     }
 
-                    const panelTitle = (
+                    const PANEL_TITLE = (
                         <div className="custom-panel-title panel-list-item">
                             <div className="custom-panel-title__right-side">
                                 <div className="panel-collapse-btn">
@@ -293,9 +295,9 @@ class InterviewsCompleted extends Component {
                         </div>
                     );
 
-                    const description = (
+                    const PANEL_DESCRIPTION = (
                         <div>
-                            <p className="interview-details-header"><strong>Feedback</strong></p>
+                            <p className="interview-details__header"><strong>Feedback</strong></p>
                             {value.feedback}
                         </div>
                     );
@@ -307,8 +309,8 @@ class InterviewsCompleted extends Component {
                                 key={id}
                                 id={"intCompl" + value.id}
                                 showActionBtn={false}
-                                titleConst={panelTitle}
-                                description={description}
+                                titleConst={PANEL_TITLE}
+                                description={PANEL_DESCRIPTION}
                                 showDeleteBtn={true}
                                 deleteBtnId={"delete-feedback-" + id}
                                 callDelete={(event) => this.openModalConfirm(id)}
@@ -319,10 +321,12 @@ class InterviewsCompleted extends Component {
                             <Panels
                                 key={id}
                                 id={"intCompl" + value.id}
-                                showActionBtn={false}
-                                titleConst={panelTitle}
-                                description={description}
+                                showActionBtn={true}
+                                titleForActionBtn='Edit Feedback'
+                                titleConst={PANEL_TITLE}
+                                description={PANEL_DESCRIPTION}
                                 showDeleteBtn={false}
+                                callAction={(event) => this.switchToEditMode(id)}
                             />
                         )
                     }
