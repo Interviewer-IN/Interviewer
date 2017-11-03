@@ -5,7 +5,7 @@ import Helmet from 'react-helmet';
 import {Modal, Button} from 'react-bootstrap';
 import PageTitle from './../../containers/PageTitle';
 import {CONFIRM_TEXT} from "../../config";
-import {removeCurrentError, candidatesValidationFrom, getBase64, createErrorElem} from '../../utils/index';
+import {removeCurrentError, userInfoValidationForm, createErrorElem} from '../../utils/index';
 
 class Username extends Component{
 
@@ -16,7 +16,8 @@ class Username extends Component{
             showModalConfirm: false,
             nameVal: '',
             surnameVal: '',
-            userEmailVal: ''
+            userEmailVal: '',
+            userPasswordVal: ''
         };
     }
 
@@ -42,20 +43,44 @@ class Username extends Component{
         removeCurrentError(event);
     }
 
+    handleUserPasswordChanges(event){
+        this.setState({userPasswordVal: event.target.value});
+        removeCurrentError(event);
+    }
+
     handleSubmitForm(event){
         event.preventDefault();
 
         this.setState({
             nameVal: this.state.nameVal.trim(),
             surnameVal: this.state.surnameVal.trim(),
-            userEmailVal: this.state.userEmailVal.trim()
+            userEmailVal: this.state.userEmailVal.trim(),
+            userPasswordVal: this.state.userPasswordVal.trim()
         });
 
-        let validationPass = candidatesValidationFrom.apply(this, [event]);
+        let validationPass = userInfoValidationForm.apply(this, [event]);
+
+        if (validationPass) {
+
+            let nameVal = this.state.nameVal,
+                surnameVal = this.state.surnameVal,
+                userEmailVal = this.state.userEmailVal,
+                userPasswordVal = this.state.userPasswordVal;
+
+
+            let formData = {
+                name: nameVal,
+                surname: surnameVal,
+                email: userEmailVal,
+                password: userPasswordVal
+            };
+
+            console.log(formData);
+        }
 
 
 
-        console.log('form submit');
+
     }
 
     openModalConfirm() {
@@ -100,7 +125,7 @@ class Username extends Component{
                     <div className="col-md-6">
                         <form className="custom-form" onSubmit={(event) => this.handleSubmitForm(event)}>
                             <div className="form-group">
-                                <label className="control-label form-label">Name</label>
+                                <label className="control-label form-label">Name <span className="required-field">*</span></label>
                                 <p className="form-sublabel">
                                     <small>Maximum 20 characters</small>
                                 </p>
@@ -119,7 +144,7 @@ class Username extends Component{
                             </div>
 
                             <div className="form-group">
-                                <label className="control-label form-label">Surname</label>
+                                <label className="control-label form-label">Surname <span className="required-field">*</span></label>
                                 <p className="form-sublabel">
                                     <small>Maximum 20 characters</small>
                                 </p>
@@ -137,7 +162,7 @@ class Username extends Component{
                             </div>
 
                             <div className="form-group">
-                                <label className="control-label form-label">Email</label>
+                                <label className="control-label form-label">Email <span className="required-field">*</span></label>
                                 <input
                                     id="user-email"
                                     type="text"
@@ -147,6 +172,20 @@ class Username extends Component{
                                     ref="userEmail"
                                     value={this.state.userEmailVal}
                                     onChange={(event) => this.handleUserEmailChanges(event)}
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label className="control-label form-label">Password <span className="required-field">*</span></label>
+                                <input
+                                    id="user-password"
+                                    type="password"
+                                    name="user-password"
+                                    placeholder='Input current password'
+                                    className="form-control boxed"
+                                    ref="userPassword"
+                                    value={this.state.userPasswordVal}
+                                    onChange={(event) => this.handleUserPasswordChanges(event)}
                                 />
                             </div>
 

@@ -16,3 +16,6 @@ export {candidatesValidationFrom} from './candidates/candidatesValidationForm/ca
 
 //-- USER-INFO ------
 export {userInfoValidationForm} from './userInfo/userInfoValidationForm/userInfoValidationForm';
+
+//-- CHANGE_PASSWORD ------
+export {changePassValidationForm} from './ChangePassword/changePassValidationForm/changePassValidationForm';

@@ -1,6 +1,6 @@
 import {removeAllErrorMessages} from './../../removeAllErrorMessages/removeAllErrorMessages'
 import {createErrorElem} from './../../createErrorElem/createErrorElem';
-import {fieldCharRegex, LETTERS_ONLY} from "../../../config";
+import {fieldCharRegex, LETTERS_ONLY, EMAIL_VALIDATION} from "../../../config";
 
 export function userInfoValidationForm(event){
 
@@ -13,7 +13,10 @@ export function userInfoValidationForm(event){
         surnamePass = false,
         userEmailElem = this.refs.userEmail,
         userEmailVal = this.state.userEmailVal,
-        userEmailPass = false;
+        userEmailPass = false,
+        passwordElem = this.refs.userPassword,
+        passwordVal = this.state.userPasswordVal,
+        passwordPass = false;
 
 
 
@@ -22,18 +25,25 @@ export function userInfoValidationForm(event){
     let userInfoValidationSettings = {
         rules: {
             name: {
-                required: false,
+                required: true,
                 pattern: LETTERS_ONLY,
                 minLength: 2
             },
             surname: {
-                required: false,
+                required: true,
                 pattern: LETTERS_ONLY,
                 minLength: 2
             },
             email: {
-                required: false,
-                pattern: EMAIL
+                required: true,
+                pattern: EMAIL_VALIDATION
+            },
+            password: {
+                required: true,
+                minLength: {
+                    checkMinLength: true,
+                    minLengthVal: 6
+                }
             }
         },
         messages: {
@@ -49,7 +59,11 @@ export function userInfoValidationForm(event){
             },
             email: {
                 required: "Please enter email",
-                email: "Please enter a valid email address"
+                format: "Please enter a valid email address"
+            },
+            password: {
+                required: "Please enter password",
+                minLength: "Password should contain minimum 6 characters"
             }
 
         }
@@ -82,7 +96,7 @@ export function userInfoValidationForm(event){
     if (userInfoValidationSettings.rules.surname.required || surnameVal) {
         if (surnameVal) {
             if (surnameVal.length >= userInfoValidationSettings.rules.surname.minLength){
-                if (surnameVal.match(candidateValidationSettings.rules.surname.pattern)) {
+                if (surnameVal.match(userInfoValidationSettings.rules.surname.pattern)) {
                     surnamePass = true;
                 } else {
                     surnameElem.parentNode.appendChild(createErrorElem(surnameElem, userInfoValidationSettings.messages.surname.format));
@@ -107,20 +121,40 @@ export function userInfoValidationForm(event){
             if (userEmailVal.match(userInfoValidationSettings.rules.email.pattern)) {
                 userEmailPass = true;
             } else {
-                userEmailElem.parentNode.appendChild(createErrorElem(experienceElem, userInfoValidationSettings.messages.email.format));
+                userEmailElem.parentNode.appendChild(createErrorElem(userEmailElem, userInfoValidationSettings.messages.email.format));
                 userEmailPass = false;
             }
 
         } else {
-            userEmailElem.parentNode.appendChild(createErrorElem(experienceElem, userInfoValidationSettings.messages.email.required));
+            userEmailElem.parentNode.appendChild(createErrorElem(userEmailElem, userInfoValidationSettings.messages.email.required));
             userEmailPass = false;
         }
     } else {
         userEmailPass = true;
     }
 
+    if (userInfoValidationSettings.rules.password.required || passwordVal){
+        if (userInfoValidationSettings.rules.password.minLength.checkMinLength) {
+            if (passwordVal.length < userInfoValidationSettings.rules.password.minLength.minLengthVal) {
 
-    if (namePass && surnamePass && userEmailPass) {
+                passwordElem.parentNode.appendChild(createErrorElem(passwordElem, userInfoValidationSettings.messages.password.minLength));
+                passwordPass = false;
+            } else {
+                passwordPass = true;
+            }
+
+        } else {
+            passwordPass = true;
+        }
+    } else {
+        passwordPass = true;
+    }
+
+
+
+
+
+    if (namePass && surnamePass && userEmailPass && passwordPass) {
         return true;
 
     } else {

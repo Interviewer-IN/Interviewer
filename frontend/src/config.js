@@ -1,6 +1,7 @@
 export const fieldCharRegex = /^[a-zA-Z0-9\s!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
 export const LETTERS_ONLY = /^[a-zA-Z]*$/;
 export const fieldSpaceRegex = /^\s*$/;
+export const EMAIL_VALIDATION = /^[0-9a-z-.]+@[0-9a-z-]{2,}\.[a-z]{2,}$/i;
 
 export const TYPE_FILES = '.pdf,.doc,.docx';
 
