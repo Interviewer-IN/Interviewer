@@ -8,6 +8,7 @@ import InterviewersEdit from './../InterviewersEdit';
 import InterviewsUpcoming from "../InterviewsUpcoming";
 import InterviewsCompleted from "../InterviewsCompleted";
 import InterviewEdit from "../InterviewEdit";
+import InterviewFeedbackEdit from "../InterviewFeedbackEdit";
 import Candidates from "./../Candidates";
 import CreateCandidate from "./../CreateCandidate";
 import CandidateEdit from './../CandidateEdit';
@@ -90,16 +91,6 @@ class Main extends Component {
             data = JSON.parse(userData);
         return data;
     }
-
-    // getCookies() {
-    //     let cookies = {};
-    //     for (let cookie of document.cookie.split('; ')) {
-    //         let [name, value] = cookie.split("=");
-    //         cookies[name] = decodeURIComponent(value);
-    //         console.log(cookies[name]);
-    //     }
-    //     return cookies;
-    // }
 
 //--  END CHECKING USER'S ROLE  ----------------
 
@@ -192,6 +183,23 @@ class Main extends Component {
 
                                 )}
                             />
+
+                            <Route
+                                exact path="/interviews-completed/edit-feedback"
+                                name="InterviewsCompleted"
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<InterviewFeedbackEdit {...props}
+                                                              callMakeNote={(status, text, hide) =>
+                                                                  this.handleMakeNote(status, text, hide)}
+                                                              onCheckUserRole={(interview) => this.isHR(interview)}
+
+                                        />) :
+                                        (<Redirect to="/login"/>)
+
+                                )}
+                            />
+
                             <Route
                                 exact path="/interviewers"
                                 name="Interviewers"

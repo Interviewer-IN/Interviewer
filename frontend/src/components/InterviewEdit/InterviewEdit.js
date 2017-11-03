@@ -3,15 +3,17 @@ import Helmet from "react-helmet";
 import {Modal, Button} from "react-bootstrap";
 import {connect} from "react-redux";
 import DatePicker from "react-datepicker";
-import moment from 'moment';
+import moment from "moment";
 import "./InterviewEdit.css";
 import PageTitle from "./../../containers/PageTitle";
 import {getInterviews, updateInterview} from "../../redux/actions/interviewActions";
 import {getVacancies} from "../../redux/actions/vacanciesActions";
-import {getCandidates} from "../../redux/actions/candidatesActions";
+import {getCandidates, getCandidate} from "../../redux/actions/candidatesActions";
 import {showProjects} from "../../redux/actions/projectActions";
 import {getPositions} from "../../redux/actions/positionActions";
 import {getLevels} from "../../redux/actions/levelsActions";
+import Select from "react-select";
+import "react-select/dist/react-select.css";
 
 class InterviewEdit extends Component {
 
@@ -19,22 +21,47 @@ class InterviewEdit extends Component {
         super(props);
         this.state = {
             date: "",
+            isHR: false,
             currentInterview: "",
+            candidate: "",
+            vacancy: "",
             showModalConfirm: false,
             confirmText: "",
-            dateError: "",
-            isHR: false,
         }
     }
 
     componentWillMount() {
-        this.props.onCheckUserRole();
+
+        let isUserHR = this.props.onCheckUserRole(true);
+        if (isUserHR) {
+            this.setState({isHR: true})
+        }
+
         const {dispatch} = this.props;
-        dispatch(getVacancies());
-        dispatch(showProjects());
-        dispatch(getCandidates());
-        dispatch(getPositions());
-        dispatch(getLevels());
+
+        if (!this.props.positions.length){
+            dispatch(getCandidates());
+        }
+
+        if (!this.props.positions.length){
+            dispatch(getVacancies());
+        }
+
+        if (!this.props.projects.length){
+            dispatch(showProjects());
+        }
+
+        if (!this.props.positions.length){
+            dispatch(getPositions());
+        }
+
+        if (!this.props.positions.length){
+            dispatch(getCandidates());
+        }
+
+        if (!this.props.levels.length){
+            dispatch(getLevels());
+        }
 
         if (this.props.interviews.interviews.length < 1) {
             dispatch(getInterviews(this.props.match.params.id)).then(() => {
@@ -47,37 +74,26 @@ class InterviewEdit extends Component {
             let currentInterview = interviews.find(currentInterview => currentInterview.id === +interviewId) || {};
             this.setStates(currentInterview);
         }
-
-        let isUserHR = this.props.onCheckUserRole(true);
-        if (isUserHR) {
-            this.setState({isHR: true})
-        }
     }
 
     setStates(currentInterview) {
+        let currentCandidateID = currentInterview.candidate_id;
+        const {dispatch} = this.props;
+        dispatch(getCandidate(currentCandidateID));
+
         this.setState({currentInterview: currentInterview});
         this.setState({date: moment(currentInterview.date_time)});
     }
 
     handleDateChange(date) {
         this.setState({date: date});
-        this.setState({dateError: ""});
-
     }
 
-    handleCandidateChange(event) {
-        this.setState({candidate: event.target.value});
-        this.setState({candidateError: ""});
-    }
-
-    handleVacancyChange(event) {
-        this.setState({vacancy: event.target.value});
-        this.setState({vacancyError: ""});
-    }
-
-    handleInterviewerChange(event) {
-        this.setState({interviewer: event.target.value});
-        this.setState({interviewerError: ""});
+    showMConfirmMessage() {
+        this.setState({
+            confirmText: "Are you sure you want to cancel without saving changes?"
+        });
+        this.openModalConfirm();
     }
 
     openModalConfirm() {
@@ -97,159 +113,141 @@ class InterviewEdit extends Component {
         this.props.history.push("/interviews-upcoming/");
     }
 
-    validateFormFields(event) {
-        let date = this.state.date,
-            emptyFieldMessage = "Please, choose an option";
-
-        if (!date) {
-            event.preventDefault();
-            this.setState({
-                dateError: emptyFieldMessage
-            });
-        }
-
-        if (date) {
-            let candidateID = this.getOptionID("candidate"),
-                vacancyID = this.getOptionID("vacancy"),
-                interviewID = this.state.currentInterview.id;
-            event.preventDefault();
-            this.props.history.push("/interviews-upcoming");
-            const {dispatch} = this.props;
-            dispatch(updateInterview(
-                {
-                    id: interviewID,
-                    date_time: date,
-                    candidate_id: candidateID,
-                    vacancy_id: vacancyID,
-                    user_id: 19,
-                    rating_id: 12
-                }
-            ));
-        }
-    }
-
-    getOptionID(selectId) {
-        let e = document.getElementById(selectId);
-        let selectedOptionID = e.options[e.selectedIndex].id;
-        return +selectedOptionID;
-    }
-
-    isFieldsNotEmpty(event) {
+    submitForm(event) {
         event.preventDefault();
-        if (this.state.date ||
-            this.state.candidate ||
-            this.state.vacancy ||
-            this.state.interviewer) {
-            this.setState({
-                confirmText: "Are you sure you want to cancel without saving changes?"
-            });
-            this.openModalConfirm();
-        } else {
-            this.props.history.push("/interviews-upcoming");
-        }
-    }
+        let interviewID = this.state.currentInterview.id,
+            candidate = this.state.candidate,
+            vacancy = this.state.vacancy,
+            date = this.state.date,
+            candidateID, vacancyID;
 
+        if (!candidate) {
+            candidateID = this.state.currentInterview.candidate_id;
+        }
+
+        if (!vacancy) {
+            vacancyID = this.state.currentInterview.vacancy_id;
+        }
+
+        if (candidate || vacancy) {
+            candidateID = this.state.candidate.value;
+            vacancyID = this.state.vacancy.value;
+        }
+        this.props.history.push("/interviews-upcoming");
+        const {dispatch} = this.props;
+        dispatch(updateInterview(
+            {
+                id: interviewID,
+                date_time: date,
+                candidate_id: candidateID,
+                vacancy_id: vacancyID,
+                user_id: 19,
+                rating_id: 12
+            }
+        ));
+    }
 
     render() {
+
+        console.log(this.state.currentInterview);
 
         let candidates = this.props.candidates,
             vacancies = this.props.vacancies,
             projects = this.props.projects,
             levels = this.props.levels,
-            positions = this.props.positions,
-            currentCandidateObj = candidates.find(item => this.state.currentInterview.candidate_id === item.id) || "",
-            currentVacancyObj = vacancies.find(item => this.state.currentInterview.vacancy_id === item.id) || "";
+            positions = this.props.positions;
 
-        let showCandidates = (candidate) => {
-            if (candidate) {
+        let showCandidates = () => {
 
-                let options = [],
-                    selectedCandidate;
+            let options = [],
+                selectedCandidate,
+                selectedCandidateLabel;
 
-                if (candidates.length) {
-                    let compareSurname = (a, b) => {
-                            if (a.surname > b.surname) return 1;
-                            if (a.surname < b.surname) return -1;
-                        },
-                        sortedCandidates = candidates.sort(compareSurname) || {};
+            if (candidates.length && this.state.currentInterview) {
+                let compareSurname = (a, b) => {
+                        if (a.surname > b.surname) return 1;
+                        if (a.surname < b.surname) return -1;
+                    },
+                    sortedCandidates = candidates.sort(compareSurname) || {};
 
-                    options = sortedCandidates.map((item, index) => {
-                        let currentCandidate = "" + item.surname + " " + item.name + "";
-                        return (
-                            <option key={index} id={item.id}>{currentCandidate}</option>
-                        )
-                    });
-                    selectedCandidate = " " + currentCandidateObj.surname + " " + currentCandidateObj.name + " ";
+
+                sortedCandidates.map((item, index) => {
+                    let currentCandidate = {
+                        value: item.id,
+                        label: "" + item.surname + " " + item.name + "", className: "option-class"
+                    };
+                    options.push(currentCandidate);
+                });
+
+                selectedCandidate = options.find(current => this.state.currentInterview.candidate_id === current.value);
+                if (selectedCandidate) {
+                    selectedCandidateLabel = selectedCandidate.label;
                 }
-
-                return (
-                    <div className="form-group">
-                        <label className="control-label">Candidate</label>
-                        <select className="form-control form-control-sm filter-select custom-mode"
-                                id="candidate"
-                                onChange={(event) => this.handleCandidateChange(event)}
-                        >
-                            <option id={candidate.id}>{selectedCandidate}</option>
-                            {options}
-                        </select>
-                    </div>
-                );
             }
+
+            return (
+
+                <div className="form-group search-box_input">
+                    <label className="control-label">Candidate</label>
+                    <Select
+                        name="university"
+                        options={options}
+                        onChange={(candidate) => this.setState({candidate})}
+                        value={this.state.candidate}
+                        placeholder={selectedCandidateLabel}
+                    />
+                </div>
+            );
         };
 
-        let showVacancies = (vacancy) => {
-            if (vacancy) {
+        let showVacancies = () => {
 
-                let options = [],
-                    selectedVacancy;
+            let options = [],
+                selectedVacancy,
+                selectedVacancyLabel;
 
-                if (vacancies.length && positions.length && projects.length && levels.length) {
+            if (vacancies.length && positions.length && projects.length && levels.length && this.state.currentInterview) {
 
-                    let comparePositions = (a, b) => {
-                            let first = positions.find(item => a.position_id === item.id);
-                            let second = positions.find(item => b.position_id === item.id);
+                let comparePositions = (a, b) => {
+                        let first = positions.find(item => a.position_id === item.id);
+                        let second = positions.find(item => b.position_id === item.id);
 
-                            if (first.name > second.name) return 1;
-                            if (first.name < second.name) return -1;
-                        },
-                        sortedVacancies = vacancies.sort(comparePositions) || {};
+                        if (first.name > second.name) return 1;
+                        if (first.name < second.name) return -1;
+                    },
+                    sortedVacancies = vacancies.sort(comparePositions) || {};
 
-                    options = sortedVacancies.map((item, index) => {
-                        let currentProject = projects.find(current => item.project_id === current.id),
-                            currentLevel = levels.find(current => item.level_id === current.id),
-                            currentPosition = positions.find(current => item.position_id === current.id);
+                sortedVacancies.map((item, index) => {
+                    let currentProject = projects.find(current => item.project_id === current.id),
+                        currentLevel = levels.find(current => item.level_id === current.id),
+                        currentPosition = positions.find(current => item.position_id === current.id);
 
+                    let currentVacancy = {value: item.id,
+                        label: "" + currentPosition.name + " " + currentLevel.name + " " + currentProject.title,
+                        className: "option-class"};
+                    options.push(currentVacancy);
+                });
 
-                        let position = "" + currentPosition.name + " " + currentLevel.name + " " + currentProject.title;
-                        return (
-                            <option key={index} id={item.id}>{position}</option>
-                        )
-                    });
-
-                    let selectedProject = projects.find(current => vacancy.project_id === current.id),
-                        selectedLevel = levels.find(current => vacancy.level_id === current.id),
-                        selectedPosition = positions.find(current => vacancy.position_id === current.id);
-
-                    selectedVacancy = " " + selectedPosition.name + " " +
-                        selectedLevel.name + " " +
-                        selectedProject.title + " ";
+                selectedVacancy = options.find(current => this.state.currentInterview.vacancy_id === current.value);
+                if (selectedVacancy) {
+                    selectedVacancyLabel = selectedVacancy.label;
                 }
-
-                return (
-                    <div className="form-group">
-                        <label className="control-label">Vacancy</label>
-                        <select className="form-control form-control-sm filter-select custom-mode"
-                                id="vacancy"
-                                onChange={(event) => this.handleVacancyChange(event)}
-                        >
-                            <option id={vacancy.id}>{selectedVacancy}</option>
-                            {options}
-                        </select>
-                    </div>
-                );
             }
-        };
 
+            return (
+
+                <div className="form-group search-box_input">
+                    <label className="control-label">Vacancy</label>
+                    <Select
+                        name="university"
+                        options={options}
+                        onChange={(vacancy) => this.setState({ vacancy })}
+                        value={this.state.vacancy}
+                        placeholder={selectedVacancyLabel}
+                    />
+                </div>
+            );
+        };
 
         let id = this.state.currentInterview.id;
 
@@ -269,14 +267,13 @@ class InterviewEdit extends Component {
                             linkForButton=''
                         />
 
-                        <form onSubmit={(event) => this.validateFormFields(event)}>
+                        <form onSubmit={(event) => this.submitForm(event)}>
 
                             <div className="clearfix form-group">
                                 <div className="create-interview-select">
                                     <label className="control-label">Date</label>
                                     <DatePicker
                                         className="form-control form-control-sm filter-select"
-                                        placeholderText="Date"
                                         selected={this.state.date}
                                         onChange={(event) => this.handleDateChange(event)}
                                         showTimeSelect
@@ -288,8 +285,8 @@ class InterviewEdit extends Component {
                                 </div>
                             </div>
 
-                            {showCandidates(currentCandidateObj)}
-                            {showVacancies(currentVacancyObj)}
+                            {showCandidates()}
+                            {showVacancies()}
 
                             {/*<div className="form-group form-field-margin">*/}
                             {/*<div>*/}
@@ -313,8 +310,9 @@ class InterviewEdit extends Component {
                                 </button>
                                 <button
                                     id="create-interview-resetBtn"
+                                    type="reset"
                                     className="btn btn-danger"
-                                    onClick={(event) => this.isFieldsNotEmpty(event)}
+                                    onClick={(event) => this.showMConfirmMessage(event)}
                                 >Cancel
                                 </button>
                             </div>
@@ -356,10 +354,10 @@ function mapStateToProps(state) {
         currentInterview: state.interviews.currentInterview,
         vacancies: state.vacancies.vacancies,
         candidates: state.candidates.candidates,
+        currentCandidate: state.candidates.currentCandidate,
         projects: state.project.projects,
         levels: state.levels.levels,
         positions: state.positions.positions,
-
     }
 }
 

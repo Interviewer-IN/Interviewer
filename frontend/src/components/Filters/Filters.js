@@ -24,8 +24,6 @@ class Filters extends Component {
     componentWillMount() {
         const {dispatch} = this.props;
 
-        console.log(this.props);
-
         if (!this.props.newProject.projects.length){
             dispatch(showProjects());
         }

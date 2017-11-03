@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Modal, Button, PanelGroup} from "react-bootstrap";
 import Helmet from "react-helmet";
-import "./interviewsCompleted.css";
+import "./InterviewCompleted.css";
 import {showInterviews, removeInterview} from "../../redux/actions/interviewActions";
 import {getVacancies} from "../../redux/actions/vacanciesActions";
 import {showProjects} from "../../redux/actions/projectActions";
@@ -44,8 +44,6 @@ class InterviewsCompleted extends Component {
     componentWillMount() {
         let isUserHR = this.props.onCheckUserRole(true);
         const {dispatch} = this.props;
-
-        console.log(this.props);
 
         if (!this.props.interviews.interviews.length){
             dispatch(showInterviews());
@@ -148,6 +146,10 @@ class InterviewsCompleted extends Component {
         this.setState({
             dateToFilter: dateToFilterVal
         });
+    }
+
+    switchToEditMode(currentID) {
+        this.props.history.push("/interviews-completed/edit-feedback");
     }
 
 
@@ -275,7 +277,7 @@ class InterviewsCompleted extends Component {
                             "Rating: " + currentRating.grade;
                     }
 
-                    const panelTitle = (
+                    const PANEL_TITLE = (
                         <div className="custom-panel-title panel-list-item">
                             <div className="custom-panel-title__right-side">
                                 <div className="panel-collapse-btn">
@@ -293,9 +295,9 @@ class InterviewsCompleted extends Component {
                         </div>
                     );
 
-                    const description = (
+                    const PANEL_DESCRIPTION = (
                         <div>
-                            <p className="interview-details-header"><strong>Feedback</strong></p>
+                            <p className="interview-details__header"><strong>Feedback</strong></p>
                             {value.feedback}
                         </div>
                     );
@@ -305,10 +307,10 @@ class InterviewsCompleted extends Component {
                         return (
                             <Panels
                                 key={id}
-                                id={value.id}
+                                id={"intCompl" + value.id}
                                 showActionBtn={false}
-                                titleConst={panelTitle}
-                                description={description}
+                                titleConst={PANEL_TITLE}
+                                description={PANEL_DESCRIPTION}
                                 showDeleteBtn={true}
                                 deleteBtnId={"delete-feedback-" + id}
                                 callDelete={(event) => this.openModalConfirm(id)}
@@ -318,11 +320,13 @@ class InterviewsCompleted extends Component {
                         return (
                             <Panels
                                 key={id}
-                                id={value.id}
-                                showActionBtn={false}
-                                titleConst={panelTitle}
-                                description={description}
+                                id={"intCompl" + value.id}
+                                showActionBtn={true}
+                                titleForActionBtn='Edit Feedback'
+                                titleConst={PANEL_TITLE}
+                                description={PANEL_DESCRIPTION}
                                 showDeleteBtn={false}
+                                callAction={(event) => this.switchToEditMode(id)}
                             />
                         )
                     }

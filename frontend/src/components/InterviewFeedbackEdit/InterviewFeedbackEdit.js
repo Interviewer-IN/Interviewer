@@ -3,13 +3,13 @@ import Helmet from "react-helmet";
 import {Modal, Button} from "react-bootstrap";
 import {connect} from "react-redux";
 import PageTitle from "./../../containers/PageTitle";
-import "./CreateInterviewFeedback.css";
+import "./InterviewFeedbackEdit.css";
 import {fieldSpaceRegex} from "../../config";
 import {getRatings} from "../../redux/actions/ratingActions";
 import TextareaAutosize from "react-autosize-textarea";
 
 
-class CreateInterviewFeedback extends Component {
+class InterviewFeedbackEdit extends Component {
 
     constructor(props) {
         super(props);
@@ -197,16 +197,16 @@ class CreateInterviewFeedback extends Component {
         return (
             <div>
                 <Helmet>
-                    <title>Add Feedback</title>
+                    <title>Edit Feedback</title>
                 </Helmet>
                 <div className="row sameheight-container custom-btn-group">
                     <div className="col-md-12">
 
                         <PageTitle
-                            pageTitle='Add Feedback'
+                            pageTitle='Edit Feedback'
                             showBackBtn={true}
                             showButton={false}
-                            backBtnId="back-create-feedback"
+                            backBtnId="back-edit-feedback"
                             titleForButton=''
                             linkForButton=''
                         />
@@ -225,7 +225,7 @@ class CreateInterviewFeedback extends Component {
                                 <label className="control-label form-label">Question 1</label>
                                 <p className="form-sublabel back-link">Maximum 2000 characters</p>
                                 <TextareaAutosize
-                                    id="feedback-question1"
+                                    id="feedback-edit-question1"
                                     type="text"
                                     name="question1"
                                     placeholder='Input your '
@@ -245,7 +245,7 @@ class CreateInterviewFeedback extends Component {
                                 <label className="control-label form-label">Question 2</label>
                                 <p className="form-sublabel back-link">Maximum 2000 characters</p>
                                 <TextareaAutosize
-                                    id="feedback-question2"
+                                    id="feedback-edit-question2"
                                     name="question2"
                                     placeholder="Input Description"
                                     className="form-control boxed"
@@ -263,7 +263,7 @@ class CreateInterviewFeedback extends Component {
                                 <label className="control-label form-label">Question 3</label>
                                 <p className="form-sublabel back-link">Maximum 2000 characters</p>
                                 <TextareaAutosize
-                                    id="feedback-question3"
+                                    id="feedback-edit-question3"
                                     name="question3"
                                     placeholder="Input Description"
                                     className="form-control boxed"
@@ -281,7 +281,7 @@ class CreateInterviewFeedback extends Component {
                                 <label className="control-label form-label">Question 4</label>
                                 <p className="form-sublabel back-link">Maximum 2000 characters</p>
                                 <TextareaAutosize
-                                    id="feedback-question4"
+                                    id="feedback-edit-question4"
                                     name="question4"
                                     placeholder="Input Description"
                                     className="form-control boxed"
@@ -299,7 +299,7 @@ class CreateInterviewFeedback extends Component {
                                 <label className="control-label form-label">Question 5</label>
                                 <p className="form-sublabel back-link">Maximum 2000 characters</p>
                                 <TextareaAutosize
-                                    id="feedback-question5"
+                                    id="feedback-edit-question5"
                                     name="question5"
                                     placeholder="Input Description"
                                     className="form-control boxed"
@@ -317,7 +317,7 @@ class CreateInterviewFeedback extends Component {
                                 <label className="control-label form-label">Question 6</label>
                                 <p className="form-sublabel back-link">Maximum 2000 characters</p>
                                 <TextareaAutosize
-                                    id="feedback-question6"
+                                    id="interview-question6"
                                     name="question6"
                                     placeholder="Input Description"
                                     className="form-control boxed"
@@ -333,13 +333,13 @@ class CreateInterviewFeedback extends Component {
 
                             <div className="form-group">
                                 <button
-                                    id="create-feedback-submitBtn"
+                                    id="create-interview-submitBtn"
                                     type="submit"
                                     className="btn btn-primary"
                                 >Create
                                 </button>
                                 <button
-                                    id="create-feedback-resetBtn"
+                                    id="create-interview-resetBtn"
                                     type="reset"
                                     className="btn btn-danger"
                                     onClick={(event) => this.isFieldsNotEmpty(event)}
@@ -384,4 +384,4 @@ function mapStateToProps (state) {
     }
 }
 
-export default connect(mapStateToProps)(CreateInterviewFeedback);
+export default connect(mapStateToProps)(InterviewFeedbackEdit);

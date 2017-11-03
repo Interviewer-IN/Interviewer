@@ -8,17 +8,34 @@
   margin-top: 30px !important;
 }
 
-.interview-details-header {
-  color: #85CE36;
-  font-size: 1.1rem;
-  font-weight: 400;
-}
-
-.interview-details-down {
-  text-align: justify;
-}
-
 .interview-details {
-  width: 50%;
-  text-align: justify;
+
+  &__header {
+    color: #85CE36;
+    font-size: 1.1rem;
+    font-weight: 400;
+  }
+
+  &__left {
+    width: 60%;
+    float: left;
+
+    @media (max-width: 420px) {
+      float: none;
+    }
+  }
+
+  &__right {
+    width: 30%;
+    float: right;
+
+    @media (max-width: 420px) {
+      float: none;
+    }
+  }
+
+  &__down {
+    text-align: justify;
+  }
+
 }
