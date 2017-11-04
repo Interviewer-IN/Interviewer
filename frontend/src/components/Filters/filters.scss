@@ -120,6 +120,14 @@
     border-radius: 0;
   }
 
+  &__day--disabled {
+    color: #ccc !important;
+  }
+
+  &__day--disabled:hover {
+    background-color: transparent !important;
+  }
+
   &__close-icon::after {
     border-radius: 1px !important;
     font-size: 15px !important;

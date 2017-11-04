@@ -171,9 +171,6 @@ class CreateInterview extends Component {
 
     render() {
 
-        let now = Date.now();
-        console.log(now);
-
         let candidates = this.props.candidates,
             vacancies = this.props.vacancies,
             projects = this.props.projects,
@@ -282,6 +279,7 @@ class CreateInterview extends Component {
                             <div className="clearfix form-group">
                                 <div className="create-interview-select">
                                     <label className="control-label">Date</label>
+                                    <p className="form-sublabel back-link">You can pick only date starting from today</p>
                                     <DatePicker
                                         id="create-int-datePick"
                                         className="form-control form-control-sm filter-select"
@@ -292,7 +290,7 @@ class CreateInterview extends Component {
                                         timeFormat="HH:mm"
                                         timeIntervals={15}
                                         dateFormat="LLL"
-                                        excludeDates={[moment(), moment().subtract(1, "days")]}
+                                        minDate={moment()}
                                     />
                                     <span className="has-error error-message">{this.state.dateError}</span>
                                 </div>
