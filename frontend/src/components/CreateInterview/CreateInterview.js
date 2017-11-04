@@ -5,6 +5,7 @@ import {Modal, Button} from "react-bootstrap";
 import "./CreateInterview.css";
 import {connect} from "react-redux";
 import DatePicker from "react-datepicker";
+import moment from "moment";
 import {createInterview} from "../../redux/actions/interviewActions";
 import {getVacancies} from "../../redux/actions/vacanciesActions";
 import {getCandidates} from "../../redux/actions/candidatesActions";
@@ -170,6 +171,9 @@ class CreateInterview extends Component {
 
     render() {
 
+        let now = Date.now();
+        console.log(now);
+
         let candidates = this.props.candidates,
             vacancies = this.props.vacancies,
             projects = this.props.projects,
@@ -288,6 +292,7 @@ class CreateInterview extends Component {
                                         timeFormat="HH:mm"
                                         timeIntervals={15}
                                         dateFormat="LLL"
+                                        excludeDates={[moment(), moment().subtract(1, "days")]}
                                     />
                                     <span className="has-error error-message">{this.state.dateError}</span>
                                 </div>
