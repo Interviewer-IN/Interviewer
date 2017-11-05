@@ -50,10 +50,10 @@
       text-decoration: none;
     }
     &.active{
-      background: #78bd2e;
+      background: #78bd2e !important;
     }
     &.has-active-child{
-      background: #78bd2e;
+      background: transparent;
       color: #fff;
     }
   }
