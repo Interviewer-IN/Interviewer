@@ -3,7 +3,11 @@ import {connect} from "react-redux";
 import {Modal, Button, PanelGroup} from "react-bootstrap";
 import Helmet from "react-helmet";
 import "./interviewsUpcoming.css";
-import {showInterviews, removeInterview, createInterview} from "../../redux/actions/interviewActions";
+import {
+    showInterviews,
+    removeInterview,
+    createInterview,
+} from "../../redux/actions/interviewActions";
 import {getVacancies} from "../../redux/actions/vacanciesActions";
 import {showProjects} from "../../redux/actions/projectActions";
 import {getCandidates} from "../../redux/actions/candidatesActions";
@@ -45,19 +49,19 @@ class InterviewsUpcoming extends Component {
         let isUserHR = this.props.onCheckUserRole(true);
         const {dispatch} = this.props;
 
-        if (!this.props.interviews.interviews.length){
+        if (!this.props.interviews.interviews.length) {
             dispatch(showInterviews());
         }
 
-        if (!this.props.vacancies.length){
+        if (!this.props.vacancies.length) {
             dispatch(getVacancies());
         }
 
-        if (!this.props.projects.length){
+        if (!this.props.projects.length) {
             dispatch(showProjects());
         }
 
-        if (!this.props.candidates.length){
+        if (!this.props.candidates.length) {
             dispatch(getCandidates());
         }
 
@@ -154,7 +158,6 @@ class InterviewsUpcoming extends Component {
     render() {
 
 
-
         let pageTitle;
         if (this.state.isHR) {
             pageTitle = (
@@ -186,9 +189,12 @@ class InterviewsUpcoming extends Component {
             levels = this.props.levels,
             positions = this.props.positions,
             candidates = this.props.candidates,
+            idExpandedElement = this.props.idExpandedElement,
             dates = [],
             interviewsByDates,
             filterErrorMessage;
+
+        console.log(interviews);
 
         if (interviews.length && vacancies.length && projects.length && levels.length && positions.length && candidates.length) {
 
@@ -274,6 +280,7 @@ class InterviewsUpcoming extends Component {
                         }
                     });
 
+
                     let sortedInterviews = todayInterviews.sort(compareTime) || {};
                     let interviewsToDisplay = sortedInterviews.map((value, index) => {
 
@@ -299,23 +306,24 @@ class InterviewsUpcoming extends Component {
                             };
 
 
-                        let checkCandidateCV = () => {
-                            if (candidateCV) {
-                                return (
-                                    <a href={candidateCV} className="download-block form-group text-green text-green--hover" download>
-                                        <span className="download-block__icon fa fa-download"/>
-                                        <span className="download-block__title">Download CV</span>
-                                    </a>
-                                )
-                            } else {
-                                return (
-                                    <a className="download-block form-group download-block--disabled text-muted">
-                                        <span className="download-block__icon fa fa-download"/>
-                                        <span className="download-block__title text-bold--100">Download CV</span>
-                                    </a>
-                                )
-                            }
-                        };
+                            let checkCandidateCV = () => {
+                                if (candidateCV) {
+                                    return (
+                                        <a href={candidateCV}
+                                           className="download-block form-group text-green text-green--hover" download>
+                                            <span className="download-block__icon fa fa-download"/>
+                                            <span className="download-block__title">Download CV</span>
+                                        </a>
+                                    )
+                                } else {
+                                    return (
+                                        <a className="download-block form-group download-block--disabled text-muted">
+                                            <span className="download-block__icon fa fa-download"/>
+                                            <span className="download-block__title text-bold--100">Download CV</span>
+                                        </a>
+                                    )
+                                }
+                            };
 
                             if (this.state.isHR) {
                                 panelTitleText = time + " | " +
@@ -383,14 +391,17 @@ class InterviewsUpcoming extends Component {
                                 </div>
                             );
 
+                            let toExpandElement = () => {
+                                return (id === idExpandedElement) ? (true) : (false);
+                            };
+
                             if (this.state.isHR) {
-                                return (<PanelGroup bsClass='custom-panel-group'
-                                                    accordion key={id}
-                                    >
+                                return (
                                         <Panels
                                             key={id}
-                                            id={"intUpcom" + value.id}
+                                            id={"intUpcom" + id}
                                             showActionBtn={true}
+                                            defaultExpanded={toExpandElement()}
                                             titleForActionBtn='Activate'
                                             titleConst={PANEL_TITLE}
                                             description={PANEL_DESCRIPTION}
@@ -405,23 +416,20 @@ class InterviewsUpcoming extends Component {
                                             callAction={(event) => this.activateInterview(id)}
                                             callDublicate={() => this.duplicateInterview(duplicateData)}
                                         />
-                                    </PanelGroup>
+
                                 )
                             } else {
                                 return (
-                                    <PanelGroup bsClass='custom-panel-group'
-                                                accordion key={id}
-                                    >
                                         <Panels
                                             key={id}
                                             id={"intUpcom" + value.id}
                                             showActionBtn={true}
+                                            defaultExpanded={toExpandElement()}
                                             titleForActionBtn='Add feedback'
                                             titleConst={PANEL_TITLE}
                                             description={PANEL_DESCRIPTION}
                                             callAction={(event) => this.addFeedback(id)}
                                         />
-                                    </PanelGroup>
                                 )
                             }
                         }
@@ -429,7 +437,7 @@ class InterviewsUpcoming extends Component {
                     return (
                         <div key={index}>
                             <p className="interview-dates">{dateToDisplay}</p>
-                            {interviewsToDisplay}
+                                {interviewsToDisplay}
                         </div>
                     )
                 });
@@ -488,7 +496,9 @@ class InterviewsUpcoming extends Component {
                     </div>
                 </div>
                 <div className="interview-panels-block">
-                    {interviewsByDates}
+                    <PanelGroup bsClass='custom-panel-group'>
+                        {interviewsByDates}
+                    </PanelGroup>
                 </div>
 
                 <Modal show={this.state.showModalConfirm}
@@ -530,7 +540,7 @@ function mapStateToProps(state) {
         levels: state.levels.levels,
         positions: state.positions.positions,
         candidates: state.candidates.candidates,
-      //  currentProject: state.project.currentProject,
+        idExpandedElement: state.interviews.idExpandedElement
     }
 }
 

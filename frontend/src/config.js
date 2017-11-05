@@ -1,6 +1,6 @@
-export const fieldCharRegex = /^[a-zA-Z0-9\s!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
+export const FIELD_CHAR_REGEX = /^[a-zA-Z0-9\s!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
 export const LETTERS_ONLY = /^[a-zA-Z]*$/;
-export const fieldSpaceRegex = /^\s*$/;
+export const FIELD_SPACE_REGEX = /^\s*$/;
 
 export const TYPE_FILES = '.pdf,.doc,.docx';
 
