@@ -194,8 +194,6 @@ class InterviewsUpcoming extends Component {
             interviewsByDates,
             filterErrorMessage;
 
-        console.log(interviews);
-
         if (interviews.length && vacancies.length && projects.length && levels.length && positions.length && candidates.length) {
 
             interviews = interviews.filter((current) => {
