@@ -59,11 +59,6 @@ class SideMenu extends Component {
         };
     }
 
-    foo() {
-        console.log("hi")
-    }
-
-
     render() {
 
         let changeMenuItems = () => {
@@ -73,51 +68,25 @@ class SideMenu extends Component {
             if (this.state.isHr) {
 
                 dashboard = [
-                    // {
-                    //     name: '/interviews',
-                    //     icon: 'handshake-o',
-                    //     label: 'Interviews',
-                    //     to: '/interviews-upcoming',
-                    //     content: [
-                    //         {
-                    //             name: '/interviews-upcoming',
-                    //             icon: 'square-o',
-                    //             label: 'Upcoming',
-                    //             to: '/interviews-upcoming',
-                    //         },
-                    //         {
-                    //             name: '/interviews-completed',
-                    //             icon: 'check-square-o',
-                    //             label: 'Completed',
-                    //             to: '/interviews-completed',
-                    //         }
-                    //     ]
-                    // },
-
                     {
-                        id: 1,
                         name: '/interviews',
                         icon: 'handshake-o',
                         label: 'Interviews',
                         to: '/interviews-upcoming',
-                    },
-
-                    {
-                        id: 2,
-                        parentId: 1,
-                        name: '/interviews-upcoming',
-                        icon: 'square-o',
-                        label: 'Upcoming',
-                        to: '/interviews-upcoming',
-                    },
-
-                    {
-                        id: 3,
-                        parentId: 1,
-                        name: '/interviews-completed',
-                        icon: 'check-square-o',
-                        label: 'Completed',
-                        to: '/interviews-completed',
+                        content: [
+                            {
+                                name: '/interviews-upcoming',
+                                icon: 'square-o',
+                                label: 'Upcoming',
+                                to: '/interviews-upcoming',
+                            },
+                            {
+                                name: '/interviews-completed',
+                                icon: 'check-square-o',
+                                label: 'Completed',
+                                to: '/interviews-completed',
+                            }
+                        ]
                     },
 
                     {
