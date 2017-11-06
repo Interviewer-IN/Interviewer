@@ -8,6 +8,8 @@ export {createErrorElem} from './createErrorElem/createErrorElem';
 export {getBase64} from './convertToBase64/convertToBase';
 export {filterByDates, setErrorDateMessage} from './filtersUtils/filterByDate';
 export {filterByPosition, filterByLevel, filterByProject, filterByRating} from './filtersUtils/filtersForInterviews';
+// export {createSearchBox, searchByLi} from './searchBox/searchBox';
+
 
 //-- CANDIDATES ------
 export {candidatesValidationFrom} from './candidates/candidatesValidationForm/candidatesValidationForm';
@@ -19,4 +21,4 @@ export {interviewersValidationForm} from './interviewers/interviewersValidationF
 export {userInfoValidationForm} from './userInfo/userInfoValidationForm/userInfoValidationForm';
 
 //-- CHANGE_PASSWORD ------
-export {changePassValidationForm} from './ChangePassword/changePassValidationForm/changePassValidationForm';
+export {changePassValidationForm} from './changePassword/changePassValidationForm/changePassValidationForm';
