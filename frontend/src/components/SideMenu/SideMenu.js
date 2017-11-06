@@ -155,10 +155,10 @@ class SideMenu extends Component {
 
                 let settings = [
                     {
-                        name: '/username',
+                        name: '/user-info',
                         icon: 'user-circle-o',
-                        label: 'Username',
-                        to: '/username'
+                        label: 'User-info',
+                        to: '/user-info'
                     },
                     {
                         name: '/password',
@@ -197,6 +197,7 @@ class SideMenu extends Component {
                 label = menuItem.label;
             }
 
+            if (pathName.indexOf('#/user-info') === 0 || pathName.indexOf('#/password') === 0) {
             // let to;
             // if (menuItem && menuItem.label != ('Interviews' || 'Vacancies')) {
             //     to = menuItem.to;
