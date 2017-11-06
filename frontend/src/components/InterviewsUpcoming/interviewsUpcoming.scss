@@ -39,3 +39,34 @@
   }
 
 }
+
+.interview-icon {
+  color: #ff1111;
+}
+
+.tooltip-icon {
+  position: relative;
+  display: inline-block;
+
+  &__text {
+    visibility: hidden;
+    width: 200px;
+    color: #ff1111;
+    text-align: center;
+    border-radius: 1px;
+    border: 1px solid #ff1111;
+    padding: 4px 0;
+    position: absolute;
+    z-index: 1;
+    margin-left: 10px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 80%;
+  }
+
+  &:hover {
+    .tooltip-icon__text {
+      visibility: visible;
+    }
+  }
+
+}
