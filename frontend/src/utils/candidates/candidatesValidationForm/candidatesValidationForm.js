@@ -1,6 +1,6 @@
 import {removeAllErrorMessages} from './../../removeAllErrorMessages/removeAllErrorMessages';
 import {createErrorElem} from './../../createErrorElem/createErrorElem';
-import {fieldCharRegex, LETTERS_ONLY, NUMBERS_ONLY} from "../../../config";
+import {FIELD_CHAR_REGEX, LETTERS_ONLY, NUMBERS_ONLY} from "../../../config";
 
 export function candidatesValidationFrom(event){
 
@@ -63,18 +63,18 @@ export function candidatesValidationFrom(event){
             },
             experience: {
                 required: false,
-                pattern: fieldCharRegex
+                pattern: FIELD_CHAR_REGEX
             },
             contactInfo: {
                 required: true,
-                pattern: fieldCharRegex
+                pattern: FIELD_CHAR_REGEX
             },
             uploadCV: {
                 required: false
             },
             additionalNotes: {
                 required: false,
-                pattern: fieldCharRegex
+                pattern: FIELD_CHAR_REGEX
             }
         },
         messages: {

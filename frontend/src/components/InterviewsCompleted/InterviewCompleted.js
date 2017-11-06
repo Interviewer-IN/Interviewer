@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Modal, Button, PanelGroup} from "react-bootstrap";
 import Helmet from "react-helmet";
+import moment from "moment";
 import "./InterviewCompleted.css";
 import {showInterviews, removeInterview} from "../../redux/actions/interviewActions";
 import {getVacancies} from "../../redux/actions/vacanciesActions";
@@ -245,9 +246,7 @@ class InterviewsCompleted extends Component {
                 interviewsToDisplay = interviewsSortedByDates.map((value, index) => {
 
                     let id = value.id,
-                        currentDate = new Date(value.date_time).toLocaleString('en-GB', {
-                            day: 'numeric', month: 'numeric', year: 'numeric'
-                        }),
+                        currentDate = moment(new Date(value.date_time)).format("DD" + "/" + "MM" + "/" + "YYYY"),
                         currentVacancy = vacancies.find(item => value.vacancy_id === item.id),
                         currentProject = projects.find(item => currentVacancy.project_id === item.id),
                         currentLevel = levels.find(item => currentVacancy.level_id === item.id),
