@@ -6,7 +6,7 @@ import {Modal, Button} from "react-bootstrap";
 import "./CreateProject.css";
 import {connect} from "react-redux";
 import {createProject} from "../../redux/actions/projectActions";
-import {fieldCharRegex, fieldSpaceRegex} from "../../config"
+import {FIELD_CHAR_REGEX, FIELD_SPACE_REGEX} from "../../config"
 
 class CreateProject extends Component {
 
@@ -63,16 +63,16 @@ class CreateProject extends Component {
         let wrongCharMessage = "Please, use only latin letters, numbers and special symbols";
         let emptyFieldMessage = "Please, fill the field";
         let existTitleMessage = "This title already exists. Please, use only unique titles";
-        let emptyTitle = !title || title.match(fieldSpaceRegex);
-        let emptyDescription = !description || description.match(fieldSpaceRegex);
+        let emptyTitle = !title || title.match(FIELD_SPACE_REGEX);
+        let emptyDescription = !description || description.match(FIELD_SPACE_REGEX);
 
-        if (!fieldCharRegex.test(title)) {
+        if (!FIELD_CHAR_REGEX.test(title)) {
             event.preventDefault();
             this.setState({
                 titleError: wrongCharMessage
             });
         }
-        if (!fieldCharRegex.test(description)) {
+        if (!FIELD_CHAR_REGEX.test(description)) {
             event.preventDefault();
             this.setState({
                 descriptionError: wrongCharMessage
@@ -98,8 +98,8 @@ class CreateProject extends Component {
 
         }
         if (!emptyTitle && !emptyDescription &&
-            fieldCharRegex.test(title) &&
-            fieldCharRegex.test(description) &&
+            FIELD_CHAR_REGEX.test(title) &&
+            FIELD_CHAR_REGEX.test(description) &&
             this.isTitleUnique()) {
             event.preventDefault();
             this.props.history.push("/projects");

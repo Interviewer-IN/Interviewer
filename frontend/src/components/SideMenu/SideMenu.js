@@ -72,6 +72,7 @@ class SideMenu extends Component {
                         name: '/interviews',
                         icon: 'handshake-o',
                         label: 'Interviews',
+                        to: '/interviews-upcoming',
                         content: [
                             {
                                 name: '/interviews-upcoming',
@@ -87,12 +88,14 @@ class SideMenu extends Component {
                             }
                         ]
                     },
+
                     {
                         name: '/interviewers',
                         icon: 'user-o',
                         label: 'Interviewers',
                         to: '/interviewers',
                     },
+
                     {
                         name: '/vacancies',
                         icon: 'binoculars',
@@ -177,10 +180,10 @@ class SideMenu extends Component {
                 }
             });
 
-
             let menuItem = items.find(function (item) {
                 return pathName === item.name;
             });
+
 
             if (!menuItem) {
                 menuItem = items.find(function (item) {
@@ -194,6 +197,19 @@ class SideMenu extends Component {
                 label = menuItem.label;
             }
 
+            // let to;
+            // if (menuItem && menuItem.label != ('Interviews' || 'Vacancies')) {
+            //     to = menuItem.to;
+            // }
+            //
+            // if(menuItem && menuItem.label === 'Interviews') {
+            //     to = '/interviews-upcoming';
+            // }
+            //
+            // if(menuItem && menuItem.label === 'Vacancies') {
+            //     to = '//vacancies-open';
+            // }
+
             if (pathName.indexOf('#/username') === 0 || pathName.indexOf('#/password') === 0) {
                 return (
                     <MetisMenu
@@ -202,7 +218,6 @@ class SideMenu extends Component {
                         LinkComponent={RouterLink}
                         classNameStateIcon="arrow"
                         classNameItemActive="active"
-
                     />
                 );
             } else {
@@ -216,7 +231,6 @@ class SideMenu extends Component {
                     />
                 );
             }
-
         };
 
         return (

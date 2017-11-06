@@ -4,7 +4,7 @@ import {Modal, Button} from "react-bootstrap";
 import {connect} from "react-redux";
 import PageTitle from "./../../containers/PageTitle";
 import "./InterviewFeedbackEdit.css";
-import {fieldSpaceRegex} from "../../config";
+import {FIELD_SPACE_REGEX} from "../../config";
 import {getRatings} from "../../redux/actions/ratingActions";
 import TextareaAutosize from "react-autosize-textarea";
 
@@ -105,7 +105,7 @@ class InterviewFeedbackEdit extends Component {
 
         questions.forEach((item, i) => {
             let question = item,
-                emptyQuestion = !question || question.match(fieldSpaceRegex),
+                emptyQuestion = !question || question.match(FIELD_SPACE_REGEX),
                 fieldId = "question"+(i+1)+"-span";
             emptyQuestions.push(emptyQuestion);
             if (emptyQuestion) {
