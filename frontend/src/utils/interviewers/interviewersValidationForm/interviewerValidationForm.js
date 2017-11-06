@@ -1,6 +1,6 @@
 import {removeAllErrorMessages} from './../../removeAllErrorMessages/removeAllErrorMessages';
 import {createErrorElem} from './../../createErrorElem/createErrorElem';
-import {fieldCharRegex, EMAIL_VALIDATION} from "../../../config";
+import {FIELD_CHAR_REGEX, EMAIL_VALIDATION} from "../../../config";
 
 export function interviewersValidationForm(event) {
     let currentForm = event.target,
@@ -35,7 +35,7 @@ export function interviewersValidationForm(event) {
             },
             description: {
                 required: true,
-                pattern: fieldCharRegex
+                pattern: FIELD_CHAR_REGEX
             },
 
         },
