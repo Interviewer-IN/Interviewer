@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Modal, Button, PanelGroup} from "react-bootstrap";
 import Helmet from "react-helmet";
+import moment from "moment";
 import "./interviewsUpcoming.css";
 import {
     showInterviews,
@@ -157,7 +158,6 @@ class InterviewsUpcoming extends Component {
 
     render() {
 
-
         let pageTitle;
         if (this.state.isHR) {
             pageTitle = (
@@ -249,9 +249,7 @@ class InterviewsUpcoming extends Component {
 
                 let interviewsSortedByDates = interviews.sort(compareDates) || {};
                 interviewsSortedByDates.map((value, index) => {
-                    let date = new Date(value.date_time).toLocaleString('en-GB', {
-                        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
-                    });
+                    let date = moment(new Date(value.date_time)).format("dddd, D MMMM YYYY");
 
                     if (dates.indexOf(date) === -1) {
                         dates.push(date);
@@ -264,17 +262,11 @@ class InterviewsUpcoming extends Component {
                         dateToDisplay;
 
                     interviewsSortedByDates.map((value, index) => {
-                        let interviewDate = new Date(value.date_time).toLocaleString('en-GB', {
-                            weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
-                        });
+                        let interviewDate = moment(new Date(value.date_time)).format("dddd, D MMMM YYYY");
 
                         if (currentDate === interviewDate) {
                             todayInterviews.push(value);
-                            dateToDisplay = "" + new Date(value.date_time).toLocaleString('en-GB', {weekday: 'long'}) + ", "
-                                + new Date(value.date_time).toLocaleString('en-GB', {
-                                    day: 'numeric',
-                                    month: 'long',
-                                }) + "";
+                            dateToDisplay = moment(new Date(value.date_time)).format("dddd, D MMMM");
                         }
                     });
 
@@ -283,10 +275,7 @@ class InterviewsUpcoming extends Component {
                     let interviewsToDisplay = sortedInterviews.map((value, index) => {
 
                             let id = value.id,
-                                time = new Date(value.date_time).toLocaleString('en-GB', {
-                                    hour: 'numeric',
-                                    minute: 'numeric'
-                                }),
+                                time = moment(new Date(value.date_time)).format("HH:mm"),
                                 currentVacancy = vacancies.find(item => value.vacancy_id === item.id),
                                 currentProject = projects.find(item => currentVacancy.project_id === item.id),
                                 currentLevel = levels.find(item => currentVacancy.level_id === item.id),
