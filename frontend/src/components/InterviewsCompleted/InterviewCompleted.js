@@ -246,7 +246,7 @@ class InterviewsCompleted extends Component {
                 interviewsToDisplay = interviewsSortedByDates.map((value, index) => {
 
                     let id = value.id,
-                        currentDate = moment(new Date(value.date_time)).format("D" + "/" + "MM" + "/" + "YYYY"),
+                        currentDate = moment(new Date(value.date_time)).format("DD" + "/" + "MM" + "/" + "YYYY"),
                         currentVacancy = vacancies.find(item => value.vacancy_id === item.id),
                         currentProject = projects.find(item => currentVacancy.project_id === item.id),
                         currentLevel = levels.find(item => currentVacancy.level_id === item.id),
