@@ -33,7 +33,7 @@ class SideMenu extends Component {
         this.props.pageActions.hideSideBar(false);
     }
 
-    handleClickLogo(){
+    handleClickLogo() {
         this.props.pageActions.hideSideBar(false);
     }
 
@@ -41,19 +41,19 @@ class SideMenu extends Component {
 
         let clickItem = event.target;
 
-        if (clickItem.classList.contains('metismenu-link')){
+        if (clickItem.classList.contains('metismenu-link')) {
             setTimeout(function () {
                 hideMenu(clickItem);
-            },100);
+            }, 100);
 
         } else {
             setTimeout(function () {
                 hideMenu(clickItem.parentNode);
-            },100);
+            }, 100);
         }
 
         let hideMenu = (clickItem) => {
-            if (clickItem.classList.contains('active')){
+            if (clickItem.classList.contains('active')) {
                 this.props.pageActions.hideSideBar(false);
             }
         };
@@ -153,20 +153,20 @@ class SideMenu extends Component {
 
             }
 
-                let settings = [
-                    {
-                        name: '/user-info',
-                        icon: 'user-circle-o',
-                        label: 'User-info',
-                        to: '/user-info'
-                    },
-                    {
-                        name: '/password',
-                        icon: 'lock',
-                        label: 'Password',
-                        to: '/password',
-                    }
-                ];
+            let settings = [
+                {
+                    name: '/user-info',
+                    icon: 'user-circle-o',
+                    label: 'User-info',
+                    to: '/user-info'
+                },
+                {
+                    name: '/password',
+                    icon: 'lock',
+                    label: 'Password',
+                    to: '/password',
+                }
+            ];
 
 
             let pathName = window.location.hash,
@@ -197,7 +197,6 @@ class SideMenu extends Component {
                 label = menuItem.label;
             }
 
-            if (pathName.indexOf('#/user-info') === 0 || pathName.indexOf('#/password') === 0) {
             // let to;
             // if (menuItem && menuItem.label != ('Interviews' || 'Vacancies')) {
             //     to = menuItem.to;
@@ -210,8 +209,8 @@ class SideMenu extends Component {
             // if(menuItem && menuItem.label === 'Vacancies') {
             //     to = '//vacancies-open';
             // }
-
-            if (pathName.indexOf('#/username') === 0 || pathName.indexOf('#/password') === 0) {
+            console.log(pathName);
+            if (pathName.indexOf('#/user-info') === 0 || pathName.indexOf('#/password') === 0) {
                 return (
                     <MetisMenu
                         activeLinkLabel={label}

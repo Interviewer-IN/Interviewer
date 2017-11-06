@@ -2,10 +2,9 @@ import React, {Component} from 'react';
 import './password.css';
 
 import Helmet from 'react-helmet';
-import {Modal, Button} from 'react-bootstrap';
 import PageTitle from './../../containers/PageTitle';
 import {CONFIRM_TEXT} from "../../config";
-import {removeCurrentError, createErrorElem, changePassValidationForm} from '../../utils/index';
+import {removeCurrentError, changePassValidationForm} from '../../utils/index';
 
 class Password extends Component{
 

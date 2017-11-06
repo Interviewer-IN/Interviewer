@@ -1,6 +1,6 @@
 import {removeAllErrorMessages} from './../../removeAllErrorMessages/removeAllErrorMessages'
 import {createErrorElem} from './../../createErrorElem/createErrorElem';
-import {fieldCharRegex, LETTERS_ONLY, EMAIL_VALIDATION} from "../../../config";
+import {LETTERS_ONLY, EMAIL_VALIDATION} from "../../../config";
 
 export function userInfoValidationForm(event){
 

@@ -215,7 +215,7 @@ class Main extends Component {
                                 )}
                             />
                             <Route
-                                exact path="/interviewers/create-interviewers"
+                                exact path="/interviewers/create-interviewer"
                                 name="CreateInterviewers"
                                 render={(props) => (
                                     isLoggedIn() ?

@@ -9,7 +9,7 @@ import Panels from '../../components/Panels';
 import {connect} from 'react-redux';
 import {getPositions} from '../../redux/actions/positionActions';
 import {getLevels} from '../../redux/actions/levelsActions';
-import {levelsListName, positionsListName, getValueFromArr} from '../../utils/index';
+import {getValueFromArr} from '../../utils/index';
 import {GET_EMPTY_DATA, DELETE_INTERVIEWER} from '../../config';
 
 import PageTitle from '../../containers/PageTitle';
@@ -143,8 +143,8 @@ class Interviewers extends Component {
                             <PageTitle pageTitle="Interviewers"
                                        showBackBtn={false}
                                        showButton={true}
-                                       titleForButton="Create interviewers"
-                                       linkForButton="/interviewers/create-interviewers"
+                                       titleForButton="Create interviewer"
+                                       linkForButton="/interviewers/create-interviewer"
                                        buttonId='create-interviwers'
                             />
                             <Filters

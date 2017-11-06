@@ -2,10 +2,9 @@ import React, {Component} from 'react';
 import './username.css';
 
 import Helmet from 'react-helmet';
-import {Modal, Button} from 'react-bootstrap';
 import PageTitle from './../../containers/PageTitle';
 import {CONFIRM_TEXT} from "../../config";
-import {removeCurrentError, userInfoValidationForm, createErrorElem} from '../../utils/index';
+import {removeCurrentError, userInfoValidationForm} from '../../utils/index';
 
 class Username extends Component{
 
