@@ -6,19 +6,17 @@
 
 }
 
-.filter-block{
+.filter-block {
   //overflow: hidden;
 
   &.filter-block--date{
-   // float: left;
-    margin-top: 10px;
-
+    margin-left: 10px;
   }
 
   &__title{
     float: left;
-    margin-right: 30px;
-    line-height: 29px;
+    margin-right: 20px;
+  //  line-height: 29px;
 
     @media (max-width: 1110px) {
       float: none;
@@ -38,11 +36,10 @@
 
   }
 
-  .form-group{
+  .fields-group{
     float: left;
     margin-bottom: 0;
     margin-right: 10px;
-    padding: 15px 0;
 
     @media (max-width: 580px){
       float: none;
@@ -56,7 +53,7 @@
     }
 
     .form-control{
-      width: 140px;
+      width: 130px;
 
       @media (max-width: 580px){
         width: 100%;
@@ -68,6 +65,7 @@
 .filter-select {
   border-radius: 0;
   height: 2rem !important;
+  color: #4f5f6f !important;
 
   &:hover {
     border: 1px solid #85CE36 !important;
@@ -83,7 +81,7 @@
 
 .react-datepicker {
   border-radius: 1px !important;
-  color: #55595c !important;
+  color: #4f5f6f !important;
 
   &__month-container {
     color: inherit !important;
@@ -99,7 +97,7 @@
 
   &__day {
     background-color: #FFF !important;
-    color: #55595c !important;
+    color: #4f5f6f !important;
     border-radius: 1px !important;
   }
 
@@ -120,13 +118,15 @@
     border-radius: 0;
   }
 
+  &__close-icon{
+   float: left !important;
+  }
+
   &__close-icon::after {
     border-radius: 1px !important;
     font-size: 15px !important;
     padding: 0 !important;
-    top: 29% !important;
     background-color: #d7dde4 !important;
-
   }
 
   &__time-list-item--selected {
@@ -134,7 +134,7 @@
   }
 
   &-time__header {
-    color: #55595c !important;
+    color: #4f5f6f !important;
   }
 }
 
@@ -145,4 +145,9 @@
 .react-datepicker__time-container .react-datepicker__time
 .react-datepicker__time-box ul.react-datepicker__time-list {
   padding: 0px !important;
+}
+
+.custom-icon {
+  font-size: 1.6em;
+  margin-top: 4px;
 }

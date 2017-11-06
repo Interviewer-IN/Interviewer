@@ -3,8 +3,7 @@ import "./filters.css";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import DatePicker from "react-datepicker";
-import 'react-datepicker/dist/react-datepicker.css';
-
+import "react-datepicker/dist/react-datepicker.css";
 import {showProjects} from "../../redux/actions/projectActions";
 import {getLevels} from "../../redux/actions/levelsActions";
 import {getPositions} from "../../redux/actions/positionActions";
@@ -24,19 +23,19 @@ class Filters extends Component {
     componentWillMount() {
         const {dispatch} = this.props;
 
-        if (!this.props.newProject.projects.length){
+        if (!this.props.newProject.projects.length) {
             dispatch(showProjects());
         }
 
-        if (!this.props.positions.length){
+        if (!this.props.positions.length) {
             dispatch(getPositions());
         }
 
-        if (!this.props.levels.length){
+        if (!this.props.levels.length) {
             dispatch(getLevels());
         }
 
-        if (!this.props.ratings.length){
+        if (!this.props.ratings.length) {
             dispatch(getRatings());
         }
 
@@ -57,22 +56,22 @@ class Filters extends Component {
 
     }
 
-    getPositionFilterVal(event){
+    getPositionFilterVal(event) {
         let positionFilterVal = event.target.value;
         this.props.positionFilterVal(positionFilterVal);
     }
 
-    getLevelFilterVal(event){
+    getLevelFilterVal(event) {
         let levelFilterVal = event.target.value;
         this.props.levelFilterVal(levelFilterVal);
     }
 
-    getRatingFilterVal(event){
+    getRatingFilterVal(event) {
         let ratingFilterVal = event.target.value;
         this.props.ratingFilterVal(ratingFilterVal);
     }
 
-    getProjectFilterVal(event){
+    getProjectFilterVal(event) {
         let projectFilterVal = event.target.value;
         this.props.projectFilterVal(projectFilterVal);
     }
@@ -110,8 +109,7 @@ class Filters extends Component {
 
                     options = sortedProjects.map((item, index) => {
 
-
-                        let title =  item.title.length < 20 ? item.title : item.title.slice(0, 10) + "...";
+                        let title = item.title.length < 10 ? item.title : item.title.slice(0, 10) + "...";
 
                         return (
                             <option key={index}>{title}</option>
@@ -120,10 +118,10 @@ class Filters extends Component {
                 }
 
                 return (
-                    <div className="form-group">
+                    <div className="form-group fields-group">
                         <select className="form-control form-control-sm filter-select custom-mode"
                                 id={projectFilterId}
-                                onChange = {(event) => this.getProjectFilterVal(event)}
+                                onChange={(event) => this.getProjectFilterVal(event)}
                         >
                             <option>Project</option>
                             {options}
@@ -145,15 +143,22 @@ class Filters extends Component {
                         if (a.name < b.name) return -1;
                     },
                     sortedPositions = positionsList.sort(compareName) || {};
-                options = sortedPositions.map((item, index) => <option key={index}>{item.name}</option>);
+                options = sortedPositions.map((item, index) => {
+
+                    let name = item.name.length < 10 ? item.name : item.name.slice(0, 10) + "...";
+
+                    return (
+                        <option key={index}>{name}</option>
+                    )
+                });
             }
 
             if (position) {
                 return (
-                    <div className="form-group">
+                    <div className="form-group fields-group">
                         <select className="form-control form-control-sm filter-select custom mode"
                                 id={positionFilterId}
-                                onChange = {(event) => this.getPositionFilterVal(event)}
+                                onChange={(event) => this.getPositionFilterVal(event)}
                         >
                             <option>Position</option>
                             {options}
@@ -174,15 +179,21 @@ class Filters extends Component {
                         if (a.name < b.name) return -1;
                     },
                     sortedLevels = levelsList.sort(compareName) || {};
-                options = sortedLevels.map((item, index) => <option key={index}>{item.name}</option>);
+                options = sortedLevels.map((item, index) => {
+                    let name = item.name.length < 10 ? item.name : item.name.slice(0, 10) + "...";
+
+                    return (
+                        <option key={index}>{name}</option>
+                    )
+                });
             }
 
             if (level) {
                 return (
-                    <div className="form-group">
+                    <div className="form-group fields-group">
                         <select className="form-control form-control-sm filter-select custom-mode"
                                 id={levelFilterId}
-                                onChange = {(event) => this.getLevelFilterVal(event)}
+                                onChange={(event) => this.getLevelFilterVal(event)}
                         >
                             <option>Level</option>
                             {options}
@@ -199,10 +210,10 @@ class Filters extends Component {
 
             if (ratingsList.length) {
                 let compareGrade = (a, b) => {
-                    let first = +a.grade;
-                    let second = +b.grade;
+                        let first = +a.grade;
+                        let second = +b.grade;
 
-                        if (first> second) return 1;
+                        if (first > second) return 1;
                         if (first < second) return -1;
                     },
                     sortedRatings = ratingsList.sort(compareGrade) || {};
@@ -211,10 +222,10 @@ class Filters extends Component {
 
             if (rating) {
                 return (
-                    <div className="form-group">
+                    <div className="form-group fields-group">
                         <select className="form-control form-control-sm filter-select custom-mode"
                                 id={ratingFilterId}
-                                onChange = {(event) => this.getRatingFilterVal(event)}
+                                onChange={(event) => this.getRatingFilterVal(event)}
                         >
                             <option>Rating</option>
                             {options}
@@ -225,9 +236,9 @@ class Filters extends Component {
         };
 
         let showInterviewersFilter = (interviewer) => {
-            if (interviewer){
+            if (interviewer) {
                 return (
-                    <div className="form-group">
+                    <div className="form-group fields-group">
                         <select className="form-control form-control-sm filter-select"
                                 id={interviewerFilterId}
                         >
@@ -245,10 +256,12 @@ class Filters extends Component {
         let showDateFilter = (date) => {
             if (date) {
                 return (
-                    <div className="filter-block filter-block--date clearfix">
-                        <div className="filter-block__title filter-date">Date:</div>
+                    <div className="filter-block filter-block--date clearfix float-right">
+                        <div className="filter-block__title filter-date">
+                            <i className="fa fa-calendar custom-icon"></i>
+                        </div>
                         <div className="filter-block__selects">
-                            <div className="form-group float-left">
+                            <div className="form-group fields-group float-left">
                                 <DatePicker
                                     id={dateFromFilterId}
                                     className="form-control form-control-sm filter-select"
@@ -259,7 +272,7 @@ class Filters extends Component {
                                     onChange={(event) => this.getDateFromFilterVal(event)}
                                 />
                             </div>
-                            <div className="form-group float-left">
+                            <div className="form-group fields-group float-left">
                                 <DatePicker
                                     id={dateToFilterId}
                                     className="form-control form-control-sm filter-select custom-mode"
@@ -270,8 +283,8 @@ class Filters extends Component {
                                     onChange={(event) => this.getDateToFilterVal(event)}
                                 />
                             </div>
-                            <p className="error-message">{dateFilterErrorMessage}</p>
                         </div>
+                        <p className="error-message">{dateFilterErrorMessage}</p>
                     </div>
                 );
             }
@@ -281,8 +294,10 @@ class Filters extends Component {
         return (
             <div className="filters-section">
                 <div className="filter-block">
-                    <div className="clearfix">
-                        <div className="filter-block__title">Filters:</div>
+                    <div className="clearfix float-left">
+                        <div className="filter-block__title">
+                            <i className="fa fa-filter custom-icon"></i>
+                        </div>
                         <div className="filter-block__selects">
                             {showProjectFilter(projectFilter)}
                             {showPositionFilter(positionFilter)}
@@ -309,8 +324,8 @@ Filters.propTypes = {
     projectFilterId: PropTypes.string,
     positionFilterId: PropTypes.string,
     levelFilterId: PropTypes.string,
-    interviewerFilterId:PropTypes.string,
-    ratingFilterId:PropTypes.string,
+    interviewerFilterId: PropTypes.string,
+    ratingFilterId: PropTypes.string,
     dateFromFilterId: PropTypes.string,
     dateToFilterId: PropTypes.string,
     dateFilterErrorMessage: PropTypes.string
