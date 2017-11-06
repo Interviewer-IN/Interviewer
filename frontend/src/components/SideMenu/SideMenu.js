@@ -196,7 +196,7 @@ class SideMenu extends Component {
                 label = menuItem.label;
             }
 
-            if (pathName.indexOf('#/user-info') === 0 || pathName.indexOf('#/password') === 0) {
+            // if (pathName.indexOf('#/user-info') === 0 || pathName.indexOf('#/password') === 0) {
                 // let to;
                 // if (menuItem && menuItem.label != ('Interviews' || 'Vacancies')) {
                 //     to = menuItem.to;
@@ -209,9 +209,9 @@ class SideMenu extends Component {
                 // if(menuItem && menuItem.label === 'Vacancies') {
                 //     to = '//vacancies-open';
                 // }
-            }
+            // }
 
-            if (pathName.indexOf('#/username') === 0 || pathName.indexOf('#/password') === 0) {
+            if (pathName.indexOf('#/user-info') === 0 || pathName.indexOf('#/password') === 0) {
                 return (
                     <MetisMenu
                         activeLinkLabel={label}
