@@ -301,7 +301,7 @@ class CreateCandidate extends Component {
                                         <small>Maximum 20 characters</small>
                                     </p>
                                     <input
-                                        id="candidate-name"
+                                        id="candidate-surname"
                                         type="text"
                                         name="candidate-surname"
                                         placeholder='Input surname'

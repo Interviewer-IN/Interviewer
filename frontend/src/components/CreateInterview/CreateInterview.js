@@ -5,6 +5,7 @@ import {Modal, Button} from "react-bootstrap";
 import "./CreateInterview.css";
 import {connect} from "react-redux";
 import DatePicker from "react-datepicker";
+import moment from "moment";
 import {createInterview} from "../../redux/actions/interviewActions";
 import {getVacancies} from "../../redux/actions/vacanciesActions";
 import {getCandidates} from "../../redux/actions/candidatesActions";
@@ -278,6 +279,7 @@ class CreateInterview extends Component {
                             <div className="clearfix form-group">
                                 <div className="create-interview-select">
                                     <label className="control-label">Date</label>
+                                    <p className="form-sublabel back-link">You can pick only date starting from today</p>
                                     <DatePicker
                                         id="create-int-datePick"
                                         className="form-control form-control-sm filter-select"
@@ -288,6 +290,7 @@ class CreateInterview extends Component {
                                         timeFormat="HH:mm"
                                         timeIntervals={15}
                                         dateFormat="LLL"
+                                        minDate={moment()}
                                     />
                                     <span className="has-error error-message">{this.state.dateError}</span>
                                 </div>

@@ -8,10 +8,12 @@ import Panels from '../../components/Panels';
 import Helmet from 'react-helmet';
 
 import {connect} from 'react-redux';
-import {getCandidates, deleteCandidate} from '../../redux/actions/candidatesActions'
+import {getCandidates, deleteCandidate} from '../../redux/actions/candidatesActions';
+import {getPositions} from '../../redux/actions/positionActions';
+import {getLevels} from '../../redux/actions/levelsActions';
 import {levelsListName, positionsListName, getValueFromArr} from '../../utils/index';
 import {GET_EMPTY_DATA, DELETE_CANDIDATE} from '../../config';
-import fetch from "isomorphic-fetch";
+
 
 class Candidates extends Component {
 
@@ -33,15 +35,22 @@ class Candidates extends Component {
     componentWillMount() {
 
         this.props.onCheckUserRole();
-
-        console.info('Candidates', this);
+        const {dispatch} = this.props;
 
         if (!this.props.candidates.length) {
-            const {dispatch} = this.props;
             dispatch(getCandidates());
         }
 
+        if (!this.props.positions.length){
+            dispatch(getPositions());
+        }
+
+        if (!this.props.levels.length){
+            dispatch(getLevels());
+        }
+
     }
+
 
     openModalConfirm(currentID) {
         this.setState({
@@ -91,6 +100,8 @@ class Candidates extends Component {
 
 
     render() {
+
+        console.log('Candidates',this);
 
         let candidatesList = this.props.candidates,
             levelsList = this.props.levels,

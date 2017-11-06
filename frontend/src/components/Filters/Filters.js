@@ -296,7 +296,6 @@ class Filters extends Component {
             </div>
         );
     }
-
 }
 
 Filters.propTypes = {

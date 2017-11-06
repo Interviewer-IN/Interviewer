@@ -1,4 +1,4 @@
-import {removeAllErrorMessages} from './../../removeAllErrorMessages/removeAllErrorMessages'
+import {removeAllErrorMessages} from './../../removeAllErrorMessages/removeAllErrorMessages';
 import {createErrorElem} from './../../createErrorElem/createErrorElem';
 import {FIELD_CHAR_REGEX, LETTERS_ONLY, NUMBERS_ONLY} from "../../../config";
 
