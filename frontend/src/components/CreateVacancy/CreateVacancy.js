@@ -6,7 +6,7 @@ import TextareaAutosize from "react-autosize-textarea";
 import {Modal, Button} from "react-bootstrap";
 import {createBrowserHistory} from 'history';
 import {connect} from "react-redux";
-import {fieldCharRegex, CONFIRM_TEXT} from "../../config"
+import {FIELD_CHAR_REGEX, CONFIRM_TEXT} from "../../config"
 import {removeCurrentError, removeAllErrorMessages, createErrorElem, getValueFromArr} from '../../utils/index';
 import {showProjects} from "../../redux/actions/projectActions";
 import {getLevels} from "../../redux/actions/levelsActions";
@@ -91,7 +91,7 @@ class CreateVacancy extends Component {
             descriptionPassValidation = false;
 
 
-        if (!fieldCharRegex.test(descriptionValue)) {
+        if (!FIELD_CHAR_REGEX.test(descriptionValue)) {
             descriptionPassValidation = false;
             descriptionField.parentNode.appendChild(createErrorElem(descriptionField, this.state.wrongCharMessage));
         } else {

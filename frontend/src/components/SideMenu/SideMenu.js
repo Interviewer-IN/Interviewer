@@ -1,7 +1,7 @@
 import React, {Component} from "react";
+import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import "./sideMenu.css";
-import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import * as pageActions from "../../redux/actions/sideBarActions";
 import MetisMenu from "react-metismenu";
@@ -33,7 +33,7 @@ class SideMenu extends Component {
         this.props.pageActions.hideSideBar(false);
     }
 
-    handleClickLogo(){
+    handleClickLogo() {
         this.props.pageActions.hideSideBar(false);
     }
 
@@ -41,19 +41,19 @@ class SideMenu extends Component {
 
         let clickItem = event.target;
 
-        if (clickItem.classList.contains('metismenu-link')){
+        if (clickItem.classList.contains('metismenu-link')) {
             setTimeout(function () {
                 hideMenu(clickItem);
-            },100);
+            }, 100);
 
         } else {
             setTimeout(function () {
                 hideMenu(clickItem.parentNode);
-            },100);
+            }, 100);
         }
 
         let hideMenu = (clickItem) => {
-            if (clickItem.classList.contains('active')){
+            if (clickItem.classList.contains('active')) {
                 this.props.pageActions.hideSideBar(false);
             }
         };
@@ -72,6 +72,7 @@ class SideMenu extends Component {
                         name: '/interviews',
                         icon: 'handshake-o',
                         label: 'Interviews',
+                        to: '/interviews-upcoming',
                         content: [
                             {
                                 name: '/interviews-upcoming',
@@ -87,12 +88,14 @@ class SideMenu extends Component {
                             }
                         ]
                     },
+
                     {
                         name: '/interviewers',
                         icon: 'user-o',
                         label: 'Interviewers',
                         to: '/interviewers',
                     },
+
                     {
                         name: '/vacancies',
                         icon: 'binoculars',
@@ -147,45 +150,44 @@ class SideMenu extends Component {
                         ]
                     }
                 ]
-
             }
 
-                let settings = [
-                    {
-                        name: '/username',
-                        icon: 'user-circle-o',
-                        label: 'Username',
-                        to: '/username'
-                    },
-                    {
-                        name: '/password',
-                        icon: 'lock',
-                        label: 'Password',
-                        to: '/password',
-                    }
-                ];
+            let settings = [
+                {
+                    name: '/user-info',
+                    icon: 'user-circle-o',
+                    label: 'User-info',
+                    to: '/user-info'
+                },
+                {
+                    name: '/password',
+                    icon: 'lock',
+                    label: 'Password',
+                    to: '/password',
+                }
+            ];
 
 
             let pathName = window.location.hash,
                 items = dashboard.concat(settings);
 
             items.forEach(function (item) {
-                if (item.content){
-                    for (let i = 0; i < item.content.length; i++){
+                if (item.content) {
+                    for (let i = 0; i < item.content.length; i++) {
                         items.push(item.content[i]);
                     }
                 }
             });
 
-
             let menuItem = items.find(function (item) {
                 return pathName === item.name;
             });
 
+
             if (!menuItem) {
                 menuItem = items.find(function (item) {
                     let itemName = pathName.split("/")[1];
-                    return item.name.indexOf(itemName) !== -1 ;
+                    return item.name.indexOf(itemName) !== -1;
                 });
             }
 
@@ -194,7 +196,22 @@ class SideMenu extends Component {
                 label = menuItem.label;
             }
 
-            if (pathName.indexOf('#/username') === 0 || pathName.indexOf('#/password') === 0) {
+            // if (pathName.indexOf('#/user-info') === 0 || pathName.indexOf('#/password') === 0) {
+                // let to;
+                // if (menuItem && menuItem.label != ('Interviews' || 'Vacancies')) {
+                //     to = menuItem.to;
+                // }
+                //
+                // if(menuItem && menuItem.label === 'Interviews') {
+                //     to = '/interviews-upcoming';
+                // }
+                //
+                // if(menuItem && menuItem.label === 'Vacancies') {
+                //     to = '//vacancies-open';
+                // }
+            // }
+
+            if (pathName.indexOf('#/user-info') === 0 || pathName.indexOf('#/password') === 0) {
                 return (
                     <MetisMenu
                         activeLinkLabel={label}
@@ -202,7 +219,6 @@ class SideMenu extends Component {
                         LinkComponent={RouterLink}
                         classNameStateIcon="arrow"
                         classNameItemActive="active"
-
                     />
                 );
             } else {
@@ -216,7 +232,6 @@ class SideMenu extends Component {
                     />
                 );
             }
-
         };
 
         return (
@@ -228,12 +243,14 @@ class SideMenu extends Component {
                                 <Link to="/" id="sideMenuLogo" onClick={() => this.handleClickLogo()}>Logo</Link>
                             </div>
                         </div>
-                        <div className="sidebar-menu" id="metisMenu" onClick={(event) => this.handleMenuClick(event)}>
+                        <div className="sidebar-menu" id="metisMenu"
+                             onClick={(event) => this.handleMenuClick(event)}>
                             {changeMenuItems()}
                         </div>
                     </div>
                 </div>
-                <div className="sidebar-overlay" id="sidebar-overlay" onClick={() => this.handleCloseSideBarClick()}/>
+                <div className="sidebar-overlay" id="sidebar-overlay"
+                     onClick={() => this.handleCloseSideBarClick()}/>
             </div>
         )
     }

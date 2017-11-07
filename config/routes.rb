@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  post "/graphql", to: "graphql#execute"
+
+  mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
   resources :candidates
   mount_devise_token_auth_for 'User', at: 'auth'
   devise_scope :admin do
@@ -16,11 +19,13 @@ Rails.application.routes.draw do
   namespace 'api' do
     namespace 'v1' do
       resources :projects, :vacancies, :positions, :levels,
-                :candidates, :ratings, :interviews
-
+                :candidates, :ratings, :interviews, :users
+    end
+    namespace 'v2' do
+      resources :projects, :vacancies, :positions, :levels,
+                :candidates, :ratings, :interviews, :users
     end
 
-  end
 
-  get "api/v1/candidates/download_cv/:id" => 'api/v1/candidates#download_cv'
+  end
 end

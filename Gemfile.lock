@@ -123,6 +123,9 @@ GEM
       thor (~> 0.19.1)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
+    graphiql-rails (1.4.5)
+      rails
+    graphql (1.7.3)
     haml (5.0.3)
       temple (>= 0.8.0)
       tilt
@@ -264,6 +267,8 @@ DEPENDENCIES
   devise_token_auth
   faker
   foreman
+  graphiql-rails
+  graphql
   pg (~> 0.18)
   puma (~> 3.7)
   rails (~> 5.1.2)

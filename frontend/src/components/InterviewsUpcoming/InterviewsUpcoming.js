@@ -2,8 +2,13 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Modal, Button, PanelGroup} from "react-bootstrap";
 import Helmet from "react-helmet";
+import moment from "moment";
 import "./interviewsUpcoming.css";
-import {showInterviews, removeInterview, createInterview} from "../../redux/actions/interviewActions";
+import {
+    showInterviews,
+    removeInterview,
+    createInterview,
+} from "../../redux/actions/interviewActions";
 import {getVacancies} from "../../redux/actions/vacanciesActions";
 import {showProjects} from "../../redux/actions/projectActions";
 import {getCandidates} from "../../redux/actions/candidatesActions";
@@ -45,19 +50,19 @@ class InterviewsUpcoming extends Component {
         let isUserHR = this.props.onCheckUserRole(true);
         const {dispatch} = this.props;
 
-        if (!this.props.interviews.interviews.length){
+        if (!this.props.interviews.interviews.length) {
             dispatch(showInterviews());
         }
 
-        if (!this.props.vacancies.length){
+        if (!this.props.vacancies.length) {
             dispatch(getVacancies());
         }
 
-        if (!this.props.projects.length){
+        if (!this.props.projects.length) {
             dispatch(showProjects());
         }
 
-        if (!this.props.candidates.length){
+        if (!this.props.candidates.length) {
             dispatch(getCandidates());
         }
 
@@ -153,8 +158,6 @@ class InterviewsUpcoming extends Component {
 
     render() {
 
-
-
         let pageTitle;
         if (this.state.isHR) {
             pageTitle = (
@@ -186,6 +189,7 @@ class InterviewsUpcoming extends Component {
             levels = this.props.levels,
             positions = this.props.positions,
             candidates = this.props.candidates,
+            idExpandedElement = this.props.idExpandedElement,
             dates = [],
             interviewsByDates,
             filterErrorMessage;
@@ -245,9 +249,7 @@ class InterviewsUpcoming extends Component {
 
                 let interviewsSortedByDates = interviews.sort(compareDates) || {};
                 interviewsSortedByDates.map((value, index) => {
-                    let date = new Date(value.date_time).toLocaleString('en-GB', {
-                        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
-                    });
+                    let date = moment(new Date(value.date_time)).format("dddd, D MMMM YYYY");
 
                     if (dates.indexOf(date) === -1) {
                         dates.push(date);
@@ -260,9 +262,7 @@ class InterviewsUpcoming extends Component {
                         dateToDisplay;
 
                     interviewsSortedByDates.map((value, index) => {
-                        let interviewDate = new Date(value.date_time).toLocaleString('en-GB', {
-                            weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
-                        });
+                        let interviewDate = moment(new Date(value.date_time)).format("dddd, D MMMM YYYY");
 
                         if (currentDate === interviewDate) {
                             todayInterviews.push(value);
@@ -270,18 +270,18 @@ class InterviewsUpcoming extends Component {
                                 + new Date(value.date_time).toLocaleString('en-GB', {
                                     day: 'numeric',
                                     month: 'long',
+                                    year: 'numeric',
                                 }) + "";
                         }
                     });
+
+                    //-- Creating Interview Card--------------------------
 
                     let sortedInterviews = todayInterviews.sort(compareTime) || {};
                     let interviewsToDisplay = sortedInterviews.map((value, index) => {
 
                             let id = value.id,
-                                time = new Date(value.date_time).toLocaleString('en-GB', {
-                                    hour: 'numeric',
-                                    minute: 'numeric'
-                                }),
+                                time = moment(new Date(value.date_time)).format("HH:mm"),
                                 currentVacancy = vacancies.find(item => value.vacancy_id === item.id),
                                 currentProject = projects.find(item => currentVacancy.project_id === item.id),
                                 currentLevel = levels.find(item => currentVacancy.level_id === item.id),
@@ -298,24 +298,37 @@ class InterviewsUpcoming extends Component {
                                 rating_id: 12
                             };
 
+                            let overdueInterview = () => {
+                                let dateNow = Date.now(),
+                                    interviewDate = new Date(value.date_time).getTime();
 
-                        let checkCandidateCV = () => {
-                            if (candidateCV) {
-                                return (
-                                    <a href={candidateCV} className="download-block form-group text-green text-green--hover" download>
-                                        <span className="download-block__icon fa fa-download"/>
-                                        <span className="download-block__title">Download CV</span>
-                                    </a>
-                                )
-                            } else {
-                                return (
-                                    <a className="download-block form-group download-block--disabled text-muted">
-                                        <span className="download-block__icon fa fa-download"/>
-                                        <span className="download-block__title text-bold--100">Download CV</span>
-                                    </a>
-                                )
-                            }
-                        };
+                                if(interviewDate < dateNow) {
+                                    return (
+                                        <i className="interview-icon tooltip-icon fa fa-bell">
+                                            <span className="tooltip-icon__text">This interview is overdue</span>
+                                        </i>
+                                    )
+                                }
+                            };
+
+                            let checkCandidateCV = () => {
+                                if (candidateCV) {
+                                    return (
+                                        <a href={candidateCV}
+                                           className="download-block form-group text-green text-green--hover" download>
+                                            <span className="download-block__icon fa fa-download"/>
+                                            <span className="download-block__title">Download CV</span>
+                                        </a>
+                                    )
+                                } else {
+                                    return (
+                                        <a className="download-block form-group download-block--disabled text-muted">
+                                            <span className="download-block__icon fa fa-download"/>
+                                            <span className="download-block__title text-bold--100">Download CV</span>
+                                        </a>
+                                    )
+                                }
+                            };
 
                             if (this.state.isHR) {
                                 panelTitleText = time + " | " +
@@ -324,14 +337,14 @@ class InterviewsUpcoming extends Component {
                                     currentLevel.name + " - " +
                                     currentPosition.name + " - " +
                                     currentProject.title + " | " +
-                                    "some inteviewer";
+                                    "some inteviewer" + " | ";
                             } else {
                                 panelTitleText = time + " | " +
                                     currentCandidate.name + " " +
                                     currentCandidate.surname + " | " +
                                     currentLevel.name + " - " +
                                     currentPosition.name + " - " +
-                                    currentProject.title;
+                                    currentProject.title + " | ";
                             }
 
                             const PANEL_TITLE = (
@@ -346,7 +359,7 @@ class InterviewsUpcoming extends Component {
                                         <div className="vacancy-info-block">
                                             <div className="vacancy-info-block__item">
                                                 {panelTitleText}
-
+                                                {overdueInterview()}
                                             </div>
                                         </div>
                                     </div>
@@ -355,23 +368,23 @@ class InterviewsUpcoming extends Component {
 
                             const PANEL_DESCRIPTION = (
                                 <div>
-                                    <div className="clearfix">
-                                        <div className="float-left interview-details">
-                                            <p className="interview-details-header"><strong>Candidate</strong></p>
+                                    <div className="interview-details clearfix">
+                                        <div className="interview-details__left">
+                                            <p className="interview-details__header"><strong>Candidate</strong></p>
                                             <p><strong>Name:</strong>{" " + currentCandidate.name}</p>
                                             <p><strong>Age:</strong>{" " + currentCandidate.age}</p>
                                             <p><strong>Experience:</strong>{" " + currentCandidate.experience}</p>
                                             {checkCandidateCV()}
                                         </div>
-                                        <div className="float-right">
-                                            <p className="interview-details-header"><strong>Project</strong></p>
+                                        <div className="interview-details__right">
+                                            <p className="interview-details__header"><strong>Project</strong></p>
                                             <p>{currentProject.title}</p>
-                                            <p className="interview-details-header"><strong>Interviewer</strong></p>
+                                            <p className="interview-details__header"><strong>Interviewer</strong></p>
                                             <p>some interviewer</p>
                                         </div>
                                     </div>
-                                    <div className="interview-details-down">
-                                        <p className="interview-details-header"><strong>Vacancy</strong></p>
+                                    <div className="interview-details__down">
+                                        <p className="interview-details__header"><strong>Vacancy</strong></p>
                                         <p>
                                             <strong>{currentLevel.name + " " +
                                             currentPosition.name + " for " +
@@ -383,14 +396,17 @@ class InterviewsUpcoming extends Component {
                                 </div>
                             );
 
+                            let toExpandElement = () => {
+                                return (id === idExpandedElement) ? (true) : (false);
+                            };
+
                             if (this.state.isHR) {
-                                return (<PanelGroup bsClass='custom-panel-group'
-                                                    accordion key={id}
-                                    >
+                                return (
                                         <Panels
                                             key={id}
-                                            id={"intUpcom" + value.id}
+                                            id={"intUpcom" + id}
                                             showActionBtn={true}
+                                            defaultExpanded={toExpandElement()}
                                             titleForActionBtn='Activate'
                                             titleConst={PANEL_TITLE}
                                             description={PANEL_DESCRIPTION}
@@ -405,31 +421,30 @@ class InterviewsUpcoming extends Component {
                                             callAction={(event) => this.activateInterview(id)}
                                             callDublicate={() => this.duplicateInterview(duplicateData)}
                                         />
-                                    </PanelGroup>
+
                                 )
                             } else {
                                 return (
-                                    <PanelGroup bsClass='custom-panel-group'
-                                                accordion key={id}
-                                    >
                                         <Panels
                                             key={id}
                                             id={"intUpcom" + value.id}
                                             showActionBtn={true}
+                                            defaultExpanded={toExpandElement()}
                                             titleForActionBtn='Add feedback'
                                             titleConst={PANEL_TITLE}
                                             description={PANEL_DESCRIPTION}
                                             callAction={(event) => this.addFeedback(id)}
                                         />
-                                    </PanelGroup>
                                 )
                             }
                         }
+
+                        //-- End Creating Interview Card--------------------------
                     );
                     return (
                         <div key={index}>
                             <p className="interview-dates">{dateToDisplay}</p>
-                            {interviewsToDisplay}
+                                {interviewsToDisplay}
                         </div>
                     )
                 });
@@ -488,7 +503,9 @@ class InterviewsUpcoming extends Component {
                     </div>
                 </div>
                 <div className="interview-panels-block">
-                    {interviewsByDates}
+                    <PanelGroup bsClass='custom-panel-group'>
+                        {interviewsByDates}
+                    </PanelGroup>
                 </div>
 
                 <Modal show={this.state.showModalConfirm}
@@ -498,7 +515,7 @@ class InterviewsUpcoming extends Component {
                     <Modal.Header closeButton>
                     </Modal.Header>
                     <Modal.Body>
-                        <p>Are you sure you want to delete a project?</p>
+                        <p>Are you sure you want to delete an interview?</p>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button
@@ -530,7 +547,7 @@ function mapStateToProps(state) {
         levels: state.levels.levels,
         positions: state.positions.positions,
         candidates: state.candidates.candidates,
-      //  currentProject: state.project.currentProject,
+        idExpandedElement: state.interviews.idExpandedElement
     }
 }
 

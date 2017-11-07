@@ -40,6 +40,11 @@ gem "foreman"
 #Integrating device token
 gem 'devise_token_auth'
 
+#Experimental feature
+gem "graphql"
+gem "graphiql-rails"
+
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

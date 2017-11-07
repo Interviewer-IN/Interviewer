@@ -33,7 +33,7 @@ module V1
     end
 
     def update
-      candidate = Candidate.find(params[:id])
+      candidate =Candidate.find(params[:id])
       if  candidate.update_attributes(candidate_params)
         render json: {status:"SUCCESS", message: "Update candidate", data:candidate}, status: :ok
       else
@@ -42,9 +42,6 @@ module V1
 
     end
 
-    def download_cv
-      send_file("#{Rails.root}/public"+Candidate.find(params[:id]).cv.url)
-    end
 
     private
     def candidate_params

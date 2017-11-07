@@ -3,6 +3,8 @@ import {Switch, Route, Redirect} from "react-router-dom";
 import Header from "./../Header";
 import SideMenu from "./../SideMenu";
 import Interviewers from "./../Interviewers";
+import CreateInterviewers from './../CreateInterviewers';
+import InterviewersEdit from './../InterviewersEdit';
 import InterviewsUpcoming from "../InterviewsUpcoming";
 import InterviewsCompleted from "../InterviewsCompleted";
 import InterviewEdit from "../InterviewEdit";
@@ -213,6 +215,34 @@ class Main extends Component {
                                 )}
                             />
                             <Route
+                                exact path="/interviewers/create-interviewers"
+                                name="CreateInterviewers"
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<CreateInterviewers {...props}
+                                                       callMakeNote={(status, text, hide) =>
+                                                           this.handleMakeNote(status, text, hide)}
+                                                       onCheckUserRole={() => this.isHR()}
+                                        />) :
+                                        (<Redirect to="/login"/>)
+
+                                )}
+                            />
+                            <Route
+                                exact path="/interviewers/edit"
+                                name="InterviewersEdit"
+                                render={(props) => (
+                                    isLoggedIn() ?
+                                        (<InterviewersEdit {...props}
+                                                             callMakeNote={(status, text, hide) =>
+                                                                 this.handleMakeNote(status, text, hide)}
+                                                             onCheckUserRole={() => this.isHR()}
+                                        />) :
+                                        (<Redirect to="/login"/>)
+
+                                )}
+                            />
+                            <Route
                                 exact path="/candidates"
                                 name="Candidates"
                                 render={(props) => (
@@ -388,7 +418,7 @@ class Main extends Component {
                                 )}
                             />
                             <Route
-                                exact path="/username"
+                                exact path="/user-info"
                                 name="Username"
                                 render={(props) => (
                                     isLoggedIn() ?
