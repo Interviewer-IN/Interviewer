@@ -6,7 +6,7 @@ module Api
 
       def index
         interviews = Interview.order('created_at DESC')
-        render json: {status:"SUCCESS", message: "Projects loaded", data:interviews}, status: :ok
+        render json: {status:"SUCCESS", message: "Interviews loaded", data:interviews}, status: :ok
       end
 
       def show
