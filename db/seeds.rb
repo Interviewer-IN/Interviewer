@@ -81,7 +81,6 @@ end
 
 5.times do
   Interview.create({
-                       state: "New",
                        feedback: Faker::HarryPotter.quote,
                        date_time: Time.at(0.0 + rand * (Time.now.to_f - 0.0.to_f)),
                        candidate_id: Candidate.offset(rand(Candidate.count)).first.id,

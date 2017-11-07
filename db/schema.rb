@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171010221143) do
+ActiveRecord::Schema.define(version: 20171106223234) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,7 +50,6 @@ ActiveRecord::Schema.define(version: 20171010221143) do
 
   create_table "interviews", force: :cascade do |t|
     t.boolean "status", default: true, null: false
-    t.string "state"
     t.text "feedback"
     t.datetime "date_time"
     t.datetime "created_at", null: false
@@ -59,6 +58,7 @@ ActiveRecord::Schema.define(version: 20171010221143) do
     t.bigint "vacancy_id"
     t.bigint "user_id"
     t.bigint "rating_id"
+    t.boolean "state", default: true, null: false
     t.index ["candidate_id"], name: "index_interviews_on_candidate_id"
     t.index ["rating_id"], name: "index_interviews_on_rating_id"
     t.index ["user_id"], name: "index_interviews_on_user_id"
