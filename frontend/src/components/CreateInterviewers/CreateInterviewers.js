@@ -9,7 +9,8 @@ import {Modal, Button} from "react-bootstrap";
 
 import {getPositions} from "../../redux/actions/positionActions";
 import {getLevels} from "../../redux/actions/levelsActions";
-import {getValueFromArr, removeCurrentError, interviewersValidationForm, createErrorElem} from '../../utils/index';
+import {createInterviewer} from "../../redux/actions/interviewersActions";
+import {getValueFromArr, removeCurrentError, interviewersValidationForm} from '../../utils/index';
 import {CONFIRM_TEXT} from "../../config";
 
 class CreateInterviewers extends Component {
@@ -72,6 +73,8 @@ class CreateInterviewers extends Component {
             let {dispatch} = this.props,
                 pathName = window.location.hash,
                 backPath = '#/' + pathName.split('/')[1];
+
+            dispatch(createInterviewer(formData, null, backPath));
         }
 
     }
