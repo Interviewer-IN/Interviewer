@@ -58,7 +58,7 @@ class InterviewsCompleted extends Component {
             dispatch(showProjects());
         }
 
-        if (!this.props.ratings.langth){
+        if (!this.props.ratings.length){
             dispatch(getRatings());
         }
 
