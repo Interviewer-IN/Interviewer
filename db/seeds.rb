@@ -14,9 +14,30 @@
 end
 
 Admin.new({:email => "admin@admin.com", :password => "123456", :password_confirmation => "123456" }).save(:validate => false) unless Admin.where(email: "admin@admin.com").exists?
-User.new({:email => "user@user.com", :password => "123456", :password_confirmation => "123456", :provider => "email", :uid => "user@user.com", :confirmed_at => "22.07.2016 " ,:level_id =>4, :position_id => 4, :confirmation_token => "user"}).save(:validate => true) unless User.where(email: "user@user.com").exists?
-User.new({:email => "user1@user.com", :password => "123456", :password_confirmation => "123456", :provider => "email", :uid => "user1@user.com", :confirmed_at => "22.07.2016 " ,:level_id =>4, :position_id => 4, :confirmation_token => "user1"}).save(:validate => true) unless User.where(email: "user1@user.com").exists?
 
+User.create({
+                email:  "user@user.com",
+                password:  "123456",
+                password_confirmation: "123456",
+                provider:  "email",
+                uid: "user@user.com",
+                confirmed_at:  "22.07.2016 " ,
+                level_id:  Level.offset(rand(Level.count)).first.id,
+                position_id: Position.offset(rand(Position.count)).first.id,
+                confirmation_token: Faker::DrWho.quote
+            })  unless User.where(email: "user@user.com").exists?
+
+User.create({
+                email:  "user1@user.com",
+                password:  "123456",
+                password_confirmation: "123456",
+                provider:  "email",
+                uid: "user1@user.com",
+                confirmed_at:  "22.07.2016 " ,
+                level_id:  Level.offset(rand(Level.count)).first.id,
+                position_id: Position.offset(rand(Position.count)).first.id,
+                confirmation_token: Faker::DrWho.quote
+            })  unless User.where(email: "user1@user.com").exists?
 
 Level.new({:name => "Trainee"}).save(:validate => false)  unless Level.where(name: "Trainee").exists?
 Level.new({:name => "Junior"}).save(:validate => false)  unless Level.where(name: "Junior").exists?
@@ -60,7 +81,6 @@ end
 
 5.times do
   Interview.create({
-                       state: "New",
                        feedback: Faker::HarryPotter.quote,
                        date_time: Time.at(0.0 + rand * (Time.now.to_f - 0.0.to_f)),
                        candidate_id: Candidate.offset(rand(Candidate.count)).first.id,

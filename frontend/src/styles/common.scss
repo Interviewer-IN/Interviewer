@@ -240,7 +240,6 @@ div.has-error {
   }
 }
 
-
 .float-left {
   float: left
 }
@@ -263,7 +262,7 @@ div.has-error {
 }
 
 .hide {
-  display: none;
+  display: none !important;
 }
 
 .margin-none {

@@ -7,32 +7,31 @@
 }
 
 .filter-block {
-  //overflow: hidden;
+
 
   &.filter-block--date{
-    margin-left: 10px;
-  }
+    margin-top: 20px;
+    @media (min-width: 1449px) {
+      margin-top: 0;
+    }
 
-  &__title{
-    float: left;
-    margin-right: 20px;
-  //  line-height: 29px;
-
-    @media (max-width: 1110px) {
-      float: none;
+    & p {
+      margin-bottom: 0 !important;
     }
   }
 
-  &__selects{
+  &__selects {
     float: left;
     overflow: hidden;
-
-    @media (max-width: 1110px) {
+    @media (max-width: 1250px) {
       float: none;
-    }
-    @media (max-width: 580px){
       width: 100%;
     }
+    @media (max-width: 580px) {
+      width: 100%;
+    }
+
+
 
   }
 
@@ -41,20 +40,52 @@
     margin-bottom: 0;
     margin-right: 10px;
 
-    @media (max-width: 580px){
-      float: none;
-      margin-right: 0;
-      padding: 0;
-      margin-bottom: 15px;
+
+    &.can-hide{
+      display: block;
+      width: 130px;
+
+      @media (max-width: 1250px) {
+        margin-right: 10px;
+
+        &:last-child{
+          margin-right: 0;
+        }
+      }
+
+      @media (max-width: 580px){
+        float: none;
+        margin-right: 0;
+        padding: 0;
+        margin-bottom: 20px;
+        width: 100%;
+
+        &:first-child{
+          margin-top: 20px;
+        }
+      }
     }
 
-    &:last-child{
-      margin-right: 0;
+    &.cant-hide {
+   //   width: 130px;
+
+      @media (max-width: 1250px) {
+        display: block;
+        width: 100%;
+      }
+
+      @media (max-width: 580px) {
+        margin-top: 0;
+      }
+    }
+
+    &.search-box {
+      @media (max-width: 1250px) {
+        width: 100%;
+      }
     }
 
     .form-control{
-      width: 130px;
-
       @media (max-width: 580px){
         width: 100%;
       }
@@ -78,6 +109,51 @@
 .filter-date {
   margin-left: 10px;
 }
+
+.date-fields {
+  width: 130px;
+
+  @media (max-width: 580px) {
+    float: none;
+    margin-right: 0;
+    padding: 0;
+    margin-bottom: 20px !important;
+    width: 100%;
+  }
+}
+
+.custom-icon {
+  font-size: 1.8em;
+  margin: 2px 20px 0 0 ;
+
+  @media (max-width: 1250px) {
+    display: block !important;
+    float: left;
+    margin: 0 20px 20px 0;
+  }
+
+  &:hover {
+    color: #85CE36;
+  }
+}
+
+#allFiltersContainer{
+  display: block;
+
+  @media (max-width: 1250px) {
+    display: none;
+    float: none;
+  }
+}
+
+.filter-icon {
+  display: none;
+  @media (max-width: 1250px) {
+    display: block;
+  }
+}
+
+//------------React Date Picker ---------------
 
 .react-datepicker {
   border-radius: 1px !important;
@@ -147,7 +223,7 @@
   padding: 0px !important;
 }
 
-.custom-icon {
-  font-size: 1.6em;
-  margin-top: 4px;
-}
+
+
+
+

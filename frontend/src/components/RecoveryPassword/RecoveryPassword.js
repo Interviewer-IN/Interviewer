@@ -3,7 +3,7 @@ import './recoveryPassword.css';
 import {Link} from 'react-router-dom';
 import {Modal} from 'react-bootstrap';
 import Helmet from 'react-helmet';
-
+import {EMAIL_VALIDATION} from './../../config'
 
 class RecoveryPassword extends Component {
     constructor(props) {
@@ -83,7 +83,7 @@ class RecoveryPassword extends Component {
             if (passCheckOnEmptyEmail) {
                 if (loginValidationSettings.rules.email.isEmail) {
                     let emailValue = email.value;
-                    let result = emailValue.match(/^[0-9a-z-.]+@[0-9a-z-]{2,}\.[a-z]{2,}$/i);
+                    let result = emailValue.match(EMAIL_VALIDATION);
 
                     if (!result) {
 

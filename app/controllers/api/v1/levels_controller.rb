@@ -1,12 +1,9 @@
 module Api
   module V1
     class LevelsController < ApplicationController
-
-      # before_action :authenticate_user!
-
       def index
         levels = Level.order('created_at DESC')
-        render json: {status:"SUCCESS", message: "Projects loaded", data:levels}, status: :ok
+        render json: {status:"SUCCESS", message: "Levels loaded", data:levels}, status: :ok
       end
 
       def show

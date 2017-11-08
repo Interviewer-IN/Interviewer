@@ -16,7 +16,9 @@ class Filters extends Component {
         super(props);
         this.state = {
             startDate: "",
-            endDate: ""
+            endDate: "",
+            dateFilterToHideId: "filterDatePicker",
+            allFilterToHideID: "allFiltersContainer"
         }
     }
 
@@ -76,6 +78,25 @@ class Filters extends Component {
         this.props.projectFilterVal(projectFilterVal);
     }
 
+
+    handleDateClick() {
+        let dateFields = document.querySelector("#filterDatePicker").classList;
+        if (dateFields.contains('hide')) {
+            dateFields.remove('hide');
+        }else {
+            dateFields.add('hide');
+        }
+    }
+
+    handleFilterClick() {
+        let filterField = document.querySelector("#allFiltersContainer");
+            if(filterField.style.display === "block") {
+                filterField.style.display = "none";
+            }else {
+                filterField.style.display = "block";
+            }
+        }
+
     render() {
 
         let projectFilter = this.props.project,
@@ -84,6 +105,8 @@ class Filters extends Component {
             interviewerFilter = this.props.interviewer,
             ratingFilter = this.props.rating,
             dateFilter = this.props.date,
+            dateIcon = this.props.dateIcon,
+            searchBoxFilter = this.props.searchBoxFilter,
             projectFilterId = this.props.projectId,
             positionFilterId = this.props.positionId,
             levelFilterId = this.props.levelId,
@@ -92,7 +115,6 @@ class Filters extends Component {
             dateFromFilterId = this.props.dateFromId,
             dateToFilterId = this.props.dateToId,
             dateFilterErrorMessage = this.props.dateErrorMessage;
-
 
         let showProjectFilter = (project) => {
             if (project) {
@@ -118,7 +140,7 @@ class Filters extends Component {
                 }
 
                 return (
-                    <div className="form-group fields-group">
+                    <div className="form-group fields-group can-hide">
                         <select className="form-control form-control-sm filter-select custom-mode"
                                 id={projectFilterId}
                                 onChange={(event) => this.getProjectFilterVal(event)}
@@ -155,8 +177,8 @@ class Filters extends Component {
 
             if (position) {
                 return (
-                    <div className="form-group fields-group">
-                        <select className="form-control form-control-sm filter-select custom mode"
+                    <div className="form-group fields-group can-hide">
+                        <select className="form-control form-control-sm filter-select custom-mode"
                                 id={positionFilterId}
                                 onChange={(event) => this.getPositionFilterVal(event)}
                         >
@@ -190,7 +212,7 @@ class Filters extends Component {
 
             if (level) {
                 return (
-                    <div className="form-group fields-group">
+                    <div className="form-group fields-group can-hide">
                         <select className="form-control form-control-sm filter-select custom-mode"
                                 id={levelFilterId}
                                 onChange={(event) => this.getLevelFilterVal(event)}
@@ -222,7 +244,7 @@ class Filters extends Component {
 
             if (rating) {
                 return (
-                    <div className="form-group fields-group">
+                    <div className="form-group fields-group can-hide">
                         <select className="form-control form-control-sm filter-select custom-mode"
                                 id={ratingFilterId}
                                 onChange={(event) => this.getRatingFilterVal(event)}
@@ -238,8 +260,8 @@ class Filters extends Component {
         let showInterviewersFilter = (interviewer) => {
             if (interviewer) {
                 return (
-                    <div className="form-group fields-group">
-                        <select className="form-control form-control-sm filter-select"
+                    <div className="form-group fields-group can-hide hide">
+                        <select className="form-control form-control-sm filter-select "
                                 id={interviewerFilterId}
                         >
                             <option>Interviewer</option>
@@ -250,18 +272,41 @@ class Filters extends Component {
                     </div>
                 );
             }
+        };
 
+        let showDateIcon = (dateIcon) => {
+            if (dateIcon) {
+                return (
+                    <div className="filter-block__title float-left clearfix">
+                        <i className="fa fa-calendar fa-2x custom-icon"
+                           onClick={() => this.handleDateClick()}
+                        >
+                        </i>
+                    </div>
+                )
+            }
+        };
+
+
+        let showFilterIcon = () => {
+            return (
+                <div className="float-left clearfix">
+                    <i className="fa fa-filter fa-2x custom-icon filter-icon"
+                       onClick={() => this.handleFilterClick()}
+                    >
+
+                    </i>
+                </div>
+            )
         };
 
         let showDateFilter = (date) => {
             if (date) {
                 return (
-                    <div className="filter-block filter-block--date clearfix float-right">
-                        <div className="filter-block__title filter-date">
-                            <i className="fa fa-calendar custom-icon"></i>
-                        </div>
+                    <div className="filter-block filter-block--date clearfix float-left hide"
+                         id="filterDatePicker">
                         <div className="filter-block__selects">
-                            <div className="form-group fields-group float-left">
+                            <div className="form-group fields-group date-fields clearfix">
                                 <DatePicker
                                     id={dateFromFilterId}
                                     className="form-control form-control-sm filter-select"
@@ -272,10 +317,10 @@ class Filters extends Component {
                                     onChange={(event) => this.getDateFromFilterVal(event)}
                                 />
                             </div>
-                            <div className="form-group fields-group float-left">
+                            <div className="form-group fields-group date-fields  float-left">
                                 <DatePicker
                                     id={dateToFilterId}
-                                    className="form-control form-control-sm filter-select custom-mode"
+                                    className="form-control form-control-sm filter-select"
                                     placeholderText="To"
                                     dateFormat="DD/MM/YYYY"
                                     isClearable={true}
@@ -290,28 +335,41 @@ class Filters extends Component {
             }
         };
 
+        let showSearchBoxFilter = (searchBoxFilter) => {
+            if (searchBoxFilter) {
+                return (
+                    <div className="form-group fields-group cant-hide">
+                        <input className="form-control form-control-sm filter-select search-box"
+                               id="filterSearchBox"
+                               placeholder="Search..."/>
+                    </div>
+                )
+            }
+        };
 
         return (
-            <div className="filters-section">
-                <div className="filter-block">
-                    <div className="clearfix float-left">
-                        <div className="filter-block__title">
-                            <i className="fa fa-filter custom-icon"></i>
-                        </div>
-                        <div className="filter-block__selects">
+            <div className="filters-section clearfix">
+                <div className="filter-block clearfix">
+                    <div className="filter-block__selects float-left">
+                        {showDateIcon(dateIcon)}
+                        {showFilterIcon()}
+                        <div className="float-left clearfix"
+                             id="allFiltersContainer">
                             {showProjectFilter(projectFilter)}
                             {showPositionFilter(positionFilter)}
                             {showLevelFilter(levelFilter)}
                             {showInterviewersFilter(interviewerFilter)}
                             {showRatingFilter(ratingFilter)}
                         </div>
+                        {showSearchBoxFilter(searchBoxFilter)}
                     </div>
-                    {showDateFilter(dateFilter)}
+                    <div className="filter-block float-left">
+                        {showDateFilter(dateFilter)}
+                    </div>
                 </div>
             </div>
         );
     }
-
 }
 
 Filters.propTypes = {
@@ -321,6 +379,8 @@ Filters.propTypes = {
     interviewer: PropTypes.bool,
     rating: PropTypes.bool,
     date: PropTypes.bool,
+    dateIcon: PropTypes.bool,
+    searchBoxFilter: PropTypes.bool,
     projectFilterId: PropTypes.string,
     positionFilterId: PropTypes.string,
     levelFilterId: PropTypes.string,

@@ -1,6 +1,7 @@
 export const FIELD_CHAR_REGEX = /^[a-zA-Z0-9\s!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
 export const LETTERS_ONLY = /^[a-zA-Z]*$/;
 export const FIELD_SPACE_REGEX = /^\s*$/;
+export const EMAIL_VALIDATION = /^[0-9a-z-.]+@[0-9a-z-]{2,}\.[a-z]{2,}$/i;
 
 export const TYPE_FILES = '.pdf,.doc,.docx';
 
@@ -23,6 +24,8 @@ export const CLOSE_VACANCY = 'Vacancy was closed';
 export const DUPLICATE_VACANCY = 'Vacancy was duplicated';
 
 export const DELETE_CANDIDATE = 'Are you sure you want to delete the candidate?';
+
+export const DELETE_INTERVIEWER = 'Are you sure you want to delete the interviewer?';
 
 
 

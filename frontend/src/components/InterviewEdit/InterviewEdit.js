@@ -272,6 +272,7 @@ class InterviewEdit extends Component {
                             <div className="clearfix form-group">
                                 <div className="create-interview-select">
                                     <label className="control-label">Date</label>
+                                    <p className="form-sublabel back-link">You can pick only date starting from today</p>
                                     <DatePicker
                                         className="form-control form-control-sm filter-select"
                                         selected={this.state.date}
@@ -280,6 +281,7 @@ class InterviewEdit extends Component {
                                         timeFormat="HH:mm"
                                         timeIntervals={15}
                                         dateFormat="LLL"
+                                        minDate={moment()}
                                     />
                                     <span className="has-error error-message">{this.state.dateError}</span>
                                 </div>

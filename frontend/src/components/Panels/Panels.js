@@ -57,7 +57,6 @@ class Panels extends Component {
             description = this.props.description,
             id = this.props.id;
 
-
         let toShowActionBtn = (showActionBtn, titleBtn) => {
             if (showActionBtn){
               return (
