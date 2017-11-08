@@ -9,7 +9,7 @@ import Panels from '../../components/Panels';
 import {connect} from 'react-redux';
 import {getPositions} from '../../redux/actions/positionActions';
 import {getLevels} from '../../redux/actions/levelsActions';
-import {getInterviewers} from '../../redux/actions/interviewersActions';
+import {getInterviewers, deleteInterviewer} from '../../redux/actions/interviewersActions';
 import {levelsListName, positionsListName, getValueFromArr} from '../../utils/index';
 import {GET_EMPTY_DATA, DELETE_INTERVIEWER} from '../../config';
 
@@ -51,7 +51,7 @@ class Interviewers extends Component {
 
     openModalConfirm(currentID) {
         this.setState({
-            currentCandidateId: currentID,
+            currentInterviewerId: currentID,
             showModalConfirm: true
         });
     }
@@ -62,8 +62,14 @@ class Interviewers extends Component {
         })
     }
 
+    deleteInterviewer() {
+        this.closeModalConfirm();
+        const {dispatch} = this.props;
+        dispatch(deleteInterviewer(this.state.currentInterviewerId));
+    }
+
     switchToEditMode(currentID) {
-        this.props.history.push("/interviewers/edit");
+        this.props.history.push("/interviewers/" + currentID + "/edit");
     }
 
     getPositionFilterVal(positionFilterVal) {
@@ -90,8 +96,6 @@ class Interviewers extends Component {
     }
 
     render() {
-
-        console.log(this);
 
         let interviewersList = this.props.interviewers,
             levelsList = this.props.levels,
@@ -238,7 +242,7 @@ class Interviewers extends Component {
                                     <Button
                                         id={"btn-modal-yes-" + this.state.currentInterviewerId}
                                         className="btn btn-primary"
-                                        onClick={() => this.deleteProject()}
+                                        onClick={() => this.deleteInterviewer()}
                                     >Yes
                                     </Button>
                                     <Button

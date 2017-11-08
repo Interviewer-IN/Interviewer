@@ -1,5 +1,6 @@
 const initialState = {
-    interviewers: []
+    interviewers: [],
+    currentInterviewer: {}
 };
 
 export default function interviewers(state = initialState, action) {
@@ -8,6 +9,16 @@ export default function interviewers(state = initialState, action) {
         case 'ADD_INTERVIEWERS':
             return {
                 ...state, interviewers: action.payload
+            };
+
+        case 'ADD_INTERVIEWER':
+            return {
+                ...state, interviewers: action.payload
+            };
+
+        case 'CURRENT_INTERVIEWER':
+            return {
+                ...state, currentInterviewer: action.payload
             };
 
         default:

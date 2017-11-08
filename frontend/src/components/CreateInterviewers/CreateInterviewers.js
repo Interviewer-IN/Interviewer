@@ -23,9 +23,9 @@ class CreateInterviewers extends Component {
             nameVal: '',
             surnameVal: '',
             emailVal: '',
-            descriptionVal: '',
             levelVal: '',
-            positionVal: ''
+            positionVal: '',
+            descriptionVal: ''
         };
     }
 
@@ -77,9 +77,6 @@ class CreateInterviewers extends Component {
             levelId ? formData.level_id = levelId : false;
             formData.password = PASSWORD_BY_DEFAULT;
             formData.confirmation_token = emailVal;
-
-            console.log(formData);
-
 
 
             let {dispatch} = this.props,
@@ -203,7 +200,6 @@ class CreateInterviewers extends Component {
                                         value={this.state.nameVal}
                                         autoFocus
                                         onChange={(event) => this.handleNameChanges(event)}
-
                                     />
                                 </div>
 
@@ -264,6 +260,17 @@ class CreateInterviewers extends Component {
                                         {showPositionsList()}
                                     </select>
                                 </div>
+
+                                {/*<div className="form-group">*/}
+                                {/*<label>*/}
+                                {/*<input className="checkbox" type="checkbox"/>*/}
+                                {/*<span>is HR</span>*/}
+                                {/*</label>*/}
+                                {/*</div>*/}
+
+                                <p className="text-muted">
+                                   <small> NOTICE: The User will have password '{PASSWORD_BY_DEFAULT}' by default</small>
+                                </p>
 
                             </div>
                             <div className="col-md-12">
