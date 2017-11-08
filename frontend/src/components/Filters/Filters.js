@@ -3,8 +3,7 @@ import "./filters.css";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import DatePicker from "react-datepicker";
-import 'react-datepicker/dist/react-datepicker.css';
-
+import "react-datepicker/dist/react-datepicker.css";
 import {showProjects} from "../../redux/actions/projectActions";
 import {getLevels} from "../../redux/actions/levelsActions";
 import {getPositions} from "../../redux/actions/positionActions";
@@ -17,26 +16,28 @@ class Filters extends Component {
         super(props);
         this.state = {
             startDate: "",
-            endDate: ""
+            endDate: "",
+            dateFilterToHideId: "filterDatePicker",
+            allFilterToHideID: "allFiltersContainer"
         }
     }
 
     componentWillMount() {
         const {dispatch} = this.props;
 
-        if (!this.props.newProject.projects.length){
+        if (!this.props.newProject.projects.length) {
             dispatch(showProjects());
         }
 
-        if (!this.props.positions.length){
+        if (!this.props.positions.length) {
             dispatch(getPositions());
         }
 
-        if (!this.props.levels.length){
+        if (!this.props.levels.length) {
             dispatch(getLevels());
         }
 
-        if (!this.props.ratings.length){
+        if (!this.props.ratings.length) {
             dispatch(getRatings());
         }
 
@@ -57,25 +58,44 @@ class Filters extends Component {
 
     }
 
-    getPositionFilterVal(event){
+    getPositionFilterVal(event) {
         let positionFilterVal = event.target.value;
         this.props.positionFilterVal(positionFilterVal);
     }
 
-    getLevelFilterVal(event){
+    getLevelFilterVal(event) {
         let levelFilterVal = event.target.value;
         this.props.levelFilterVal(levelFilterVal);
     }
 
-    getRatingFilterVal(event){
+    getRatingFilterVal(event) {
         let ratingFilterVal = event.target.value;
         this.props.ratingFilterVal(ratingFilterVal);
     }
 
-    getProjectFilterVal(event){
+    getProjectFilterVal(event) {
         let projectFilterVal = event.target.value;
         this.props.projectFilterVal(projectFilterVal);
     }
+
+
+    handleDateClick() {
+        let dateFields = document.querySelector("#filterDatePicker").classList;
+        if (dateFields.contains('hide')) {
+            dateFields.remove('hide');
+        }else {
+            dateFields.add('hide');
+        }
+    }
+
+    handleFilterClick() {
+        let filterField = document.querySelector("#allFiltersContainer");
+            if(filterField.style.display === "block") {
+                filterField.style.display = "none";
+            }else {
+                filterField.style.display = "block";
+            }
+        }
 
     render() {
 
@@ -85,6 +105,8 @@ class Filters extends Component {
             interviewerFilter = this.props.interviewer,
             ratingFilter = this.props.rating,
             dateFilter = this.props.date,
+            dateIcon = this.props.dateIcon,
+            searchBoxFilter = this.props.searchBoxFilter,
             projectFilterId = this.props.projectId,
             positionFilterId = this.props.positionId,
             levelFilterId = this.props.levelId,
@@ -93,7 +115,6 @@ class Filters extends Component {
             dateFromFilterId = this.props.dateFromId,
             dateToFilterId = this.props.dateToId,
             dateFilterErrorMessage = this.props.dateErrorMessage;
-
 
         let showProjectFilter = (project) => {
             if (project) {
@@ -110,8 +131,7 @@ class Filters extends Component {
 
                     options = sortedProjects.map((item, index) => {
 
-
-                        let title =  item.title.length < 20 ? item.title : item.title.slice(0, 10) + "...";
+                        let title = item.title.length < 10 ? item.title : item.title.slice(0, 10) + "...";
 
                         return (
                             <option key={index}>{title}</option>
@@ -120,10 +140,10 @@ class Filters extends Component {
                 }
 
                 return (
-                    <div className="form-group">
+                    <div className="form-group fields-group can-hide">
                         <select className="form-control form-control-sm filter-select custom-mode"
                                 id={projectFilterId}
-                                onChange = {(event) => this.getProjectFilterVal(event)}
+                                onChange={(event) => this.getProjectFilterVal(event)}
                         >
                             <option>Project</option>
                             {options}
@@ -145,15 +165,22 @@ class Filters extends Component {
                         if (a.name < b.name) return -1;
                     },
                     sortedPositions = positionsList.sort(compareName) || {};
-                options = sortedPositions.map((item, index) => <option key={index}>{item.name}</option>);
+                options = sortedPositions.map((item, index) => {
+
+                    let name = item.name.length < 10 ? item.name : item.name.slice(0, 10) + "...";
+
+                    return (
+                        <option key={index}>{name}</option>
+                    )
+                });
             }
 
             if (position) {
                 return (
-                    <div className="form-group">
-                        <select className="form-control form-control-sm filter-select custom mode"
+                    <div className="form-group fields-group can-hide">
+                        <select className="form-control form-control-sm filter-select custom-mode"
                                 id={positionFilterId}
-                                onChange = {(event) => this.getPositionFilterVal(event)}
+                                onChange={(event) => this.getPositionFilterVal(event)}
                         >
                             <option>Position</option>
                             {options}
@@ -174,15 +201,21 @@ class Filters extends Component {
                         if (a.name < b.name) return -1;
                     },
                     sortedLevels = levelsList.sort(compareName) || {};
-                options = sortedLevels.map((item, index) => <option key={index}>{item.name}</option>);
+                options = sortedLevels.map((item, index) => {
+                    let name = item.name.length < 10 ? item.name : item.name.slice(0, 10) + "...";
+
+                    return (
+                        <option key={index}>{name}</option>
+                    )
+                });
             }
 
             if (level) {
                 return (
-                    <div className="form-group">
+                    <div className="form-group fields-group can-hide">
                         <select className="form-control form-control-sm filter-select custom-mode"
                                 id={levelFilterId}
-                                onChange = {(event) => this.getLevelFilterVal(event)}
+                                onChange={(event) => this.getLevelFilterVal(event)}
                         >
                             <option>Level</option>
                             {options}
@@ -199,10 +232,10 @@ class Filters extends Component {
 
             if (ratingsList.length) {
                 let compareGrade = (a, b) => {
-                    let first = +a.grade;
-                    let second = +b.grade;
+                        let first = +a.grade;
+                        let second = +b.grade;
 
-                        if (first> second) return 1;
+                        if (first > second) return 1;
                         if (first < second) return -1;
                     },
                     sortedRatings = ratingsList.sort(compareGrade) || {};
@@ -211,10 +244,10 @@ class Filters extends Component {
 
             if (rating) {
                 return (
-                    <div className="form-group">
+                    <div className="form-group fields-group can-hide">
                         <select className="form-control form-control-sm filter-select custom-mode"
                                 id={ratingFilterId}
-                                onChange = {(event) => this.getRatingFilterVal(event)}
+                                onChange={(event) => this.getRatingFilterVal(event)}
                         >
                             <option>Rating</option>
                             {options}
@@ -225,10 +258,10 @@ class Filters extends Component {
         };
 
         let showInterviewersFilter = (interviewer) => {
-            if (interviewer){
+            if (interviewer) {
                 return (
-                    <div className="form-group">
-                        <select className="form-control form-control-sm filter-select"
+                    <div className="form-group fields-group can-hide hide">
+                        <select className="form-control form-control-sm filter-select "
                                 id={interviewerFilterId}
                         >
                             <option>Interviewer</option>
@@ -239,16 +272,41 @@ class Filters extends Component {
                     </div>
                 );
             }
+        };
 
+        let showDateIcon = (dateIcon) => {
+            if (dateIcon) {
+                return (
+                    <div className="filter-block__title float-left clearfix">
+                        <i className="fa fa-calendar fa-2x custom-icon"
+                           onClick={() => this.handleDateClick()}
+                        >
+                        </i>
+                    </div>
+                )
+            }
+        };
+
+
+        let showFilterIcon = () => {
+            return (
+                <div className="float-left clearfix">
+                    <i className="fa fa-filter fa-2x custom-icon filter-icon"
+                       onClick={() => this.handleFilterClick()}
+                    >
+
+                    </i>
+                </div>
+            )
         };
 
         let showDateFilter = (date) => {
             if (date) {
                 return (
-                    <div className="filter-block filter-block--date clearfix">
-                        <div className="filter-block__title filter-date">Date:</div>
+                    <div className="filter-block filter-block--date clearfix float-left hide"
+                         id="filterDatePicker">
                         <div className="filter-block__selects">
-                            <div className="form-group float-left">
+                            <div className="form-group fields-group date-fields clearfix">
                                 <DatePicker
                                     id={dateFromFilterId}
                                     className="form-control form-control-sm filter-select"
@@ -259,10 +317,10 @@ class Filters extends Component {
                                     onChange={(event) => this.getDateFromFilterVal(event)}
                                 />
                             </div>
-                            <div className="form-group float-left">
+                            <div className="form-group fields-group date-fields  float-left">
                                 <DatePicker
                                     id={dateToFilterId}
-                                    className="form-control form-control-sm filter-select custom-mode"
+                                    className="form-control form-control-sm filter-select"
                                     placeholderText="To"
                                     dateFormat="DD/MM/YYYY"
                                     isClearable={true}
@@ -270,28 +328,44 @@ class Filters extends Component {
                                     onChange={(event) => this.getDateToFilterVal(event)}
                                 />
                             </div>
-                            <p className="error-message">{dateFilterErrorMessage}</p>
                         </div>
+                        <p className="error-message">{dateFilterErrorMessage}</p>
                     </div>
                 );
             }
         };
 
+        let showSearchBoxFilter = (searchBoxFilter) => {
+            if (searchBoxFilter) {
+                return (
+                    <div className="form-group fields-group cant-hide">
+                        <input className="form-control form-control-sm filter-select search-box"
+                               id="filterSearchBox"
+                               placeholder="Search..."/>
+                    </div>
+                )
+            }
+        };
 
         return (
-            <div className="filters-section">
-                <div className="filter-block">
-                    <div className="clearfix">
-                        <div className="filter-block__title">Filters:</div>
-                        <div className="filter-block__selects">
+            <div className="filters-section clearfix">
+                <div className="filter-block clearfix">
+                    <div className="filter-block__selects float-left">
+                        {showDateIcon(dateIcon)}
+                        {showFilterIcon()}
+                        <div className="float-left clearfix"
+                             id="allFiltersContainer">
                             {showProjectFilter(projectFilter)}
                             {showPositionFilter(positionFilter)}
                             {showLevelFilter(levelFilter)}
                             {showInterviewersFilter(interviewerFilter)}
                             {showRatingFilter(ratingFilter)}
                         </div>
+                        {showSearchBoxFilter(searchBoxFilter)}
                     </div>
-                    {showDateFilter(dateFilter)}
+                    <div className="filter-block float-left">
+                        {showDateFilter(dateFilter)}
+                    </div>
                 </div>
             </div>
         );
@@ -305,11 +379,13 @@ Filters.propTypes = {
     interviewer: PropTypes.bool,
     rating: PropTypes.bool,
     date: PropTypes.bool,
+    dateIcon: PropTypes.bool,
+    searchBoxFilter: PropTypes.bool,
     projectFilterId: PropTypes.string,
     positionFilterId: PropTypes.string,
     levelFilterId: PropTypes.string,
-    interviewerFilterId:PropTypes.string,
-    ratingFilterId:PropTypes.string,
+    interviewerFilterId: PropTypes.string,
+    ratingFilterId: PropTypes.string,
     dateFromFilterId: PropTypes.string,
     dateToFilterId: PropTypes.string,
     dateFilterErrorMessage: PropTypes.string

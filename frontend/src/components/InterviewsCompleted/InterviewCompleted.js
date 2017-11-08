@@ -58,7 +58,7 @@ class InterviewsCompleted extends Component {
             dispatch(showProjects());
         }
 
-        if (!this.props.ratings.langth){
+        if (!this.props.ratings.length){
             dispatch(getRatings());
         }
 
@@ -344,6 +344,8 @@ class InterviewsCompleted extends Component {
                     position={true}
                     level={true}
                     date={true}
+                    dateIcon={true}
+                    searchBoxFilter={true}
                     interviewer={true}
                     positionFilterVal={(event) => this.getPositionFilterVal(event)}
                     levelFilterVal={(event) => this.getLevelFilterVal(event)}
@@ -361,6 +363,8 @@ class InterviewsCompleted extends Component {
                     position={true}
                     level={true}
                     date={true}
+                    dateIcon={true}
+                    searchBoxFilter={true}
                     interviewer={false}
                     rating={true}
                     positionFilterVal={(event) => this.getPositionFilterVal(event)}

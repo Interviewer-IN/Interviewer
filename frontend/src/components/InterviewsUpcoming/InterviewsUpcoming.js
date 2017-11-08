@@ -462,6 +462,8 @@ class InterviewsUpcoming extends Component {
                     position={true}
                     level={true}
                     date={true}
+                    dateIcon={true}
+                    searchBoxFilter={true}
                     interviewer={true}
                     rating={false}
                     positionFilterVal={(event) => this.getPositionFilterVal(event)}
@@ -479,6 +481,8 @@ class InterviewsUpcoming extends Component {
                     position={true}
                     level={true}
                     date={true}
+                    dateIcon={true}
+                    searchBoxFilter={true}
                     interviewer={false}
                     rating={false}
                     positionFilterVal={(event) => this.getPositionFilterVal(event)}
