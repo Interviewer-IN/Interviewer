@@ -149,8 +149,6 @@ class InterviewEdit extends Component {
 
     render() {
 
-        console.log(this.state.currentInterview);
-
         let candidates = this.props.candidates,
             vacancies = this.props.vacancies,
             projects = this.props.projects,
