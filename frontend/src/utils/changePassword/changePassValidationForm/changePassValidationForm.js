@@ -99,7 +99,7 @@ export function changePassValidationForm(event){
         newPasswordPass = true;
     }
 
-    if (changePassValidationSettings.rules.oldPass.required || retypePassVal){
+    if (changePassValidationSettings.rules.retypePass.required || retypePassVal){
         if (changePassValidationSettings.rules.retypePass.minLength.checkMinLength) {
             if (retypePassVal.length < changePassValidationSettings.rules.retypePass.minLength.minLengthVal) {
 
