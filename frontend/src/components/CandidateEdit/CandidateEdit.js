@@ -132,8 +132,6 @@ class CandidateEdit extends Component {
 
     handleUploadFile(event) {
 
-        console.log(event.target.files);
-
         let parentWrapper = event.target.parentNode.parentNode,
             resultUploadBlock = parentWrapper.querySelector('.upload-file__result'),
             hasErrorBlock = parentWrapper.querySelector('.has-error');

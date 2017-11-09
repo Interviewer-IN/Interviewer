@@ -4,15 +4,16 @@ import './password.css';
 import Helmet from 'react-helmet';
 import {Modal, Button} from 'react-bootstrap';
 import PageTitle from './../../containers/PageTitle';
-import {CONFIRM_TEXT} from "../../config";
-import {removeCurrentError, createErrorElem, changePassValidationForm} from '../../utils/index';
+import {removeCurrentError, changePassValidationForm} from '../../utils/index';
+import {authorizationCheck} from "../../redux/actions/authenticationActions";
+import {changePassword} from "../../redux/actions/changePasswordActions";
+import {connect} from "react-redux";
 
-class Password extends Component{
+class Password extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            confirmText: CONFIRM_TEXT,
             showModalConfirm: false,
             oldPassword: '',
             newPassword: '',
@@ -22,7 +23,6 @@ class Password extends Component{
 
     componentWillMount() {
         this.props.onCheckUserRole();
-        const {dispatch} = this.props;
     }
 
     handleOldPasswordChanges(event) {
@@ -36,12 +36,12 @@ class Password extends Component{
         removeCurrentError(event);
     }
 
-    handleRepeatNewPassChanges(event){
+    handleRepeatNewPassChanges(event) {
         this.setState({retypePassword: event.target.value.trim()});
         removeCurrentError(event);
     }
 
-    handleSubmitForm(event){
+    handleSubmitForm(event) {
         event.preventDefault();
 
         let validationPass = changePassValidationForm.apply(this, [event]);
@@ -53,20 +53,29 @@ class Password extends Component{
                 retypePassword = this.state.retypePassword;
 
             let formData = {
-                oldPassword: oldPassword,
-                newPassword: newPassword,
-                retypePassword: retypePassword
+                // oldPassword: oldPassword,
+                password: newPassword,
+                password_confirmation: retypePassword
             };
 
-            console.log(formData);
+            let {dispatch} = this.props;
+            dispatch(authorizationCheck());
+            dispatch(changePassword(formData)).then(() => {
+                this.setState({
+                    newPassword: '',
+                    retypePassword: ''
+                });
+            });
+
         }
     }
 
-    render(){
+    render() {
+
         return (
             <div className="bcgr">
                 <Helmet>
-                    Password
+                    <title>Change password</title>
                 </Helmet>
                 <div className="row sameheight-container">
                     <div className="col-md-12">
@@ -81,24 +90,25 @@ class Password extends Component{
                 <div className="row sameheight-container">
                     <div className="col-md-6">
                         <form className="custom-form" onSubmit={(event) => this.handleSubmitForm(event)}>
-                            <div className="form-group">
-                                <label className="control-label form-label">Old password <span className="required-field">*</span></label>
-                                <input
-                                    id="old-password"
-                                    type="password"
-                                    name="old-password"
-                                    placeholder='Input old password'
-                                    className="form-control boxed"
-                                    maxLength="20"
-                                    ref="oldPassword"
-                                    value={this.state.nameVal}
-                                    autoFocus
-                                    onChange={(event) => this.handleOldPasswordChanges(event)}
-                                />
-                            </div>
+                            {/*<div className="form-group">*/}
+                            {/*<label className="control-label form-label">Old password <span className="required-field">*</span></label>*/}
+                            {/*<input*/}
+                            {/*id="old-password"*/}
+                            {/*type="password"*/}
+                            {/*name="old-password"*/}
+                            {/*placeholder='Input old password'*/}
+                            {/*className="form-control boxed"*/}
+                            {/*maxLength="20"*/}
+                            {/*ref="oldPassword"*/}
+                            {/*value={this.state.nameVal}*/}
+                            {/*autoFocus*/}
+                            {/*onChange={(event) => this.handleOldPasswordChanges(event)}*/}
+                            {/*/>*/}
+                            {/*</div>*/}
 
                             <div className="form-group">
-                                <label className="control-label form-label">New password <span className="required-field">*</span></label>
+                                <label className="control-label form-label">New password <span
+                                    className="required-field">*</span></label>
                                 <input
                                     id="new-password"
                                     type="password"
@@ -107,13 +117,14 @@ class Password extends Component{
                                     className="form-control boxed"
                                     maxLength="20"
                                     ref="newPassword"
-                                    value={this.state.surnameVal}
+                                    value={this.state.newPassword}
                                     onChange={(event) => this.handleNewPasswordChanges(event)}
                                 />
                             </div>
 
                             <div className="form-group">
-                                <label className="control-label form-label">Re-type new password <span className="required-field">*</span></label>
+                                <label className="control-label form-label">Re-type new password <span
+                                    className="required-field">*</span></label>
                                 <input
                                     id="retype-password"
                                     type="password"
@@ -121,7 +132,7 @@ class Password extends Component{
                                     placeholder='Re-type new password'
                                     className="form-control boxed"
                                     ref="retypePassword"
-                                    value={this.state.userEmailVal}
+                                    value={this.state.retypePassword}
                                     onChange={(event) => this.handleRepeatNewPassChanges(event)}
                                 />
                             </div>
@@ -142,4 +153,8 @@ class Password extends Component{
     }
 }
 
-export default Password;
+function mapStateToProps(state) {
+    return {}
+}
+
+export default connect(mapStateToProps)(Password);
