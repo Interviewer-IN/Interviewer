@@ -26,7 +26,7 @@ class InterviewersEdit extends Component {
             emailVal: '',
             levelVal: '',
             positionVal: '',
-            isHr: '',
+            // isHr: '',
             descriptionVal: ''
         };
     }
@@ -85,15 +85,15 @@ class InterviewersEdit extends Component {
 
         });
 
-        if (currentInterviewer.is_hr){
-            this.setState({
-                isHr: 'checked'
-            });
-        } else {
-            this.setState({
-                isHr: ''
-            });
-        }
+        // if (currentInterviewer.is_hr){
+        //     this.setState({
+        //         isHr: 'checked'
+        //     });
+        // } else {
+        //     this.setState({
+        //         isHr: ''
+        //     });
+        // }
     }
 
     handleSubmitForm(event) {
@@ -117,7 +117,7 @@ class InterviewersEdit extends Component {
                 nameVal = this.state.nameVal,
                 surnameVal = this.state.surnameVal,
                 emailVal = this.state.emailVal,
-                isHr = this.refs.interviewerIsHR.checked,
+                // isHr = this.refs.interviewerIsHR.checked,
                 descriptionVal = this.state.descriptionVal,
                 positionId = getValueFromArr(positionsList, positionVal, 'name'),
                 levelId = getValueFromArr(levelsList, levelVal, 'name');
@@ -129,16 +129,11 @@ class InterviewersEdit extends Component {
                 email: emailVal,
                 position_id: positionId,
                 level_id: levelId,
-                is_hr: isHr,
+                // is_hr: isHr,
                 description: descriptionVal,
-                nickname: surnameVal + ' ' + nameVal
+                // nickname: surnameVal + ' ' + nameVal
 
             };
-
-            console.log(formData);
-
-
-
 
             let {dispatch} = this.props,
                 pathName = window.location.hash,
@@ -187,20 +182,20 @@ class InterviewersEdit extends Component {
         removeCurrentError(event);
     }
 
-    handleChangeRole(event) {
-
-        if (this.refs.interviewerIsHR.checked){
-            this.setState({
-                isHr: 'checked'
-            });
-        } else {
-            this.setState({
-                isHr: ''
-            });
-        }
-
-
-    }
+    // handleChangeRole(event) {
+    //
+    //     if (this.refs.interviewerIsHR.checked){
+    //         this.setState({
+    //             isHr: 'checked'
+    //         });
+    //     } else {
+    //         this.setState({
+    //             isHr: ''
+    //         });
+    //     }
+    //
+    //
+    // }
 
 
     openModalConfirm() {
@@ -338,19 +333,19 @@ class InterviewersEdit extends Component {
                                     </select>
                                 </div>
 
-                                <div className="form-group">
-                                    <label>
-                                        <input className="checkbox"
-                                               type="checkbox"
-                                               id="interviewer-isHr"
-                                               name="interviewer-isHr"
-                                               ref="interviewerIsHR"
-                                               checked={this.state.isHr}
-                                               onChange={event => this.handleChangeRole(event)}
-                                        />
-                                        <span>is HR</span>
-                                    </label>
-                                </div>
+                                {/*<div className="form-group">*/}
+                                    {/*<label>*/}
+                                        {/*<input className="checkbox"*/}
+                                               {/*type="checkbox"*/}
+                                               {/*id="interviewer-isHr"*/}
+                                               {/*name="interviewer-isHr"*/}
+                                               {/*ref="interviewerIsHR"*/}
+                                               {/*checked={this.state.isHr}*/}
+                                               {/*onChange={event => this.handleChangeRole(event)}*/}
+                                        {/*/>*/}
+                                        {/*<span>is HR</span>*/}
+                                    {/*</label>*/}
+                                {/*</div>*/}
 
                             </div>
                             <div className="col-md-12">

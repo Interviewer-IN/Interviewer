@@ -64,7 +64,7 @@ class CreateInterviewers extends Component {
                 nameVal = this.state.nameVal,
                 surnameVal = this.state.surnameVal,
                 emailVal = this.state.emailVal,
-                isHr = this.refs.interviewerIsHR.checked,
+                // isHr = this.refs.interviewerIsHR.checked,
                 descriptionVal = this.state.descriptionVal,
                 positionId = getValueFromArr(positionsList, positionVal, 'name'),
                 levelId = getValueFromArr(levelsList, levelVal, 'name'),
@@ -76,10 +76,10 @@ class CreateInterviewers extends Component {
             positionId ? formData.position_id = positionId : false;
             levelId ? formData.level_id = levelId : false;
             descriptionVal ? formData.description = descriptionVal : false;
-            formData.is_hr = isHr;
+            // formData.is_hr = isHr;
             formData.password = PASSWORD_BY_DEFAULT;
             formData.confirmation_token = emailVal;
-            formData.nickname = surnameVal + ' ' + nameVal;
+            // formData.nickname = surnameVal + ' ' + nameVal;
 
 
             let {dispatch} = this.props,
@@ -267,17 +267,17 @@ class CreateInterviewers extends Component {
                                     </select>
                                 </div>
 
-                                <div className="form-group">
-                                    <label>
-                                        <input className="checkbox"
-                                               type="checkbox"
-                                               id="interviewer-isHr"
-                                               name="interviewer-isHr"
-                                               ref="interviewerIsHR"
-                                        />
-                                        <span>is HR</span>
-                                    </label>
-                                </div>
+                                {/*<div className="form-group">*/}
+                                    {/*<label>*/}
+                                        {/*<input className="checkbox"*/}
+                                               {/*type="checkbox"*/}
+                                               {/*id="interviewer-isHr"*/}
+                                               {/*name="interviewer-isHr"*/}
+                                               {/*ref="interviewerIsHR"*/}
+                                        {/*/>*/}
+                                        {/*<span>is HR</span>*/}
+                                    {/*</label>*/}
+                                {/*</div>*/}
 
                                 <p className="text-muted">
                                     <small> NOTICE: The User will have password '{PASSWORD_BY_DEFAULT}' by default

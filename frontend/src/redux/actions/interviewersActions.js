@@ -135,7 +135,7 @@ export function createInterviewer(data, message, backPath) {
 
 export function updateInterviewer(data, message, backPath) {
     let successMessage = message || 'Interviewer was updated';
-    return (dispatch) => {
+    return (dispatch) => new Promise (resolve => {
         fetch('/api/v1/users/' + data.id,
             {
                 method: 'PUT',
@@ -166,15 +166,18 @@ export function updateInterviewer(data, message, backPath) {
                 if (backPath !== undefined){
                     window.location.replace(backPath);
                 }
+
+                resolve(data.data);
             })
             .catch((error) => {
                 dispatch(makeNote({
                     status: 'danger',
                     text: 'Error: ' + error,
                     hide: false
-                }))
+                }));
+                resolve();
             })
-    }
+    });
 }
 
 export function deleteInterviewer(id) {
