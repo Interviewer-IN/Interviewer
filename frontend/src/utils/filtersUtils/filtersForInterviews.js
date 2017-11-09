@@ -41,6 +41,16 @@ export function filterByProject(projectFilterID, interviews, vacancies) {
         return newInterviews;
 }
 
+export function filterByInterviewer(interviewerFilterId, interviews) {
+
+    let newInterviews = interviews.filter((current) => {
+        return (current.user_id === interviewerFilterId);
+    });
+
+    return newInterviews
+
+}
+
 export function filterByRating(ratingFilterID, interviews) {
 
     let newInterviews = interviews.filter((current) => {

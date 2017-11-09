@@ -9,18 +9,19 @@ import {
     removeInterview,
     createInterview,
     updateInterview,
-    getInterviews
 } from "../../redux/actions/interviewActions";
 import {getVacancies} from "../../redux/actions/vacanciesActions";
 import {showProjects} from "../../redux/actions/projectActions";
 import {getCandidates} from "../../redux/actions/candidatesActions";
+import {getInterviewers} from "../../redux/actions/interviewersActions";
 import {
     getValueFromArr,
     filterByDates,
     setErrorDateMessage,
     filterByPosition,
     filterByLevel,
-    filterByProject
+    filterByProject,
+    filterByInterviewer
 } from "../../utils/index";
 import PageTitle from "./../../containers/PageTitle";
 import Panels from "../Panels/Panels";
@@ -38,10 +39,12 @@ class InterviewsUpcoming extends Component {
             isHR: false,
             interviewId: "",
             candidateId: "",
+            userId: "",
             date_time: "",
             positionsFilterID: "",
             levelsFilterID: "",
             projectsFilterID: "",
+            interviewerFilterId: "",
             dateFromFilter: "",
             dateToFilter: "",
             dateErrorMessage: "",
@@ -69,6 +72,10 @@ class InterviewsUpcoming extends Component {
             dispatch(getCandidates());
         }
 
+        if (!this.props.interviewers.length) {
+            dispatch(getInterviewers());
+        }
+
         if (isUserHR) {
             this.setState({isHR: true})
         }
@@ -89,7 +96,6 @@ class InterviewsUpcoming extends Component {
         const {dispatch} = this.props;
         dispatch(createInterview(duplicateData, successDuplicateMessage));
     }
-
 
     openModalConfirm(currentID) {
         this.setState({
@@ -163,6 +169,16 @@ class InterviewsUpcoming extends Component {
         })
     }
 
+    getInterviewerFilterVal(interviewerFilterVal) {
+        let interviewersList = this.props.interviewers,
+            interviewerFilterId = 0;
+
+        interviewerFilterId = getValueFromArr(interviewersList, interviewerFilterVal, 'nickname');
+        this.setState({
+            interviewerFilterId: interviewerFilterId
+        });
+    }
+
     getDateFromFilterVal(dateFromFilterVal) {
         this.setState({
             dateFromFilter: dateFromFilterVal
@@ -208,12 +224,19 @@ class InterviewsUpcoming extends Component {
             levels = this.props.levels,
             positions = this.props.positions,
             candidates = this.props.candidates,
+            interviewers = this.props.interviewers,
             idExpandedElement = this.props.idExpandedElement,
             dates = [],
             interviewsByDates,
             filterErrorMessage;
 
-        if (interviews.length && vacancies.length && projects.length && levels.length && positions.length && candidates.length) {
+        if (interviews.length &&
+            vacancies.length &&
+            projects.length &&
+            levels.length &&
+            positions.length &&
+            candidates.length &&
+            interviewers.length) {
 
             interviews = interviews.filter((current) => {
                 return current.status === true;
@@ -224,6 +247,7 @@ class InterviewsUpcoming extends Component {
             let positionFilterID = this.state.positionsFilterID,
                 levelFilterID = this.state.levelsFilterID,
                 projectFilterID = this.state.projectsFilterID,
+                interviewerFilterId = this.state.interviewerFilterId,
                 dateFromFilter = this.state.dateFromFilter,
                 dateToFilter = this.state.dateToFilter;
 
@@ -239,6 +263,11 @@ class InterviewsUpcoming extends Component {
             if (projectFilterID) {
                 interviews = filterByProject(projectFilterID, interviews, vacancies);
             }
+
+            if (interviewerFilterId) {
+                interviews = filterByInterviewer(interviewerFilterId, interviews);
+            }
+
 
             if (dateFromFilter || dateToFilter) {
                 interviews = filterByDates(dateFromFilter, dateToFilter, interviews);
@@ -285,12 +314,7 @@ class InterviewsUpcoming extends Component {
 
                         if (currentDate === interviewDate) {
                             todayInterviews.push(value);
-                            dateToDisplay = "" + new Date(value.date_time).toLocaleString('en-GB', {weekday: 'long'}) + ", "
-                                + new Date(value.date_time).toLocaleString('en-GB', {
-                                    day: 'numeric',
-                                    month: 'long',
-                                    year: 'numeric',
-                                }) + "";
+                            dateToDisplay = moment(new Date(value.date_time)).format("dddd, D MMMM");
                         }
                     });
 
@@ -306,6 +330,7 @@ class InterviewsUpcoming extends Component {
                                 currentLevel = levels.find(item => currentVacancy.level_id === item.id),
                                 currentPosition = positions.find(item => currentVacancy.position_id === item.id),
                                 currentCandidate = candidates.find(item => value.candidate_id === item.id),
+                                currentInterviewer = interviewers.find(item => value.user_id === item.id),
                                 candidateCV = currentCandidate.cv.url,
                                 currentSate = (value.state) ? "Active" : "Activate",
                                 isBtnInactive = value.state,
@@ -358,7 +383,7 @@ class InterviewsUpcoming extends Component {
                                     currentLevel.name + " - " +
                                     currentPosition.name + " - " +
                                     currentProject.title + " | " +
-                                    "some inteviewer" + " | ";
+                                    currentInterviewer.name + " " + currentInterviewer.surname + " ";
                             } else {
                                 panelTitleText = time + " | " +
                                     currentCandidate.name + " " +
@@ -491,6 +516,7 @@ class InterviewsUpcoming extends Component {
                     positionFilterVal={(event) => this.getPositionFilterVal(event)}
                     levelFilterVal={(event) => this.getLevelFilterVal(event)}
                     projectFilterVal={(event) => this.getProjectFilterVal(event)}
+                    interviewerFilterVal={(event) => this.getInterviewerFilterVal(event)}
                     dateFromFilterVal={(event) => this.getDateFromFilterVal(event)}
                     dateToFilterVal={(event) => this.getDateToFilterVal(event)}
                     dateErrorMessage={filterErrorMessage}
@@ -573,6 +599,7 @@ function mapStateToProps(state) {
         levels: state.levels.levels,
         positions: state.positions.positions,
         candidates: state.candidates.candidates,
+        interviewers: state.interviewers.interviewers,
         idExpandedElement: state.interviews.idExpandedElement
     }
 }

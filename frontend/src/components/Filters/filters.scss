@@ -30,9 +30,6 @@
     @media (max-width: 580px) {
       width: 100%;
     }
-
-
-
   }
 
   .fields-group{
@@ -67,7 +64,7 @@
     }
 
     &.cant-hide {
-   //   width: 130px;
+    width: 130px;
 
       @media (max-width: 1250px) {
         display: block;

@@ -9,6 +9,7 @@ import {getVacancies} from "../../redux/actions/vacanciesActions";
 import {showProjects} from "../../redux/actions/projectActions";
 import {getRatings} from "../../redux/actions/ratingActions";
 import {getCandidates} from "../../redux/actions/candidatesActions";
+import {getInterviewers} from "../../redux/actions/interviewersActions";
 import {
     getValueFromArr,
     filterByDates,
@@ -64,6 +65,10 @@ class InterviewsCompleted extends Component {
 
         if (!this.props.candidates.length){
             dispatch(getCandidates());
+        }
+
+        if (!this.props.interviewers.length) {
+            dispatch(getInterviewers());
         }
 
         if (isUserHR) {
@@ -189,6 +194,7 @@ class InterviewsCompleted extends Component {
             positions = this.props.positions,
             ratings = this.props.ratings,
             candidates = this.props.candidates,
+            interviewers = this.props.interviewers,
             interviewsToDisplay,
             filterErrorMessage;
 
@@ -252,6 +258,7 @@ class InterviewsCompleted extends Component {
                         currentLevel = levels.find(item => currentVacancy.level_id === item.id),
                         currentPosition = positions.find(item => currentVacancy.position_id === item.id),
                         currentCandidate = candidates.find(item => value.candidate_id === item.id),
+                        currentInterviewer = interviewers.find(item => value.user_id === item.id),
                         currentRating = ratings.find(item => value.rating_id === item.id),
                         panelTitleText;
 
@@ -264,7 +271,7 @@ class InterviewsCompleted extends Component {
                             currentPosition.name + " - " +
                             currentProject.title + " | " +
                             "Rating: " + currentRating.grade + " | " +
-                            "some inteviewer";
+                            currentInterviewer.name + " " + currentInterviewer.surname + " ";
                     } else {
                         panelTitleText =
                             currentDate + " | " +
@@ -437,6 +444,7 @@ function mapStateToProps(state) {
         positions: state.positions.positions,
         ratings: state.ratings.ratings,
         candidates: state.candidates.candidates,
+        interviewers: state.interviewers.interviewers,
         currentProject: state.project.currentProject,
     }
 }
