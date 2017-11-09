@@ -266,12 +266,7 @@ class InterviewsUpcoming extends Component {
 
                         if (currentDate === interviewDate) {
                             todayInterviews.push(value);
-                            dateToDisplay = "" + new Date(value.date_time).toLocaleString('en-GB', {weekday: 'long'}) + ", "
-                                + new Date(value.date_time).toLocaleString('en-GB', {
-                                    day: 'numeric',
-                                    month: 'long',
-                                    year: 'numeric',
-                                }) + "";
+                            dateToDisplay = moment(new Date(value.date_time)).format("dddd, D MMMM");
                         }
                     });
 
