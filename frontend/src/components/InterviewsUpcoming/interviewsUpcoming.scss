@@ -45,7 +45,6 @@
 }
 
 .tooltip-icon {
-  position: relative;
   display: inline-block;
 
   &__text {
@@ -55,12 +54,12 @@
     text-align: center;
     border-radius: 1px;
     border: 1px solid #70b02b;
-    padding: 4px 0;
-    position: absolute;
+    padding: 4px 4px;
     z-index: 1;
     margin-left: 10px;
     font-family: 'Open Sans', sans-serif;
     font-size: 80%;
+    background-color: white;
   }
 
   &:hover {
