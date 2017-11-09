@@ -8,6 +8,8 @@ import {
     showInterviews,
     removeInterview,
     createInterview,
+    updateInterview,
+    getInterviews
 } from "../../redux/actions/interviewActions";
 import {getVacancies} from "../../redux/actions/vacanciesActions";
 import {showProjects} from "../../redux/actions/projectActions";
@@ -31,7 +33,7 @@ class InterviewsUpcoming extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showModalConfirm: false,
+            currentInterview: "",
             currentInterviewID: "",
             isHR: false,
             interviewId: "",
@@ -42,7 +44,8 @@ class InterviewsUpcoming extends Component {
             projectsFilterID: "",
             dateFromFilter: "",
             dateToFilter: "",
-            dateErrorMessage: ""
+            dateErrorMessage: "",
+            showModalConfirm: false
         }
     }
 
@@ -104,7 +107,23 @@ class InterviewsUpcoming extends Component {
     }
 
     activateInterview(currentID) {
+        let interviews = this.props.interviews.interviews,
+            interviewToActivate = interviews.find(item => item.id === currentID);
 
+        if (!interviewToActivate.state) {
+            const {dispatch} = this.props;
+            dispatch(updateInterview(
+                {
+                    id: interviewToActivate.id,
+                    date_time: interviewToActivate.date_time,
+                    candidate_id: interviewToActivate.candidate_id,
+                    vacancy_id: interviewToActivate.vacancy_id,
+                    user_id: interviewToActivate.user_id,
+                    rating_id: interviewToActivate.rating_id,
+                    state: true
+                }, "Interview was activated"
+            ));
+        }
     }
 
     addFeedback(currentID) {
@@ -283,6 +302,8 @@ class InterviewsUpcoming extends Component {
                                 currentPosition = positions.find(item => currentVacancy.position_id === item.id),
                                 currentCandidate = candidates.find(item => value.candidate_id === item.id),
                                 candidateCV = currentCandidate.cv.url,
+                                currentSate = (value.state) ? "Active" : "Activate",
+                                isBtnInactive = value.state,
                                 panelTitleText;
 
                             let duplicateData = {
@@ -402,7 +423,8 @@ class InterviewsUpcoming extends Component {
                                             id={"intUpcom" + id}
                                             showActionBtn={true}
                                             defaultExpanded={toExpandElement()}
-                                            titleForActionBtn='Activate'
+                                            titleForActionBtn={currentSate}
+                                            addInactiveBtnClass={isBtnInactive}
                                             titleConst={PANEL_TITLE}
                                             description={PANEL_DESCRIPTION}
                                             showEditBtn={true}
@@ -418,7 +440,7 @@ class InterviewsUpcoming extends Component {
                                         />
 
                                 )
-                            } else {
+                            } else if (!this.state.isHR && value.state) {
                                 return (
                                         <Panels
                                             key={id}

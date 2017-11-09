@@ -145,7 +145,8 @@ export function removeInterview(id) {
     };
 }
 
-export function updateInterview(date) {
+export function updateInterview(date, message) {
+    let successMessage = message || 'Interview was updated';
     return (dispatch) => {
         fetch('/api/v1/interviews/' + date.id,
             {
@@ -163,7 +164,7 @@ export function updateInterview(date) {
                 dispatch(makeNote(
                     {
                         status: "success",
-                        text: "Interview was updated!",
+                        text: successMessage,
                         hide: true
                     }
                 ))
