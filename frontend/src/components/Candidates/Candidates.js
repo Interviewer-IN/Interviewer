@@ -65,7 +65,7 @@ class Candidates extends Component {
         })
     }
 
-    deleteProject() {
+    deleteCandidate() {
         this.closeModalConfirm();
         const {dispatch} = this.props;
         dispatch(deleteCandidate(this.state.currentCandidateId));
@@ -367,7 +367,7 @@ class Candidates extends Component {
                                 <Button
                                     id={"btn-modal-yes-" + this.state.currentCandidateId}
                                     className="btn btn-primary"
-                                    onClick={() => this.deleteProject()}
+                                    onClick={() => this.deleteCandidate()}
                                 >Yes
                                 </Button>
                                 <Button

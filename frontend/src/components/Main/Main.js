@@ -229,7 +229,7 @@ class Main extends Component {
                                 )}
                             />
                             <Route
-                                exact path="/interviewers/edit"
+                                exact path="/interviewers/:id/edit"
                                 name="InterviewersEdit"
                                 render={(props) => (
                                     isLoggedIn() ?
