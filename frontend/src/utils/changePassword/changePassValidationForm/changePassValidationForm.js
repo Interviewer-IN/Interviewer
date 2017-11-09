@@ -23,7 +23,7 @@ export function changePassValidationForm(event){
     let changePassValidationSettings = {
         rules: {
             oldPass: {
-                required: true,
+                required: false,
                 minLength: {
                     checkMinLength: true,
                     minLengthVal: 6
