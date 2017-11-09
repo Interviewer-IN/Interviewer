@@ -30,7 +30,7 @@ class CreateInterviewers extends Component {
     }
 
 
-    componentWillUpdate() {
+    componentWillMount() {
         this.props.onCheckUserRole();
         const {dispatch} = this.props;
 
@@ -64,6 +64,7 @@ class CreateInterviewers extends Component {
                 nameVal = this.state.nameVal,
                 surnameVal = this.state.surnameVal,
                 emailVal = this.state.emailVal,
+                isHr = this.refs.interviewerIsHR.checked,
                 descriptionVal = this.state.descriptionVal,
                 positionId = getValueFromArr(positionsList, positionVal, 'name'),
                 levelId = getValueFromArr(levelsList, levelVal, 'name'),
@@ -72,16 +73,20 @@ class CreateInterviewers extends Component {
             nameVal ? formData.name = nameVal : false;
             surnameVal ? formData.surname = surnameVal : false;
             emailVal ? formData.email = emailVal : false;
-            descriptionVal ? formData.description = descriptionVal : false;
             positionId ? formData.position_id = positionId : false;
             levelId ? formData.level_id = levelId : false;
+            descriptionVal ? formData.description = descriptionVal : false;
+            formData.is_hr = isHr;
             formData.password = PASSWORD_BY_DEFAULT;
             formData.confirmation_token = emailVal;
+            formData.nickname = surnameVal + ' ' + nameVal;
 
 
             let {dispatch} = this.props,
                 pathName = window.location.hash,
                 backPath = '#/' + pathName.split('/')[1];
+
+            console.log(formData);
 
             dispatch(createInterviewer(formData, null, backPath));
         }
@@ -145,6 +150,7 @@ class CreateInterviewers extends Component {
     }
 
     render() {
+
 
         let showPositionsList = () => {
             let positionsList = this.props.positions,
@@ -261,15 +267,21 @@ class CreateInterviewers extends Component {
                                     </select>
                                 </div>
 
-                                {/*<div className="form-group">*/}
-                                {/*<label>*/}
-                                {/*<input className="checkbox" type="checkbox"/>*/}
-                                {/*<span>is HR</span>*/}
-                                {/*</label>*/}
-                                {/*</div>*/}
+                                <div className="form-group">
+                                    <label>
+                                        <input className="checkbox"
+                                               type="checkbox"
+                                               id="interviewer-isHr"
+                                               name="interviewer-isHr"
+                                               ref="interviewerIsHR"
+                                        />
+                                        <span>is HR</span>
+                                    </label>
+                                </div>
 
                                 <p className="text-muted">
-                                   <small> NOTICE: The User will have password '{PASSWORD_BY_DEFAULT}' by default</small>
+                                    <small> NOTICE: The User will have password '{PASSWORD_BY_DEFAULT}' by default
+                                    </small>
                                 </p>
 
                             </div>
