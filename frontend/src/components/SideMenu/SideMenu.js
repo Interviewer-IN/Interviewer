@@ -76,13 +76,13 @@ class SideMenu extends Component {
                         content: [
                             {
                                 name: '/interviews-upcoming',
-                                icon: 'square-o',
+                                icon: 'hourglass-start',
                                 label: 'Upcoming',
                                 to: '/interviews-upcoming',
                             },
                             {
                                 name: '/interviews-completed',
-                                icon: 'check-square-o',
+                                icon: 'thumbs-o-up',
                                 label: 'Completed',
                                 to: '/interviews-completed',
                             }
@@ -137,13 +137,13 @@ class SideMenu extends Component {
                         content: [
                             {
                                 name: '/interviews-upcoming',
-                                icon: 'square-o',
+                                icon: 'hourglass-start',
                                 label: 'Upcoming',
                                 to: '/interviews-upcoming',
                             },
                             {
                                 name: '/interviews-completed',
-                                icon: 'check-square-o',
+                                icon: 'thumbs-o-up',
                                 label: 'Completed',
                                 to: '/interviews-completed',
                             }

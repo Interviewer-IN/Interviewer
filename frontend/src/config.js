@@ -31,3 +31,7 @@ export const DELETE_INTERVIEWER = 'Are you sure you want to delete the interview
 
 //-- PANEL ---------
 export const EXPANDED_ELEMENT_INDEX = 1; //index of the panel which should be opened after duplicating process.
+
+
+//-- INTERVIEWERS ---------
+export const PASSWORD_BY_DEFAULT = 123456;
