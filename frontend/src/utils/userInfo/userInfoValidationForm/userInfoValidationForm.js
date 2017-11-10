@@ -39,7 +39,7 @@ export function userInfoValidationForm(event){
                 pattern: EMAIL_VALIDATION
             },
             password: {
-                required: true,
+                required: false,
                 minLength: {
                     checkMinLength: true,
                     minLengthVal: 6

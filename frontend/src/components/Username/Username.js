@@ -2,18 +2,19 @@ import React, {Component} from 'react';
 import './username.css';
 
 import Helmet from 'react-helmet';
-import {Modal, Button} from 'react-bootstrap';
 import PageTitle from './../../containers/PageTitle';
-import {CONFIRM_TEXT} from "../../config";
-import {removeCurrentError, userInfoValidationForm, createErrorElem} from '../../utils/index';
+import {UPDATE_USER_INFO} from "../../config";
+import {removeCurrentError, userInfoValidationForm} from '../../utils/index';
+import {updateInterviewer} from "../../redux/actions/interviewersActions";
+import {connect} from 'react-redux';
 
 class Username extends Component{
 
     constructor(props) {
         super(props);
         this.state = {
-            confirmText: CONFIRM_TEXT,
             showModalConfirm: false,
+            currentUserId: '',
             nameVal: '',
             surnameVal: '',
             userEmailVal: '',
@@ -24,6 +25,15 @@ class Username extends Component{
     componentWillMount() {
         this.props.onCheckUserRole();
         const {dispatch} = this.props;
+
+        let userData = JSON.parse(localStorage.getItem('userData'));
+
+        this.setState({
+            currentUserId: userData.id,
+            nameVal: userData.name,
+            surnameVal: userData.surname,
+            userEmailVal: userData.email
+        });
     }
 
 
@@ -62,20 +72,34 @@ class Username extends Component{
 
         if (validationPass) {
 
-            let nameVal = this.state.nameVal,
+            let currentUserId = this.state.currentUserId,
+                nameVal = this.state.nameVal,
                 surnameVal = this.state.surnameVal,
                 userEmailVal = this.state.userEmailVal,
                 userPasswordVal = this.state.userPasswordVal;
 
 
             let formData = {
+                id: currentUserId,
                 name: nameVal,
                 surname: surnameVal,
                 email: userEmailVal,
-                password: userPasswordVal
+                // password: userPasswordVal
             };
 
-            console.log(formData);
+
+            let {dispatch} = this.props;
+            dispatch(updateInterviewer(formData, UPDATE_USER_INFO)).then(() => {
+               let userData = JSON.parse(localStorage.getItem('userData'));
+
+               userData.name = formData.name;
+               userData.surname = formData.surname;
+               userData.email = formData.email;
+
+               userData = JSON.stringify(userData);
+               localStorage.setItem('userData', userData);
+            });
+
         }
 
 
@@ -138,7 +162,6 @@ class Username extends Component{
                                     maxLength="20"
                                     ref="userName"
                                     value={this.state.nameVal}
-                                    autoFocus
                                     onChange={(event) => this.handleNameChanges(event)}
                                 />
                             </div>
@@ -175,19 +198,19 @@ class Username extends Component{
                                 />
                             </div>
 
-                            <div className="form-group">
-                                <label className="control-label form-label">Password <span className="required-field">*</span></label>
-                                <input
-                                    id="user-password"
-                                    type="password"
-                                    name="user-password"
-                                    placeholder='Input current password'
-                                    className="form-control boxed"
-                                    ref="userPassword"
-                                    value={this.state.userPasswordVal}
-                                    onChange={(event) => this.handleUserPasswordChanges(event)}
-                                />
-                            </div>
+                            {/*<div className="form-group">*/}
+                                {/*<label className="control-label form-label">Password <span className="required-field">*</span></label>*/}
+                                {/*<input*/}
+                                    {/*id="user-password"*/}
+                                    {/*type="password"*/}
+                                    {/*name="user-password"*/}
+                                    {/*placeholder='Input current password'*/}
+                                    {/*className="form-control boxed"*/}
+                                    {/*ref="userPassword"*/}
+                                    {/*value={this.state.userPasswordVal}*/}
+                                    {/*onChange={(event) => this.handleUserPasswordChanges(event)}*/}
+                                {/*/>*/}
+                            {/*</div>*/}
 
                             <div className="form-group custom-btn-group">
                                 <button
@@ -205,4 +228,9 @@ class Username extends Component{
     }
 }
 
-export default Username;
+
+function mapStateToProps(state) {
+    return {}
+}
+
+export default connect(mapStateToProps)(Username);

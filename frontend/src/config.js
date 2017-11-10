@@ -38,3 +38,6 @@ export const PASSWORD_BY_DEFAULT = 123456;
 
 //-- CHANGE PASSWORD -----------
 export const CHANGE_PASSWORD_SUCCESS = 'The password was changed successfully';
+
+//-- USER INFO ------------
+export const UPDATE_USER_INFO = 'The user-info data was updated successfully';
