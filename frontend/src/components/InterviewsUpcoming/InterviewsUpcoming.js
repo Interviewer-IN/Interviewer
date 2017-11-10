@@ -384,7 +384,7 @@ class InterviewsUpcoming extends Component {
                                     currentLevel.name + " " +
                                     currentPosition.name + " for " +
                                     currentProject.title + " | " +
-                                    currentInterviewer.surname + " " + currentInterviewer.name + "";
+                                    currentInterviewer.surname + " " + currentInterviewer.name + " ";
                             } else {
                                 panelTitleText = time + " | " +
                                     currentCandidate.name + " " +

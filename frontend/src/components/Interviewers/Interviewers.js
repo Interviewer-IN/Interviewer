@@ -134,7 +134,12 @@ class Interviewers extends Component {
                     interviewerPositionId = item.position_id,
                     interviewerPosition = positionsTitleObj[interviewerPositionId],
                     interviewerLevelId = item.level_id,
-                    interviewerLevel = levelsTitleObj[interviewerLevelId];
+                    interviewerLevel = levelsTitleObj[interviewerLevelId],
+                    interviewerRole = '';
+
+                (item.is_hr) ? interviewerRole = 'HR' : interviewerRole = 'User';
+
+
 
                 const PANEL_TITLE = (
                     <div className="custom-panel-title panel-list-item">
@@ -166,17 +171,26 @@ class Interviewers extends Component {
                                     {interviewerEmail}
                                 </p>
                             </div>
-                        </div>
-                        <div className="col-md-12 no-padding">
+
                             <div className="form-group">
-                                <label className="control-label form-label text-green">Description:</label>
-                                <div className="form-control-static">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis perferendis quaerat qui
-                                    quis reprehenderit, unde vel. Aliquam aspernatur dolorum expedita id iusto minima, non
-                                    praesentium quibusdam sint vitae. Nam, voluptatibus.
-                                </div>
+                                <label className="control-label form-label text-green">Role:</label>
+                                <p className="form-control-static">
+                                    {interviewerRole}
+                                </p>
                             </div>
+
+
                         </div>
+                        {/*<div className="col-md-12 no-padding">*/}
+                            {/*<div className="form-group">*/}
+                                {/*<label className="control-label form-label text-green">Description:</label>*/}
+                                {/*<div className="form-control-static">*/}
+                                    {/*Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis perferendis quaerat qui*/}
+                                    {/*quis reprehenderit, unde vel. Aliquam aspernatur dolorum expedita id iusto minima, non*/}
+                                    {/*praesentium quibusdam sint vitae. Nam, voluptatibus.*/}
+                                {/*</div>*/}
+                            {/*</div>*/}
+                        {/*</div>*/}
                     </form>
 
                 );

@@ -26,6 +26,7 @@ class InterviewersEdit extends Component {
             emailVal: '',
             levelVal: '',
             positionVal: '',
+            // isHr: '',
             descriptionVal: ''
         };
     }
@@ -72,6 +73,8 @@ class InterviewersEdit extends Component {
         let levelValue = getValueFromArr(levels, currentInterviewer.level_id, 'name');
 
 
+
+
         this.setState({
             nameVal: currentInterviewer.name,
             surnameVal: currentInterviewer.surname,
@@ -81,6 +84,16 @@ class InterviewersEdit extends Component {
             // descriptionVal: currentInterviewer.description
 
         });
+
+        // if (currentInterviewer.is_hr){
+        //     this.setState({
+        //         isHr: 'checked'
+        //     });
+        // } else {
+        //     this.setState({
+        //         isHr: ''
+        //     });
+        // }
     }
 
     handleSubmitForm(event) {
@@ -104,6 +117,7 @@ class InterviewersEdit extends Component {
                 nameVal = this.state.nameVal,
                 surnameVal = this.state.surnameVal,
                 emailVal = this.state.emailVal,
+                // isHr = this.refs.interviewerIsHR.checked,
                 descriptionVal = this.state.descriptionVal,
                 positionId = getValueFromArr(positionsList, positionVal, 'name'),
                 levelId = getValueFromArr(levelsList, levelVal, 'name');
@@ -115,11 +129,11 @@ class InterviewersEdit extends Component {
                 email: emailVal,
                 position_id: positionId,
                 level_id: levelId,
-                description: descriptionVal
+                // is_hr: isHr,
+                description: descriptionVal,
+                // nickname: surnameVal + ' ' + nameVal
+
             };
-
-
-
 
             let {dispatch} = this.props,
                 pathName = window.location.hash,
@@ -167,6 +181,21 @@ class InterviewersEdit extends Component {
         this.setState({descriptionVal: event.target.value});
         removeCurrentError(event);
     }
+
+    // handleChangeRole(event) {
+    //
+    //     if (this.refs.interviewerIsHR.checked){
+    //         this.setState({
+    //             isHr: 'checked'
+    //         });
+    //     } else {
+    //         this.setState({
+    //             isHr: ''
+    //         });
+    //     }
+    //
+    //
+    // }
 
 
     openModalConfirm() {
@@ -303,6 +332,20 @@ class InterviewersEdit extends Component {
                                         {showPositionsList()}
                                     </select>
                                 </div>
+
+                                {/*<div className="form-group">*/}
+                                    {/*<label>*/}
+                                        {/*<input className="checkbox"*/}
+                                               {/*type="checkbox"*/}
+                                               {/*id="interviewer-isHr"*/}
+                                               {/*name="interviewer-isHr"*/}
+                                               {/*ref="interviewerIsHR"*/}
+                                               {/*checked={this.state.isHr}*/}
+                                               {/*onChange={event => this.handleChangeRole(event)}*/}
+                                        {/*/>*/}
+                                        {/*<span>is HR</span>*/}
+                                    {/*</label>*/}
+                                {/*</div>*/}
 
                             </div>
                             <div className="col-md-12">

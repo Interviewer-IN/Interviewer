@@ -193,34 +193,41 @@ export function deleteCandidate(id) {
                     case 201:
                         return response.json();
                     case 500:
-                        return response.json();
+                        return {data: 500};
 
                     default:
                         return {data: []}
                 }
             })
             .then(data => {
-                if (data.data === undefined) {
-                    let error = data.error;
+               switch (data.data){
+                   case 500:
+                       dispatch(makeNote({
+                           status: 'warning',
+                           text: 'Error: You have an associated entity with this candidate',
+                           hide: true
+                       }));
+                       return;
+                   case undefined:
+                       let error = data.error;
 
-                    dispatch(makeNote({
-                        status: 'danger',
-                        text: 'Error: ' + error,
-                        hide: false
-                    }));
-                } else {
-                    dispatch(getCandidates());
-                    dispatch(makeNote(
-                        {
-                            status: "success",
-                            text: "Candidate was deleted",
-                            hide: true
-                        }
-                    ));
-                }
-
-
-
+                       dispatch(makeNote({
+                           status: 'danger',
+                           text: 'Error: ' + error,
+                           hide: false
+                       }));
+                       return;
+                   default:
+                       dispatch(getCandidates());
+                       dispatch(makeNote(
+                           {
+                               status: "success",
+                               text: "Candidate was deleted",
+                               hide: true
+                           }
+                       ));
+                       return;
+               }
             })
             .catch((error) => {
                 dispatch(makeNote({
