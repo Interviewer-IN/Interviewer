@@ -52,6 +52,11 @@ class Header extends Component {
             }
         };
 
+        let showUserName = () => {
+            let userData = JSON.parse(localStorage.getItem('userData'));
+            return userData.name + " " + userData.surname;
+        };
+
         return (
             <header className="header">
                 <div className="header-block header-block-collapse hidden-lg-up">
@@ -62,7 +67,7 @@ class Header extends Component {
                 <div className="header-block header-block-nav">
                     <ul className="nav-profile">
                         <li className="username">
-                            Username
+                            {showUserName()}
                         </li>
                         <li>
                             {toggleActiveDashboard()}

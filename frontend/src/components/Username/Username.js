@@ -164,7 +164,6 @@ class Username extends Component{
                                     maxLength="20"
                                     ref="userName"
                                     value={this.state.nameVal}
-                                    autoFocus
                                     onChange={(event) => this.handleNameChanges(event)}
                                 />
                             </div>
