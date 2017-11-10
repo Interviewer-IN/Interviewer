@@ -86,8 +86,6 @@ class CreateInterviewers extends Component {
                 pathName = window.location.hash,
                 backPath = '#/' + pathName.split('/')[1];
 
-            console.log(formData);
-
             dispatch(createInterviewer(formData, null, backPath));
         }
 

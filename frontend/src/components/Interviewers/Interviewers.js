@@ -97,8 +97,6 @@ class Interviewers extends Component {
 
     render() {
 
-        console.log(this);
-
         let interviewersList = this.props.interviewers,
             levelsList = this.props.levels,
             positionsList = this.props.positions,

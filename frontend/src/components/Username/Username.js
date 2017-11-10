@@ -27,7 +27,6 @@ class Username extends Component{
         const {dispatch} = this.props;
 
         let userData = JSON.parse(localStorage.getItem('userData'));
-        console.log(userData);
 
         this.setState({
             currentUserId: userData.id,
@@ -88,7 +87,6 @@ class Username extends Component{
                 // password: userPasswordVal
             };
 
-            console.log(formData);
 
             let {dispatch} = this.props;
             dispatch(updateInterviewer(formData, UPDATE_USER_INFO)).then(() => {
