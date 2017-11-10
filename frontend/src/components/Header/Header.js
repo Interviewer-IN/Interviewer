@@ -11,10 +11,6 @@ import Notifications from '../../containers/Notifications';
 
 class Header extends Component {
 
-    componentDidUpdate(){
-
-    }
-
     handleMenuBthClick() {
         this.props.sideBarActions.showSideBar(true);
     }
@@ -53,7 +49,7 @@ class Header extends Component {
         };
 
         let showUserName = () => {
-            let userData = JSON.parse(localStorage.getItem('userData'));
+            let userData = JSON.parse(this.props.userData);
             return userData.name + " " + userData.surname;
         };
 

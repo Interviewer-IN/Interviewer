@@ -9,7 +9,7 @@ function addInterviewers(data) {
     }
 }
 
-export function getInterviewers (){
+export function getInterviewers() {
     return (dispatch) => new Promise(resolve => {
         fetch('/api/v1/users',
             {
@@ -118,7 +118,7 @@ export function createInterviewer(data, message, backPath) {
                         hide: true
                     }
                 ));
-                if (backPath){
+                if (backPath) {
                     window.location.replace(backPath);
                 }
 
@@ -135,7 +135,7 @@ export function createInterviewer(data, message, backPath) {
 
 export function updateInterviewer(data, message, backPath) {
     let successMessage = message || 'Interviewer was updated';
-    return (dispatch) => new Promise (resolve => {
+    return (dispatch) => new Promise(resolve => {
         fetch('/api/v1/users/' + data.id,
             {
                 method: 'PUT',
@@ -163,7 +163,7 @@ export function updateInterviewer(data, message, backPath) {
                     }
                 ));
 
-                if (backPath !== undefined){
+                if (backPath !== undefined) {
                     window.location.replace(backPath);
                 }
 
@@ -195,34 +195,41 @@ export function deleteInterviewer(id) {
                     case 201:
                         return response.json();
                     case 500:
-                        return response.json();
+                        return {data: 500};
 
                     default:
                         return {data: []}
                 }
             })
             .then(data => {
-                if (data.data === undefined) {
-                    let error = data.error;
-
-                    dispatch(makeNote({
-                        status: 'danger',
-                        text: 'Error: ' + error,
-                        hide: false
-                    }));
-                } else {
-                    dispatch(getInterviewers());
-                    dispatch(makeNote(
-                        {
-                            status: "success",
-                            text: "Interviewer was deleted",
+                switch (data.data) {
+                    case 500:
+                        dispatch(makeNote({
+                            status: 'warning',
+                            text: 'Error: You have an associated entity with this interviewer',
                             hide: true
-                        }
-                    ));
+                        }));
+                        return;
+                    case undefined:
+                        let error = data.error;
+
+                        dispatch(makeNote({
+                            status: 'danger',
+                            text: 'Error: ' + error,
+                            hide: false
+                        }));
+                        return;
+                    default:
+                        dispatch(getInterviewers());
+                        dispatch(makeNote(
+                            {
+                                status: "success",
+                                text: "Interviewer was deleted",
+                                hide: true
+                            }
+                        ));
+                        return;
                 }
-
-
-
             })
             .catch((error) => {
                 dispatch(makeNote({
