@@ -4,12 +4,7 @@ import {Modal, Button, PanelGroup} from "react-bootstrap";
 import Helmet from "react-helmet";
 import moment from "moment";
 import "./interviewsUpcoming.css";
-import {
-    showInterviews,
-    removeInterview,
-    createInterview,
-    updateInterview,
-} from "../../redux/actions/interviewActions";
+import {showInterviews, removeInterview, createInterview, updateInterview} from "../../redux/actions/interviewActions";
 import {getVacancies} from "../../redux/actions/vacanciesActions";
 import {showProjects} from "../../redux/actions/projectActions";
 import {getCandidates} from "../../redux/actions/candidatesActions";
@@ -171,9 +166,16 @@ class InterviewsUpcoming extends Component {
 
     getInterviewerFilterVal(interviewerFilterVal) {
         let interviewersList = this.props.interviewers,
+            interviewerFilterObj = [],
             interviewerFilterId = 0;
 
-        interviewerFilterId = getValueFromArr(interviewersList, interviewerFilterVal, 'nickname');
+        if (interviewerFilterVal != "Interviewer") {
+            interviewerFilterObj = interviewersList.find(item =>
+                "" + item.surname + " " + item.name + "" === interviewerFilterVal
+            );
+        }
+        interviewerFilterId = interviewerFilterObj.id;
+
         this.setState({
             interviewerFilterId: interviewerFilterId
         });
@@ -244,13 +246,17 @@ class InterviewsUpcoming extends Component {
 
             //-- FILTERS  --------------------------
 
-            let positionFilterID = this.state.positionsFilterID,
+            let projectFilterID = this.state.projectsFilterID,
+                positionFilterID = this.state.positionsFilterID,
                 levelFilterID = this.state.levelsFilterID,
-                projectFilterID = this.state.projectsFilterID,
                 interviewerFilterId = this.state.interviewerFilterId,
                 dateFromFilter = this.state.dateFromFilter,
                 dateToFilter = this.state.dateToFilter;
 
+
+            if (projectFilterID) {
+                interviews = filterByProject(projectFilterID, interviews, vacancies);
+            }
 
             if (positionFilterID) {
                 interviews = filterByPosition(positionFilterID, interviews, vacancies);
@@ -260,14 +266,9 @@ class InterviewsUpcoming extends Component {
                 interviews = filterByLevel(levelFilterID, interviews, vacancies);
             }
 
-            if (projectFilterID) {
-                interviews = filterByProject(projectFilterID, interviews, vacancies);
-            }
-
             if (interviewerFilterId) {
                 interviews = filterByInterviewer(interviewerFilterId, interviews);
             }
-
 
             if (dateFromFilter || dateToFilter) {
                 interviews = filterByDates(dateFromFilter, dateToFilter, interviews);
@@ -380,10 +381,10 @@ class InterviewsUpcoming extends Component {
                                 panelTitleText = time + " | " +
                                     currentCandidate.name + " " +
                                     currentCandidate.surname + " | " +
-                                    currentLevel.name + " - " +
-                                    currentPosition.name + " - " +
+                                    currentLevel.name + " " +
+                                    currentPosition.name + " for " +
                                     currentProject.title + " | " +
-                                    currentInterviewer.name + " " + currentInterviewer.surname + " ";
+                                    currentInterviewer.surname + " " + currentInterviewer.name + "";
                             } else {
                                 panelTitleText = time + " | " +
                                     currentCandidate.name + " " +

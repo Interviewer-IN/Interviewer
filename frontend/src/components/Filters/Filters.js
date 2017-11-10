@@ -235,6 +235,40 @@ class Filters extends Component {
             }
         };
 
+        let showInterviewersFilter = (interviewer) => {
+
+            let interviewerList = this.props.interviewers,
+                options = [];
+
+            if (interviewerList.length) {
+                let compareSurname = (a, b) => {
+                        if (a.surname > b.surname) return 1;
+                        if (a.surname < b.surname) return -1;
+                    },
+                    sortedInterviewers = interviewerList.sort(compareSurname) || {};
+
+                options = sortedInterviewers.map((item, index) => {
+                    let name = "" + item.surname + " " + item.name + "";
+                    return (
+                        <option key={index}>{name}</option>);
+                });
+            }
+
+            if (interviewer) {
+                return (
+                    <div className="form-group fields-group can-hide">
+                        <select className="form-control form-control-sm filter-select custom-mode"
+                                id={interviewerFilterId}
+                                onChange={(event) => this.getInterviewerFilterVal(event)}
+                        >
+                            <option>Interviewer</option>
+                            {options}
+                        </select>
+                    </div>
+                );
+            }
+        };
+
         let showRatingFilter = (rating) => {
 
             let ratingsList = this.props.ratings,
@@ -267,35 +301,7 @@ class Filters extends Component {
             }
         };
 
-        let showInterviewersFilter = (interviewer) => {
 
-            let interviewerList = this.props.interviewers,
-                options = [];
-
-            if (interviewerList.length) {
-                let compareSurname = (a, b) => {
-                        if (a.nickname > b.nickname) return 1;
-                        if (a.nickname < b.nickname) return -1;
-                    },
-                    sortedInterviewers = interviewerList.sort(compareSurname) || {};
-                options = sortedInterviewers.map((item, index) =>
-                    <option key={index}>{item.nickname}</option>);
-            }
-
-            if (interviewer) {
-                return (
-                    <div className="form-group fields-group can-hide">
-                        <select className="form-control form-control-sm filter-select "
-                                id={interviewerFilterId}
-                                onChange={(event) => this.getInterviewerFilterVal(event)}
-                        >
-                            <option>Interviewer</option>
-                            {options}
-                        </select>
-                    </div>
-                );
-            }
-        };
 
         let showDateIcon = (dateIcon) => {
             if (dateIcon) {
