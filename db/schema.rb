@@ -67,7 +67,7 @@ ActiveRecord::Schema.define(version: 20171111180212) do
     t.bigint "vacancy_id"
     t.bigint "user_id"
     t.bigint "rating_id"
-    t.boolean "state", default: true, null: false
+    t.boolean "state", default: false, null: false
     t.index ["candidate_id"], name: "index_interviews_on_candidate_id"
     t.index ["rating_id"], name: "index_interviews_on_rating_id"
     t.index ["user_id"], name: "index_interviews_on_user_id"
