@@ -379,7 +379,7 @@ class Filters extends Component {
         return (
             <div className="filters-section clearfix">
                 <div className="filter-block clearfix">
-                    <div className="filter-block__selects float-left">
+                    <div className="filter-block__selects">
                         {showDateIcon(dateIcon)}
                         {showFilterIcon()}
                         <div className="float-left clearfix"
@@ -392,7 +392,7 @@ class Filters extends Component {
                         </div>
                         {showSearchBoxFilter(searchBoxFilter)}
                     </div>
-                    <div className="filter-block float-left">
+                    <div className="filter-block clearfix">
                         {showDateFilter(dateFilter)}
                     </div>
                 </div>

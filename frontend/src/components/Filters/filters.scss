@@ -8,12 +8,8 @@
 
 .filter-block {
 
-
   &.filter-block--date{
     margin-top: 20px;
-    @media (min-width: 1449px) {
-      margin-top: 0;
-    }
 
     & p {
       margin-bottom: 0 !important;
@@ -21,7 +17,6 @@
   }
 
   &__selects {
-    float: left;
     overflow: hidden;
     @media (max-width: 1250px) {
       float: none;
@@ -94,6 +89,7 @@
   border-radius: 0;
   height: 2rem !important;
   color: #4f5f6f !important;
+
 
   &:hover {
     border: 1px solid #85CE36 !important;
