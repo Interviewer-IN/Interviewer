@@ -44,7 +44,7 @@ module Api
 
       private
       def interview_params
-        params.permit(:status, :state, :feedback, :date_time,
+        params.permit(:status, :state, :date_time,
                       :candidate_id, :vacancy_id, :user_id, :rating_id)
       end
     end
