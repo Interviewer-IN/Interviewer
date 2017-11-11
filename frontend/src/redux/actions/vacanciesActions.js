@@ -18,8 +18,8 @@ export function addIndexExpandedElement(data) {
 }
 
 export function getVacancies(indexExpandedElement = false) {
+    return (dispatch) => new Promise((resolve) =>{
 
-    return (dispatch) => new Promise((resolve) => {
         fetch('/api/v1/vacancies',
             {
                 method: 'GET',
@@ -40,13 +40,15 @@ export function getVacancies(indexExpandedElement = false) {
             .then(data => {
                 dispatch(addIndexExpandedElement(indexExpandedElement));
                 dispatch(addVacancies(data));
+                resolve(data.data);
             })
             .catch((error) => {
                 dispatch(makeNote({
                     status: 'danger',
                     text: 'Error: ' + error,
                     hide: false
-                }))
+                }));
+                resolve(error);
             })
     })
 }

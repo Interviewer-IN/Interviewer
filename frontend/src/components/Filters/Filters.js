@@ -8,6 +8,7 @@ import {showProjects} from "../../redux/actions/projectActions";
 import {getLevels} from "../../redux/actions/levelsActions";
 import {getPositions} from "../../redux/actions/positionActions";
 import {getRatings} from "../../redux/actions/ratingActions";
+import {getInterviewers} from "../../redux/actions/interviewersActions";
 
 class Filters extends Component {
 
@@ -39,6 +40,10 @@ class Filters extends Component {
 
         if (!this.props.ratings.length) {
             dispatch(getRatings());
+        }
+
+        if (!this.props.interviewers.length) {
+            dispatch(getInterviewers());
         }
 
     }
@@ -76,6 +81,11 @@ class Filters extends Component {
     getProjectFilterVal(event) {
         let projectFilterVal = event.target.value;
         this.props.projectFilterVal(projectFilterVal);
+    }
+
+    getInterviewerFilterVal(event) {
+        let interviewerFilterVal = event.target.value;
+        this.props.interviewerFilterVal(interviewerFilterVal);
     }
 
 
@@ -225,6 +235,40 @@ class Filters extends Component {
             }
         };
 
+        let showInterviewersFilter = (interviewer) => {
+
+            let interviewerList = this.props.interviewers,
+                options = [];
+
+            if (interviewerList.length) {
+                let compareSurname = (a, b) => {
+                        if (a.surname > b.surname) return 1;
+                        if (a.surname < b.surname) return -1;
+                    },
+                    sortedInterviewers = interviewerList.sort(compareSurname) || {};
+
+                options = sortedInterviewers.map((item, index) => {
+                    let name = "" + item.surname + " " + item.name + "";
+                    return (
+                        <option key={index}>{name}</option>);
+                });
+            }
+
+            if (interviewer) {
+                return (
+                    <div className="form-group fields-group can-hide">
+                        <select className="form-control form-control-sm filter-select custom-mode"
+                                id={interviewerFilterId}
+                                onChange={(event) => this.getInterviewerFilterVal(event)}
+                        >
+                            <option>Interviewer</option>
+                            {options}
+                        </select>
+                    </div>
+                );
+            }
+        };
+
         let showRatingFilter = (rating) => {
 
             let ratingsList = this.props.ratings,
@@ -257,22 +301,7 @@ class Filters extends Component {
             }
         };
 
-        let showInterviewersFilter = (interviewer) => {
-            if (interviewer) {
-                return (
-                    <div className="form-group fields-group can-hide hide">
-                        <select className="form-control form-control-sm filter-select "
-                                id={interviewerFilterId}
-                        >
-                            <option>Interviewer</option>
-                            <option>K. Makiy</option>
-                            <option>A. Larin</option>
-                            <option>T. Grabets</option>
-                        </select>
-                    </div>
-                );
-            }
-        };
+
 
         let showDateIcon = (dateIcon) => {
             if (dateIcon) {
@@ -399,6 +428,7 @@ function mapStateToProps(state) {
         levels: state.levels.levels,
         positions: state.positions.positions,
         ratings: state.ratings.ratings,
+        interviewers: state.interviewers.interviewers,
     }
 }
 

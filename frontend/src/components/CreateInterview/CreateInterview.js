@@ -12,8 +12,9 @@ import {getCandidates} from "../../redux/actions/candidatesActions";
 import {showProjects} from "../../redux/actions/projectActions";
 import {getPositions} from "../../redux/actions/positionActions";
 import {getLevels} from "../../redux/actions/levelsActions";
-import Select from 'react-select';
-import 'react-select/dist/react-select.css';
+import {getInterviewers} from "../../redux/actions/interviewersActions";
+import Select from "react-select";
+import "react-select/dist/react-select.css";
 
 class CreateInterview extends Component {
 
@@ -51,6 +52,9 @@ class CreateInterview extends Component {
             dispatch(getCandidates());
         }
 
+        if (!this.props.interviewers.length){
+            dispatch(getInterviewers());
+        }
 
         if (!this.props.positions.length){
             dispatch(getPositions());
@@ -69,6 +73,11 @@ class CreateInterview extends Component {
     handleCandidateChange(candidate) {
         this.setState({candidate: candidate.candidate});
         this.setState({candidateError: ""});
+    }
+
+    handleInterviewerChange(interviewer) {
+        this.setState({interviewer: interviewer.interviewer});
+        this.setState({interviewerError: ""});
     }
 
     handleVacancyChange(vacancy) {
@@ -121,9 +130,11 @@ class CreateInterview extends Component {
         }
         if (date &&
             candidate &&
-            vacancy) {
+            vacancy &&
+            interviewer) {
             let candidateID = this.state.candidate.value,
-                vacancyID = this.state.vacancy.value;
+                vacancyID = this.state.vacancy.value,
+                interviewerID = this.state.interviewer.value;
             event.preventDefault();
             this.props.history.push("/interviews-upcoming");
             const {dispatch} = this.props;
@@ -132,13 +143,12 @@ class CreateInterview extends Component {
                     date_time: date,
                     candidate_id: candidateID,
                     vacancy_id: vacancyID,
-                    user_id: 19,
+                    user_id: interviewerID,
                     rating_id: 12
                 }
             ));
         }
     }
-
 
     leaveForm() {
         this.resetFormFields();
@@ -176,8 +186,9 @@ class CreateInterview extends Component {
             projects = this.props.projects,
             levels = this.props.levels,
             positions = this.props.positions,
-            vacancy = this.state.vacancy,
-            candidate = this.state.candidate;
+            interviewers = this.props.interviewers;
+            // vacancy = this.state.vacancy,
+            // candidate = this.state.candidate;
 
 
         let showCandidates = () => {
@@ -258,6 +269,45 @@ class CreateInterview extends Component {
                 );
         };
 
+        let showInterviewer = () => {
+
+            let options = [];
+
+            if (interviewers.length) {
+                let compareNickname = (a, b) => {
+                        if (a.surname > b.surname) return 1;
+                        if (a.surname < b.surname) return -1;
+                    },
+                    sortedInterviewers = interviewers.sort(compareNickname) || {};
+
+
+                sortedInterviewers.map((item, index) => {
+                    let currentInterviewer = {
+                        value: item.id,
+                        label: "" + item.surname + " " + item.name + "",
+                        className: "option-class"
+                    };
+                    options.push(currentInterviewer);
+                });
+            }
+
+            return (
+
+                <div className="form-group search-box_input">
+                    <label className="control-label">Candidate</label>
+                    <Select
+                        name="university"
+                        options={options}
+                        onChange={(interviewer) => this.handleInterviewerChange({ interviewer })}
+                        value={this.state.interviewer}
+                        placeholder={'Start typing for search...'}
+                    />
+                    <span className="has-error error-message">{this.state.candidateError}</span>
+                </div>
+            );
+        };
+
+
         return (
             <div>
                 <Helmet>
@@ -298,20 +348,8 @@ class CreateInterview extends Component {
 
                             {showCandidates()}
                             {showVacancies()}
+                            {showInterviewer()}
 
-                            {/*<div className="form-group form-field-margin">*/}
-                            {/*<div>*/}
-                            {/*<label className="control-label">Interviewer</label>*/}
-                            {/*<select className="form-control form-control-sm create-interview-select-long"*/}
-                            {/*onChange={(event) => this.handleInterviewerChange(event)}*/}
-                            {/*>*/}
-                            {/*<option>K. Makiy</option>*/}
-                            {/*<option>A. Larin</option>*/}
-                            {/*<option>T. Grabets</option>*/}
-                            {/*</select>*/}
-                            {/*<span className="has-error error-message">{this.state.interviewerError}</span>*/}
-                            {/*</div>*/}
-                            {/*</div>*/}
                             <div className="form-group">
                                 <button
                                     id="create-interview-submitBtn"
@@ -366,6 +404,7 @@ function mapStateToProps(state) {
         projects: state.project.projects,
         levels: state.levels.levels,
         positions: state.positions.positions,
+        interviewers: state.interviewers.interviewers,
     }
 }
 

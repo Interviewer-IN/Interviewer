@@ -9,6 +9,7 @@ import {getVacancies} from "../../redux/actions/vacanciesActions";
 import {showProjects} from "../../redux/actions/projectActions";
 import {getRatings} from "../../redux/actions/ratingActions";
 import {getCandidates} from "../../redux/actions/candidatesActions";
+import {getInterviewers} from "../../redux/actions/interviewersActions";
 import {
     getValueFromArr,
     filterByDates,
@@ -16,7 +17,8 @@ import {
     filterByPosition,
     filterByLevel,
     filterByProject,
-    filterByRating
+    filterByRating,
+    filterByInterviewer
 } from "../../utils/index";
 import PageTitle from "./../../containers/PageTitle";
 import Panels from "../Panels/Panels";
@@ -64,6 +66,10 @@ class InterviewsCompleted extends Component {
 
         if (!this.props.candidates.length){
             dispatch(getCandidates());
+        }
+
+        if (!this.props.interviewers.length) {
+            dispatch(getInterviewers());
         }
 
         if (isUserHR) {
@@ -149,10 +155,25 @@ class InterviewsCompleted extends Component {
         });
     }
 
+    getInterviewerFilterVal(interviewerFilterVal) {
+        let interviewersList = this.props.interviewers,
+            interviewerFilterObj = [],
+            interviewerFilterId = 0;
+
+        if (interviewerFilterVal != "Interviewer") {
+            interviewerFilterObj = interviewersList.find(item =>
+                "" + item.surname + " " + item.name + "" === interviewerFilterVal
+            );
+        }
+        interviewerFilterId = interviewerFilterObj.id;
+        this.setState({
+            interviewerFilterId: interviewerFilterId
+        });
+    }
+
     switchToEditMode(currentID) {
         this.props.history.push("/interviews-completed/edit-feedback");
     }
-
 
 
     render() {
@@ -189,6 +210,7 @@ class InterviewsCompleted extends Component {
             positions = this.props.positions,
             ratings = this.props.ratings,
             candidates = this.props.candidates,
+            interviewers = this.props.interviewers,
             interviewsToDisplay,
             filterErrorMessage;
 
@@ -200,13 +222,17 @@ class InterviewsCompleted extends Component {
 
             //-- FILTERS  --------------------------
 
-            let positionFilterID = this.state.positionsFilterID,
+            let projectFilterID = this.state.projectsFilterID,
+                positionFilterID = this.state.positionsFilterID,
                 levelFilterID = this.state.levelsFilterID,
-                projectFilterID = this.state.projectsFilterID,
+                interviewerFilterId = this.state.interviewerFilterId,
                 ratingFilterID = this.state.ratingFilterID,
                 dateFromFilter = this.state.dateFromFilter,
                 dateToFilter = this.state.dateToFilter;
 
+            if (projectFilterID) {
+                interviews = filterByProject(projectFilterID, interviews, vacancies);
+            }
 
             if (positionFilterID) {
                 interviews = filterByPosition(positionFilterID, interviews, vacancies);
@@ -216,8 +242,8 @@ class InterviewsCompleted extends Component {
                 interviews = filterByLevel(levelFilterID, interviews, vacancies);
             }
 
-            if (projectFilterID) {
-                interviews = filterByProject(projectFilterID, interviews, vacancies);
+            if (interviewerFilterId) {
+                interviews = filterByInterviewer(interviewerFilterId, interviews);
             }
 
             if (ratingFilterID) {
@@ -252,6 +278,7 @@ class InterviewsCompleted extends Component {
                         currentLevel = levels.find(item => currentVacancy.level_id === item.id),
                         currentPosition = positions.find(item => currentVacancy.position_id === item.id),
                         currentCandidate = candidates.find(item => value.candidate_id === item.id),
+                        currentInterviewer = interviewers.find(item => value.user_id === item.id),
                         currentRating = ratings.find(item => value.rating_id === item.id),
                         panelTitleText;
 
@@ -260,11 +287,11 @@ class InterviewsCompleted extends Component {
                             currentDate + " | " +
                             currentCandidate.name + " " +
                             currentCandidate.surname + " | " +
-                            currentLevel.name + " - " +
-                            currentPosition.name + " - " +
+                            currentLevel.name + " " +
+                            currentPosition.name + " for " +
                             currentProject.title + " | " +
                             "Rating: " + currentRating.grade + " | " +
-                            "some inteviewer";
+                            currentInterviewer.surname + " " + currentInterviewer.name + " ";
                     } else {
                         panelTitleText =
                             currentDate + " | " +
@@ -351,6 +378,7 @@ class InterviewsCompleted extends Component {
                     levelFilterVal={(event) => this.getLevelFilterVal(event)}
                     projectFilterVal={(event) => this.getProjectFilterVal(event)}
                     ratingFilterVal={(event) => this.getRatingFilterVal(event)}
+                    interviewerFilterVal={(event) => this.getInterviewerFilterVal(event)}
                     dateFromFilterVal={(event) => this.getDateFromFilterVal(event)}
                     dateToFilterVal={(event) => this.getDateToFilterVal(event)}
                     dateErrorMessage={filterErrorMessage}
@@ -437,6 +465,7 @@ function mapStateToProps(state) {
         positions: state.positions.positions,
         ratings: state.ratings.ratings,
         candidates: state.candidates.candidates,
+        interviewers: state.interviewers.interviewers,
         currentProject: state.project.currentProject,
     }
 }
