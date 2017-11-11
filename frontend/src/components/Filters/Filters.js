@@ -1,7 +1,7 @@
 import React, {Component} from "react";
-import "./filters.css";
-import PropTypes from "prop-types";
 import {connect} from "react-redux";
+import {PropTypes} from "prop-types";
+import "./filters.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {showProjects} from "../../redux/actions/projectActions";
@@ -332,7 +332,7 @@ class Filters extends Component {
         let showDateFilter = (date) => {
             if (date) {
                 return (
-                    <div className="filter-block filter-block--date clearfix float-left hide"
+                    <div className="filter-block filter-block__date clearfix hide"
                          id="filterDatePicker">
                         <div className="filter-block__selects">
                             <div className="form-group fields-group date-fields clearfix">
@@ -378,23 +378,28 @@ class Filters extends Component {
 
         return (
             <div className="filters-section clearfix">
-                <div className="filter-block clearfix">
-                    <div className="filter-block__selects">
+                <div className="filter-block">
+                    <div className="filter-block__selects clearfix">
                         {showDateIcon(dateIcon)}
                         {showFilterIcon()}
-                        <div className="float-left clearfix"
+                    </div>
+                    <div className="selects-container">
+                        <div className="clearfix"
                              id="allFiltersContainer">
                             {showProjectFilter(projectFilter)}
                             {showPositionFilter(positionFilter)}
                             {showLevelFilter(levelFilter)}
                             {showInterviewersFilter(interviewerFilter)}
                             {showRatingFilter(ratingFilter)}
+                            <div className="float-left search-box-container">
+                            {showSearchBoxFilter(searchBoxFilter)}
+                            </div>
                         </div>
-                        {showSearchBoxFilter(searchBoxFilter)}
+                        <div className="clearfix">
+                            {showDateFilter(dateFilter)}
+                        </div>
                     </div>
-                    <div className="filter-block clearfix">
-                        {showDateFilter(dateFilter)}
-                    </div>
+
                 </div>
             </div>
         );
