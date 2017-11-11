@@ -5,7 +5,7 @@ import './header.css';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as sideBarActions from '../../redux/actions/sideBarActions';
-import {logOut} from "../../redux/actions/authenticationActions";
+import {logOut, authorizationCheck} from "../../redux/actions/authenticationActions";
 import Notifications from '../../containers/Notifications';
 
 
@@ -49,8 +49,8 @@ class Header extends Component {
         };
 
         let showUserName = () => {
-            let userData = JSON.parse(this.props.userData);
-            return userData.name + " " + userData.surname;
+            // let userData = JSON.parse(this.props.userData);
+            // return userData.name + " " + userData.surname;
         };
 
         return (
@@ -63,7 +63,8 @@ class Header extends Component {
                 <div className="header-block header-block-nav">
                     <ul className="nav-profile">
                         <li className="username">
-                            {showUserName()}
+                            {/*{showUserName()}*/}
+                            Username
                         </li>
                         <li>
                             {toggleActiveDashboard()}

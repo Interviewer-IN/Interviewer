@@ -8,7 +8,7 @@ import {removeCurrentError, userInfoValidationForm} from '../../utils/index';
 import {updateInterviewer} from "../../redux/actions/interviewersActions";
 import {connect} from 'react-redux';
 
-class Username extends Component{
+class Username extends Component {
 
     constructor(props) {
         super(props);
@@ -48,17 +48,17 @@ class Username extends Component{
         removeCurrentError(event);
     }
 
-    handleUserEmailChanges(event){
+    handleUserEmailChanges(event) {
         this.setState({userEmailVal: event.target.value});
         removeCurrentError(event);
     }
 
-    handleUserPasswordChanges(event){
+    handleUserPasswordChanges(event) {
         this.setState({userPasswordVal: event.target.value});
         removeCurrentError(event);
     }
 
-    handleSubmitForm(event){
+    handleSubmitForm(event) {
         event.preventDefault();
 
         this.setState({
@@ -90,19 +90,19 @@ class Username extends Component{
 
             let {dispatch} = this.props;
             dispatch(updateInterviewer(formData, UPDATE_USER_INFO)).then(() => {
-               let userData = JSON.parse(localStorage.getItem('userData'));
 
-               userData.name = formData.name;
-               userData.surname = formData.surname;
-               userData.email = formData.email;
 
-               userData = JSON.stringify(userData);
-               localStorage.setItem('userData', userData);
+                // let userData = JSON.parse(this.props.userData);
+                //
+                // userData.name = formData.name;
+                // userData.surname = formData.surname;
+                // userData.email = formData.email;
+                //
+                // userData = JSON.stringify(userData);
+                // localStorage.setItem('userData', userData);
             });
 
         }
-
-
 
 
     }
@@ -125,8 +125,7 @@ class Username extends Component{
     }
 
 
-    render(){
-
+    render() {
 
 
         return (
@@ -149,7 +148,8 @@ class Username extends Component{
                     <div className="col-md-6">
                         <form className="custom-form" onSubmit={(event) => this.handleSubmitForm(event)}>
                             <div className="form-group">
-                                <label className="control-label form-label">Name <span className="required-field">*</span></label>
+                                <label className="control-label form-label">Name <span
+                                    className="required-field">*</span></label>
                                 <p className="form-sublabel">
                                     <small>Maximum 20 characters</small>
                                 </p>
@@ -167,7 +167,8 @@ class Username extends Component{
                             </div>
 
                             <div className="form-group">
-                                <label className="control-label form-label">Surname <span className="required-field">*</span></label>
+                                <label className="control-label form-label">Surname <span
+                                    className="required-field">*</span></label>
                                 <p className="form-sublabel">
                                     <small>Maximum 20 characters</small>
                                 </p>
@@ -185,7 +186,8 @@ class Username extends Component{
                             </div>
 
                             <div className="form-group">
-                                <label className="control-label form-label">Email <span className="required-field">*</span></label>
+                                <label className="control-label form-label">Email <span
+                                    className="required-field">*</span></label>
                                 <input
                                     id="user-email"
                                     type="text"
@@ -199,17 +201,17 @@ class Username extends Component{
                             </div>
 
                             {/*<div className="form-group">*/}
-                                {/*<label className="control-label form-label">Password <span className="required-field">*</span></label>*/}
-                                {/*<input*/}
-                                    {/*id="user-password"*/}
-                                    {/*type="password"*/}
-                                    {/*name="user-password"*/}
-                                    {/*placeholder='Input current password'*/}
-                                    {/*className="form-control boxed"*/}
-                                    {/*ref="userPassword"*/}
-                                    {/*value={this.state.userPasswordVal}*/}
-                                    {/*onChange={(event) => this.handleUserPasswordChanges(event)}*/}
-                                {/*/>*/}
+                            {/*<label className="control-label form-label">Password <span className="required-field">*</span></label>*/}
+                            {/*<input*/}
+                            {/*id="user-password"*/}
+                            {/*type="password"*/}
+                            {/*name="user-password"*/}
+                            {/*placeholder='Input current password'*/}
+                            {/*className="form-control boxed"*/}
+                            {/*ref="userPassword"*/}
+                            {/*value={this.state.userPasswordVal}*/}
+                            {/*onChange={(event) => this.handleUserPasswordChanges(event)}*/}
+                            {/*/>*/}
                             {/*</div>*/}
 
                             <div className="form-group custom-btn-group">
@@ -230,7 +232,9 @@ class Username extends Component{
 
 
 function mapStateToProps(state) {
-    return {}
+    return {
+        userData: state.authentication.userData
+    }
 }
 
 export default connect(mapStateToProps)(Username);
