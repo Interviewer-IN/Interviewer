@@ -427,7 +427,7 @@ class InterviewsUpcoming extends Component {
                                             <p className="interview-details__header"><strong>Project</strong></p>
                                             <p>{currentProject.title}</p>
                                             <p className="interview-details__header"><strong>Interviewer</strong></p>
-                                            <p>some interviewer</p>
+                                            <p>{currentInterviewer.surname + " " + currentInterviewer.name}</p>
                                         </div>
                                     </div>
                                     <div className="interview-details__down">
