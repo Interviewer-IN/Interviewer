@@ -19,11 +19,11 @@ Rails.application.routes.draw do
   namespace 'api' do
     namespace 'v1' do
       resources :projects, :vacancies, :positions, :levels,
-                :candidates, :ratings, :interviews, :users, :questions
+                :candidates, :ratings, :interviews, :users, :questions, :feedbacks
     end
     namespace 'v2' do
       resources :projects, :vacancies, :positions, :levels,
-                :candidates, :ratings, :interviews, :users, :questions
+                :candidates, :ratings, :interviews, :users, :questions, :feedbacks
     end
 
 
