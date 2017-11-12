@@ -5,7 +5,7 @@ import './header.css';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as sideBarActions from '../../redux/actions/sideBarActions';
-import {logOut, authorizationCheck} from "../../redux/actions/authenticationActions";
+import {logOut} from "../../redux/actions/authenticationActions";
 import Notifications from '../../containers/Notifications';
 
 
@@ -15,7 +15,7 @@ class Header extends Component {
         this.props.sideBarActions.showSideBar(true);
     }
 
-    handleLogOut(){
+    handleLogOut() {
         this.props.logOut();
     }
 
@@ -49,22 +49,25 @@ class Header extends Component {
         };
 
         let showUserName = () => {
-            // let userData = JSON.parse(this.props.userData);
-            // return userData.name + " " + userData.surname;
+            if (this.props.userData){
+                let userData = JSON.parse(this.props.userData);
+                return (userData.name + ' ' + userData.surname);
+            }
         };
+
 
         return (
             <header className="header">
                 <div className="header-block header-block-collapse hidden-lg-up">
-                    <button className="collapse-btn" id="sidebar-collapse-btn" onClick={() => this.handleMenuBthClick()}>
+                    <button className="collapse-btn" id="sidebar-collapse-btn"
+                            onClick={() => this.handleMenuBthClick()}>
                         <i className="fa fa-bars"></i>
                     </button>
                 </div>
                 <div className="header-block header-block-nav">
                     <ul className="nav-profile">
                         <li className="username">
-                            {/*{showUserName()}*/}
-                            Username
+                            {showUserName()}
                         </li>
                         <li>
                             {toggleActiveDashboard()}
@@ -99,4 +102,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps, null, { pure: false })(Header)
+export default connect(mapStateToProps, mapDispatchToProps, null, {pure: false})(Header)

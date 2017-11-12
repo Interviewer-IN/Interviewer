@@ -152,7 +152,7 @@ class Interviewers extends Component {
                         <div className="custom-panel-title__left-side">
                             <div className="info-block">
                                 <div className="info-block__item">
-                                    <div className="info-block__project">{interviewerName + ' ' +  interviewerSurname}</div>
+                                    <div className="info-block__project">{interviewerName  + ' ' +  interviewerSurname }</div>
                                     <div className="info-block__position separate-line">
                                         <span className="info-block__position-name">{interviewerLevel + ' ' + interviewerPosition}</span>
                                     </div>

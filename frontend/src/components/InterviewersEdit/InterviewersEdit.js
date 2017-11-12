@@ -11,6 +11,7 @@ import {getPositions} from "../../redux/actions/positionActions";
 import {getLevels} from "../../redux/actions/levelsActions";
 import {getInterviewer, updateInterviewer} from '../../redux/actions/interviewersActions';
 import {getValueFromArr, removeCurrentError, interviewersValidationForm} from '../../utils/index';
+import {setUserData} from "../../redux/actions/authenticationActions";
 import {CONFIRM_TEXT} from "../../config";
 
 class InterviewersEdit extends Component {
@@ -110,7 +111,8 @@ class InterviewersEdit extends Component {
         let validationPass = interviewersValidationForm.apply(this, [event]);
 
         if (validationPass) {
-            let positionsList = this.props.positions,
+            let editedUserId = Number(this.props.match.params.id),
+                positionsList = this.props.positions,
                 positionVal = this.state.positionVal,
                 levelsList = this.props.levels,
                 levelVal = this.state.levelVal,
@@ -123,7 +125,7 @@ class InterviewersEdit extends Component {
                 levelId = getValueFromArr(levelsList, levelVal, 'name');
 
             let formData ={
-                id: this.props.match.params.id,
+                id: editedUserId,
                 name: nameVal,
                 surname: surnameVal,
                 email: emailVal,
@@ -132,14 +134,31 @@ class InterviewersEdit extends Component {
                 // is_hr: isHr,
                 description: descriptionVal,
                 // nickname: surnameVal + ' ' + nameVal
-
             };
 
             let {dispatch} = this.props,
                 pathName = window.location.hash,
                 backPath = '#/' + pathName.split('/')[1];
 
+            if (this.props.userData){
+                let userData = JSON.parse(this.props.userData),
+                    loggedUserId = userData.id;
+
+                if (loggedUserId === editedUserId){
+                    userData.name = formData.name;
+                    userData.surname = formData.surname;
+                    userData.email = formData.email;
+
+                    userData = JSON.stringify(userData);
+                    dispatch(setUserData(userData));
+                    localStorage.setItem('userData', userData);
+                }
+
+            }
+
             dispatch(updateInterviewer(formData, null, backPath));
+
+
         }
 
     }
@@ -241,7 +260,7 @@ class InterviewersEdit extends Component {
 
         return (
             <div className="bcgr">
-                <Helmet>Create Interviewers</Helmet>
+                <Helmet>Edit Interviewer</Helmet>
                 <div className="row sameheight-container">
                     <div className="col-md-12">
                         <PageTitle pageTitle="Edit Interviewer"
@@ -415,7 +434,8 @@ function mapStateToProps(state) {
         currentInterviewer: state.interviewers.currentInterviewer,
         interviewers: state.interviewers.interviewers,
         positions: state.positions.positions,
-        levels: state.levels.levels
+        levels: state.levels.levels,
+        userData: state.authentication.userData
     }
 }
 
