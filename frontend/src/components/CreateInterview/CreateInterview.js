@@ -294,7 +294,7 @@ class CreateInterview extends Component {
             return (
 
                 <div className="form-group search-box_input">
-                    <label className="control-label">Candidate</label>
+                    <label className="control-label">Interviewer</label>
                     <Select
                         name="university"
                         options={options}
@@ -302,7 +302,7 @@ class CreateInterview extends Component {
                         value={this.state.interviewer}
                         placeholder={'Start typing for search...'}
                     />
-                    <span className="has-error error-message">{this.state.candidateError}</span>
+                    <span className="has-error error-message">{this.state.interviewerError}</span>
                 </div>
             );
         };

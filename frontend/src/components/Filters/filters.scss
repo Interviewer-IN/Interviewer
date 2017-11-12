@@ -1,23 +1,29 @@
 .filters-section{
   width: 100%;
   background: #d7dde4;
-  overflow: hidden;
   padding: 20px 20px;
 
 }
 
 .filter-block {
+  overflow: hidden;
 
-  &.filter-block--date{
+  &__date{
     margin-top: 20px;
+    float: left;
 
     & p {
       margin-bottom: 0 !important;
     }
+    @media (max-width: 1250px) {
+      float: none;
+      margin: 0;
+      margin-top: 20px !important;
+    }
   }
 
   &__selects {
-    overflow: hidden;
+    float: left;
     @media (max-width: 1250px) {
       float: none;
       width: 100%;
@@ -38,7 +44,7 @@
       width: 130px;
 
       @media (max-width: 1250px) {
-        margin-right: 10px;
+        margin: 20px 10px 0 0;
 
         &:last-child{
           margin-right: 0;
@@ -71,6 +77,8 @@
       }
     }
 
+
+
     &.search-box {
       @media (max-width: 1250px) {
         width: 100%;
@@ -89,7 +97,6 @@
   border-radius: 0;
   height: 2rem !important;
   color: #4f5f6f !important;
-
 
   &:hover {
     border: 1px solid #85CE36 !important;
@@ -122,7 +129,6 @@
   @media (max-width: 1250px) {
     display: block !important;
     float: left;
-    margin: 0 20px 20px 0;
   }
 
   &:hover {
@@ -145,6 +151,32 @@
     display: block;
   }
 }
+
+.selects-container {
+  float: left;
+  @media (max-width: 1250px) {
+    float: none;
+  }
+}
+
+.date-container {
+  @media (max-width: 1250px) {
+    margin-top: 20px;
+  }
+}
+
+.search-box-container {
+  @media (max-width: 1250px) {
+    margin-top: 20px;
+    width: 100%;
+  }
+
+  @media (max-width: 580px) {
+    margin-top: 0;
+    width: 100%;
+  }
+}
+
 
 //------------React Date Picker ---------------
 
@@ -204,6 +236,14 @@
 
   &-time__header {
     color: #4f5f6f !important;
+  }
+
+  &__input-container {
+    width: 100%
+  }
+
+  &-wrapper {
+    width: 100%;
   }
 }
 
