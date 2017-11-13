@@ -1,5 +1,5 @@
 import fetch from "isomorphic-fetch";
-import {makeNote, showNote} from "./notificationActions";
+import {showNote} from "./notificationActions";
 import {getCookies} from "../../utils/index"
 
 
@@ -107,7 +107,7 @@ export function authorizationCheck() {
     if (!(accessToken && client && uid && userData)) {
 
         isUserLogged = false;
-        userData = {};
+        userData = false;
 
         let date = new Date(0);
 
@@ -119,7 +119,6 @@ export function authorizationCheck() {
 
 
     }
-
 
     return {
         type: 'AUTH_CHECK',

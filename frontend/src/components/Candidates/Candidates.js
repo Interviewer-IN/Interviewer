@@ -101,7 +101,6 @@ class Candidates extends Component {
 
     render() {
 
-        console.log('Candidates',this);
 
         let candidatesList = this.props.candidates,
             levelsList = this.props.levels,

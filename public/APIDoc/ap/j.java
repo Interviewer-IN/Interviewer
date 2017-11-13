@@ -58,7 +58,7 @@
 
  *     }
  *
- * @apiSuccess {String} id The new Projects-ID.
+ * @apiSuccess {Integer} id The new Projects-ID.
  * @apiSuccess {String} title Title of the Projects.
  * @apiSuccess {String} description  Description of the Projects.
  * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
@@ -241,7 +241,7 @@
   * @apiSuccess {String} surname    User`s surname.
   * @apiSuccess {int} level_id   ID of the user`s level.
   * @apiSuccess {int} position_id   ID of the position.
-  * @apiSuccess {Boolen} is_hr      HR user or not.
+  * @apiSuccess {Boolean} is_hr      HR user or not.
   *
   * @apiSuccessExample {json} Success-Response:
   *     HTTP/1.1 200 OK
@@ -1779,3 +1779,309 @@
   * @apiError Unauthorized Returned if the user is not logged in.
    * @apiError RatingNotFound Returned if the rating does not exist.
    */
+   
+   
+   
+   *=========Users=================
+*=====get======
+
+  /**
+   * @apiName GetUsers
+   * @apiGroup Users
+   *
+   * @api {get} api/v1/users/:id Get Users
+   *
+   *
+   * @apiDescription Returns all users which are visible for the currently logged in user.
+   *
+   * @apiHeader {String} content-type application/json; charset=utf-8
+   * @apiHeader {String} accept application/json
+   *
+   *
+   * @apiSuccessExample {json} Success-Response:
+   *     HTTP/1.1 200 OK
+   {
+     "status": "SUCCESS",
+    "message": "Users loaded",
+    "data": [
+        {
+            "id": 58,
+            "provider": "email",
+            "uid": "user1@user.com",
+            "name": "Lucius",
+            "nickname": null,
+            "image": null,
+            "email": "user1@user.com",
+            "created_at": "2017-11-12T20:15:29.529Z",
+            "updated_at": "2017-11-12T22:25:00.616Z",
+            "surname": "Morningstar",
+            "level_id": 29,
+            "position_id": 3,
+            "is_hr": false
+        }
+   }
+		
+   * @apiSuccess {int} id  Unique id of the user.
+   * @apiSuccess {String} provider  User`s provider.
+   * @apiSuccess {String} uid  User`s uid
+   * @apiSuccess {String} name  User`s name
+   * @apiSuccess {String} nickname  User`s nickname
+   * @apiSuccess {String} image  User`s image
+   * @apiSuccess {String} email  User`s email
+   * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+   * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+   * @apiSuccess {String} surname  User`s surname.
+   * @apiSuccess {Integer} level_id  User`s level which connected with Levels table.
+   * @apiSuccess {Integer} position_id  User`s position which connected with Levels table.
+   * @apiSuccess {Boolean} is_hr  Is HR oe not.
+   
+   * @apiError UserNotFound The <code>id</code> of the user was not found.
+   *
+   */
+   
+    *========CreateUsers======
+    /**
+     * @api {post} api/v1/users/ Create Users
+     * @apiName PostUsers
+     * @apiGroup Users
+     *
+     * @apiHeader {String} content-type application/json; charset=utf-8
+     * @apiHeader {String} accept application/json
+     *
+     * @apiParam {String} name User`s name.
+	 * @apiParam {String} email User`s email.
+	 * @apiParam {String} password User`s password.
+	 * @apiParam {String} surname User`s surname.
+	 * @apiParam {Integer} level_id User`s level connected with Levels table.
+	 * @apiParam {Integer} position_id User`s name which connected with Levels table.
+	  * @apiParam {String} confirmation_token User`s confirmation token.
+     *
+     * @apiParamExample {json} Request-Example:
+     *
+     { "name": "Lucius",
+	  "email": "email@domen.com",
+	  "password": "123456",
+	  "surname": "Morningstar",
+	  "level_id": 29,
+	  "position_id": 3,
+	   "confirmation_token": "Hello, world!"
+}
+     *
+   * @apiSuccess {Integer} id  Unique id of the user.
+   * @apiSuccess {String} provider  User`s provider.
+   * @apiSuccess {String} uid  User`s uid
+   * @apiSuccess {String} name  User`s name
+   * @apiSuccess {String} nickname  User`s nickname
+   * @apiSuccess {String} image  User`s image
+   * @apiSuccess {String} email  User`s email
+   * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+   * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+   * @apiSuccess {String} surname  User`s surname.
+   * @apiSuccess {Integer} level_id  User`s level which connected with Levels table.
+   * @apiSuccess {Integer} position_id  User`s position which connected with Levels table.
+     * @apiSuccess {Boolean} is_hr  Is HR oe not.
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200 OK
+     {
+    "status": "SUCCESS",
+    "message": "Saved user",
+    "data": {
+        "id": 59,
+        "provider": "email",
+        "uid": "email@domen.com",
+        "name": "Lucius",
+        "nickname": null,
+        "image": null,
+        "email": "email@domen.com",
+        "created_at": "2017-11-13T07:21:30.358Z",
+        "updated_at": "2017-11-13T07:21:30.358Z",
+        "surname": "Morningstar",
+        "level_id": 29,
+        "position_id": 3,
+        "is_hr": false
+    }
+}
+   *
+     */
+     *=====EditUsers======
+     /**
+     * @api {put} api/v1/users/:id Update Users
+     * @apiName PutUsers
+     * @apiGroup Users
+     * @apiDescription Replace parts of existing user.
+     *
+     *
+     * @apiHeader {String} content-type application/json; charset=utf-8
+     * @apiHeader {String} accept application/json
+     *
+	   * @apiParam {String} name User`s name.
+	 * @apiParam {String} email User`s email.
+	 * @apiParam {String} surname User`s surname.
+	 * @apiParam {Integer} level_id User`s level connected with Levels table.
+	 * @apiParam {Integer} position_id User`s name which connected with Levels table.
+     *
+     * @apiParamExample {json} Request-Example:
+       { "name": "LuciusT",
+	  "email": "email@domen.com",
+	  "surname": "Morningstar",
+	  "level_id": 29,
+	  "position_id": 3
+}
+     *
+      *
+   * @apiSuccess {Integer} id  Unique id of the user.
+   * @apiSuccess {String} provider  User`s provider.
+   * @apiSuccess {String} uid  User`s uid
+   * @apiSuccess {String} name  User`s name
+   * @apiSuccess {String} nickname  User`s nickname
+   * @apiSuccess {String} image  User`s image
+   * @apiSuccess {String} email  User`s email
+   * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+   * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+   * @apiSuccess {String} surname  User`s surname.
+   * @apiSuccess {Integer} level_id  User`s level which connected with Levels table.
+   * @apiSuccess {Integer} position_id  User`s position which connected with Levels table.
+    * @apiSuccess {Boolean} is_hr  Is HR oe not.
+	 
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200 OK
+     *
+  {
+    "status": "SUCCESS",
+    "message": "Update user",
+    "data": {
+        "id": 60,
+        "level_id": 29,
+        "position_id": 3,
+        "email": "rtyu@user.com",
+        "name": "LuciusT",
+        "provider": "email",
+        "uid": "rtyu@user.com",
+        "nickname": null,
+        "image": null,
+        "created_at": "2017-11-13T07:25:36.846Z",
+        "updated_at": "2017-11-13T07:32:54.468Z",
+        "surname": null,
+        "is_hr": false
+    }
+}
+     * @apiError UserNotFound Returned if the user does not exist.
+     */
+
+  *======PatchUsers======
+  /**
+  * @api {patch} api/v1/users/:id Edit Users
+  * @apiName PatchUsers
+  * @apiGroup Users
+  * @apiDescription Replace parts of existing user.
+  *
+  *
+     * @apiHeader {String} content-type application/json; charset=utf-8
+     * @apiHeader {String} accept application/json
+     *
+	  *
+	  * @apiParam {String} name User`s name.
+	 * @apiParam {String} email User`s email.
+	 * @apiParam {String} surname User`s surname.
+	 * @apiParam {Integer} level_id User`s level connected with Levels table.
+	 * @apiParam {Integer} position_id User`s name which connected with Levels table.
+     *
+     * @apiParamExample {json} Request-Example:
+       { 
+	   "name": "LuciusTF",
+	  "email": "email@domen.com",
+	  "surname": "Morningstar",
+	  "level_id": 29,
+	  "position_id": 3
+}
+      * @apiSuccess {Integer} id  Unique id of the user.
+   * @apiSuccess {String} provider  User`s provider.
+   * @apiSuccess {String} uid  User`s uid
+   * @apiSuccess {String} name  User`s name
+   * @apiSuccess {String} nickname  User`s nickname
+   * @apiSuccess {String} image  User`s image
+   * @apiSuccess {String} email  User`s email
+   * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+   * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+   * @apiSuccess {String} surname  User`s surname.
+   * @apiSuccess {Integer} level_id  User`s level which connected with Levels table.
+   * @apiSuccess {Integer} position_id  User`s position which connected with Levels table.
+  * @apiSuccess {Boolean} is_hr  Is HR oe not.  
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200 OK
+     *
+{
+    "status": "SUCCESS",
+    "message": "Update user",
+    "data": {
+        "id": 60,
+        "level_id": 29,
+        "position_id": 3,
+        "email": "rtyu@user.com",
+        "name": "LuciusTF",
+        "provider": "email",
+        "uid": "rtyu@user.com",
+        "nickname": null,
+        "image": null,
+        "created_at": "2017-11-13T07:25:36.846Z",
+        "updated_at": "2017-11-13T07:34:23.126Z",
+        "surname": null,
+        "is_hr": false
+    }
+}
+     * @apiError UserNotFound Returned if the user does not exist.
+     */
+
+  *======DeleteUsers=======
+  /**
+   * @api {delete} api/v1/users/:id Delete Users
+   * @apiName DeleteUsers
+   * @apiGroup Users
+   *
+   *
+   *
+   * @apiHeader {String} content-type application/json; charset=utf-8
+   * @apiHeader {String} accept application/json
+   *
+      * @apiSuccess {Integer} id  Unique id of the user.
+   * @apiSuccess {String} provider  User`s provider.
+   * @apiSuccess {String} uid  User`s uid
+   * @apiSuccess {String} name  User`s name
+   * @apiSuccess {String} nickname  User`s nickname
+   * @apiSuccess {String} image  User`s image
+   * @apiSuccess {String} email  User`s email
+   * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+   * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+   * @apiSuccess {String} surname  User`s surname.
+   * @apiSuccess {Integer} level_id  User`s level which connected with Levels table.
+   * @apiSuccess {Integer} position_id  User`s position which connected with Levels table.
+  * @apiSuccess {Boolean} is_hr  Is HR oe not.
+   *
+   *
+   * @apiSuccessExample {json} Success-Response:
+   *     HTTP/1.1 200 OK
+ {
+    "status": "SUCCESS",
+    "message": "User deleted",
+    "data": {
+        "id": 60,
+        "provider": "email",
+        "uid": "rtyu@user.com",
+        "name": "LuciusTF",
+        "nickname": null,
+        "image": null,
+        "email": "rtyu@user.com",
+        "created_at": "2017-11-13T07:25:36.846Z",
+        "updated_at": "2017-11-13T07:34:23.126Z",
+        "surname": null,
+        "level_id": 29,
+        "position_id": 3,
+        "is_hr": false
+    }
+}
+
+   * @apiError UserNotFound Returned if the user does not exist.
+   */
+   
+   

@@ -174,7 +174,7 @@ class CreateInterviewers extends Component {
 
         return (
             <div className="bcgr">
-                <Helmet>Create Interviewers</Helmet>
+                <Helmet>Create Interviewer</Helmet>
                 <div className="row sameheight-container">
                     <div className="col-md-12">
                         <PageTitle pageTitle="Create Interviewer"

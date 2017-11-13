@@ -6,6 +6,7 @@ import PageTitle from './../../containers/PageTitle';
 import {UPDATE_USER_INFO} from "../../config";
 import {removeCurrentError, userInfoValidationForm} from '../../utils/index';
 import {updateInterviewer} from "../../redux/actions/interviewersActions";
+import {setUserData} from "../../redux/actions/authenticationActions";
 import {connect} from 'react-redux';
 
 class Username extends Component {
@@ -92,14 +93,15 @@ class Username extends Component {
             dispatch(updateInterviewer(formData, UPDATE_USER_INFO)).then(() => {
 
 
-                // let userData = JSON.parse(this.props.userData);
-                //
-                // userData.name = formData.name;
-                // userData.surname = formData.surname;
-                // userData.email = formData.email;
-                //
-                // userData = JSON.stringify(userData);
-                // localStorage.setItem('userData', userData);
+                let userData = JSON.parse(this.props.userData);
+
+                userData.name = formData.name;
+                userData.surname = formData.surname;
+                userData.email = formData.email;
+
+                userData = JSON.stringify(userData);
+                dispatch(setUserData(userData));
+                localStorage.setItem('userData', userData);
             });
 
         }
