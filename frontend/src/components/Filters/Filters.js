@@ -242,7 +242,7 @@ class Filters extends Component {
                     return item
                 }),
                 options = [];
-            
+
             if (interviewerList.length) {
                 let compareSurname = (a, b) => {
                         if (a.surname > b.surname) return 1;
