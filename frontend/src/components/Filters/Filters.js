@@ -237,7 +237,10 @@ class Filters extends Component {
 
         let showInterviewersFilter = (interviewer) => {
 
-            let interviewerList = this.props.interviewers,
+            let interviewerProps = this.props.interviewers,
+                interviewerList = interviewerProps.map((item, index) => {
+                    return item
+                }),
                 options = [];
 
             if (interviewerList.length) {
@@ -246,7 +249,6 @@ class Filters extends Component {
                         if (a.surname < b.surname) return -1;
                     },
                     sortedInterviewers = interviewerList.sort(compareSurname) || {};
-
                 options = sortedInterviewers.map((item, index) => {
                     let name = "" + item.surname + " " + item.name + "";
                     return (

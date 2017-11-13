@@ -10,6 +10,7 @@ import interviews from './interviews'
 import ratings from './ratings'
 import candidates from './candidates'
 import interviewers from './interviewers'
+import questions from './questions'
 
 
 export default combineReducers({
@@ -23,5 +24,6 @@ export default combineReducers({
     interviews,
     ratings,
     candidates,
-    interviewers
+    interviewers,
+    questions
 })
