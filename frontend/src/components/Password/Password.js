@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import './password.css';
 
 import Helmet from 'react-helmet';
-import {Modal, Button} from 'react-bootstrap';
 import PageTitle from './../../containers/PageTitle';
 import {removeCurrentError, changePassValidationForm} from '../../utils/index';
 import {authorizationCheck} from "../../redux/actions/authenticationActions";
