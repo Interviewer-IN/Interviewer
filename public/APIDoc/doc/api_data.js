@@ -3225,7 +3225,7 @@ define({ "api": [
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "Integer",
             "optional": false,
             "field": "id",
             "description": "<p>The new Projects-ID.</p>"
@@ -4029,7 +4029,7 @@ define({ "api": [
           },
           {
             "group": "Success 200",
-            "type": "Boolen",
+            "type": "Boolean",
             "optional": false,
             "field": "is_hr",
             "description": "<p>HR user or not.</p>"
@@ -4136,6 +4136,885 @@ define({ "api": [
     "version": "0.0.0",
     "filename": "./j.java",
     "groupTitle": "User"
+  },
+  {
+    "type": "delete",
+    "url": "api/v1/users/:id",
+    "title": "Delete Users",
+    "name": "DeleteUsers",
+    "group": "Users",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json; charset=utf-8</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "accept",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Unique id of the user.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "provider",
+            "description": "<p>User`s provider.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "uid",
+            "description": "<p>User`s uid</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>User`s name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "nickname",
+            "description": "<p>User`s nickname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "image",
+            "description": "<p>User`s image</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>User`s email</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Mandatory with data of creating(By default).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Mandatory with data of update(By default).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "surname",
+            "description": "<p>User`s surname.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "level_id",
+            "description": "<p>User`s level which connected with Levels table.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "position_id",
+            "description": "<p>User`s position which connected with Levels table.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "is_hr",
+            "description": "<p>Is HR oe not.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n {\n    \"status\": \"SUCCESS\",\n    \"message\": \"User deleted\",\n    \"data\": {\n        \"id\": 60,\n        \"provider\": \"email\",\n        \"uid\": \"rtyu@user.com\",\n        \"name\": \"LuciusTF\",\n        \"nickname\": null,\n        \"image\": null,\n        \"email\": \"rtyu@user.com\",\n        \"created_at\": \"2017-11-13T07:25:36.846Z\",\n        \"updated_at\": \"2017-11-13T07:34:23.126Z\",\n        \"surname\": null,\n        \"level_id\": 29,\n        \"position_id\": 3,\n        \"is_hr\": false\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "UserNotFound",
+            "description": "<p>Returned if the user does not exist.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./j.java",
+    "groupTitle": "Users"
+  },
+  {
+    "name": "GetUsers",
+    "group": "Users",
+    "type": "get",
+    "url": "api/v1/users/:id",
+    "title": "Get Users",
+    "description": "<p>Returns all users which are visible for the currently logged in user.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json; charset=utf-8</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "accept",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n{\n  \"status\": \"SUCCESS\",\n \"message\": \"Users loaded\",\n \"data\": [\n     {\n         \"id\": 58,\n         \"provider\": \"email\",\n         \"uid\": \"user1@user.com\",\n         \"name\": \"Lucius\",\n         \"nickname\": null,\n         \"image\": null,\n         \"email\": \"user1@user.com\",\n         \"created_at\": \"2017-11-12T20:15:29.529Z\",\n         \"updated_at\": \"2017-11-12T22:25:00.616Z\",\n         \"surname\": \"Morningstar\",\n         \"level_id\": 29,\n         \"position_id\": 3,\n         \"is_hr\": false\n     }\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Unique id of the user.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "provider",
+            "description": "<p>User`s provider.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "uid",
+            "description": "<p>User`s uid</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>User`s name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "nickname",
+            "description": "<p>User`s nickname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "image",
+            "description": "<p>User`s image</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>User`s email</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Mandatory with data of creating(By default).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Mandatory with data of update(By default).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "surname",
+            "description": "<p>User`s surname.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "level_id",
+            "description": "<p>User`s level which connected with Levels table.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "position_id",
+            "description": "<p>User`s position which connected with Levels table.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "is_hr",
+            "description": "<p>Is HR oe not.</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "UserNotFound",
+            "description": "<p>The <code>id</code> of the user was not found.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./j.java",
+    "groupTitle": "Users"
+  },
+  {
+    "type": "patch",
+    "url": "api/v1/users/:id",
+    "title": "Edit Users",
+    "name": "PatchUsers",
+    "group": "Users",
+    "description": "<p>Replace parts of existing user.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json; charset=utf-8</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "accept",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>User`s name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>User`s email.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "surname",
+            "description": "<p>User`s surname.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "level_id",
+            "description": "<p>User`s level connected with Levels table.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "position_id",
+            "description": "<p>User`s name which connected with Levels table.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "       { \n\t   \"name\": \"LuciusTF\",\n\t  \"email\": \"email@domen.com\",\n\t  \"surname\": \"Morningstar\",\n\t  \"level_id\": 29,\n\t  \"position_id\": 3\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Unique id of the user.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "provider",
+            "description": "<p>User`s provider.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "uid",
+            "description": "<p>User`s uid</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>User`s name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "nickname",
+            "description": "<p>User`s nickname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "image",
+            "description": "<p>User`s image</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>User`s email</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Mandatory with data of creating(By default).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Mandatory with data of update(By default).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "surname",
+            "description": "<p>User`s surname.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "level_id",
+            "description": "<p>User`s level which connected with Levels table.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "position_id",
+            "description": "<p>User`s position which connected with Levels table.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "is_hr",
+            "description": "<p>Is HR oe not.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n\n{\n    \"status\": \"SUCCESS\",\n    \"message\": \"Update user\",\n    \"data\": {\n        \"id\": 60,\n        \"level_id\": 29,\n        \"position_id\": 3,\n        \"email\": \"rtyu@user.com\",\n        \"name\": \"LuciusTF\",\n        \"provider\": \"email\",\n        \"uid\": \"rtyu@user.com\",\n        \"nickname\": null,\n        \"image\": null,\n        \"created_at\": \"2017-11-13T07:25:36.846Z\",\n        \"updated_at\": \"2017-11-13T07:34:23.126Z\",\n        \"surname\": null,\n        \"is_hr\": false\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "UserNotFound",
+            "description": "<p>Returned if the user does not exist.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./j.java",
+    "groupTitle": "Users"
+  },
+  {
+    "type": "post",
+    "url": "api/v1/users/",
+    "title": "Create Users",
+    "name": "PostUsers",
+    "group": "Users",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json; charset=utf-8</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "accept",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>User`s name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>User`s email.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>User`s password.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "surname",
+            "description": "<p>User`s surname.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "level_id",
+            "description": "<p>User`s level connected with Levels table.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "position_id",
+            "description": "<p>User`s name which connected with Levels table.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "confirmation_token",
+            "description": "<p>User`s confirmation token.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "\n     { \"name\": \"Lucius\",\n\t  \"email\": \"email@domen.com\",\n\t  \"password\": \"123456\",\n\t  \"surname\": \"Morningstar\",\n\t  \"level_id\": 29,\n\t  \"position_id\": 3,\n\t   \"confirmation_token\": \"Hello, world!\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Unique id of the user.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "provider",
+            "description": "<p>User`s provider.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "uid",
+            "description": "<p>User`s uid</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>User`s name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "nickname",
+            "description": "<p>User`s nickname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "image",
+            "description": "<p>User`s image</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>User`s email</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Mandatory with data of creating(By default).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Mandatory with data of update(By default).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "surname",
+            "description": "<p>User`s surname.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "level_id",
+            "description": "<p>User`s level which connected with Levels table.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "position_id",
+            "description": "<p>User`s position which connected with Levels table.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "is_hr",
+            "description": "<p>Is HR oe not.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n     {\n    \"status\": \"SUCCESS\",\n    \"message\": \"Saved user\",\n    \"data\": {\n        \"id\": 59,\n        \"provider\": \"email\",\n        \"uid\": \"email@domen.com\",\n        \"name\": \"Lucius\",\n        \"nickname\": null,\n        \"image\": null,\n        \"email\": \"email@domen.com\",\n        \"created_at\": \"2017-11-13T07:21:30.358Z\",\n        \"updated_at\": \"2017-11-13T07:21:30.358Z\",\n        \"surname\": \"Morningstar\",\n        \"level_id\": 29,\n        \"position_id\": 3,\n        \"is_hr\": false\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./j.java",
+    "groupTitle": "Users"
+  },
+  {
+    "type": "put",
+    "url": "api/v1/users/:id",
+    "title": "Update Users",
+    "name": "PutUsers",
+    "group": "Users",
+    "description": "<p>Replace parts of existing user.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "content-type",
+            "description": "<p>application/json; charset=utf-8</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "accept",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>User`s name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>User`s email.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "surname",
+            "description": "<p>User`s surname.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "level_id",
+            "description": "<p>User`s level connected with Levels table.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "position_id",
+            "description": "<p>User`s name which connected with Levels table.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "       { \"name\": \"LuciusT\",\n\t  \"email\": \"email@domen.com\",\n\t  \"surname\": \"Morningstar\",\n\t  \"level_id\": 29,\n\t  \"position_id\": 3\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Unique id of the user.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "provider",
+            "description": "<p>User`s provider.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "uid",
+            "description": "<p>User`s uid</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>User`s name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "nickname",
+            "description": "<p>User`s nickname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "image",
+            "description": "<p>User`s image</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>User`s email</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Mandatory with data of creating(By default).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Mandatory with data of update(By default).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "surname",
+            "description": "<p>User`s surname.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "level_id",
+            "description": "<p>User`s level which connected with Levels table.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "position_id",
+            "description": "<p>User`s position which connected with Levels table.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "is_hr",
+            "description": "<p>Is HR oe not.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n\n  {\n    \"status\": \"SUCCESS\",\n    \"message\": \"Update user\",\n    \"data\": {\n        \"id\": 60,\n        \"level_id\": 29,\n        \"position_id\": 3,\n        \"email\": \"rtyu@user.com\",\n        \"name\": \"LuciusT\",\n        \"provider\": \"email\",\n        \"uid\": \"rtyu@user.com\",\n        \"nickname\": null,\n        \"image\": null,\n        \"created_at\": \"2017-11-13T07:25:36.846Z\",\n        \"updated_at\": \"2017-11-13T07:32:54.468Z\",\n        \"surname\": null,\n        \"is_hr\": false\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "UserNotFound",
+            "description": "<p>Returned if the user does not exist.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./j.java",
+    "groupTitle": "Users"
   },
   {
     "type": "delete",
