@@ -16,6 +16,8 @@ class ProjectsList extends Component {
         this.state = {
             showModalConfirm: false,
             currentProjectID: "",
+            projectsListExist: true
+
         }
     }
 
@@ -24,7 +26,19 @@ class ProjectsList extends Component {
         const {dispatch} = this.props;
 
         if (!this.props.newProject.projects.length){
-            dispatch(showProjects());
+            dispatch(showProjects()).then(
+                (data) => {
+                    if (!data.length){
+                        this.setState({
+                            projectsListExist: false
+                        });
+                    } else {
+                        this.setState({
+                            projectsListExist: true
+                        });
+                    }
+                }
+            );
         }
 
     }
@@ -68,48 +82,52 @@ class ProjectsList extends Component {
         let projectsToDisplay;
         let sortedProjects;
 
-        if (projects) {
-            sortedProjects = projects.sort(compareTitle) || {};
-            projectsToDisplay = sortedProjects.map((value, index) => {
+        if (this.state.projectsListExist){
+            if (projects) {
+                sortedProjects = projects.sort(compareTitle) || {};
+                projectsToDisplay = sortedProjects.map((value, index) => {
 
-                let id = value.id;
+                        let id = value.id;
 
-                    const panelTitle = (
-                        <div className="custom-panel-title panel-list-item">
-                            <div className="custom-panel-title__right-side">
-                                <div className="panel-collapse-btn">
-                                    <span className="panel-collapse-btn__title btn-js">Expand</span>
-                                    <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
+                        const panelTitle = (
+                            <div className="custom-panel-title panel-list-item">
+                                <div className="custom-panel-title__right-side">
+                                    <div className="panel-collapse-btn">
+                                        <span className="panel-collapse-btn__title btn-js">Expand</span>
+                                        <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
+                                    </div>
+                                </div>
+                                <div className="custom-panel-title__left-side">
+                                    <div className="vacancy-info-block">
+                                        <div className="vacancy-info-block__item">{value.title}</div>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="custom-panel-title__left-side">
-                                <div className="vacancy-info-block">
-                                    <div className="vacancy-info-block__item">{value.title}</div>
-                                </div>
-                            </div>
-                        </div>
-                    );
+                        );
 
-                    return (
-                        <Panels
-                            key={id}
-                            id={id}
-                            titleConst={panelTitle}
-                            description={value.description}
-                            showEditBtn={true}
-                            showDeleteBtn={true}
-                            editBtnId={"edit-project-"+id}
-                            deleteBtnId={"delete-project-"+id}
-                            callDelete={(event) => this.openModalConfirm(id)}
-                            callEdit={(event) => this.switchToEditMode(id)}
-                        />
-                    )
-                }
-            )
+                        return (
+                            <Panels
+                                key={id}
+                                id={id}
+                                titleConst={panelTitle}
+                                description={value.description}
+                                showEditBtn={true}
+                                showDeleteBtn={true}
+                                editBtnId={"edit-project-"+id}
+                                deleteBtnId={"delete-project-"+id}
+                                callDelete={(event) => this.openModalConfirm(id)}
+                                callEdit={(event) => this.switchToEditMode(id)}
+                            />
+                        )
+                    }
+                )
 
-        }
-        else {
-            projectsToDisplay = "No projects";
+            }
+            else {
+                projectsToDisplay = (<h5 className="noData">No data of the requested type was found</h5>);
+            }
+        } else {
+            projectsToDisplay = (<h5 className="noData"> There is no data to display </h5>);
         }
 
         return (

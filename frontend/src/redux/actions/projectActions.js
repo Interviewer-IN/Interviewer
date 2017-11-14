@@ -83,6 +83,7 @@ export function showProjects() {
                         hide: false
                     }
                 ));
+                resolve(err);
             });
     });
 }

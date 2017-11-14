@@ -43,7 +43,8 @@ class InterviewsUpcoming extends Component {
             dateFromFilter: "",
             dateToFilter: "",
             dateErrorMessage: "",
-            showModalConfirm: false
+            showModalConfirm: false,
+            interviewsListExist: true
         }
     }
 
@@ -52,7 +53,19 @@ class InterviewsUpcoming extends Component {
         const {dispatch} = this.props;
 
         if (!this.props.interviews.interviews.length) {
-            dispatch(showInterviews());
+            dispatch(showInterviews()).then(
+                (data) => {
+                    if (!data.length){
+                        this.setState({
+                            interviewsListExist: false
+                        });
+                    } else {
+                        this.setState({
+                            interviewsListExist: true
+                        });
+                    }
+                }
+            );
         }
 
         if (!this.props.vacancies.length) {

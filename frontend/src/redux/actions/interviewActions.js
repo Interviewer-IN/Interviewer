@@ -83,6 +83,7 @@ export function showInterviews(idExpandedElement = false) {
                         hide: false
                     }
                 ));
+                resolve(err);
             });
     });
 }
