@@ -240,7 +240,7 @@ class SideMenu extends Component {
                     <div className="sidebar-container">
                         <div className="sidebar-header">
                             <div className="brand">
-                                <Link to="/" id="sideMenuLogo" onClick={() => this.handleClickLogo()}>Logo</Link>
+                                <Link to="/" id="sideMenuLogo" className="sideMenuLogo" onClick={() => this.handleClickLogo()}/>
                             </div>
                         </div>
                         <div className="sidebar-menu" id="metisMenu"
