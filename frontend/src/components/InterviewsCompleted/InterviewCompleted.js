@@ -10,6 +10,7 @@ import {showProjects} from "../../redux/actions/projectActions";
 import {getRatings} from "../../redux/actions/ratingActions";
 import {getCandidates} from "../../redux/actions/candidatesActions";
 import {getInterviewers} from "../../redux/actions/interviewersActions";
+import {showFeedbacks} from "../../redux/actions/feedbackActions";
 import {
     getValueFromArr,
     filterByDates,
@@ -85,6 +86,10 @@ class InterviewsCompleted extends Component {
         if (!this.props.interviewers.length) {
             dispatch(getInterviewers());
         }
+
+        // if (!this.props.feedbacks.length) {
+        //     dispatch(showFeedbacks());
+        // }
 
         if (isUserHR) {
             this.setState({isHR: true})
@@ -225,106 +230,116 @@ class InterviewsCompleted extends Component {
             ratings = this.props.ratings,
             candidates = this.props.candidates,
             interviewers = this.props.interviewers,
+            feedbacks = this.props.feedbacks,
+            questions = this.props.questions,
             interviewsToDisplay,
             filterErrorMessage;
 
-        if (this.state.interviewsListExist) {
-            if (interviews.length && vacancies.length && projects.length && levels.length && positions.length && ratings.length) {
+        if (interviews.length && vacancies.length && projects.length && levels.length && positions.length && ratings.length) {
 
-                interviews = interviews.filter((current) => {
-                    return current.status === false;
-                });
+            interviews = interviews.filter((current) => {
+                return current.status === false;
+            });
 
-                //-- FILTERS  --------------------------
+            //-- FILTERS  --------------------------
 
-                let projectFilterID = this.state.projectsFilterID,
-                    positionFilterID = this.state.positionsFilterID,
-                    levelFilterID = this.state.levelsFilterID,
-                    interviewerFilterId = this.state.interviewerFilterId,
-                    ratingFilterID = this.state.ratingFilterID,
-                    dateFromFilter = this.state.dateFromFilter,
-                    dateToFilter = this.state.dateToFilter;
+            let projectFilterID = this.state.projectsFilterID,
+                positionFilterID = this.state.positionsFilterID,
+                levelFilterID = this.state.levelsFilterID,
+                interviewerFilterId = this.state.interviewerFilterId,
+                ratingFilterID = this.state.ratingFilterID,
+                dateFromFilter = this.state.dateFromFilter,
+                dateToFilter = this.state.dateToFilter;
 
-                if (projectFilterID) {
-                    interviews = filterByProject(projectFilterID, interviews, vacancies);
-                }
+            if (projectFilterID) {
+                interviews = filterByProject(projectFilterID, interviews, vacancies);
+            }
 
-                if (positionFilterID) {
-                    interviews = filterByPosition(positionFilterID, interviews, vacancies);
-                }
+            if (positionFilterID) {
+                interviews = filterByPosition(positionFilterID, interviews, vacancies);
+            }
 
-                if (levelFilterID) {
-                    interviews = filterByLevel(levelFilterID, interviews, vacancies);
-                }
+            if (levelFilterID) {
+                interviews = filterByLevel(levelFilterID, interviews, vacancies);
+            }
 
-                if (interviewerFilterId) {
-                    interviews = filterByInterviewer(interviewerFilterId, interviews);
-                }
+            if (interviewerFilterId) {
+                interviews = filterByInterviewer(interviewerFilterId, interviews);
+            }
 
-                if (ratingFilterID) {
-                    interviews = filterByRating(ratingFilterID, interviews);
-                }
+            if (ratingFilterID) {
+                interviews = filterByRating(ratingFilterID, interviews);
+            }
 
-                if (dateFromFilter || dateToFilter) {
-                    interviews = filterByDates(dateFromFilter, dateToFilter, interviews);
-                    filterErrorMessage = setErrorDateMessage(dateFromFilter, dateToFilter);
-                }
+            if (dateFromFilter || dateToFilter) {
+                interviews = filterByDates(dateFromFilter, dateToFilter, interviews);
+                filterErrorMessage = setErrorDateMessage(dateFromFilter, dateToFilter);
+            }
 
-                //-- FILTERS  END--------------------------
+            //-- FILTERS  END--------------------------
 
 
-                let compareDates = (a, b) => {
-                    let dateA = new Date(a.date_time).getTime(),
-                        dateB = new Date(b.date_time).getTime();
+            let compareDates = (a, b) => {
+                let dateA = new Date(a.date_time).getTime(),
+                    dateB = new Date(b.date_time).getTime();
 
-                    if (dateA < dateB) return 1;
-                    if (dateA > dateB) return -1;
-                };
+                if (dateA < dateB) return 1;
+                if (dateA > dateB) return -1;
+            };
 
-                if (interviews.length) {
+            if (interviews.length) {
 
-                    let interviewsSortedByDates = interviews.sort(compareDates) || {};
-                    interviewsToDisplay = interviewsSortedByDates.map((value, index) => {
+                let interviewsSortedByDates = interviews.sort(compareDates) || {};
+                interviewsToDisplay = interviewsSortedByDates.map((value, index) => {
 
-                        let id = value.id,
-                            currentDate = moment(new Date(value.date_time)).format("DD" + "/" + "MM" + "/" + "YYYY"),
-                            currentVacancy = vacancies.find(item => value.vacancy_id === item.id),
-                            currentProject = projects.find(item => currentVacancy.project_id === item.id),
-                            currentLevel = levels.find(item => currentVacancy.level_id === item.id),
-                            currentPosition = positions.find(item => currentVacancy.position_id === item.id),
-                            currentCandidate = candidates.find(item => value.candidate_id === item.id),
-                            currentInterviewer = interviewers.find(item => value.user_id === item.id),
-                            currentRating = ratings.find(item => value.rating_id === item.id),
-                            panelTitleText;
+                    let id = value.id,
+                        currentDate = moment(new Date(value.date_time)).format("DD" + "/" + "MM" + "/" + "YYYY"),
+                        currentVacancy = vacancies.find(item => value.vacancy_id === item.id),
+                        currentProject = projects.find(item => currentVacancy.project_id === item.id),
+                        currentLevel = levels.find(item => currentVacancy.level_id === item.id),
+                        currentPosition = positions.find(item => currentVacancy.position_id === item.id),
+                        currentCandidate = candidates.find(item => value.candidate_id === item.id),
+                        currentInterviewer = interviewers.find(item => value.user_id === item.id),
+                        currentRating = ratings.find(item => value.rating_id === item.id),
 
-                        if (this.state.isHR) {
-                            panelTitleText =
-                                currentDate + " | " +
-                                currentCandidate.name + " " +
-                                currentCandidate.surname + " | " +
-                                currentLevel.name + " " +
-                                currentPosition.name + " for " +
-                                currentProject.title + " | " +
-                                "Rating: " + currentRating.grade + " | " +
-                                currentInterviewer.surname + " " + currentInterviewer.name + " ";
-                        } else {
-                            panelTitleText =
-                                currentDate + " | " +
-                                currentCandidate.name + " " +
-                                currentCandidate.surname + " | " +
-                                currentLevel.name + " - " +
-                                currentPosition.name + " - " +
-                                currentProject.title + " | " +
-                                "Rating: " + currentRating.grade;
-                        }
+                        panelTitleText;
+                    //
+                    // let currentAnswersArray = feedbacks.map((item, index) => {
+                    //     if (value.interview_id === item.id)
+                    //         return item
+                    // });
 
-                        const PANEL_TITLE = (
-                            <div className="custom-panel-title panel-list-item">
-                                <div className="custom-panel-title__right-side">
-                                    <div className="panel-collapse-btn">
-                                        <span className="panel-collapse-btn__title btn-js">Expand</span>
-                                        <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
-                                    </div>
+                    if (this.state.isHR) {
+                        panelTitleText =
+                            currentDate + " | " +
+                            currentCandidate.name + " " +
+                            currentCandidate.surname + " | " +
+                            currentLevel.name + " " +
+                            currentPosition.name + " for " +
+                            currentProject.title + " | " +
+                            "Rating: " + currentRating.grade + " | " +
+                            currentInterviewer.surname + " " + currentInterviewer.name + " ";
+                    } else {
+                        panelTitleText =
+                            currentDate + " | " +
+                            currentCandidate.name + " " +
+                            currentCandidate.surname + " | " +
+                            currentLevel.name + " - " +
+                            currentPosition.name + " - " +
+                            currentProject.title + " | " +
+                            "Rating: " + currentRating.grade;
+                    }
+
+                    let showFeedback = () => {
+
+                    };
+
+                    const PANEL_TITLE = (
+                        <div className="custom-panel-title panel-list-item">
+                            <div className="custom-panel-title__right-side">
+                                <div className="panel-collapse-btn">
+                                    <span className="panel-collapse-btn__title btn-js">Expand</span>
+                                    <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
                                 </div>
                                 <div className="custom-panel-title__left-side">
                                     <div className="vacancy-info-block">
@@ -484,6 +499,9 @@ function mapStateToProps(state) {
         ratings: state.ratings.ratings,
         candidates: state.candidates.candidates,
         interviewers: state.interviewers.interviewers,
+        feedbacks: state.feedback.feedbacks,
+        questions: state.questions.questions,
+        currentFeedback: state.feedback.currentFeedback,
         currentProject: state.project.currentProject,
     }
 }

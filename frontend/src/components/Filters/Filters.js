@@ -273,7 +273,10 @@ class Filters extends Component {
 
         let showRatingFilter = (rating) => {
 
-            let ratingsList = this.props.ratings,
+            let ratingsProps = this.props.ratings,
+                ratingsList = ratingsProps.map((item, index) => {
+                    return item
+                }),
                 options = [];
 
             if (ratingsList.length) {

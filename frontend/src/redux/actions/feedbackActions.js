@@ -1,24 +1,18 @@
 import fetch from "isomorphic-fetch";
 import {makeNote} from "./notificationActions";
 
-export const CREATE_PROJECT = "CREATE_PROJECT";
-export const SHOW_PROJECTS = "SHOW_PROJECTS";
-export const REMOVE_PROJECT = "REMOVE_PROJECT";
-export const UPDATE_PROJECT = "UPDATE_PROJECT";
-export const SET_PROJECT = "SET_PROJECT";
 
-
-function addNewProject(date) {
-    return { type: CREATE_PROJECT, payload: date.data};
+function addNewFeedback(data) {
+    return { type: "CREATE_FEEDBACK", payload: data.data};
 }
 
-export function createProject(date) {
-    console.log('CreateProject', date);
-    return (dispatch) => {
-        fetch("/api/v1/projects",
+export function createFeedback(data, rating, message) {
+    let successMessage = message || 'Feedback was created';
+    return (dispatch) => new Promise((resolve, reject) => {
+        fetch("/api/v1/feedbacks",
             {
                 method: 'post',
-                body: JSON.stringify(date),
+                body: JSON.stringify(data),
                 headers: {
                     "Content-Type": "application/json",
                 }
@@ -26,17 +20,9 @@ export function createProject(date) {
             .then(res =>
                 res.json()
             )
-            .then(date => {
-                let noteData = "'" + date.data.title.slice(0, 20) + "'";
-                dispatch(addNewProject(date));
-                dispatch(showProjects());
-                dispatch(makeNote(
-                    {
-                        status: "success",
-                        text: "Project " + noteData + "... was created!",
-                        hide: true
-                    }
-                ))
+            .then(data => {
+                dispatch(addNewFeedback(data));
+                resolve(data);
             })
             .catch(function (err) {
                 dispatch(makeNote(
@@ -46,22 +32,22 @@ export function createProject(date) {
                         hide: false
                     }
                 ));
+                resolve();
             })
-    }
+    });
 }
 
-
-function addProjects(projects) {
-    return { type: SHOW_PROJECTS, payload: projects};
+function addFeedbacks(feedbacks) {
+    return { type: "SHOW_FEEDBACKS", payload: feedbacks };
 }
 
-function setCurrentProject(project) {
-    return { type: SET_PROJECT, payload: project};
+function setCurrentFeedback(feedback) {
+    return { type: "SET_FEEDBACK", payload: feedback };
 }
 
-export function showProjects() {
+export function showFeedbacks() {
     return (dispatch) => new Promise((resolve) => {
-        fetch("/api/v1/projects",
+        fetch("/api/v1/feedbacks",
             {
                 method: 'get',
                 headers: {
@@ -71,9 +57,9 @@ export function showProjects() {
             .then(res =>
                 res.json()
             )
-            .then(projects => {
-                dispatch(addProjects(projects.data));
-                resolve(projects.data);
+            .then(feedbacks => {
+                dispatch(addFeedbacks(feedbacks.data));
+                resolve(feedbacks.data);
             })
             .catch(function(err) {
                 dispatch(makeNote(
@@ -83,20 +69,47 @@ export function showProjects() {
                         hide: false
                     }
                 ));
-                resolve(err);
+                resolve();
             });
     });
 }
 
-export function getProject(id) {
+export function getFeedback(id) {
     return (dispatch) => new Promise(function(resolve, reject) {
-        fetch("/api/v1/projects/" + id)
+        fetch("/api/v1/feedbacks/" + id)
             .then(function(response) {
                 return response.text();
             })
-            .then(function(project) {
-                dispatch(setCurrentProject(JSON.parse(project).data));
-                resolve(JSON.parse(project).data);
+            .then(function(feedback) {
+                dispatch(setCurrentFeedback(JSON.parse(feedback).data));
+                resolve(JSON.parse(feedback).data);
+            })
+            .catch(function(error) {
+                dispatch(makeNote(
+                    {
+                        status: "danger",
+                        text: "Error: "+ error,
+                        hide: false
+                    }
+                ));
+                resolve();
+            });
+    });
+}
+
+function setInterviewFeedbacks(feedbacks) {
+    return { type: "SET_INTERVIEW_FEEDBACKS", payload: feedbacks };
+}
+
+export function getInterviewFeedbacks(id) {
+    return (dispatch) => new Promise(function(resolve, reject) {
+        fetch("/api/v1/feedbacks?interview_id=" + id)
+            .then(function(response) {
+                return response.text();
+            })
+            .then(function(feedbacks) {
+                dispatch(setCurrentFeedback(JSON.parse(feedbacks).data));
+                resolve(JSON.parse(feedbacks).data);
             })
             .catch(function(error) {
                 dispatch(makeNote(
@@ -112,9 +125,9 @@ export function getProject(id) {
     });
 }
 
-export function removeProject(id) {
+export function removeFeedback(id) {
     return (dispatch) => {
-        fetch('/api/v1/projects/' + id,
+        fetch('/api/v1/feedbacks/' + id,
             {
                 method: 'delete',
                 headers: {
@@ -125,12 +138,11 @@ export function removeProject(id) {
                 res.json()
             )
             .then(date => {
-                let noteData = "'" + date.data.title.slice(0, 20) + "'";
-                dispatch(showProjects());
+                dispatch(showFeedbacks());
                 dispatch(makeNote(
                     {
                         status: "success",
-                        text: "Project " + noteData + "... was deleted!",
+                        text: "Feedback was deleted!",
                         hide: true
                     }
                 ))
@@ -147,9 +159,10 @@ export function removeProject(id) {
     };
 }
 
-export function updateProject(date) {
+export function updateFeedback(date, message) {
+    let successMessage = message || 'Feedback was updated';
     return (dispatch) => {
-        fetch('/api/v1/projects/' + date.id,
+        fetch('/api/v1/feedbacks/' + date.id,
             {
                 method: 'put',
                 body: JSON.stringify(date),
@@ -161,12 +174,11 @@ export function updateProject(date) {
                 res.json()
             )
             .then(date => {
-                let noteData = "'" + date.data.title.slice(0, 20) + "'";
-                dispatch(showProjects());
+                dispatch(showFeedbacks());
                 dispatch(makeNote(
                     {
                         status: "success",
-                        text: "Project " + noteData + "... was updated!",
+                        text: successMessage,
                         hide: true
                     }
                 ))

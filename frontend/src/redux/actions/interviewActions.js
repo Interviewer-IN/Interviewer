@@ -88,7 +88,7 @@ export function showInterviews(idExpandedElement = false) {
     });
 }
 
-export function getInterviews(id) {
+export function getInterview(id) {
     return (dispatch) => new Promise(function(resolve, reject) {
         fetch("/api/v1/interviews/" + id)
             .then(function(response) {

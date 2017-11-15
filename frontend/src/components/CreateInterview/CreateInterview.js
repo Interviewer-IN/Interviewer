@@ -144,7 +144,6 @@ class CreateInterview extends Component {
                     candidate_id: candidateID,
                     vacancy_id: vacancyID,
                     user_id: interviewerID,
-                    rating_id: 12
                 }
             ));
         }
@@ -187,9 +186,6 @@ class CreateInterview extends Component {
             levels = this.props.levels,
             positions = this.props.positions,
             interviewers = this.props.interviewers;
-            // vacancy = this.state.vacancy,
-            // candidate = this.state.candidate;
-
 
         let showCandidates = () => {
 
@@ -274,11 +270,11 @@ class CreateInterview extends Component {
             let options = [];
 
             if (interviewers.length) {
-                let compareNickname = (a, b) => {
+                let compareSurname = (a, b) => {
                         if (a.surname > b.surname) return 1;
                         if (a.surname < b.surname) return -1;
                     },
-                    sortedInterviewers = interviewers.sort(compareNickname) || {};
+                    sortedInterviewers = interviewers.sort(compareSurname) || {};
 
 
                 sortedInterviewers.map((item, index) => {
