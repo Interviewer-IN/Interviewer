@@ -349,47 +349,47 @@ class InterviewsCompleted extends Component {
                                     </div>
                                 </div>
                             </div>
-                        );
+                        </div>
+                    );
 
-                        const PANEL_DESCRIPTION = (
-                            <div>
-                                <p className="interview-details__header"><strong>Feedback</strong></p>
-                                {value.feedback}
-                            </div>
-                        );
+                    const PANEL_DESCRIPTION = (
+                        <div>
+                            <p className="interview-details__header"><strong>Feedback</strong></p>
+                            {value.feedback}
+                        </div>
+                    );
 
-                        if (this.state.isHR) {
+                    if (this.state.isHR) {
 
-                            return (
-                                <Panels
-                                    key={id}
-                                    id={"intCompl" + value.id}
-                                    showActionBtn={false}
-                                    titleConst={PANEL_TITLE}
-                                    description={PANEL_DESCRIPTION}
-                                    showDeleteBtn={true}
-                                    deleteBtnId={"delete-feedback-" + id}
-                                    callDelete={(event) => this.openModalConfirm(id)}
-                                />
-                            )
-                        } else {
-                            return (
-                                <Panels
-                                    key={id}
-                                    id={"intCompl" + value.id}
-                                    showActionBtn={true}
-                                    titleForActionBtn='Edit Feedback'
-                                    titleConst={PANEL_TITLE}
-                                    description={PANEL_DESCRIPTION}
-                                    showDeleteBtn={false}
-                                    callAction={(event) => this.switchToEditMode(id)}
-                                />
-                            )
-                        }
-                    });
-                } else {
-                    interviewsToDisplay = (<h5 className="noData">No data of the requested type was found</h5>);
-                }
+                        return (
+                            <Panels
+                                key={id}
+                                id={"intCompl" + value.id}
+                                showActionBtn={false}
+                                titleConst={PANEL_TITLE}
+                                description={PANEL_DESCRIPTION}
+                                showDeleteBtn={true}
+                                deleteBtnId={"delete-feedback-" + id}
+                                callDelete={(event) => this.openModalConfirm(id)}
+                            />
+                        )
+                    } else {
+                        return (
+                            <Panels
+                                key={id}
+                                id={"intCompl" + value.id}
+                                showActionBtn={true}
+                                titleForActionBtn='Edit Feedback'
+                                titleConst={PANEL_TITLE}
+                                description={PANEL_DESCRIPTION}
+                                showDeleteBtn={false}
+                                callAction={(event) => this.switchToEditMode(id)}
+                            />
+                        )
+                    }
+                });
+            } else {
+                interviewsToDisplay = (<h5 className="noData">No data of the requested type was found</h5>);
             }
         } else {
             interviewsToDisplay = (<h5 className="noData"> There is no data to display </h5>);
@@ -487,6 +487,7 @@ class InterviewsCompleted extends Component {
         )
     }
 }
+
 
 function mapStateToProps(state) {
     return {
