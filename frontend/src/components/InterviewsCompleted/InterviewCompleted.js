@@ -484,6 +484,7 @@ class InterviewsCompleted extends Component {
     }
 }
 
+
 function mapStateToProps(state) {
     return {
         interviews: state.interviews,

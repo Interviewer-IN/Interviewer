@@ -3,7 +3,7 @@ module Api
     class FeedbacksController < ApplicationController
 
       def index
-        feedbacks = Feedback.find(params[:interview_id])
+        feedbacks = Feedback.order('created_at DESC')
         render json: {status:"SUCCESS", message: "Feedbacks loaded", data: feedbacks}, status: :ok
       end
 
