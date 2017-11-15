@@ -528,123 +528,125 @@ class InterviewsUpcoming extends Component {
                         )
                     });
                 } else {
-                    interviewsByDates = "No Interviews";
+                    interviewsByDates = (<h5 className="noData">No data of the requested type was found</h5>);
                 }
             }
-            let filter;
+        } else {
+            interviewsByDates = (<h5 className="noData"> There is no data to display </h5>);
+        }
+        let filter;
 
-            if (this.state.isHR) {
-                filter = (
-                    <Filters
-                        project={true}
-                        position={true}
-                        level={true}
-                        date={true}
-                        dateIcon={true}
-                        searchBoxFilter={true}
-                        interviewer={true}
-                        rating={false}
-                        positionFilterVal={(event) => this.getPositionFilterVal(event)}
-                        levelFilterVal={(event) => this.getLevelFilterVal(event)}
-                        projectFilterVal={(event) => this.getProjectFilterVal(event)}
-                        interviewerFilterVal={(event) => this.getInterviewerFilterVal(event)}
-                        dateFromFilterVal={(event) => this.getDateFromFilterVal(event)}
-                        dateToFilterVal={(event) => this.getDateToFilterVal(event)}
-                        dateErrorMessage={filterErrorMessage}
-                    />
-                )
-            } else {
-                filter = (
-                    <Filters
-                        project={true}
-                        position={true}
-                        level={true}
-                        date={true}
-                        dateIcon={true}
-                        searchBoxFilter={true}
-                        interviewer={false}
-                        rating={false}
-                        positionFilterVal={(event) => this.getPositionFilterVal(event)}
-                        levelFilterVal={(event) => this.getLevelFilterVal(event)}
-                        projectFilterVal={(event) => this.getProjectFilterVal(event)}
-                        dateFromFilterVal={(event) => this.getDateFromFilterVal(event)}
-                        dateToFilterVal={(event) => this.getDateToFilterVal(event)}
-                        dateErrorMessage={filterErrorMessage}
-                    />
-                )
-            }
-
-            return (
-                <div>
-                    <Helmet>
-                        <title>Upcoming Interviews</title>
-                    </Helmet>
-                    <div className="row sameheight-container">
-                        <div className="col-md-12 component-container">
-                            {pageTitle}
-                            {filter}
-                        </div>
-                    </div>
-                    <div className="interview-panels-block">
-                        <PanelGroup bsClass='custom-panel-group'>
-                            {interviewsByDates}
-                        </PanelGroup>
-                    </div>
-
-                    <Modal show={this.state.showModalDeleteConfirm}
-                           onHide={() => this.closeModalDeleteConfirm()}
-                           className="custom-btn-group"
-                    >
-                        <Modal.Header closeButton>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <p>Are you sure you want to delete an interview?</p>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button
-                                id={"pd-btn-modal-yes-" + this.state.currentInterviewID}
-                                className="btn btn-primary"
-                                onClick={() => this.deleteInterview()}
-                            >Yes
-                            </Button>
-                            <Button
-                                id={"pd-btn-modal-no-" + this.state.currentInterviewID}
-                                className="btn btn-danger"
-                                onClick={() => this.closeModalDeleteConfirm()}
-                                bsStyle="primary"
-                            >No
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
-                    <Modal show={this.state.showModalActivateConfirm}
-                           onHide={() => this.closeModalActivateConfirm()}
-                           className="custom-btn-group"
-                    >
-                        <Modal.Header closeButton>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <p>Are you sure you want to activate an interview?</p>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button
-                                id={"pd-btn-modal-activate-yes-" + this.state.currentInterviewID}
-                                className="btn btn-primary"
-                                onClick={() => this.activateInterview()}
-                            >Yes
-                            </Button>
-                            <Button
-                                id={"pd-btn-modal-activate-no-" + this.state.currentInterviewID}
-                                className="btn btn-danger"
-                                onClick={() => this.closeModalActivateConfirm()}
-                                bsStyle="primary"
-                            >No
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
-
-                </div>
+        if (this.state.isHR) {
+            filter = (
+                <Filters
+                    project={true}
+                    position={true}
+                    level={true}
+                    date={true}
+                    dateIcon={true}
+                    searchBoxFilter={true}
+                    interviewer={true}
+                    rating={false}
+                    positionFilterVal={(event) => this.getPositionFilterVal(event)}
+                    levelFilterVal={(event) => this.getLevelFilterVal(event)}
+                    projectFilterVal={(event) => this.getProjectFilterVal(event)}
+                    interviewerFilterVal={(event) => this.getInterviewerFilterVal(event)}
+                    dateFromFilterVal={(event) => this.getDateFromFilterVal(event)}
+                    dateToFilterVal={(event) => this.getDateToFilterVal(event)}
+                    dateErrorMessage={filterErrorMessage}
+                />
+            )
+        } else {
+            filter = (
+                <Filters
+                    project={true}
+                    position={true}
+                    level={true}
+                    date={true}
+                    dateIcon={true}
+                    searchBoxFilter={true}
+                    interviewer={false}
+                    rating={false}
+                    positionFilterVal={(event) => this.getPositionFilterVal(event)}
+                    levelFilterVal={(event) => this.getLevelFilterVal(event)}
+                    projectFilterVal={(event) => this.getProjectFilterVal(event)}
+                    dateFromFilterVal={(event) => this.getDateFromFilterVal(event)}
+                    dateToFilterVal={(event) => this.getDateToFilterVal(event)}
+                    dateErrorMessage={filterErrorMessage}
+                />
             )
         }
+
+        return (
+            <div>
+                <Helmet>
+                    <title>Upcoming Interviews</title>
+                </Helmet>
+                <div className="row sameheight-container">
+                    <div className="col-md-12 component-container">
+                        {pageTitle}
+                        {filter}
+                    </div>
+                </div>
+                <div className="interview-panels-block">
+                    <PanelGroup bsClass='custom-panel-group'>
+                        {interviewsByDates}
+                    </PanelGroup>
+                </div>
+
+                <Modal show={this.state.showModalDeleteConfirm}
+                       onHide={() => this.closeModalDeleteConfirm()}
+                       className="custom-btn-group"
+                >
+                    <Modal.Header closeButton>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p>Are you sure you want to delete an interview?</p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button
+                            id={"pd-btn-modal-yes-" + this.state.currentInterviewID}
+                            className="btn btn-primary"
+                            onClick={() => this.deleteInterview()}
+                        >Yes
+                        </Button>
+                        <Button
+                            id={"pd-btn-modal-no-" + this.state.currentInterviewID}
+                            className="btn btn-danger"
+                            onClick={() => this.closeModalDeleteConfirm()}
+                            bsStyle="primary"
+                        >No
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+                <Modal show={this.state.showModalActivateConfirm}
+                       onHide={() => this.closeModalActivateConfirm()}
+                       className="custom-btn-group"
+                >
+                    <Modal.Header closeButton>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p>Are you sure you want to activate an interview?</p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button
+                            id={"pd-btn-modal-activate-yes-" + this.state.currentInterviewID}
+                            className="btn btn-primary"
+                            onClick={() => this.activateInterview()}
+                        >Yes
+                        </Button>
+                        <Button
+                            id={"pd-btn-modal-activate-no-" + this.state.currentInterviewID}
+                            className="btn btn-danger"
+                            onClick={() => this.closeModalActivateConfirm()}
+                            bsStyle="primary"
+                        >No
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
+            </div>
+        )
     }
 }
 
