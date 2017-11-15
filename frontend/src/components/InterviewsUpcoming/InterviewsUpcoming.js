@@ -29,9 +29,9 @@ class InterviewsUpcoming extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isHR: false,
             currentInterview: "",
             currentInterviewID: "",
-            isHR: false,
             interviewId: "",
             candidateId: "",
             userId: "",
@@ -43,7 +43,8 @@ class InterviewsUpcoming extends Component {
             dateFromFilter: "",
             dateToFilter: "",
             dateErrorMessage: "",
-            showModalConfirm: false
+            showModalDeleteConfirm: false,
+            showModalActivateConfirm: false
         }
     }
 
@@ -81,7 +82,7 @@ class InterviewsUpcoming extends Component {
     }
 
     deleteInterview() {
-        this.closeModalConfirm();
+        this.closeModalDeleteConfirm();
         const {dispatch} = this.props;
         dispatch(removeInterview(this.state.currentInterviewID));
     }
@@ -92,24 +93,40 @@ class InterviewsUpcoming extends Component {
         dispatch(createInterview(duplicateData, successDuplicateMessage));
     }
 
-    openModalConfirm(currentID) {
+    openModalDeleteConfirm(currentID) {
         this.setState({
             currentInterviewID: currentID
         });
         this.setState({
-            showModalConfirm: true
+            showModalDeleteConfirm: true
         });
     }
 
-    closeModalConfirm() {
+    closeModalDeleteConfirm() {
         this.setState({
-            showModalConfirm: false
+            showModalDeleteConfirm: false
         });
     }
 
-    activateInterview(currentID) {
+    openModalActivateConfirm(currentID) {
+        this.setState({
+            currentInterviewID: currentID
+        });
+        this.setState({
+            showModalActivateConfirm: true
+        });
+    }
+
+    closeModalActivateConfirm() {
+        this.setState({
+            showModalActivateConfirm: false
+        });
+    }
+
+    activateInterview() {
+        this.closeModalActivateConfirm();
         let interviews = this.props.interviews.interviews,
-            interviewToActivate = interviews.find(item => item.id === currentID);
+            interviewToActivate = interviews.find(item => item.id === this.state.currentInterviewID);
 
         if (!interviewToActivate.state) {
             const {dispatch} = this.props;
@@ -464,9 +481,9 @@ class InterviewsUpcoming extends Component {
                                             editBtnId={"edit-interview-" + id}
                                             deleteBtnId={"delete-interview-" + id}
                                             dublicateBtnId={"duplicate-interview" + id}
-                                            callDelete={(event) => this.openModalConfirm(id)}
+                                            callDelete={(event) => this.openModalDeleteConfirm(id)}
                                             callEdit={(event) => this.switchToEditMode(id)}
-                                            callAction={(event) => this.activateInterview(id)}
+                                            callAction={(event) => this.openModalActivateConfirm(id)}
                                             callDublicate={() => this.duplicateInterview(duplicateData)}
                                         />
 
@@ -561,8 +578,8 @@ class InterviewsUpcoming extends Component {
                     </PanelGroup>
                 </div>
 
-                <Modal show={this.state.showModalConfirm}
-                       onHide={() => this.closeModalConfirm()}
+                <Modal show={this.state.showModalDeleteConfirm}
+                       onHide={() => this.closeModalDeleteConfirm()}
                        className="custom-btn-group"
                 >
                     <Modal.Header closeButton>
@@ -580,12 +597,38 @@ class InterviewsUpcoming extends Component {
                         <Button
                             id={"pd-btn-modal-no-" + this.state.currentInterviewID}
                             className="btn btn-danger"
-                            onClick={() => this.closeModalConfirm()}
+                            onClick={() => this.closeModalDeleteConfirm()}
                             bsStyle="primary"
                         >No
                         </Button>
                     </Modal.Footer>
                 </Modal>
+                <Modal show={this.state.showModalActivateConfirm}
+                       onHide={() => this.closeModalActivateConfirm()}
+                       className="custom-btn-group"
+                >
+                    <Modal.Header closeButton>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p>Are you sure you want to activate an interview?</p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button
+                            id={"pd-btn-modal-activate-yes-" + this.state.currentInterviewID}
+                            className="btn btn-primary"
+                            onClick={() => this.activateInterview()}
+                        >Yes
+                        </Button>
+                        <Button
+                            id={"pd-btn-modal-activate-no-" + this.state.currentInterviewID}
+                            className="btn btn-danger"
+                            onClick={() => this.closeModalActivateConfirm()}
+                            bsStyle="primary"
+                        >No
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
             </div>
         )
     }

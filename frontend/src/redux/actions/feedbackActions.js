@@ -2,14 +2,14 @@ import fetch from "isomorphic-fetch";
 import {makeNote} from "./notificationActions";
 
 
-function addNewInterview(data) {
-    return { type: "CREATE_INTERVIEW", payload: data.data};
+function addNewFeedback(data) {
+    return { type: "CREATE_FEEDBACK", payload: data.data};
 }
 
-export function createInterview(data, message) {
-    let successMessage = message || 'Interview was created';
-    return (dispatch) => {
-        fetch("/api/v1/interviews",
+export function createFeedback(data, rating, message) {
+    let successMessage = message || 'Feedback was created';
+    return (dispatch) => new Promise((resolve, reject) => {
+        fetch("/api/v1/feedbacks",
             {
                 method: 'post',
                 body: JSON.stringify(data),
@@ -21,15 +21,8 @@ export function createInterview(data, message) {
                 res.json()
             )
             .then(data => {
-                dispatch(addNewInterview(data));
-                dispatch(showInterviews(data.data.id));
-                dispatch(makeNote(
-                    {
-                        status: "success",
-                        text: successMessage,
-                        hide: true
-                    }
-                ));
+                dispatch(addNewFeedback(data));
+                resolve(data);
             })
             .catch(function (err) {
                 dispatch(makeNote(
@@ -39,28 +32,22 @@ export function createInterview(data, message) {
                         hide: false
                     }
                 ));
+                resolve();
             })
-    }
+    });
 }
 
-
-function addInterviews(interviews) {
-    return { type: "SHOW_INTERVIEWS", payload: interviews };
+function addFeedbacks(feedbacks) {
+    return { type: "SHOW_FEEDBACKS", payload: feedbacks };
 }
 
-function setCurrentInterview(interview) {
-    return { type: "SET_INTERVIEW", payload: interview };
+function setCurrentFeedback(feedback) {
+    return { type: "SET_FEEDBACK", payload: feedback };
 }
 
-
-export function addIdExpandedElement(data) {
-    return { type: 'ID_ELEMENT', payload: data }
-}
-
-
-export function showInterviews(idExpandedElement = false) {
+export function showFeedbacks() {
     return (dispatch) => new Promise((resolve) => {
-        fetch("/api/v1/interviews",
+        fetch("/api/v1/feedbacks",
             {
                 method: 'get',
                 headers: {
@@ -70,10 +57,9 @@ export function showInterviews(idExpandedElement = false) {
             .then(res =>
                 res.json()
             )
-            .then(interviews => {
-                dispatch(addIdExpandedElement(idExpandedElement));
-                dispatch(addInterviews(interviews.data));
-                resolve(interviews.data);
+            .then(feedbacks => {
+                dispatch(addFeedbacks(feedbacks.data));
+                resolve(feedbacks.data);
             })
             .catch(function(err) {
                 dispatch(makeNote(
@@ -83,19 +69,47 @@ export function showInterviews(idExpandedElement = false) {
                         hide: false
                     }
                 ));
+                resolve();
             });
     });
 }
 
-export function getInterview(id) {
+export function getFeedback(id) {
     return (dispatch) => new Promise(function(resolve, reject) {
-        fetch("/api/v1/interviews/" + id)
+        fetch("/api/v1/feedbacks/" + id)
             .then(function(response) {
                 return response.text();
             })
-            .then(function(interview) {
-                dispatch(setCurrentInterview(JSON.parse(interview).data));
-                resolve(JSON.parse(interview).data);
+            .then(function(feedback) {
+                dispatch(setCurrentFeedback(JSON.parse(feedback).data));
+                resolve(JSON.parse(feedback).data);
+            })
+            .catch(function(error) {
+                dispatch(makeNote(
+                    {
+                        status: "danger",
+                        text: "Error: "+ error,
+                        hide: false
+                    }
+                ));
+                resolve();
+            });
+    });
+}
+
+function setInterviewFeedbacks(feedbacks) {
+    return { type: "SET_INTERVIEW_FEEDBACKS", payload: feedbacks };
+}
+
+export function getInterviewFeedbacks(id) {
+    return (dispatch) => new Promise(function(resolve, reject) {
+        fetch("/api/v1/feedbacks?interview_id=" + id)
+            .then(function(response) {
+                return response.text();
+            })
+            .then(function(feedbacks) {
+                dispatch(setCurrentFeedback(JSON.parse(feedbacks).data));
+                resolve(JSON.parse(feedbacks).data);
             })
             .catch(function(error) {
                 dispatch(makeNote(
@@ -111,9 +125,9 @@ export function getInterview(id) {
     });
 }
 
-export function removeInterview(id) {
+export function removeFeedback(id) {
     return (dispatch) => {
-        fetch('/api/v1/interviews/' + id,
+        fetch('/api/v1/feedbacks/' + id,
             {
                 method: 'delete',
                 headers: {
@@ -124,11 +138,11 @@ export function removeInterview(id) {
                 res.json()
             )
             .then(date => {
-                dispatch(showInterviews());
+                dispatch(showFeedbacks());
                 dispatch(makeNote(
                     {
                         status: "success",
-                        text: "Interview was deleted!",
+                        text: "Feedback was deleted!",
                         hide: true
                     }
                 ))
@@ -145,10 +159,10 @@ export function removeInterview(id) {
     };
 }
 
-export function updateInterview(date, message) {
-    let successMessage = message || 'Interview was updated';
+export function updateFeedback(date, message) {
+    let successMessage = message || 'Feedback was updated';
     return (dispatch) => {
-        fetch('/api/v1/interviews/' + date.id,
+        fetch('/api/v1/feedbacks/' + date.id,
             {
                 method: 'put',
                 body: JSON.stringify(date),
@@ -160,7 +174,7 @@ export function updateInterview(date, message) {
                 res.json()
             )
             .then(date => {
-                dispatch(showInterviews());
+                dispatch(showFeedbacks());
                 dispatch(makeNote(
                     {
                         status: "success",

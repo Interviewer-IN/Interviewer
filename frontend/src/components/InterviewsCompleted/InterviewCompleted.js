@@ -10,6 +10,7 @@ import {showProjects} from "../../redux/actions/projectActions";
 import {getRatings} from "../../redux/actions/ratingActions";
 import {getCandidates} from "../../redux/actions/candidatesActions";
 import {getInterviewers} from "../../redux/actions/interviewersActions";
+import {showFeedbacks} from "../../redux/actions/feedbackActions";
 import {
     getValueFromArr,
     filterByDates,
@@ -71,6 +72,10 @@ class InterviewsCompleted extends Component {
         if (!this.props.interviewers.length) {
             dispatch(getInterviewers());
         }
+
+        // if (!this.props.feedbacks.length) {
+        //     dispatch(showFeedbacks());
+        // }
 
         if (isUserHR) {
             this.setState({isHR: true})
@@ -211,8 +216,11 @@ class InterviewsCompleted extends Component {
             ratings = this.props.ratings,
             candidates = this.props.candidates,
             interviewers = this.props.interviewers,
+            feedbacks = this.props.feedbacks,
+            questions = this.props.questions,
             interviewsToDisplay,
             filterErrorMessage;
+
 
         if (interviews.length && vacancies.length && projects.length && levels.length && positions.length && ratings.length) {
 
@@ -280,7 +288,13 @@ class InterviewsCompleted extends Component {
                         currentCandidate = candidates.find(item => value.candidate_id === item.id),
                         currentInterviewer = interviewers.find(item => value.user_id === item.id),
                         currentRating = ratings.find(item => value.rating_id === item.id),
+
                         panelTitleText;
+                    //
+                    // let currentAnswersArray = feedbacks.map((item, index) => {
+                    //     if (value.interview_id === item.id)
+                    //         return item
+                    // });
 
                     if (this.state.isHR) {
                         panelTitleText =
@@ -302,6 +316,10 @@ class InterviewsCompleted extends Component {
                             currentProject.title + " | " +
                             "Rating: " + currentRating.grade;
                     }
+
+                    let showFeedback = () => {
+
+                    };
 
                     const PANEL_TITLE = (
                         <div className="custom-panel-title panel-list-item">
@@ -466,6 +484,9 @@ function mapStateToProps(state) {
         ratings: state.ratings.ratings,
         candidates: state.candidates.candidates,
         interviewers: state.interviewers.interviewers,
+        feedbacks: state.feedback.feedbacks,
+        questions: state.questions.questions,
+        currentFeedback: state.feedback.currentFeedback,
         currentProject: state.project.currentProject,
     }
 }

@@ -6,7 +6,7 @@ import DatePicker from "react-datepicker";
 import moment from "moment";
 import "./InterviewEdit.css";
 import PageTitle from "./../../containers/PageTitle";
-import {getInterviews, updateInterview} from "../../redux/actions/interviewActions";
+import {getInterview, updateInterview} from "../../redux/actions/interviewActions";
 import {getVacancies} from "../../redux/actions/vacanciesActions";
 import {getCandidates} from "../../redux/actions/candidatesActions";
 import {showProjects} from "../../redux/actions/projectActions";
@@ -66,7 +66,7 @@ class InterviewEdit extends Component {
         } else {
             const {dispatch} = this.props;
 
-            dispatch(getInterviews(this.props.match.params.id)).then(() => {
+            dispatch(getInterview(this.props.match.params.id)).then(() => {
                 let currentInterview = this.props.interviews.currentInterview;
 
                 dispatch(getCandidates()).then(() => {
@@ -129,7 +129,8 @@ class InterviewEdit extends Component {
 
         let currentVacancyState = {
             value: currentVacancyObj.id,
-            label: "" + currentPositionObj.name + " " + currentLevelObj.name + "" + " for " + currentProjectObj.title + "",
+            label: "" + currentPositionObj.name +
+            " " + currentLevelObj.name + "" + " for " + currentProjectObj.title + "",
             className: "option-class"
         };
 
@@ -250,7 +251,13 @@ class InterviewEdit extends Component {
                 selectedVacancy,
                 selectedVacancyLabel;
 
-            if (vacancies.length && positions.length && projects.length && levels.length && this.state.currentInterview) {
+            if (
+                vacancies.length &&
+                positions.length &&
+                projects.length &&
+                levels.length &&
+                this.state.currentInterview
+            ) {
 
                 let comparePositions = (a, b) => {
                         let first = positions.find(item => a.position_id === item.id);
@@ -266,9 +273,11 @@ class InterviewEdit extends Component {
                         currentLevel = levels.find(current => item.level_id === current.id),
                         currentPosition = positions.find(current => item.position_id === current.id);
 
-                    let currentVacancy = {value: item.id,
+                    let currentVacancy = {
+                        value: item.id,
                         label: "" + currentPosition.name + " " + currentLevel.name + " for " + currentProject.title,
-                        className: "option-class"};
+                        className: "option-class"
+                    };
                     options.push(currentVacancy);
                 });
             }

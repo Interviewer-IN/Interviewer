@@ -87,7 +87,7 @@ export function showProjects() {
     });
 }
 
-export function getProjects(id) {
+export function getProject(id) {
     return (dispatch) => new Promise(function(resolve, reject) {
         fetch("/api/v1/projects/" + id)
             .then(function(response) {
