@@ -27,7 +27,8 @@ class Candidates extends Component {
             positionsFilterID: '',
             levelsFilterID: '',
             levelsFilterVal: '',
-            projectFilterVal: ''
+            projectFilterVal: '',
+            candidatesListExist: true
         }
 
     }
@@ -38,7 +39,19 @@ class Candidates extends Component {
         const {dispatch} = this.props;
 
         if (!this.props.candidates.length) {
-            dispatch(getCandidates());
+            dispatch(getCandidates()).then(
+                (data) => {
+                    if (!data.length){
+                        this.setState({
+                            candidatesListExist: false
+                        });
+                    } else {
+                        this.setState({
+                            candidatesListExist: true
+                        });
+                    }
+                }
+            );
         }
 
         if (!this.props.positions.length){
@@ -109,226 +122,239 @@ class Candidates extends Component {
             positionsTitleObj = positionsListName(positionsList),
             candidatesToDisplay = [];
 
-        if (candidatesList.length && levelsList.length && positionsList.length) {
+        if (this.state.candidatesListExist){
+            if (candidatesList.length && levelsList.length && positionsList.length) {
 
 
-            //-- FILTER BY POSITION  --------------------------
-            let positionFilterID = this.state.positionsFilterID;
+                //-- FILTER BY POSITION  --------------------------
+                let positionFilterID = this.state.positionsFilterID;
 
-            if (positionFilterID) {
-                candidatesList = candidatesList.filter((current) => {
-                    return (current.position_id === positionFilterID);
-                });
-            }
-            //-- END FILTER BY LEVEL -----------------------
+                if (positionFilterID) {
+                    candidatesList = candidatesList.filter((current) => {
+                        return (current.position_id === positionFilterID);
+                    });
+                }
+                //-- END FILTER BY LEVEL -----------------------
 
-            //-- FILTER BY LEVEL  --------------------------
-            let levelFilterID = this.state.levelsFilterID;
+                //-- FILTER BY LEVEL  --------------------------
+                let levelFilterID = this.state.levelsFilterID;
 
-            if (levelFilterID) {
-                candidatesList = candidatesList.filter((current) => {
-                    return (current.level_id === levelFilterID);
-                });
-            }
-            //-- END FILTER BY LEVEL  -----------------------
-
-            candidatesToDisplay = candidatesList.map((item) => {
-
-                let candidateId = item.id,
-                    candidateName = item.name,
-                    candidateSurname = item.surname,
-                    candidateAge = item.age,
-                    candidateExperience = item.experience,
-                    candidateContacts = item.contacts,
-                    candidateNotes = item.notes,
-                    candidatePositionId = item.position_id,
-                    candidatePosition = positionsTitleObj[candidatePositionId],
-                    candidateLevelId = item.level_id,
-                    candidateLevel = levelsTitleObj[candidateLevelId],
-                    candidateCV = item.cv.url;
-
-                let checkCandidateCV = () => {
-                    if (candidateCV) {
-                        return (
-                            <a href={candidateCV} className="download-block form-group text-green text-green--hover"
-                               download>
-                                <span className="download-block__icon fa fa-download"/>
-                                <span className="download-block__title">Download CV</span>
-                            </a>
-                        )
-                    } else {
-                        return (
-                            <a className="download-block form-group download-block--disabled text-muted">
-                                <span className="download-block__icon fa fa-download"/>
-                                <span className="download-block__title text-bold--100">Download CV</span>
-                            </a>
-                        )
-                    }
-                };
-
-                let checkCandidateAge = () => {
-                    if (candidateAge) {
-                        return (
-                            <p className="form-control-static">
-                                {candidateAge}
-                            </p>
-                        )
-                    } else {
-                        return (
-                            <p className="form-control-static text-muted text-bold--100">
-                                {GET_EMPTY_DATA}
-                            </p>
-                        )
-                    }
-                };
-
-                let checkCandidateExperience = () => {
-                    if (candidateExperience) {
-                        return (
-                            <p className="form-control-static">
-                                {candidateExperience}
-                            </p>
-                        )
-
-                    } else {
-                        return (
-                            <p className="form-control-static text-muted text-bold--100">
-                                {GET_EMPTY_DATA}
-                            </p>
-
-                        )
-                    }
-                };
-
-                let checkCandidateContacts = () => {
-                    if (candidateContacts) {
-                        return (
-                            <p className="form-control-static">
-                                {candidateContacts}
-                            </p>
-                        )
-
-                    } else {
-                        return (
-                            <p className="form-control-static text-muted text-bold--100">
-                                {GET_EMPTY_DATA}
-                            </p>
-
-                        )
-                    }
-                };
-
-                let checkCandidateNotes = () => {
-                    if (candidateNotes) {
-                        return (
-                            <p className="form-control-static">
-                                {candidateNotes}
-                            </p>
-                        )
-
-                    } else {
-                        return (
-                            <p className="form-control-static text-muted text-bold--100">
-                                {GET_EMPTY_DATA}
-                            </p>
-
-                        )
-                    }
-                };
+                if (levelFilterID) {
+                    candidatesList = candidatesList.filter((current) => {
+                        return (current.level_id === levelFilterID);
+                    });
+                }
+                //-- END FILTER BY LEVEL  -----------------------
 
 
-                const PANEL_TITLE = (
-                    <div className="custom-panel-title panel-list-item">
-                        <div className="custom-panel-title__right-side">
-                            <div className="panel-collapse-btn">
-                                <span className="panel-collapse-btn__title btn-js">Expand</span>
-                                <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
-                            </div>
-                        </div>
-                        <div className="custom-panel-title__left-side">
-                            <div className="info-block">
-                                <div className="info-block__item">
-                                    <div className="info-block__project">{candidateName + ' ' + candidateSurname}</div>
-                                    <div className="info-block__position separate-line">
+                if (candidatesList.length){
+                    candidatesToDisplay = candidatesList.map((item) => {
+
+                        let candidateId = item.id,
+                            candidateName = item.name,
+                            candidateSurname = item.surname,
+                            candidateAge = item.age,
+                            candidateExperience = item.experience,
+                            candidateContacts = item.contacts,
+                            candidateNotes = item.notes,
+                            candidatePositionId = item.position_id,
+                            candidatePosition = positionsTitleObj[candidatePositionId],
+                            candidateLevelId = item.level_id,
+                            candidateLevel = levelsTitleObj[candidateLevelId],
+                            candidateCV = item.cv.url;
+
+                        let checkCandidateCV = () => {
+                            if (candidateCV) {
+                                return (
+                                    <a href={candidateCV} className="download-block form-group text-green text-green--hover"
+                                       download>
+                                        <span className="download-block__icon fa fa-download"/>
+                                        <span className="download-block__title">Download CV</span>
+                                    </a>
+                                )
+                            } else {
+                                return (
+                                    <a className="download-block form-group download-block--disabled text-muted">
+                                        <span className="download-block__icon fa fa-download"/>
+                                        <span className="download-block__title text-bold--100">Download CV</span>
+                                    </a>
+                                )
+                            }
+                        };
+
+                        let checkCandidateAge = () => {
+                            if (candidateAge) {
+                                return (
+                                    <p className="form-control-static">
+                                        {candidateAge}
+                                    </p>
+                                )
+                            } else {
+                                return (
+                                    <p className="form-control-static text-muted text-bold--100">
+                                        {GET_EMPTY_DATA}
+                                    </p>
+                                )
+                            }
+                        };
+
+                        let checkCandidateExperience = () => {
+                            if (candidateExperience) {
+                                return (
+                                    <p className="form-control-static">
+                                        {candidateExperience}
+                                    </p>
+                                )
+
+                            } else {
+                                return (
+                                    <p className="form-control-static text-muted text-bold--100">
+                                        {GET_EMPTY_DATA}
+                                    </p>
+
+                                )
+                            }
+                        };
+
+                        let checkCandidateContacts = () => {
+                            if (candidateContacts) {
+                                return (
+                                    <p className="form-control-static">
+                                        {candidateContacts}
+                                    </p>
+                                )
+
+                            } else {
+                                return (
+                                    <p className="form-control-static text-muted text-bold--100">
+                                        {GET_EMPTY_DATA}
+                                    </p>
+
+                                )
+                            }
+                        };
+
+                        let checkCandidateNotes = () => {
+                            if (candidateNotes) {
+                                return (
+                                    <p className="form-control-static">
+                                        {candidateNotes}
+                                    </p>
+                                )
+
+                            } else {
+                                return (
+                                    <p className="form-control-static text-muted text-bold--100">
+                                        {GET_EMPTY_DATA}
+                                    </p>
+
+                                )
+                            }
+                        };
+
+
+                        const PANEL_TITLE = (
+                            <div className="custom-panel-title panel-list-item">
+                                <div className="custom-panel-title__right-side">
+                                    <div className="panel-collapse-btn">
+                                        <span className="panel-collapse-btn__title btn-js">Expand</span>
+                                        <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
+                                    </div>
+                                </div>
+                                <div className="custom-panel-title__left-side">
+                                    <div className="info-block">
+                                        <div className="info-block__item">
+                                            <div className="info-block__project">{candidateName + ' ' + candidateSurname}</div>
+                                            <div className="info-block__position separate-line">
                                <span className="info-block__position-capture">
                                    Desired position:
                                </span>
-                                        <span
-                                            className="info-block__position-name">{candidatePosition + ' ' + candidateLevel}</span>
+                                                <span
+                                                    className="info-block__position-name">{candidatePosition + ' ' + candidateLevel}</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                );
+                        );
 
-                const DESCRIPTION = (
-                    <form className="custom-form">
-                        <div className="col-md-6 no-padding">
-                            <div className="form-group">
-                                <label className="control-label form-label text-green">Name:</label>
-                                <p className="form-control-static">
-                                    {candidateName + ' ' + candidateSurname}
-                                </p>
-                            </div>
+                        const DESCRIPTION = (
+                            <form className="custom-form">
+                                <div className="col-md-6 no-padding">
+                                    <div className="form-group">
+                                        <label className="control-label form-label text-green">Name:</label>
+                                        <p className="form-control-static">
+                                            {candidateName + ' ' + candidateSurname}
+                                        </p>
+                                    </div>
 
-                            <div className="form-group">
-                                <label className="control-label form-label text-green">Desired position:</label>
-                                <p className="form-control-static">
-                                    {candidatePosition + ' ' + candidateLevel}
-                                </p>
-                            </div>
+                                    <div className="form-group">
+                                        <label className="control-label form-label text-green">Desired position:</label>
+                                        <p className="form-control-static">
+                                            {candidatePosition + ' ' + candidateLevel}
+                                        </p>
+                                    </div>
 
-                            <div className="form-group">
-                                <label className="control-label form-label text-green">Age:</label>
-                                {checkCandidateAge()}
-                            </div>
-                        </div>
-                        <div className="col-md-6 no-padding">
-                            {checkCandidateCV()}
-                        </div>
-                        <div className="col-md-12 no-padding">
+                                    <div className="form-group">
+                                        <label className="control-label form-label text-green">Age:</label>
+                                        {checkCandidateAge()}
+                                    </div>
+                                </div>
+                                <div className="col-md-6 no-padding">
+                                    {checkCandidateCV()}
+                                </div>
+                                <div className="col-md-12 no-padding">
 
-                            <div className="form-group">
-                                <label className="control-label form-label text-green">Contact info:</label>
-                                {checkCandidateContacts()}
-                            </div>
+                                    <div className="form-group">
+                                        <label className="control-label form-label text-green">Contact info:</label>
+                                        {checkCandidateContacts()}
+                                    </div>
 
-                            <div className="form-group">
-                                <label className="control-label form-label text-green">Work experience:</label>
-                                {checkCandidateExperience()}
-                            </div>
+                                    <div className="form-group">
+                                        <label className="control-label form-label text-green">Work experience:</label>
+                                        {checkCandidateExperience()}
+                                    </div>
 
-                            <div className="form-group">
-                                <label className="control-label form-label text-green">Additional notes:</label>
-                                {checkCandidateNotes()}
-                            </div>
+                                    <div className="form-group">
+                                        <label className="control-label form-label text-green">Additional notes:</label>
+                                        {checkCandidateNotes()}
+                                    </div>
 
 
-                        </div>
-                    </form>
+                                </div>
+                            </form>
 
-                );
-                return (
-                    <Panels
-                        key={candidateId}
-                        id={candidateId}
-                        titleConst={PANEL_TITLE}
-                        description={DESCRIPTION}
-                        showEditBtn={true}
-                        editBtnId={"edit-candidate-" + candidateId}
-                        showDeleteBtn={true}
-                        deleteBtnId={"delete-candidate-" + candidateId}
-                        callDelete={() => {
-                            this.openModalConfirm(candidateId)
-                        }}
-                        callEdit={() => this.switchToEditMode(candidateId)}
-                    />
-                )
+                        );
+                        return (
+                            <Panels
+                                key={candidateId}
+                                id={candidateId}
+                                titleConst={PANEL_TITLE}
+                                description={DESCRIPTION}
+                                showEditBtn={true}
+                                editBtnId={"edit-candidate-" + candidateId}
+                                showDeleteBtn={true}
+                                deleteBtnId={"delete-candidate-" + candidateId}
+                                callDelete={() => {
+                                    this.openModalConfirm(candidateId)
+                                }}
+                                callEdit={() => this.switchToEditMode(candidateId)}
+                            />
+                        )
 
-            });
+                    });
+                } else {
+                    candidatesToDisplay = (<h5 className="noData">No data of the requested type was found</h5>);
+                }
 
+
+
+            }
+        } else {
+            candidatesToDisplay = (<h5 className="noData"> There is no data to display </h5>);
         }
+
+
 
 
         return (

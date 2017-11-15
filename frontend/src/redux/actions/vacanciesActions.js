@@ -34,7 +34,7 @@ export function getVacancies(indexExpandedElement = false) {
                         return response.json();
 
                     default:
-                        return {data: []}
+                        return response.json();
                 }
             })
             .then(data => {

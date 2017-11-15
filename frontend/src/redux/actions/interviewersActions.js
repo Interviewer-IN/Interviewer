@@ -25,7 +25,7 @@ export function getInterviewers() {
                         return response.json();
 
                     default:
-                        return {data: []}
+                        return response.json();
                 }
 
             })
@@ -105,7 +105,7 @@ export function createInterviewer(data, message, backPath) {
                     case 201:
                         return response.json();
                     default:
-                        return {data: []}
+                        return response.json();
                 }
             })
             .then(data => {

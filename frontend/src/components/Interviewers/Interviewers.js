@@ -26,6 +26,7 @@ class Interviewers extends Component {
             currentInterviewerId: '',
             positionsFilterID: '',
             levelsFilterID: '',
+            interviewersListExist: true
 
         }
 
@@ -45,7 +46,19 @@ class Interviewers extends Component {
         }
 
         if (!this.props.interviewers.length) {
-            dispatch(getInterviewers());
+            dispatch(getInterviewers()).then(
+                (data) => {
+                    if (!data.length){
+                        this.setState({
+                            interviewersListExist: false
+                        });
+                    } else {
+                        this.setState({
+                            interviewersListExist: true
+                        });
+                    }
+                }
+            );
         }
     }
 
@@ -104,117 +117,129 @@ class Interviewers extends Component {
             positionsTitleObj = positionsListName(positionsList),
             interviewersToDisplay = [];
 
-        if (interviewersList.length && levelsList.length && positionsList.length) {
+        if (this.state.interviewersListExist){
+            if (interviewersList.length && levelsList.length && positionsList.length) {
 
-            //-- FILTER BY POSITION  --------------------------
-            let positionFilterID = this.state.positionsFilterID;
+                //-- FILTER BY POSITION  --------------------------
+                let positionFilterID = this.state.positionsFilterID;
 
-            if (positionFilterID) {
-                interviewersList = interviewersList.filter((current) => {
-                    return (current.position_id === positionFilterID);
-                });
-            }
-            //-- END FILTER BY LEVEL -----------------------
+                if (positionFilterID) {
+                    interviewersList = interviewersList.filter((current) => {
+                        return (current.position_id === positionFilterID);
+                    });
+                }
+                //-- END FILTER BY LEVEL -----------------------
 
-            //-- FILTER BY LEVEL  --------------------------
-            let levelFilterID = this.state.levelsFilterID;
+                //-- FILTER BY LEVEL  --------------------------
+                let levelFilterID = this.state.levelsFilterID;
 
-            if (levelFilterID) {
-                interviewersList = interviewersList.filter((current) => {
-                    return (current.level_id === levelFilterID);
-                });
-            }
-            //-- END FILTER BY LEVEL  -----------------------
+                if (levelFilterID) {
+                    interviewersList = interviewersList.filter((current) => {
+                        return (current.level_id === levelFilterID);
+                    });
+                }
+                //-- END FILTER BY LEVEL  -----------------------
 
-            interviewersToDisplay = interviewersList.map(item => {
-                let interviewerId = item.id,
-                    interviewerName = item.name,
-                    interviewerSurname = item.surname,
-                    interviewerEmail = item.email,
-                    interviewerPositionId = item.position_id,
-                    interviewerPosition = positionsTitleObj[interviewerPositionId],
-                    interviewerLevelId = item.level_id,
-                    interviewerLevel = levelsTitleObj[interviewerLevelId],
-                    interviewerRole = '';
+                if (interviewersList.length) {
+                    interviewersToDisplay = interviewersList.map(item => {
+                        let interviewerId = item.id,
+                            interviewerName = item.name,
+                            interviewerSurname = item.surname,
+                            interviewerEmail = item.email,
+                            interviewerPositionId = item.position_id,
+                            interviewerPosition = positionsTitleObj[interviewerPositionId],
+                            interviewerLevelId = item.level_id,
+                            interviewerLevel = levelsTitleObj[interviewerLevelId],
+                            interviewerRole = '';
 
-                (item.is_hr) ? interviewerRole = 'HR' : interviewerRole = 'User';
+                        (item.is_hr) ? interviewerRole = 'HR' : interviewerRole = 'User';
 
 
 
-                const PANEL_TITLE = (
-                    <div className="custom-panel-title panel-list-item">
-                        <div className="custom-panel-title__right-side">
-                            <div className="panel-collapse-btn">
-                                <span className="panel-collapse-btn__title btn-js">Expand</span>
-                                <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
-                            </div>
-                        </div>
-                        <div className="custom-panel-title__left-side">
-                            <div className="info-block">
-                                <div className="info-block__item">
-                                    <div className="info-block__project">{interviewerName  + ' ' +  interviewerSurname }</div>
-                                    <div className="info-block__position separate-line">
-                                        <span className="info-block__position-name">{interviewerLevel + ' ' + interviewerPosition}</span>
+                        const PANEL_TITLE = (
+                            <div className="custom-panel-title panel-list-item">
+                                <div className="custom-panel-title__right-side">
+                                    <div className="panel-collapse-btn">
+                                        <span className="panel-collapse-btn__title btn-js">Expand</span>
+                                        <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
+                                    </div>
+                                </div>
+                                <div className="custom-panel-title__left-side">
+                                    <div className="info-block">
+                                        <div className="info-block__item">
+                                            <div className="info-block__project">{interviewerName  + ' ' +  interviewerSurname }</div>
+                                            <div className="info-block__position separate-line">
+                                                <span className="info-block__position-name">{interviewerLevel + ' ' + interviewerPosition}</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                );
+                        );
 
-                const DESCRIPTION = (
-                    <form className="custom-form">
-                        <div className="col-md-6 no-padding">
-                            <div className="form-group">
-                                <label className="control-label form-label text-green">Email:</label>
-                                <p className="form-control-static">
-                                    {interviewerEmail}
-                                </p>
-                            </div>
+                        const DESCRIPTION = (
+                            <form className="custom-form">
+                                <div className="col-md-6 no-padding">
+                                    <div className="form-group">
+                                        <label className="control-label form-label text-green">Email:</label>
+                                        <p className="form-control-static">
+                                            {interviewerEmail}
+                                        </p>
+                                    </div>
 
-                            <div className="form-group">
-                                <label className="control-label form-label text-green">Role:</label>
-                                <p className="form-control-static">
-                                    {interviewerRole}
-                                </p>
-                            </div>
+                                    <div className="form-group">
+                                        <label className="control-label form-label text-green">Role:</label>
+                                        <p className="form-control-static">
+                                            {interviewerRole}
+                                        </p>
+                                    </div>
 
 
-                        </div>
-                        {/*<div className="col-md-12 no-padding">*/}
-                            {/*<div className="form-group">*/}
+                                </div>
+                                {/*<div className="col-md-12 no-padding">*/}
+                                {/*<div className="form-group">*/}
                                 {/*<label className="control-label form-label text-green">Description:</label>*/}
                                 {/*<div className="form-control-static">*/}
-                                    {/*Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis perferendis quaerat qui*/}
-                                    {/*quis reprehenderit, unde vel. Aliquam aspernatur dolorum expedita id iusto minima, non*/}
-                                    {/*praesentium quibusdam sint vitae. Nam, voluptatibus.*/}
+                                {/*Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis perferendis quaerat qui*/}
+                                {/*quis reprehenderit, unde vel. Aliquam aspernatur dolorum expedita id iusto minima, non*/}
+                                {/*praesentium quibusdam sint vitae. Nam, voluptatibus.*/}
                                 {/*</div>*/}
-                            {/*</div>*/}
-                        {/*</div>*/}
-                    </form>
+                                {/*</div>*/}
+                                {/*</div>*/}
+                            </form>
 
-                );
+                        );
 
-                return (
-                    <Panels
-                        key={interviewerId}
-                        id={interviewerId}
-                        titleConst={PANEL_TITLE}
-                        description={DESCRIPTION}
-                        showEditBtn={true}
-                        editBtnId={"edit-candidate-" + interviewerId}
-                        showDeleteBtn={true}
-                        deleteBtnId={"delete-candidate-" + interviewerId}
-                        callDelete={() => {
-                            this.openModalConfirm(interviewerId)
-                        }}
-                        callEdit={() => this.switchToEditMode(interviewerId)}
-                    />
-                )
+                        return (
+                            <Panels
+                                key={interviewerId}
+                                id={interviewerId}
+                                titleConst={PANEL_TITLE}
+                                description={DESCRIPTION}
+                                showEditBtn={true}
+                                editBtnId={"edit-candidate-" + interviewerId}
+                                showDeleteBtn={true}
+                                deleteBtnId={"delete-candidate-" + interviewerId}
+                                callDelete={() => {
+                                    this.openModalConfirm(interviewerId)
+                                }}
+                                callEdit={() => this.switchToEditMode(interviewerId)}
+                            />
+                        )
 
 
-            });
+                    });
+                } else {
+                    interviewersToDisplay = (<h5 className="noData">No data of the requested type was found</h5>);
+                }
+
+
+            }
+        } else {
+            interviewersToDisplay = (<h5 className="noData"> There is no data to display </h5>);
         }
+
+
 
 
 

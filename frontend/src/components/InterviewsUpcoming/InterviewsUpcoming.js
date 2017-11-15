@@ -45,6 +45,8 @@ class InterviewsUpcoming extends Component {
             dateErrorMessage: "",
             showModalDeleteConfirm: false,
             showModalActivateConfirm: false
+            showModalConfirm: false,
+            interviewsListExist: true
         }
     }
 
@@ -53,7 +55,20 @@ class InterviewsUpcoming extends Component {
         const {dispatch} = this.props;
 
         if (!this.props.interviews.interviews.length) {
-            dispatch(showInterviews());
+            dispatch(showInterviews()).then(
+                (data) => {
+                    console.log(data);
+                    if (!data.length){
+                        this.setState({
+                            interviewsListExist: false
+                        });
+                    } else {
+                        this.setState({
+                            interviewsListExist: true
+                        });
+                    }
+                }
+            );
         }
 
         if (!this.props.vacancies.length) {
@@ -249,48 +264,15 @@ class InterviewsUpcoming extends Component {
             interviewsByDates,
             filterErrorMessage;
 
-        if (interviews.length &&
-            vacancies.length &&
-            projects.length &&
-            levels.length &&
-            positions.length &&
-            candidates.length &&
-            interviewers.length) {
+       if (this.state.interviewsListExist){
 
-            interviews = interviews.filter((current) => {
-                return current.status === true;
-            });
-
-            //-- FILTERS  --------------------------
-
-            let projectFilterID = this.state.projectsFilterID,
-                positionFilterID = this.state.positionsFilterID,
-                levelFilterID = this.state.levelsFilterID,
-                interviewerFilterId = this.state.interviewerFilterId,
-                dateFromFilter = this.state.dateFromFilter,
-                dateToFilter = this.state.dateToFilter;
-
-
-            if (projectFilterID) {
-                interviews = filterByProject(projectFilterID, interviews, vacancies);
-            }
-
-            if (positionFilterID) {
-                interviews = filterByPosition(positionFilterID, interviews, vacancies);
-            }
-
-            if (levelFilterID) {
-                interviews = filterByLevel(levelFilterID, interviews, vacancies);
-            }
-
-            if (interviewerFilterId) {
-                interviews = filterByInterviewer(interviewerFilterId, interviews);
-            }
-
-            if (dateFromFilter || dateToFilter) {
-                interviews = filterByDates(dateFromFilter, dateToFilter, interviews);
-                filterErrorMessage = setErrorDateMessage(dateFromFilter, dateToFilter);
-            }
+           if (interviews.length &&
+               vacancies.length &&
+               projects.length &&
+               levels.length &&
+               positions.length &&
+               candidates.length &&
+               interviewers.length) {
 
             //-- FILTERS  END--------------------------
 
@@ -517,7 +499,6 @@ class InterviewsUpcoming extends Component {
                 interviewsByDates = "No Interviews";
             }
         }
-
         let filter;
 
         if (this.state.isHR) {
