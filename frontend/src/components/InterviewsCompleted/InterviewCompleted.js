@@ -40,7 +40,8 @@ class InterviewsCompleted extends Component {
             ratingFilterID: "",
             dateFromFilter: "",
             dateToFilter: "",
-            dateErrorMessage: ""
+            dateErrorMessage: "",
+            interviewsListExist: true
         }
     }
 
@@ -48,23 +49,36 @@ class InterviewsCompleted extends Component {
         let isUserHR = this.props.onCheckUserRole(true);
         const {dispatch} = this.props;
 
-        if (!this.props.interviews.interviews.length){
-            dispatch(showInterviews());
+        if (!this.props.interviews.interviews.length) {
+            dispatch(showInterviews()).then(
+                (data) => {
+                    console.log(data);
+                    if (!data.length) {
+                        this.setState({
+                            interviewsListExist: false
+                        });
+                    } else {
+                        this.setState({
+                            interviewsListExist: true
+                        });
+                    }
+                }
+            );
         }
 
-        if (!this.props.vacancies.length){
+        if (!this.props.vacancies.length) {
             dispatch(getVacancies());
         }
 
-        if (!this.props.projects.length){
+        if (!this.props.projects.length) {
             dispatch(showProjects());
         }
 
-        if (!this.props.ratings.length){
+        if (!this.props.ratings.length) {
             dispatch(getRatings());
         }
 
-        if (!this.props.candidates.length){
+        if (!this.props.candidates.length) {
             dispatch(getCandidates());
         }
 
@@ -214,152 +228,156 @@ class InterviewsCompleted extends Component {
             interviewsToDisplay,
             filterErrorMessage;
 
-        if (interviews.length && vacancies.length && projects.length && levels.length && positions.length && ratings.length) {
+        if (this.state.interviewsListExist) {
+            if (interviews.length && vacancies.length && projects.length && levels.length && positions.length && ratings.length) {
 
-            interviews = interviews.filter((current) => {
-                return current.status === false;
-            });
+                interviews = interviews.filter((current) => {
+                    return current.status === false;
+                });
 
-            //-- FILTERS  --------------------------
+                //-- FILTERS  --------------------------
 
-            let projectFilterID = this.state.projectsFilterID,
-                positionFilterID = this.state.positionsFilterID,
-                levelFilterID = this.state.levelsFilterID,
-                interviewerFilterId = this.state.interviewerFilterId,
-                ratingFilterID = this.state.ratingFilterID,
-                dateFromFilter = this.state.dateFromFilter,
-                dateToFilter = this.state.dateToFilter;
+                let projectFilterID = this.state.projectsFilterID,
+                    positionFilterID = this.state.positionsFilterID,
+                    levelFilterID = this.state.levelsFilterID,
+                    interviewerFilterId = this.state.interviewerFilterId,
+                    ratingFilterID = this.state.ratingFilterID,
+                    dateFromFilter = this.state.dateFromFilter,
+                    dateToFilter = this.state.dateToFilter;
 
-            if (projectFilterID) {
-                interviews = filterByProject(projectFilterID, interviews, vacancies);
-            }
+                if (projectFilterID) {
+                    interviews = filterByProject(projectFilterID, interviews, vacancies);
+                }
 
-            if (positionFilterID) {
-                interviews = filterByPosition(positionFilterID, interviews, vacancies);
-            }
+                if (positionFilterID) {
+                    interviews = filterByPosition(positionFilterID, interviews, vacancies);
+                }
 
-            if (levelFilterID) {
-                interviews = filterByLevel(levelFilterID, interviews, vacancies);
-            }
+                if (levelFilterID) {
+                    interviews = filterByLevel(levelFilterID, interviews, vacancies);
+                }
 
-            if (interviewerFilterId) {
-                interviews = filterByInterviewer(interviewerFilterId, interviews);
-            }
+                if (interviewerFilterId) {
+                    interviews = filterByInterviewer(interviewerFilterId, interviews);
+                }
 
-            if (ratingFilterID) {
-                interviews = filterByRating(ratingFilterID, interviews);
-            }
+                if (ratingFilterID) {
+                    interviews = filterByRating(ratingFilterID, interviews);
+                }
 
-            if (dateFromFilter || dateToFilter) {
-                interviews = filterByDates(dateFromFilter, dateToFilter, interviews);
-                filterErrorMessage = setErrorDateMessage(dateFromFilter, dateToFilter);
-            }
+                if (dateFromFilter || dateToFilter) {
+                    interviews = filterByDates(dateFromFilter, dateToFilter, interviews);
+                    filterErrorMessage = setErrorDateMessage(dateFromFilter, dateToFilter);
+                }
 
-            //-- FILTERS  END--------------------------
+                //-- FILTERS  END--------------------------
 
 
-            let compareDates = (a, b) => {
-                let dateA = new Date(a.date_time).getTime(),
-                    dateB = new Date(b.date_time).getTime();
+                let compareDates = (a, b) => {
+                    let dateA = new Date(a.date_time).getTime(),
+                        dateB = new Date(b.date_time).getTime();
 
-                if (dateA < dateB) return 1;
-                if (dateA > dateB) return -1;
-            };
+                    if (dateA < dateB) return 1;
+                    if (dateA > dateB) return -1;
+                };
 
-            if (interviews.length) {
+                if (interviews.length) {
 
-                let interviewsSortedByDates = interviews.sort(compareDates) || {};
-                interviewsToDisplay = interviewsSortedByDates.map((value, index) => {
+                    let interviewsSortedByDates = interviews.sort(compareDates) || {};
+                    interviewsToDisplay = interviewsSortedByDates.map((value, index) => {
 
-                    let id = value.id,
-                        currentDate = moment(new Date(value.date_time)).format("DD" + "/" + "MM" + "/" + "YYYY"),
-                        currentVacancy = vacancies.find(item => value.vacancy_id === item.id),
-                        currentProject = projects.find(item => currentVacancy.project_id === item.id),
-                        currentLevel = levels.find(item => currentVacancy.level_id === item.id),
-                        currentPosition = positions.find(item => currentVacancy.position_id === item.id),
-                        currentCandidate = candidates.find(item => value.candidate_id === item.id),
-                        currentInterviewer = interviewers.find(item => value.user_id === item.id),
-                        currentRating = ratings.find(item => value.rating_id === item.id),
-                        panelTitleText;
+                        let id = value.id,
+                            currentDate = moment(new Date(value.date_time)).format("DD" + "/" + "MM" + "/" + "YYYY"),
+                            currentVacancy = vacancies.find(item => value.vacancy_id === item.id),
+                            currentProject = projects.find(item => currentVacancy.project_id === item.id),
+                            currentLevel = levels.find(item => currentVacancy.level_id === item.id),
+                            currentPosition = positions.find(item => currentVacancy.position_id === item.id),
+                            currentCandidate = candidates.find(item => value.candidate_id === item.id),
+                            currentInterviewer = interviewers.find(item => value.user_id === item.id),
+                            currentRating = ratings.find(item => value.rating_id === item.id),
+                            panelTitleText;
 
-                    if (this.state.isHR) {
-                        panelTitleText =
-                            currentDate + " | " +
-                            currentCandidate.name + " " +
-                            currentCandidate.surname + " | " +
-                            currentLevel.name + " " +
-                            currentPosition.name + " for " +
-                            currentProject.title + " | " +
-                            "Rating: " + currentRating.grade + " | " +
-                            currentInterviewer.surname + " " + currentInterviewer.name + " ";
-                    } else {
-                        panelTitleText =
-                            currentDate + " | " +
-                            currentCandidate.name + " " +
-                            currentCandidate.surname + " | " +
-                            currentLevel.name + " - " +
-                            currentPosition.name + " - " +
-                            currentProject.title + " | " +
-                            "Rating: " + currentRating.grade;
-                    }
+                        if (this.state.isHR) {
+                            panelTitleText =
+                                currentDate + " | " +
+                                currentCandidate.name + " " +
+                                currentCandidate.surname + " | " +
+                                currentLevel.name + " " +
+                                currentPosition.name + " for " +
+                                currentProject.title + " | " +
+                                "Rating: " + currentRating.grade + " | " +
+                                currentInterviewer.surname + " " + currentInterviewer.name + " ";
+                        } else {
+                            panelTitleText =
+                                currentDate + " | " +
+                                currentCandidate.name + " " +
+                                currentCandidate.surname + " | " +
+                                currentLevel.name + " - " +
+                                currentPosition.name + " - " +
+                                currentProject.title + " | " +
+                                "Rating: " + currentRating.grade;
+                        }
 
-                    const PANEL_TITLE = (
-                        <div className="custom-panel-title panel-list-item">
-                            <div className="custom-panel-title__right-side">
-                                <div className="panel-collapse-btn">
-                                    <span className="panel-collapse-btn__title btn-js">Expand</span>
-                                    <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
+                        const PANEL_TITLE = (
+                            <div className="custom-panel-title panel-list-item">
+                                <div className="custom-panel-title__right-side">
+                                    <div className="panel-collapse-btn">
+                                        <span className="panel-collapse-btn__title btn-js">Expand</span>
+                                        <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="custom-panel-title__left-side">
-                                <div className="vacancy-info-block">
-                                    <div className="vacancy-info-block__item">
-                                        {panelTitleText}
+                                <div className="custom-panel-title__left-side">
+                                    <div className="vacancy-info-block">
+                                        <div className="vacancy-info-block__item">
+                                            {panelTitleText}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    );
+                        );
 
-                    const PANEL_DESCRIPTION = (
-                        <div>
-                            <p className="interview-details__header"><strong>Feedback</strong></p>
-                            {value.feedback}
-                        </div>
-                    );
+                        const PANEL_DESCRIPTION = (
+                            <div>
+                                <p className="interview-details__header"><strong>Feedback</strong></p>
+                                {value.feedback}
+                            </div>
+                        );
 
-                    if (this.state.isHR) {
+                        if (this.state.isHR) {
 
-                        return (
-                            <Panels
-                                key={id}
-                                id={"intCompl" + value.id}
-                                showActionBtn={false}
-                                titleConst={PANEL_TITLE}
-                                description={PANEL_DESCRIPTION}
-                                showDeleteBtn={true}
-                                deleteBtnId={"delete-feedback-" + id}
-                                callDelete={(event) => this.openModalConfirm(id)}
-                            />
-                        )
-                    } else {
-                        return (
-                            <Panels
-                                key={id}
-                                id={"intCompl" + value.id}
-                                showActionBtn={true}
-                                titleForActionBtn='Edit Feedback'
-                                titleConst={PANEL_TITLE}
-                                description={PANEL_DESCRIPTION}
-                                showDeleteBtn={false}
-                                callAction={(event) => this.switchToEditMode(id)}
-                            />
-                        )
-                    }
-                });
-            } else {
-                interviewsToDisplay = "No Interviews";
+                            return (
+                                <Panels
+                                    key={id}
+                                    id={"intCompl" + value.id}
+                                    showActionBtn={false}
+                                    titleConst={PANEL_TITLE}
+                                    description={PANEL_DESCRIPTION}
+                                    showDeleteBtn={true}
+                                    deleteBtnId={"delete-feedback-" + id}
+                                    callDelete={(event) => this.openModalConfirm(id)}
+                                />
+                            )
+                        } else {
+                            return (
+                                <Panels
+                                    key={id}
+                                    id={"intCompl" + value.id}
+                                    showActionBtn={true}
+                                    titleForActionBtn='Edit Feedback'
+                                    titleConst={PANEL_TITLE}
+                                    description={PANEL_DESCRIPTION}
+                                    showDeleteBtn={false}
+                                    callAction={(event) => this.switchToEditMode(id)}
+                                />
+                            )
+                        }
+                    });
+                } else {
+                    interviewsToDisplay = (<h5 className="noData">No data of the requested type was found</h5>);
+                }
             }
+        } else {
+            interviewsToDisplay = (<h5 className="noData"> There is no data to display </h5>);
         }
 
         let filter;

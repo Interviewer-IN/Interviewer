@@ -55,6 +55,7 @@ class InterviewsUpcoming extends Component {
         if (!this.props.interviews.interviews.length) {
             dispatch(showInterviews()).then(
                 (data) => {
+                    console.log(data);
                     if (!data.length){
                         this.setState({
                             interviewsListExist: false
@@ -245,274 +246,280 @@ class InterviewsUpcoming extends Component {
             interviewsByDates,
             filterErrorMessage;
 
-        if (interviews.length &&
-            vacancies.length &&
-            projects.length &&
-            levels.length &&
-            positions.length &&
-            candidates.length &&
-            interviewers.length) {
+       if (this.state.interviewsListExist){
 
-            interviews = interviews.filter((current) => {
-                return current.status === true;
-            });
+           if (interviews.length &&
+               vacancies.length &&
+               projects.length &&
+               levels.length &&
+               positions.length &&
+               candidates.length &&
+               interviewers.length) {
 
-            //-- FILTERS  --------------------------
+               interviews = interviews.filter((current) => {
+                   return current.status === true;
+               });
 
-            let projectFilterID = this.state.projectsFilterID,
-                positionFilterID = this.state.positionsFilterID,
-                levelFilterID = this.state.levelsFilterID,
-                interviewerFilterId = this.state.interviewerFilterId,
-                dateFromFilter = this.state.dateFromFilter,
-                dateToFilter = this.state.dateToFilter;
+               //-- FILTERS  --------------------------
 
-
-            if (projectFilterID) {
-                interviews = filterByProject(projectFilterID, interviews, vacancies);
-            }
-
-            if (positionFilterID) {
-                interviews = filterByPosition(positionFilterID, interviews, vacancies);
-            }
-
-            if (levelFilterID) {
-                interviews = filterByLevel(levelFilterID, interviews, vacancies);
-            }
-
-            if (interviewerFilterId) {
-                interviews = filterByInterviewer(interviewerFilterId, interviews);
-            }
-
-            if (dateFromFilter || dateToFilter) {
-                interviews = filterByDates(dateFromFilter, dateToFilter, interviews);
-                filterErrorMessage = setErrorDateMessage(dateFromFilter, dateToFilter);
-            }
-
-            //-- FILTERS  END--------------------------
+               let projectFilterID = this.state.projectsFilterID,
+                   positionFilterID = this.state.positionsFilterID,
+                   levelFilterID = this.state.levelsFilterID,
+                   interviewerFilterId = this.state.interviewerFilterId,
+                   dateFromFilter = this.state.dateFromFilter,
+                   dateToFilter = this.state.dateToFilter;
 
 
-            let compareDates = (a, b) => {
-                let dateA = new Date(a.date_time).getTime(),
-                    dateB = new Date(b.date_time).getTime();
+               if (projectFilterID) {
+                   interviews = filterByProject(projectFilterID, interviews, vacancies);
+               }
 
-                if (dateA > dateB) return 1;
-                if (dateA < dateB) return -1;
-            };
+               if (positionFilterID) {
+                   interviews = filterByPosition(positionFilterID, interviews, vacancies);
+               }
 
-            let compareTime = (a, b) => {
-                let timeA = new Date(a.date_time).toLocaleString('en-GB', {hour: 'numeric', minute: 'numeric'}),
-                    timeB = new Date(b.date_time).toLocaleString('en-GB', {hour: 'numeric', minute: 'numeric'});
+               if (levelFilterID) {
+                   interviews = filterByLevel(levelFilterID, interviews, vacancies);
+               }
 
-                if (timeA > timeB) return 1;
-                if (timeA < timeB) return -1;
-            };
+               if (interviewerFilterId) {
+                   interviews = filterByInterviewer(interviewerFilterId, interviews);
+               }
 
-            if (interviews && interviews.length) {
+               if (dateFromFilter || dateToFilter) {
+                   interviews = filterByDates(dateFromFilter, dateToFilter, interviews);
+                   filterErrorMessage = setErrorDateMessage(dateFromFilter, dateToFilter);
+               }
 
-                let interviewsSortedByDates = interviews.sort(compareDates) || {};
-                interviewsSortedByDates.map((value, index) => {
-                    let date = moment(new Date(value.date_time)).format("dddd, D MMMM YYYY");
+               //-- FILTERS  END--------------------------
 
-                    if (dates.indexOf(date) === -1) {
-                        dates.push(date);
-                    }
-                });
 
-                interviewsByDates = dates.map((value, index) => {
-                    let todayInterviews = [],
-                        currentDate = value,
-                        dateToDisplay;
+               let compareDates = (a, b) => {
+                   let dateA = new Date(a.date_time).getTime(),
+                       dateB = new Date(b.date_time).getTime();
 
-                    interviewsSortedByDates.map((value, index) => {
-                        let interviewDate = moment(new Date(value.date_time)).format("dddd, D MMMM YYYY");
+                   if (dateA > dateB) return 1;
+                   if (dateA < dateB) return -1;
+               };
 
-                        if (currentDate === interviewDate) {
-                            todayInterviews.push(value);
-                            dateToDisplay = moment(new Date(value.date_time)).format("dddd, D MMMM");
-                        }
-                    });
+               let compareTime = (a, b) => {
+                   let timeA = new Date(a.date_time).toLocaleString('en-GB', {hour: 'numeric', minute: 'numeric'}),
+                       timeB = new Date(b.date_time).toLocaleString('en-GB', {hour: 'numeric', minute: 'numeric'});
 
-                    //-- Creating Interview Card--------------------------
+                   if (timeA > timeB) return 1;
+                   if (timeA < timeB) return -1;
+               };
 
-                    let sortedInterviews = todayInterviews.sort(compareTime) || {};
-                    let interviewsToDisplay = sortedInterviews.map((value, index) => {
+               if (interviews && interviews.length) {
 
-                            let id = value.id,
-                                time = moment(new Date(value.date_time)).format("HH:mm"),
-                                currentVacancy = vacancies.find(item => value.vacancy_id === item.id),
-                                currentProject = projects.find(item => currentVacancy.project_id === item.id),
-                                currentLevel = levels.find(item => currentVacancy.level_id === item.id),
-                                currentPosition = positions.find(item => currentVacancy.position_id === item.id),
-                                currentCandidate = candidates.find(item => value.candidate_id === item.id),
-                                currentInterviewer = interviewers.find(item => value.user_id === item.id),
-                                candidateCV = currentCandidate.cv.url,
-                                currentSate = (value.state) ? "Active" : "Activate",
-                                isBtnInactive = value.state,
-                                panelTitleText;
+                   let interviewsSortedByDates = interviews.sort(compareDates) || {};
+                   interviewsSortedByDates.map((value, index) => {
+                       let date = moment(new Date(value.date_time)).format("dddd, D MMMM YYYY");
 
-                            let duplicateData = {
-                                date_time: value.date_time,
-                                candidate_id: value.candidate_id,
-                                vacancy_id: value.vacancy_id,
-                                user_id: value.user_id,
-                                rating_id: 12
-                            };
+                       if (dates.indexOf(date) === -1) {
+                           dates.push(date);
+                       }
+                   });
 
-                            let overdueInterview = () => {
-                                let dateNow = Date.now(),
-                                    interviewDate = new Date(value.date_time).getTime();
+                   interviewsByDates = dates.map((value, index) => {
+                       let todayInterviews = [],
+                           currentDate = value,
+                           dateToDisplay;
 
-                                if(interviewDate < dateNow) {
-                                    return (
-                                        <i className="interview-icon tooltip-icon fa fa-bell">
-                                            <span className="tooltip-icon__text">This interview is overdue</span>
-                                        </i>
-                                    )
-                                }
-                            };
+                       interviewsSortedByDates.map((value, index) => {
+                           let interviewDate = moment(new Date(value.date_time)).format("dddd, D MMMM YYYY");
 
-                            let checkCandidateCV = () => {
-                                if (candidateCV) {
-                                    return (
-                                        <a href={candidateCV}
-                                           className="download-block form-group text-green text-green--hover" download>
-                                            <span className="download-block__icon fa fa-download"/>
-                                            <span className="download-block__title">Download CV</span>
-                                        </a>
-                                    )
-                                } else {
-                                    return (
-                                        <a className="download-block form-group download-block--disabled text-muted">
-                                            <span className="download-block__icon fa fa-download"/>
-                                            <span className="download-block__title text-bold--100">Download CV</span>
-                                        </a>
-                                    )
-                                }
-                            };
+                           if (currentDate === interviewDate) {
+                               todayInterviews.push(value);
+                               dateToDisplay = moment(new Date(value.date_time)).format("dddd, D MMMM");
+                           }
+                       });
 
-                            if (this.state.isHR) {
-                                panelTitleText = time + " | " +
-                                    currentCandidate.name + " " +
-                                    currentCandidate.surname + " | " +
-                                    currentLevel.name + " " +
-                                    currentPosition.name + " for " +
-                                    currentProject.title + " | " +
-                                    currentInterviewer.surname + " " + currentInterviewer.name + " ";
-                            } else {
-                                panelTitleText = time + " | " +
-                                    currentCandidate.name + " " +
-                                    currentCandidate.surname + " | " +
-                                    currentLevel.name + " - " +
-                                    currentPosition.name + " - " +
-                                    currentProject.title + " | ";
-                            }
+                       //-- Creating Interview Card--------------------------
 
-                            const PANEL_TITLE = (
-                                <div className="custom-panel-title panel-list-item">
-                                    <div className="custom-panel-title__right-side">
-                                        <div className="panel-collapse-btn">
-                                            <span className="panel-collapse-btn__title btn-js">Expand</span>
-                                            <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
-                                        </div>
-                                    </div>
-                                    <div className="custom-panel-title__left-side">
-                                        <div className="vacancy-info-block">
-                                            <div className="vacancy-info-block__item">
-                                                {panelTitleText}
-                                                {overdueInterview()}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            );
+                       let sortedInterviews = todayInterviews.sort(compareTime) || {};
+                       let interviewsToDisplay = sortedInterviews.map((value, index) => {
 
-                            const PANEL_DESCRIPTION = (
-                                <div>
-                                    <div className="interview-details clearfix">
-                                        <div className="interview-details__left">
-                                            <p className="interview-details__header"><strong>Candidate</strong></p>
-                                            <p><strong>Name:</strong>{" " + currentCandidate.name}</p>
-                                            <p><strong>Age:</strong>{" " + currentCandidate.age}</p>
-                                            <p><strong>Experience:</strong>{" " + currentCandidate.experience}</p>
-                                            {checkCandidateCV()}
-                                        </div>
-                                        <div className="interview-details__right">
-                                            <p className="interview-details__header"><strong>Project</strong></p>
-                                            <p>{currentProject.title}</p>
-                                            <p className="interview-details__header"><strong>Interviewer</strong></p>
-                                            <p>{currentInterviewer.surname + " " + currentInterviewer.name}</p>
-                                        </div>
-                                    </div>
-                                    <div className="interview-details__down">
-                                        <p className="interview-details__header"><strong>Vacancy</strong></p>
-                                        <p>
-                                            <strong>{currentLevel.name + " " +
-                                            currentPosition.name + " for " +
-                                            currentProject.title}
-                                            </strong>
-                                        </p>
-                                        <p>{currentVacancy.description}</p>
-                                    </div>
-                                </div>
-                            );
+                               let id = value.id,
+                                   time = moment(new Date(value.date_time)).format("HH:mm"),
+                                   currentVacancy = vacancies.find(item => value.vacancy_id === item.id),
+                                   currentProject = projects.find(item => currentVacancy.project_id === item.id),
+                                   currentLevel = levels.find(item => currentVacancy.level_id === item.id),
+                                   currentPosition = positions.find(item => currentVacancy.position_id === item.id),
+                                   currentCandidate = candidates.find(item => value.candidate_id === item.id),
+                                   currentInterviewer = interviewers.find(item => value.user_id === item.id),
+                                   candidateCV = currentCandidate.cv.url,
+                                   currentSate = (value.state) ? "Active" : "Activate",
+                                   isBtnInactive = value.state,
+                                   panelTitleText;
 
-                            let toExpandElement = () => {
-                                return (id === idExpandedElement) ? (true) : (false);
-                            };
+                               let duplicateData = {
+                                   date_time: value.date_time,
+                                   candidate_id: value.candidate_id,
+                                   vacancy_id: value.vacancy_id,
+                                   user_id: value.user_id,
+                                   rating_id: 12
+                               };
 
-                            if (this.state.isHR) {
-                                return (
-                                        <Panels
-                                            key={id}
-                                            id={"intUpcom" + id}
-                                            showActionBtn={true}
-                                            defaultExpanded={toExpandElement()}
-                                            titleForActionBtn={currentSate}
-                                            addInactiveBtnClass={isBtnInactive}
-                                            titleConst={PANEL_TITLE}
-                                            description={PANEL_DESCRIPTION}
-                                            showEditBtn={true}
-                                            showDeleteBtn={true}
-                                            showDuplicateBtn={true}
-                                            editBtnId={"edit-interview-" + id}
-                                            deleteBtnId={"delete-interview-" + id}
-                                            dublicateBtnId={"duplicate-interview" + id}
-                                            callDelete={(event) => this.openModalConfirm(id)}
-                                            callEdit={(event) => this.switchToEditMode(id)}
-                                            callAction={(event) => this.activateInterview(id)}
-                                            callDublicate={() => this.duplicateInterview(duplicateData)}
-                                        />
+                               let overdueInterview = () => {
+                                   let dateNow = Date.now(),
+                                       interviewDate = new Date(value.date_time).getTime();
 
-                                )
-                            } else if (!this.state.isHR && value.state) {
-                                return (
-                                        <Panels
-                                            key={id}
-                                            id={"intUpcom" + value.id}
-                                            showActionBtn={true}
-                                            defaultExpanded={toExpandElement()}
-                                            titleForActionBtn='Add feedback'
-                                            titleConst={PANEL_TITLE}
-                                            description={PANEL_DESCRIPTION}
-                                            callAction={(event) => this.addFeedback(id)}
-                                        />
-                                )
-                            }
-                        }
+                                   if(interviewDate < dateNow) {
+                                       return (
+                                           <i className="interview-icon tooltip-icon fa fa-bell">
+                                               <span className="tooltip-icon__text">This interview is overdue</span>
+                                           </i>
+                                       )
+                                   }
+                               };
 
-                        //-- End Creating Interview Card--------------------------
-                    );
-                    return (
-                        <div key={index}>
-                            <p className="interview-dates">{dateToDisplay}</p>
-                                {interviewsToDisplay}
-                        </div>
-                    )
-                });
-            } else {
-                interviewsByDates = "No Interviews";
-            }
-        }
+                               let checkCandidateCV = () => {
+                                   if (candidateCV) {
+                                       return (
+                                           <a href={candidateCV}
+                                              className="download-block form-group text-green text-green--hover" download>
+                                               <span className="download-block__icon fa fa-download"/>
+                                               <span className="download-block__title">Download CV</span>
+                                           </a>
+                                       )
+                                   } else {
+                                       return (
+                                           <a className="download-block form-group download-block--disabled text-muted">
+                                               <span className="download-block__icon fa fa-download"/>
+                                               <span className="download-block__title text-bold--100">Download CV</span>
+                                           </a>
+                                       )
+                                   }
+                               };
+
+                               if (this.state.isHR) {
+                                   panelTitleText = time + " | " +
+                                       currentCandidate.name + " " +
+                                       currentCandidate.surname + " | " +
+                                       currentLevel.name + " " +
+                                       currentPosition.name + " for " +
+                                       currentProject.title + " | " +
+                                       currentInterviewer.surname + " " + currentInterviewer.name + " ";
+                               } else {
+                                   panelTitleText = time + " | " +
+                                       currentCandidate.name + " " +
+                                       currentCandidate.surname + " | " +
+                                       currentLevel.name + " - " +
+                                       currentPosition.name + " - " +
+                                       currentProject.title + " | ";
+                               }
+
+                               const PANEL_TITLE = (
+                                   <div className="custom-panel-title panel-list-item">
+                                       <div className="custom-panel-title__right-side">
+                                           <div className="panel-collapse-btn">
+                                               <span className="panel-collapse-btn__title btn-js">Expand</span>
+                                               <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
+                                           </div>
+                                       </div>
+                                       <div className="custom-panel-title__left-side">
+                                           <div className="vacancy-info-block">
+                                               <div className="vacancy-info-block__item">
+                                                   {panelTitleText}
+                                                   {overdueInterview()}
+                                               </div>
+                                           </div>
+                                       </div>
+                                   </div>
+                               );
+
+                               const PANEL_DESCRIPTION = (
+                                   <div>
+                                       <div className="interview-details clearfix">
+                                           <div className="interview-details__left">
+                                               <p className="interview-details__header"><strong>Candidate</strong></p>
+                                               <p><strong>Name:</strong>{" " + currentCandidate.name}</p>
+                                               <p><strong>Age:</strong>{" " + currentCandidate.age}</p>
+                                               <p><strong>Experience:</strong>{" " + currentCandidate.experience}</p>
+                                               {checkCandidateCV()}
+                                           </div>
+                                           <div className="interview-details__right">
+                                               <p className="interview-details__header"><strong>Project</strong></p>
+                                               <p>{currentProject.title}</p>
+                                               <p className="interview-details__header"><strong>Interviewer</strong></p>
+                                               <p>{currentInterviewer.surname + " " + currentInterviewer.name}</p>
+                                           </div>
+                                       </div>
+                                       <div className="interview-details__down">
+                                           <p className="interview-details__header"><strong>Vacancy</strong></p>
+                                           <p>
+                                               <strong>{currentLevel.name + " " +
+                                               currentPosition.name + " for " +
+                                               currentProject.title}
+                                               </strong>
+                                           </p>
+                                           <p>{currentVacancy.description}</p>
+                                       </div>
+                                   </div>
+                               );
+
+                               let toExpandElement = () => {
+                                   return (id === idExpandedElement) ? (true) : (false);
+                               };
+
+                               if (this.state.isHR) {
+                                   return (
+                                       <Panels
+                                           key={id}
+                                           id={"intUpcom" + id}
+                                           showActionBtn={true}
+                                           defaultExpanded={toExpandElement()}
+                                           titleForActionBtn={currentSate}
+                                           addInactiveBtnClass={isBtnInactive}
+                                           titleConst={PANEL_TITLE}
+                                           description={PANEL_DESCRIPTION}
+                                           showEditBtn={true}
+                                           showDeleteBtn={true}
+                                           showDuplicateBtn={true}
+                                           editBtnId={"edit-interview-" + id}
+                                           deleteBtnId={"delete-interview-" + id}
+                                           dublicateBtnId={"duplicate-interview" + id}
+                                           callDelete={(event) => this.openModalConfirm(id)}
+                                           callEdit={(event) => this.switchToEditMode(id)}
+                                           callAction={(event) => this.activateInterview(id)}
+                                           callDublicate={() => this.duplicateInterview(duplicateData)}
+                                       />
+
+                                   )
+                               } else if (!this.state.isHR && value.state) {
+                                   return (
+                                       <Panels
+                                           key={id}
+                                           id={"intUpcom" + value.id}
+                                           showActionBtn={true}
+                                           defaultExpanded={toExpandElement()}
+                                           titleForActionBtn='Add feedback'
+                                           titleConst={PANEL_TITLE}
+                                           description={PANEL_DESCRIPTION}
+                                           callAction={(event) => this.addFeedback(id)}
+                                       />
+                                   )
+                               }
+                           }
+
+                           //-- End Creating Interview Card--------------------------
+                       );
+                       return (
+                           <div key={index}>
+                               <p className="interview-dates">{dateToDisplay}</p>
+                               {interviewsToDisplay}
+                           </div>
+                       )
+                   });
+               } else {
+                   interviewsByDates = (<h5 className="noData">No data of the requested type was found</h5>);
+               }
+           }
+
+       } else {
+           interviewsByDates = (<h5 className="noData"> There is no data to display </h5>);
+       }
 
         let filter;
 
