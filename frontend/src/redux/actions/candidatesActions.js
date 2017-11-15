@@ -26,7 +26,7 @@ export function getCandidates() {
                         return response.json();
 
                     default:
-                        return {data: []}
+                        return response.json();
                 }
 
             })

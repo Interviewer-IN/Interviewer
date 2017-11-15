@@ -83,6 +83,7 @@ export function showInterviews(idExpandedElement = false) {
                         hide: false
                     }
                 ));
+                resolve(err);
             });
     });
 }
@@ -160,6 +161,7 @@ export function updateInterview(date, message) {
                 res.json()
             )
             .then(date => {
+                console.log(date);
                 dispatch(showInterviews());
                 dispatch(makeNote(
                     {

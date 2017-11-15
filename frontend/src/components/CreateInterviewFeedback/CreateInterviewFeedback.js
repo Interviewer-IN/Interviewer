@@ -156,42 +156,42 @@ class CreateInterviewFeedback extends Component {
                 {
                     interview_id: interviewID,
                     question_id: this.state.answer1.questionID,
-                    answer: this.state.answer1.answer,
+                    answer: this.state.answer1.text,
                 },
             )).then(() => {
                 dispatch(createFeedback(
                     {
                         interview_id: interviewID,
                         question_id: this.state.answer2.questionID,
-                        answer: this.state.answer2.answer,
+                        answer: this.state.answer2.text,
                     },
                 )).then(() => {
                     dispatch(createFeedback(
                         {
                             interview_id: interviewID,
                             question_id: this.state.answer3.questionID,
-                            answer: this.state.answer3.answer,
+                            answer: this.state.answer3.text,
                         },
                     )).then(() => {
                         dispatch(createFeedback(
                             {
                                 interview_id: interviewID,
                                 question_id: this.state.answer4.questionID,
-                                answer: this.state.answer4.answer,
+                                answer: this.state.answer4.text,
                             },
                         )).then(() => {
                             dispatch(createFeedback(
                                 {
                                     interview_id: interviewID,
                                     question_id: this.state.answer5.questionID,
-                                    answer: this.state.answer5.answer,
+                                    answer: this.state.answer5.text,
                                 },
                             )).then(() => {
                                 dispatch(createFeedback(
                                     {
                                         interview_id: interviewID,
                                         question_id: this.state.answer6.questionID,
-                                        answer: this.state.answer6.answer,
+                                        answer: this.state.answer6.text,
                                     },
                                 )).then(() => {
                                     dispatch(updateInterview(

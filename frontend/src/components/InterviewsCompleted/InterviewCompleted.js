@@ -10,7 +10,6 @@ import {showProjects} from "../../redux/actions/projectActions";
 import {getRatings} from "../../redux/actions/ratingActions";
 import {getCandidates} from "../../redux/actions/candidatesActions";
 import {getInterviewers} from "../../redux/actions/interviewersActions";
-import {showFeedbacks} from "../../redux/actions/feedbackActions";
 import {
     getValueFromArr,
     filterByDates,
@@ -41,7 +40,8 @@ class InterviewsCompleted extends Component {
             ratingFilterID: "",
             dateFromFilter: "",
             dateToFilter: "",
-            dateErrorMessage: ""
+            dateErrorMessage: "",
+            interviewsListExist: true
         }
     }
 
@@ -49,23 +49,35 @@ class InterviewsCompleted extends Component {
         let isUserHR = this.props.onCheckUserRole(true);
         const {dispatch} = this.props;
 
-        if (!this.props.interviews.interviews.length){
-            dispatch(showInterviews());
+        if (!this.props.interviews.interviews.length) {
+            dispatch(showInterviews()).then(
+                (data) => {
+                    if (!data.length) {
+                        this.setState({
+                            interviewsListExist: false
+                        });
+                    } else {
+                        this.setState({
+                            interviewsListExist: true
+                        });
+                    }
+                }
+            );
         }
 
-        if (!this.props.vacancies.length){
+        if (!this.props.vacancies.length) {
             dispatch(getVacancies());
         }
 
-        if (!this.props.projects.length){
+        if (!this.props.projects.length) {
             dispatch(showProjects());
         }
 
-        if (!this.props.ratings.length){
+        if (!this.props.ratings.length) {
             dispatch(getRatings());
         }
 
-        if (!this.props.candidates.length){
+        if (!this.props.candidates.length) {
             dispatch(getCandidates());
         }
 
@@ -221,7 +233,6 @@ class InterviewsCompleted extends Component {
             interviewsToDisplay,
             filterErrorMessage;
 
-
         if (interviews.length && vacancies.length && projects.length && levels.length && positions.length && ratings.length) {
 
             interviews = interviews.filter((current) => {
@@ -376,7 +387,7 @@ class InterviewsCompleted extends Component {
                     }
                 });
             } else {
-                interviewsToDisplay = "No Interviews";
+                interviewsToDisplay = (<h5 className="noData">No data of the requested type was found</h5>);
             }
         }
 
