@@ -3,11 +3,10 @@ import Helmet from "react-helmet";
 import TextareaAutosize from "react-autosize-textarea";
 import {Modal, Button} from "react-bootstrap";
 import {connect} from "react-redux";
-
 import "./ProjectEdit.css";
 import PageTitle from "./../../containers/PageTitle";
-import {updateProject, getProjects} from "../../redux/actions/projectActions";
-import {FIELD_CHAR_REGEX, FIELD_SPACE_REGEX} from "../../config"
+import {updateProject, getProject} from "../../redux/actions/projectActions";
+import {FIELD_CHAR_REGEX, FIELD_SPACE_REGEX} from "../../config";
 
 class ProjectEdit extends Component {
 
@@ -29,7 +28,7 @@ class ProjectEdit extends Component {
         this.props.onCheckUserRole();
         const {dispatch} = this.props;
         if (this.props.projects.length < 1) {
-            dispatch(getProjects(this.props.match.params.id)).then(() => {
+            dispatch(getProject(this.props.match.params.id)).then(() => {
                 let currentProject = this.props.currentProject;
                 this.setStates(currentProject);
             });
@@ -40,25 +39,29 @@ class ProjectEdit extends Component {
                     return currentProject.id === +projectId;
                 }) || {};
             this.setStates(currentProject);
-
-
         }
     }
 
     setStates(currentProject) {
-        this.setState({currentProject: currentProject});
-        this.setState({projectTitle: currentProject.title});
-        this.setState({projectDescription: currentProject.description});
+        this.setState({
+            currentProject: currentProject,
+            projectTitle: currentProject.title,
+            projectDescription: currentProject.description
+        });
     }
 
     handleTitleChange(event) {
-        this.setState({projectTitle: event.target.value});
-        this.setState({titleError:""});
+        this.setState({
+            projectTitle: event.target.value,
+            titleError: ""
+        });
     }
 
     handleDescrChange(event) {
-        this.setState({projectDescription: event.target.value});
-        this.setState({descriptionError:""});
+        this.setState({
+            projectDescription: event.target.value,
+            descriptionError: ""
+        });
     }
 
     showMConfirmMessage() {

@@ -10,6 +10,7 @@ import {showProjects} from "../../redux/actions/projectActions";
 import {getRatings} from "../../redux/actions/ratingActions";
 import {getCandidates} from "../../redux/actions/candidatesActions";
 import {getInterviewers} from "../../redux/actions/interviewersActions";
+import {showFeedbacks} from "../../redux/actions/feedbackActions";
 import {
     getValueFromArr,
     filterByDates,
@@ -40,7 +41,8 @@ class InterviewsCompleted extends Component {
             ratingFilterID: "",
             dateFromFilter: "",
             dateToFilter: "",
-            dateErrorMessage: ""
+            dateErrorMessage: "",
+            interviewsListExist: true
         }
     }
 
@@ -48,29 +50,46 @@ class InterviewsCompleted extends Component {
         let isUserHR = this.props.onCheckUserRole(true);
         const {dispatch} = this.props;
 
-        if (!this.props.interviews.interviews.length){
-            dispatch(showInterviews());
+        if (!this.props.interviews.interviews.length) {
+            dispatch(showInterviews()).then(
+                (data) => {
+                    console.log(data);
+                    if (!data.length) {
+                        this.setState({
+                            interviewsListExist: false
+                        });
+                    } else {
+                        this.setState({
+                            interviewsListExist: true
+                        });
+                    }
+                }
+            );
         }
 
-        if (!this.props.vacancies.length){
+        if (!this.props.vacancies.length) {
             dispatch(getVacancies());
         }
 
-        if (!this.props.projects.length){
+        if (!this.props.projects.length) {
             dispatch(showProjects());
         }
 
-        if (!this.props.ratings.length){
+        if (!this.props.ratings.length) {
             dispatch(getRatings());
         }
 
-        if (!this.props.candidates.length){
+        if (!this.props.candidates.length) {
             dispatch(getCandidates());
         }
 
         if (!this.props.interviewers.length) {
             dispatch(getInterviewers());
         }
+
+        // if (!this.props.feedbacks.length) {
+        //     dispatch(showFeedbacks());
+        // }
 
         if (isUserHR) {
             this.setState({isHR: true})
@@ -211,6 +230,8 @@ class InterviewsCompleted extends Component {
             ratings = this.props.ratings,
             candidates = this.props.candidates,
             interviewers = this.props.interviewers,
+            feedbacks = this.props.feedbacks,
+            questions = this.props.questions,
             interviewsToDisplay,
             filterErrorMessage;
 
@@ -280,7 +301,13 @@ class InterviewsCompleted extends Component {
                         currentCandidate = candidates.find(item => value.candidate_id === item.id),
                         currentInterviewer = interviewers.find(item => value.user_id === item.id),
                         currentRating = ratings.find(item => value.rating_id === item.id),
+
                         panelTitleText;
+                    //
+                    // let currentAnswersArray = feedbacks.map((item, index) => {
+                    //     if (value.interview_id === item.id)
+                    //         return item
+                    // });
 
                     if (this.state.isHR) {
                         panelTitleText =
@@ -303,6 +330,10 @@ class InterviewsCompleted extends Component {
                             "Rating: " + currentRating.grade;
                     }
 
+                    let showFeedback = () => {
+
+                    };
+
                     const PANEL_TITLE = (
                         <div className="custom-panel-title panel-list-item">
                             <div className="custom-panel-title__right-side">
@@ -310,11 +341,11 @@ class InterviewsCompleted extends Component {
                                     <span className="panel-collapse-btn__title btn-js">Expand</span>
                                     <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
                                 </div>
-                            </div>
-                            <div className="custom-panel-title__left-side">
-                                <div className="vacancy-info-block">
-                                    <div className="vacancy-info-block__item">
-                                        {panelTitleText}
+                                <div className="custom-panel-title__left-side">
+                                    <div className="vacancy-info-block">
+                                        <div className="vacancy-info-block__item">
+                                            {panelTitleText}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -358,8 +389,10 @@ class InterviewsCompleted extends Component {
                     }
                 });
             } else {
-                interviewsToDisplay = "No Interviews";
+                interviewsToDisplay = (<h5 className="noData">No data of the requested type was found</h5>);
             }
+        } else {
+            interviewsToDisplay = (<h5 className="noData"> There is no data to display </h5>);
         }
 
         let filter;
@@ -455,6 +488,7 @@ class InterviewsCompleted extends Component {
     }
 }
 
+
 function mapStateToProps(state) {
     return {
         interviews: state.interviews,
@@ -466,6 +500,9 @@ function mapStateToProps(state) {
         ratings: state.ratings.ratings,
         candidates: state.candidates.candidates,
         interviewers: state.interviewers.interviewers,
+        feedbacks: state.feedback.feedbacks,
+        questions: state.questions.questions,
+        currentFeedback: state.feedback.currentFeedback,
         currentProject: state.project.currentProject,
     }
 }
