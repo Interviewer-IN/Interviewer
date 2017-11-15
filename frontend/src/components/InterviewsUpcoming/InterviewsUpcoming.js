@@ -9,6 +9,9 @@ import {getVacancies} from "../../redux/actions/vacanciesActions";
 import {showProjects} from "../../redux/actions/projectActions";
 import {getCandidates} from "../../redux/actions/candidatesActions";
 import {getInterviewers} from "../../redux/actions/interviewersActions";
+import PageTitle from "./../../containers/PageTitle";
+import Panels from "../Panels/Panels";
+import Filters from "./../../components/Filters";
 import {
     getValueFromArr,
     filterByDates,
@@ -18,11 +21,6 @@ import {
     filterByProject,
     filterByInterviewer
 } from "../../utils/index";
-import PageTitle from "./../../containers/PageTitle";
-import Panels from "../Panels/Panels";
-import Filters from "./../../components/Filters";
-
-
 class InterviewsUpcoming extends Component {
 
 
@@ -57,7 +55,6 @@ class InterviewsUpcoming extends Component {
         if (!this.props.interviews.interviews.length) {
             dispatch(showInterviews()).then(
                 (data) => {
-                    console.log(data);
                     if (!data.length) {
                         this.setState({
                             interviewsListExist: false
@@ -273,6 +270,41 @@ class InterviewsUpcoming extends Component {
                 positions.length &&
                 candidates.length &&
                 interviewers.length) {
+
+                interviews = interviews.filter((current) => {
+                    return current.status === true;
+                });
+
+                //-- FILTERS  --------------------------
+
+                let projectFilterID = this.state.projectsFilterID,
+                    positionFilterID = this.state.positionsFilterID,
+                    levelFilterID = this.state.levelsFilterID,
+                    interviewerFilterId = this.state.interviewerFilterId,
+                    dateFromFilter = this.state.dateFromFilter,
+                    dateToFilter = this.state.dateToFilter;
+
+
+                if (projectFilterID) {
+                    interviews = filterByProject(projectFilterID, interviews, vacancies);
+                }
+
+                if (positionFilterID) {
+                    interviews = filterByPosition(positionFilterID, interviews, vacancies);
+                }
+
+                if (levelFilterID) {
+                    interviews = filterByLevel(levelFilterID, interviews, vacancies);
+                }
+
+                if (interviewerFilterId) {
+                    interviews = filterByInterviewer(interviewerFilterId, interviews);
+                }
+
+                if (dateFromFilter || dateToFilter) {
+                    interviews = filterByDates(dateFromFilter, dateToFilter, interviews);
+                    filterErrorMessage = setErrorDateMessage(dateFromFilter, dateToFilter);
+                }
 
                 //-- FILTERS  END--------------------------
 
@@ -615,7 +647,6 @@ class InterviewsUpcoming extends Component {
         }
     }
 }
-
 
 function mapStateToProps(state) {
     return {

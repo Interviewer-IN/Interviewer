@@ -161,6 +161,7 @@ export function updateInterview(date, message) {
                 res.json()
             )
             .then(date => {
+                console.log(date);
                 dispatch(showInterviews());
                 dispatch(makeNote(
                     {

@@ -10,7 +10,6 @@ import {showProjects} from "../../redux/actions/projectActions";
 import {getRatings} from "../../redux/actions/ratingActions";
 import {getCandidates} from "../../redux/actions/candidatesActions";
 import {getInterviewers} from "../../redux/actions/interviewersActions";
-import {showFeedbacks} from "../../redux/actions/feedbackActions";
 import {
     getValueFromArr,
     filterByDates,
@@ -53,7 +52,6 @@ class InterviewsCompleted extends Component {
         if (!this.props.interviews.interviews.length) {
             dispatch(showInterviews()).then(
                 (data) => {
-                    console.log(data);
                     if (!data.length) {
                         this.setState({
                             interviewsListExist: false
@@ -341,11 +339,11 @@ class InterviewsCompleted extends Component {
                                     <span className="panel-collapse-btn__title btn-js">Expand</span>
                                     <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
                                 </div>
-                                <div className="custom-panel-title__left-side">
-                                    <div className="vacancy-info-block">
-                                        <div className="vacancy-info-block__item">
-                                            {panelTitleText}
-                                        </div>
+                            </div>
+                            <div className="custom-panel-title__left-side">
+                                <div className="vacancy-info-block">
+                                    <div className="vacancy-info-block__item">
+                                        {panelTitleText}
                                     </div>
                                 </div>
                             </div>
@@ -391,8 +389,6 @@ class InterviewsCompleted extends Component {
             } else {
                 interviewsToDisplay = (<h5 className="noData">No data of the requested type was found</h5>);
             }
-        } else {
-            interviewsToDisplay = (<h5 className="noData"> There is no data to display </h5>);
         }
 
         let filter;
