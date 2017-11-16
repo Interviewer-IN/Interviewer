@@ -76,15 +76,20 @@ class Main extends Component {
         this.checkUserStatus();
 
         let currentUser = this.getUserData();
-        let HR = currentUser.is_hr;
-        switch (HR, interview) {
-            case (!HR && !interview):
-                return this.props.history.push('/interviews-upcoming');
-            case (!HR && interview):
-                return false;
-            case (HR && interview):
-                return true;
+        if (currentUser){
+            let HR = currentUser.is_hr;
+            switch (HR, interview) {
+                case (!HR && !interview):
+                    return this.props.history.push('/interviews-upcoming');
+                case (!HR && interview):
+                    return false;
+                case (HR && interview):
+                    return true;
+            }
+        } else {
+            window.location.replace('#/login');
         }
+
     }
 
     getUserData() {
