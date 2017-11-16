@@ -1,6 +1,6 @@
 import fetch from "isomorphic-fetch";
 import {makeNote} from "./notificationActions";
-import {getCookies} from "../../utils/index";
+import {getCookies, setCookies} from "../../utils/index";
 import {CHANGE_PASSWORD_SUCCESS} from "../../config";
 
 export function changePassword(data){
@@ -27,31 +27,25 @@ export function changePassword(data){
                     case 200:
                     case 201:
 
-                        let accessToken = response.headers.get('access-token'),
-                            expiry = response.headers.get('expiry'),
-                            uid = response.headers.get('uid'),
-                            client = response.headers.get('client');
-
-                        expiry = new Date(expiry * 1000);
-
-                        document.cookie = "access-token=" + accessToken + "; path=/; expires=" + expiry;
-                        document.cookie = "uid=" + uid + "; path=/; expires=" + expiry;
-                        document.cookie = "client=" + client + "; path=/; expires=" + expiry;
-
+                        setCookies(response);
 
                         return response.json();
                     default:
-                        return {data: []}
+                        return response.json();
                 }
             })
             .then (data => {
-                dispatch(makeNote(
-                    {
-                        status: "success",
-                        text: CHANGE_PASSWORD_SUCCESS,
-                        hide: true
-                    }
-                ));
+
+                if (data.success){
+                    dispatch(makeNote(
+                        {
+                            status: "success",
+                            text: data.message,
+                            hide: true
+                        }
+                    ));
+                }
+
                 resolve(data.data);
             })
             .catch(error => {

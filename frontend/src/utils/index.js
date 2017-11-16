@@ -10,6 +10,7 @@ export {filterByDates, setErrorDateMessage} from './filtersUtils/filterByDate';
 export {filterByPosition, filterByLevel, filterByProject, filterByRating, filterByInterviewer} from './filtersUtils/filtersForInterviews';
 // export {createSearchBox, searchByLi} from './searchBox/searchBox';
 export {getCookies} from './getCookies/getCookies';
+export {setCookies} from './setCookies/setCookies';
 
 
 //-- CANDIDATES ------
