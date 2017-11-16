@@ -10,6 +10,8 @@ import {showProjects} from "../../redux/actions/projectActions";
 import {getRatings} from "../../redux/actions/ratingActions";
 import {getCandidates} from "../../redux/actions/candidatesActions";
 import {getInterviewers} from "../../redux/actions/interviewersActions";
+import {showFeedbacks} from "../../redux/actions/feedbackActions";
+import {getQuestions} from "../../redux/actions/questionsActions";
 import {
     getValueFromArr,
     filterByDates,
@@ -65,29 +67,33 @@ class InterviewsCompleted extends Component {
             );
         }
 
-        if (!this.props.vacancies.length) {
+        if (!this.props.vacancies.length > 0) {
             dispatch(getVacancies());
         }
 
-        if (!this.props.projects.length) {
+        if (!this.props.projects.length > 0) {
             dispatch(showProjects());
         }
 
-        if (!this.props.ratings.length) {
+        if (!this.props.ratings.length > 0) {
             dispatch(getRatings());
         }
 
-        if (!this.props.candidates.length) {
+        if (!this.props.candidates.length > 0) {
             dispatch(getCandidates());
         }
 
-        if (!this.props.interviewers.length) {
+        if (!this.props.interviewers.length > 0) {
             dispatch(getInterviewers());
         }
 
-        // if (!this.props.feedbacks.length) {
-        //     dispatch(showFeedbacks());
-        // }
+        if (!this.props.feedbacks.length > 0) {
+            dispatch(showFeedbacks());
+        }
+
+        if (!this.props.questions.length > 0) {
+            dispatch(getQuestions());
+        }
 
         if (isUserHR) {
             this.setState({isHR: true})
@@ -233,7 +239,15 @@ class InterviewsCompleted extends Component {
             interviewsToDisplay,
             filterErrorMessage;
 
-        if (interviews.length && vacancies.length && projects.length && levels.length && positions.length && ratings.length) {
+        if (interviews.length > 0 &&
+            vacancies.length > 0 &&
+            projects.length > 0 &&
+            levels.length > 0 &&
+            positions.length > 0 &&
+            ratings.length > 0 &&
+            feedbacks.length > 0 &&
+            questions.length > 0)
+        {
 
             interviews = interviews.filter((current) => {
                 return current.status === false;
@@ -299,13 +313,7 @@ class InterviewsCompleted extends Component {
                         currentCandidate = candidates.find(item => value.candidate_id === item.id),
                         currentInterviewer = interviewers.find(item => value.user_id === item.id),
                         currentRating = ratings.find(item => value.rating_id === item.id),
-
                         panelTitleText;
-                    //
-                    // let currentAnswersArray = feedbacks.map((item, index) => {
-                    //     if (value.interview_id === item.id)
-                    //         return item
-                    // });
 
                     if (this.state.isHR) {
                         panelTitleText =
@@ -329,6 +337,34 @@ class InterviewsCompleted extends Component {
                     }
 
                     let showFeedback = () => {
+                        let currentFeedbackArray = [];
+
+                        feedbacks.map((item, index) => {
+                            if (value.id === item.interview_id) {
+                                let currentQuestion = questions.find(question => item.question_id === question.id),
+                                    currentAnswer = item.answer,
+                                    currentFeedback = {question: currentQuestion.content, answer: currentAnswer};
+                                currentFeedbackArray.push(currentFeedback);
+                            }
+                        });
+                        console.log(currentFeedbackArray);
+
+                        return (
+                            <div>
+                                <p className="sub-header">{currentFeedbackArray[5].question}</p>
+                                <p>{currentFeedbackArray[5].answer}</p>
+                                <p className="sub-header">{currentFeedbackArray[4].question}</p>
+                                <p>{currentFeedbackArray[4].answer}</p>
+                                <p className="sub-header">{currentFeedbackArray[3].question}</p>
+                                <p>{currentFeedbackArray[3].answer}</p>
+                                <p className="sub-header">{currentFeedbackArray[2].question}</p>
+                                <p>{currentFeedbackArray[2].answer}</p>
+                                <p className="sub-header">{currentFeedbackArray[1].question}</p>
+                                <p>{currentFeedbackArray[1].answer}</p>
+                                <p className="sub-header">{currentFeedbackArray[0].question}</p>
+                                <p>{currentFeedbackArray[0].answer}</p>
+                            </div>
+                        )
 
                     };
 
@@ -353,7 +389,7 @@ class InterviewsCompleted extends Component {
                     const PANEL_DESCRIPTION = (
                         <div>
                             <p className="interview-details__header"><strong>Feedback</strong></p>
-                            {value.feedback}
+                            {showFeedback()}
                         </div>
                     );
 
