@@ -27,7 +27,6 @@ class InterviewersEdit extends Component {
             emailVal: '',
             levelVal: '',
             positionVal: '',
-            // isHr: '',
             descriptionVal: ''
         };
     }
