@@ -186,7 +186,7 @@ class Main extends Component {
                             />
 
                             <Route
-                                exact path="/interviews-completed/edit-feedback"
+                                exact path="/interviews-completed/:id/edit-feedback"
                                 name="InterviewsCompleted"
                                 render={(props) => (
                                     isLoggedIn() ?

@@ -3,7 +3,7 @@ import {makeNote} from "./notificationActions";
 
 
 function addNewFeedback(data) {
-    return { type: "CREATE_FEEDBACK", payload: data.data};
+    return {type: "CREATE_FEEDBACK", payload: data.data};
 }
 
 export function createFeedback(data, rating, message) {
@@ -28,7 +28,7 @@ export function createFeedback(data, rating, message) {
                 dispatch(makeNote(
                     {
                         status: "danger",
-                        text: "Error: "+ err,
+                        text: "Error: " + err,
                         hide: false
                     }
                 ));
@@ -38,11 +38,11 @@ export function createFeedback(data, rating, message) {
 }
 
 function addFeedbacks(feedbacks) {
-    return { type: "SHOW_FEEDBACKS", payload: feedbacks };
+    return {type: "SHOW_FEEDBACKS", payload: feedbacks};
 }
 
 function setCurrentFeedback(feedback) {
-    return { type: "SET_FEEDBACK", payload: feedback };
+    return {type: "SET_FEEDBACK", payload: feedback};
 }
 
 export function showFeedbacks() {
@@ -61,34 +61,62 @@ export function showFeedbacks() {
                 dispatch(addFeedbacks(feedbacks.data));
                 resolve(feedbacks.data);
             })
-            .catch(function(err) {
+            .catch(function (err) {
                 dispatch(makeNote(
                     {
                         status: "danger",
-                        text: "Error: "+ err,
+                        text: "Error: " + err,
                         hide: false
                     }
                 ));
                 resolve();
             });
+    });
+}
+
+function addInterviewFeedbacks(feedbacks) {
+    return {type: "SET_INTERVIEW_FEEDBACKS", payload: feedbacks};
+}
+
+export function getInterviewFeedbacks(id) {
+    return (dispatch) => new Promise(function (resolve, reject) {
+        fetch("/api/v1/feedbacks?interview_id=" + id)
+            .then(res =>
+                res.json()
+            )
+            .then(feedbacks => {
+                dispatch(addInterviewFeedbacks(feedbacks.data));
+                resolve(feedbacks.data);
+            })
+            .catch(function (error) {
+                dispatch(makeNote(
+                    {
+                        status: "danger",
+                        text: "Error: " + error,
+                        hide: false
+                    }
+                ));
+                resolve();
+            });
+
     });
 }
 
 export function getFeedback(id) {
-    return (dispatch) => new Promise(function(resolve, reject) {
+    return (dispatch) => new Promise(function (resolve, reject) {
         fetch("/api/v1/feedbacks/" + id)
-            .then(function(response) {
+            .then(function (response) {
                 return response.text();
             })
-            .then(function(feedback) {
+            .then(function (feedback) {
                 dispatch(setCurrentFeedback(JSON.parse(feedback).data));
                 resolve(JSON.parse(feedback).data);
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 dispatch(makeNote(
                     {
                         status: "danger",
-                        text: "Error: "+ error,
+                        text: "Error: " + error,
                         hide: false
                     }
                 ));
@@ -97,33 +125,6 @@ export function getFeedback(id) {
     });
 }
 
-function setInterviewFeedbacks(feedbacks) {
-    return { type: "SET_INTERVIEW_FEEDBACKS", payload: feedbacks };
-}
-
-export function getInterviewFeedbacks(id) {
-    return (dispatch) => new Promise(function(resolve, reject) {
-        fetch("/api/v1/feedbacks?interview_id=" + id)
-            .then(function(response) {
-                return response.text();
-            })
-            .then(function(feedbacks) {
-                dispatch(setCurrentFeedback(JSON.parse(feedbacks).data));
-                resolve(JSON.parse(feedbacks).data);
-            })
-            .catch(function(error) {
-                dispatch(makeNote(
-                    {
-                        status: "danger",
-                        text: "Error: "+ error,
-                        hide: false
-                    }
-                ));
-                resolve();
-            });
-
-    });
-}
 
 export function removeFeedback(id) {
     return (dispatch) => {
@@ -147,11 +148,11 @@ export function removeFeedback(id) {
                     }
                 ))
             })
-            .catch(function(err) {
+            .catch(function (err) {
                 dispatch(makeNote(
                     {
                         status: "danger",
-                        text: "Error: "+ err,
+                        text: "Error: " + err,
                         hide: false
                     }
                 ));
@@ -159,39 +160,34 @@ export function removeFeedback(id) {
     };
 }
 
-export function updateFeedback(date, message) {
+export function updateFeedback(data, message) {
     let successMessage = message || 'Feedback was updated';
-    return (dispatch) => {
-        fetch('/api/v1/feedbacks/' + date.id,
-            {
-                method: 'put',
-                body: JSON.stringify(date),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            .then(res =>
-                res.json()
-            )
-            .then(date => {
-                dispatch(showFeedbacks());
-                dispatch(makeNote(
-                    {
-                        status: "success",
-                        text: successMessage,
-                        hide: true
+    return (dispatch) => new Promise((resolve, reject) => {
+            fetch('/api/v1/feedbacks/' + data.id,
+                {
+                    method: 'put',
+                    body: JSON.stringify(data),
+                    headers: {
+                        "Content-Type": "application/json"
                     }
-                ))
-            })
-            .catch(function(err) {
-                dispatch(makeNote(
-                    {
-                        status: "danger",
-                        text: "Error: "+ err,
-                        hide: false
-                    }
-                ));
-            });
-    };
-}
+                })
+                .then(res =>
+                    res.json()
+                )
+                .then(data => {
+                    dispatch(showFeedbacks());
+                    resolve(data);
+                })
+                .catch(function (err) {
+                    dispatch(makeNote(
+                        {
+                            status: "danger",
+                            text: "Error: " + err,
+                            hide: false
+                        }
+                    ));
+                    resolve();
+                })
+        });
+    }
 

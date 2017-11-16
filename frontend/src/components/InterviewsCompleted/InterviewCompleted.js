@@ -10,6 +10,8 @@ import {showProjects} from "../../redux/actions/projectActions";
 import {getRatings} from "../../redux/actions/ratingActions";
 import {getCandidates} from "../../redux/actions/candidatesActions";
 import {getInterviewers} from "../../redux/actions/interviewersActions";
+import {showFeedbacks} from "../../redux/actions/feedbackActions";
+import {getQuestions} from "../../redux/actions/questionsActions";
 import {
     getValueFromArr,
     filterByDates,
@@ -49,7 +51,7 @@ class InterviewsCompleted extends Component {
         let isUserHR = this.props.onCheckUserRole(true);
         const {dispatch} = this.props;
 
-        if (!this.props.interviews.interviews.length) {
+        if (this.props.interviews.interviews.length < 1) {
             dispatch(showInterviews()).then(
                 (data) => {
                     if (!data.length) {
@@ -65,29 +67,33 @@ class InterviewsCompleted extends Component {
             );
         }
 
-        if (!this.props.vacancies.length) {
+        if (this.props.vacancies.length < 1) {
             dispatch(getVacancies());
         }
 
-        if (!this.props.projects.length) {
+        if (this.props.projects.length < 1) {
             dispatch(showProjects());
         }
 
-        if (!this.props.ratings.length) {
+        if (this.props.ratings.length < 1) {
             dispatch(getRatings());
         }
 
-        if (!this.props.candidates.length) {
+        if (this.props.candidates.length < 1) {
             dispatch(getCandidates());
         }
 
-        if (!this.props.interviewers.length) {
+        if (this.props.interviewers.length < 1) {
             dispatch(getInterviewers());
         }
 
-        // if (!this.props.feedbacks.length) {
-        //     dispatch(showFeedbacks());
-        // }
+        if (this.props.feedbacks.length < 1) {
+            dispatch(showFeedbacks());
+        }
+
+        if (this.props.questions.length < 1) {
+            dispatch(getQuestions());
+        }
 
         if (isUserHR) {
             this.setState({isHR: true})
@@ -189,7 +195,7 @@ class InterviewsCompleted extends Component {
     }
 
     switchToEditMode(currentID) {
-        this.props.history.push("/interviews-completed/edit-feedback");
+        this.props.history.push("/interviews-completed/" + currentID + "/edit-feedback");
     }
 
 
@@ -220,7 +226,7 @@ class InterviewsCompleted extends Component {
             )
         }
 
-        let interviews = this.props.interviews.interviews || [],
+        let interviews = this.props.interviews.interviews,
             vacancies = this.props.vacancies,
             projects = this.props.projects,
             levels = this.props.levels,
@@ -233,167 +239,212 @@ class InterviewsCompleted extends Component {
             interviewsToDisplay,
             filterErrorMessage;
 
-        if (this.state.interviewsListExist){
-            if (interviews.length && vacancies.length && projects.length && levels.length && positions.length && ratings.length) {
+        let showPanels = () => {
 
-                interviews = interviews.filter((current) => {
-                    return current.status === false;
-                });
+            if (this.state.interviewsListExist) {
 
-                //-- FILTERS  --------------------------
-
-                let projectFilterID = this.state.projectsFilterID,
-                    positionFilterID = this.state.positionsFilterID,
-                    levelFilterID = this.state.levelsFilterID,
-                    interviewerFilterId = this.state.interviewerFilterId,
-                    ratingFilterID = this.state.ratingFilterID,
-                    dateFromFilter = this.state.dateFromFilter,
-                    dateToFilter = this.state.dateToFilter;
-
-                if (projectFilterID) {
-                    interviews = filterByProject(projectFilterID, interviews, vacancies);
-                }
-
-                if (positionFilterID) {
-                    interviews = filterByPosition(positionFilterID, interviews, vacancies);
-                }
-
-                if (levelFilterID) {
-                    interviews = filterByLevel(levelFilterID, interviews, vacancies);
-                }
-
-                if (interviewerFilterId) {
-                    interviews = filterByInterviewer(interviewerFilterId, interviews);
-                }
-
-                if (ratingFilterID) {
-                    interviews = filterByRating(ratingFilterID, interviews);
-                }
-
-                if (dateFromFilter || dateToFilter) {
-                    interviews = filterByDates(dateFromFilter, dateToFilter, interviews);
-                    filterErrorMessage = setErrorDateMessage(dateFromFilter, dateToFilter);
-                }
-
-                //-- FILTERS  END--------------------------
+                if (interviews.length > 0 &&
+                    vacancies.length > 0 &&
+                    projects.length > 0 &&
+                    levels.length > 0 &&
+                    positions.length > 0 &&
+                    candidates.length > 0 &&
+                    interviewers.length > 0 &&
+                    ratings.length > 0 &&
+                    feedbacks.length > 0 &&
+                    questions.length > 0) {
 
 
-                let compareDates = (a, b) => {
-                    let dateA = new Date(a.date_time).getTime(),
-                        dateB = new Date(b.date_time).getTime();
+                    interviews = interviews.filter((current) => {
+                        return current.status === false;
+                    });
 
-                    if (dateA < dateB) return 1;
-                    if (dateA > dateB) return -1;
-                };
+                    //-- FILTERS  --------------------------
 
-                if (interviews.length) {
+                    let projectFilterID = this.state.projectsFilterID,
+                        positionFilterID = this.state.positionsFilterID,
+                        levelFilterID = this.state.levelsFilterID,
+                        interviewerFilterId = this.state.interviewerFilterId,
+                        ratingFilterID = this.state.ratingFilterID,
+                        dateFromFilter = this.state.dateFromFilter,
+                        dateToFilter = this.state.dateToFilter;
 
-                    let interviewsSortedByDates = interviews.sort(compareDates) || {};
-                    interviewsToDisplay = interviewsSortedByDates.map((value, index) => {
+                    if (projectFilterID) {
+                        interviews = filterByProject(projectFilterID, interviews, vacancies);
+                    }
 
-                        let id = value.id,
-                            currentDate = moment(new Date(value.date_time)).format("DD" + "/" + "MM" + "/" + "YYYY"),
-                            currentVacancy = vacancies.find(item => value.vacancy_id === item.id),
-                            currentProject = projects.find(item => currentVacancy.project_id === item.id),
-                            currentLevel = levels.find(item => currentVacancy.level_id === item.id),
-                            currentPosition = positions.find(item => currentVacancy.position_id === item.id),
-                            currentCandidate = candidates.find(item => value.candidate_id === item.id),
-                            currentInterviewer = interviewers.find(item => value.user_id === item.id),
-                            currentRating = ratings.find(item => value.rating_id === item.id),
+                    if (positionFilterID) {
+                        interviews = filterByPosition(positionFilterID, interviews, vacancies);
+                    }
 
-                            panelTitleText;
-                        //
-                        // let currentAnswersArray = feedbacks.map((item, index) => {
-                        //     if (value.interview_id === item.id)
-                        //         return item
-                        // });
+                    if (levelFilterID) {
+                        interviews = filterByLevel(levelFilterID, interviews, vacancies);
+                    }
 
-                        if (this.state.isHR) {
-                            panelTitleText =
-                                currentDate + " | " +
-                                currentCandidate.name + " " +
-                                currentCandidate.surname + " | " +
-                                currentLevel.name + " " +
-                                currentPosition.name + " for " +
-                                currentProject.title + " | " +
-                                "Rating: " + currentRating.grade + " | " +
-                                currentInterviewer.surname + " " + currentInterviewer.name + " ";
-                        } else {
-                            panelTitleText =
-                                currentDate + " | " +
-                                currentCandidate.name + " " +
-                                currentCandidate.surname + " | " +
-                                currentLevel.name + " - " +
-                                currentPosition.name + " - " +
-                                currentProject.title + " | " +
-                                "Rating: " + currentRating.grade;
-                        }
+                    if (interviewerFilterId) {
+                        interviews = filterByInterviewer(interviewerFilterId, interviews);
+                    }
 
-                        let showFeedback = () => {
+                    if (ratingFilterID) {
+                        interviews = filterByRating(ratingFilterID, interviews);
+                    }
 
-                        };
+                    if (dateFromFilter || dateToFilter) {
+                        interviews = filterByDates(dateFromFilter, dateToFilter, interviews);
+                        filterErrorMessage = setErrorDateMessage(dateFromFilter, dateToFilter);
+                    }
 
-                        const PANEL_TITLE = (
-                            <div className="custom-panel-title panel-list-item">
-                                <div className="custom-panel-title__right-side">
-                                    <div className="panel-collapse-btn">
-                                        <span className="panel-collapse-btn__title btn-js">Expand</span>
-                                        <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
+                    //-- FILTERS  END--------------------------
+
+
+                    let compareDates = (a, b) => {
+                        let dateA = new Date(a.date_time).getTime(),
+                            dateB = new Date(b.date_time).getTime();
+
+                        if (dateA < dateB) return 1;
+                        if (dateA > dateB) return -1;
+                    };
+
+
+                        let interviewsSortedByDates = interviews.sort(compareDates) || {};
+                        interviewsToDisplay = interviewsSortedByDates.map((value, index) => {
+
+                            let id = value.id,
+                                currentDate = moment(new Date(value.date_time)).format("DD" + "/" + "MM" + "/" + "YYYY"),
+                                currentVacancy = vacancies.find(item => value.vacancy_id === item.id),
+                                currentProject = projects.find(item => currentVacancy.project_id === item.id),
+                                currentLevel = levels.find(item => currentVacancy.level_id === item.id),
+                                currentPosition = positions.find(item => currentVacancy.position_id === item.id),
+                                currentCandidate = candidates.find(item => value.candidate_id === item.id),
+                                currentInterviewer = interviewers.find(item => value.user_id === item.id),
+                                currentRating = ratings.find(item => value.rating_id === item.id),
+                                panelTitleText;
+
+                            if (this.state.isHR) {
+                                panelTitleText =
+                                    currentDate + " | " +
+                                    currentCandidate.name + " " +
+                                    currentCandidate.surname + " | " +
+                                    currentLevel.name + " " +
+                                    currentPosition.name + " for " +
+                                    currentProject.title + " | " +
+                                    "Rating: " + currentRating.grade + " | " +
+                                    currentInterviewer.surname + " " + currentInterviewer.name + " ";
+                            } else {
+                                panelTitleText =
+                                    currentDate + " | " +
+                                    currentCandidate.name + " " +
+                                    currentCandidate.surname + " | " +
+                                    currentLevel.name + " - " +
+                                    currentPosition.name + " - " +
+                                    currentProject.title + " | " +
+                                    "Rating: " + currentRating.grade;
+                            }
+
+                            let showFeedback = () => {
+                                let currentFeedbackArray = [];
+
+                                feedbacks.map((item, index) => {
+                                    if (value.id === item.interview_id) {
+                                        let currentQuestion = questions.find(question => item.question_id === question.id),
+                                            currentAnswer = item.answer,
+                                            currentFeedback = {
+                                                question: currentQuestion.content,
+                                                answer: currentAnswer
+                                            };
+                                        currentFeedbackArray.push(currentFeedback);
+                                    }
+                                });
+
+                                return (
+                                    <div>
+                                        <p className="sub-header">Rating</p>
+                                        <p>{currentRating.grade}</p>
+                                        <p className="sub-header">{currentFeedbackArray[5].question}</p>
+                                        <p>{currentFeedbackArray[5].answer}</p>
+                                        <p className="sub-header">{currentFeedbackArray[4].question}</p>
+                                        <p>{currentFeedbackArray[4].answer}</p>
+                                        <p className="sub-header">{currentFeedbackArray[3].question}</p>
+                                        <p>{currentFeedbackArray[3].answer}</p>
+                                        <p className="sub-header">{currentFeedbackArray[2].question}</p>
+                                        <p>{currentFeedbackArray[2].answer}</p>
+                                        <p className="sub-header">{currentFeedbackArray[1].question}</p>
+                                        <p>{currentFeedbackArray[1].answer}</p>
+                                        <p className="sub-header">{currentFeedbackArray[0].question}</p>
+                                        <p>{currentFeedbackArray[0].answer}</p>
                                     </div>
-                                </div>
-                                <div className="custom-panel-title__left-side">
-                                    <div className="vacancy-info-block">
-                                        <div className="vacancy-info-block__item">
-                                            {panelTitleText}
+                                )
+
+                            };
+
+                            const PANEL_TITLE = (
+                                <div className="custom-panel-title panel-list-item">
+                                    <div className="custom-panel-title__right-side">
+                                        <div className="panel-collapse-btn">
+                                            <span className="panel-collapse-btn__title btn-js">Expand</span>
+                                            <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
+                                        </div>
+                                    </div>
+                                    <div className="custom-panel-title__left-side">
+                                        <div className="vacancy-info-block">
+                                            <div className="vacancy-info-block__item">
+                                                {panelTitleText}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        );
+                            );
 
-                        const PANEL_DESCRIPTION = (
-                            <div>
-                                <p className="interview-details__header"><strong>Feedback</strong></p>
-                                {value.feedback}
-                            </div>
-                        );
+                            const PANEL_DESCRIPTION = (
+                                <div>
+                                    <p className="interview-details__header"><strong>Feedback</strong></p>
+                                    {showFeedback()}
+                                </div>
+                            );
 
-                        if (this.state.isHR) {
+                            if (this.state.isHR) {
+                                return (
+                                    <Panels
+                                        key={id}
+                                        id={"intCompl" + value.id}
+                                        showActionBtn={false}
+                                        titleConst={PANEL_TITLE}
+                                        description={PANEL_DESCRIPTION}
+                                        showDeleteBtn={true}
+                                        deleteBtnId={"delete-feedback-" + id}
+                                        callDelete={(event) => this.openModalConfirm(id)}
+                                    />
+                                )
+                            } else {
+                                return (
+                                    <Panels
+                                        key={id}
+                                        id={"intCompl" + value.id}
+                                        showActionBtn={true}
+                                        titleForActionBtn='Edit Feedback'
+                                        titleConst={PANEL_TITLE}
+                                        description={PANEL_DESCRIPTION}
+                                        showDeleteBtn={false}
+                                        callAction={(event) => this.switchToEditMode(id)}
+                                    />
+                                )
+                            }
+                        });
 
-                            return (
-                                <Panels
-                                    key={id}
-                                    id={"intCompl" + value.id}
-                                    showActionBtn={false}
-                                    titleConst={PANEL_TITLE}
-                                    description={PANEL_DESCRIPTION}
-                                    showDeleteBtn={true}
-                                    deleteBtnId={"delete-feedback-" + id}
-                                    callDelete={(event) => this.openModalConfirm(id)}
-                                />
-                            )
-                        } else {
-                            return (
-                                <Panels
-                                    key={id}
-                                    id={"intCompl" + value.id}
-                                    showActionBtn={true}
-                                    titleForActionBtn='Edit Feedback'
-                                    titleConst={PANEL_TITLE}
-                                    description={PANEL_DESCRIPTION}
-                                    showDeleteBtn={false}
-                                    callAction={(event) => this.switchToEditMode(id)}
-                                />
-                            )
-                        }
-                    });
+                    return (
+                        <PanelGroup className='custom-panel-group'
+                                    accordion
+                        >
+                            {interviewsToDisplay}
+                        </PanelGroup>
+                    )
                 } else {
-                    interviewsToDisplay = (<h5 className="noData">No data of the requested type was found</h5>);
+                    interviewsToDisplay = (<h5 className="noData"> There is no data to display </h5>);
                 }
+            } else {
+                interviewsToDisplay = (<h5 className="noData"> There is no data to display </h5>);
             }
-        } else {
-            interviewsToDisplay = (<h5 className="noData"> There is no data to display </h5>);
-        }
+        };
 
         let filter;
         if (this.state.isHR) {
@@ -451,11 +502,7 @@ class InterviewsCompleted extends Component {
                     </div>
                 </div>
                 <div className="interview-panels-block">
-                    <PanelGroup bsClass='custom-panel-group'
-                                accordion
-                    >
-                        {interviewsToDisplay}
-                    </PanelGroup>
+                    {showPanels()}
                 </div>
 
                 <Modal show={this.state.showModalConfirm}
@@ -489,7 +536,9 @@ class InterviewsCompleted extends Component {
 }
 
 
-function mapStateToProps(state) {
+function
+
+mapStateToProps(state) {
     return {
         interviews: state.interviews,
         notifications: state.notifications,
@@ -507,4 +556,12 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(InterviewsCompleted);
+export
+default
+
+connect(mapStateToProps)
+
+(
+    InterviewsCompleted
+)
+;

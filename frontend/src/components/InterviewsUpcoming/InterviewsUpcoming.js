@@ -521,9 +521,12 @@ class InterviewsUpcoming extends Component {
                             //-- End Creating Interview Card--------------------------
                         );
                         return (
+
                             <div key={index}>
                                 <p className="interview-dates">{dateToDisplay}</p>
-                                {interviewsToDisplay}
+                                <PanelGroup className='custom-panel-group'>
+                                    {interviewsToDisplay}
+                                </PanelGroup>
                             </div>
                         )
                     });
@@ -589,9 +592,7 @@ class InterviewsUpcoming extends Component {
                     </div>
                 </div>
                 <div className="interview-panels-block">
-                    <PanelGroup bsClass='custom-panel-group'>
-                        {interviewsByDates}
-                    </PanelGroup>
+                    {interviewsByDates}
                 </div>
 
                 <Modal show={this.state.showModalDeleteConfirm}

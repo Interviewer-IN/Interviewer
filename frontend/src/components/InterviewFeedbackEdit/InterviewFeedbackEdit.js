@@ -6,27 +6,33 @@ import PageTitle from "./../../containers/PageTitle";
 import "./InterviewFeedbackEdit.css";
 import {FIELD_SPACE_REGEX} from "../../config";
 import {getRatings} from "../../redux/actions/ratingActions";
+import {getInterview, updateInterview} from "../../redux/actions/interviewActions";
+import {updateFeedback, showFeedbacks} from "../../redux/actions/feedbackActions";
+import {getQuestions} from "../../redux/actions/questionsActions";
 import TextareaAutosize from "react-autosize-textarea";
 
 
-class InterviewFeedbackEdit extends Component {
+class CreateInterviewFeedback extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            rating: 0,
-            question1: "",
-            question2: "",
-            question3: "",
-            question4: "",
-            question5: "",
-            question6: "",
-            question1Error: "",
-            question2Error: "",
-            question3Error: "",
-            question4Error: "",
-            question5Error: "",
-            question6Error: "",
+            currentInterviewID: "",
+            rating: "",
+            answer1: {id: "", text: "", questionID: ""},
+            answer2: {id: "", text: "", questionID: ""},
+            answer3: {id: "", text: "", questionID: ""},
+            answer4: {id: "", text: "", questionID: ""},
+            answer5: {id: "", text: "", questionID: ""},
+            answer6: {id: "", text: "", questionID: ""},
+            answer1Error: "",
+            answer2Error: "",
+            answer3Error: "",
+            answer4Error: "",
+            answer5Error: "",
+            answer6Error: "",
+            questions: "",
+            ratings: "",
             showModalAlert: false,
             showModalConfirm: false,
             showModaLCreateAlert: false,
@@ -39,10 +45,97 @@ class InterviewFeedbackEdit extends Component {
             this.props.history.push('/interviews-upcoming');
         }
 
-        const {dispatch} = this.props;
-        if (!this.props.ratings.langth){
-            dispatch(getRatings());
+        if (this.props.questions.length < 1) {
+            const {dispatch} = this.props;
+            dispatch(getQuestions());
         }
+
+        if (this.props.interviews.interviews.length > 0 &&
+            this.props.questions.length > 0 &&
+            this.props.ratings.length > 0 &&
+            this.props.feedbacks.length > 0) {
+            let currentInterviewID = +this.props.match.params.id,
+                interviews = interviews = this.props.interviews.interviews,
+                ratings = this.props.ratings,
+                feedbacks = this.props.feedbacks,
+                currentInterview = interviews.find((currentItem) => {
+                return (
+                    currentItem.id === +currentInterviewID
+                )
+            });
+            this.setStates (
+                currentInterviewID,
+                currentInterview,
+                ratings,
+                feedbacks
+            )
+        } else {
+            const {dispatch} = this.props;
+            dispatch(getInterview(this.props.match.params.id)).then(() => {
+                let currentInterview = this.props.interviews.currentInterview,
+                    currentInterviewID = currentInterview.id;
+
+                    dispatch(getRatings()).then(() => {
+                        let ratings = this.props.ratings;
+
+                        dispatch(showFeedbacks()).then(() => {
+                            let feedbacks = this.props.feedbacks;
+
+                            this.setStates (
+                                currentInterviewID,
+                                currentInterview,
+                                ratings,
+                                feedbacks
+                            )
+                        });
+                    });
+                });
+        }
+    }
+
+    setStates(currentInterviewID, currentInterview, ratings, feedbacks) {
+
+        let currentRatingObj = ratings.find(item => currentInterview.rating_id === item.id),
+            currentInterviewFeedbacks = feedbacks.filter((item) => {
+                return item.interview_id === currentInterview.id
+            });
+
+        this.setState(
+            {
+                currentInterviewID: currentInterviewID,
+                rating: currentRatingObj.grade,
+                answer1: {
+                    id: currentInterviewFeedbacks[5].id,
+                    text: currentInterviewFeedbacks[5].answer,
+                    questionID: currentInterviewFeedbacks[5].question_id
+                },
+                answer2: {
+                    id: currentInterviewFeedbacks[4].id,
+                    text: currentInterviewFeedbacks[4].answer,
+                    questionID: currentInterviewFeedbacks[4].question_id
+                },
+                answer3: {
+                    id: currentInterviewFeedbacks[3].id,
+                    text: currentInterviewFeedbacks[3].answer,
+                    questionID: currentInterviewFeedbacks[3].question_id
+                },
+                answer4: {
+                    id: currentInterviewFeedbacks[2].id,
+                    text: currentInterviewFeedbacks[2].answer,
+                    questionID: currentInterviewFeedbacks[2].question_id
+                },
+                answer5: {
+                    id: currentInterviewFeedbacks[1].id,
+                    text: currentInterviewFeedbacks[1].answer,
+                    questionID: currentInterviewFeedbacks[1].question_id
+                },
+                answer6: {
+                    id: currentInterviewFeedbacks[0].id,
+                    text: currentInterviewFeedbacks[0].answer,
+                    questionID: currentInterviewFeedbacks[0].question_id
+                },
+            }
+        );
     }
 
     handleRatingChange(event) {
@@ -50,71 +143,64 @@ class InterviewFeedbackEdit extends Component {
         this.setState({ratingError: ""});
     }
 
-    handleQuestion1Change(event) {
-        this.setState({question1: event.target.value});
-        this.clearSpan(event.target.id);
+    handleAnswersChange(event) {
+        let id = event.target.id,
+            name = event.target.name,
+            questionID = name.split("-")[1],
+            questionNumber = name.split("-")[0];
+        this.clearSpan(questionNumber);
+        switch (questionNumber) {
+            case ("question1"):
+                return this.setState({answer1: {id: id, text: event.target.value, questionID: questionID}});
+            case ("question2"):
+                return this.setState({answer2: {id: id, text: event.target.value, questionID: questionID}});
+            case ("question3"):
+                return this.setState({answer3: {id: id, text: event.target.value, questionID: questionID}});
+            case ("question4"):
+                return this.setState({answer4: {id: id, text: event.target.value, questionID: questionID}});
+            case ("question5"):
+                return this.setState({answer5: {id: id, text: event.target.value, questionID: questionID}});
+            case ("question6"):
+                return this.setState({answer6: {id: id, text: event.target.value, questionID: questionID}});
+        }
     }
 
-    handleQuestion2Change(event) {
-        this.setState({question2: event.target.value});
-        this.clearSpan(event.target.id);
-    }
-
-    handleQuestion3Change(event) {
-        this.setState({question3: event.target.value});
-        this.clearSpan(event.target.id);
-    }
-
-    handleQuestion4Change(event) {
-        this.setState({question4: event.target.value});
-        this.clearSpan(event.target.id);
-    }
-
-    handleQuestion5Change(event) {
-        this.setState({question5: event.target.value});
-        this.clearSpan(event.target.id);
-    }
-
-    handleQuestion6Change(event) {
-        this.setState({question6: event.target.value});
-        this.clearSpan(event.target.id);
-    }
-
-    clearSpan(inputID) {
-        let spanID = inputID.split("-")[1] + "-span",
+    clearSpan(questionNumber) {
+        let spanID = questionNumber + "-span",
             spanElement = document.getElementById(spanID);
         spanElement.innerHTML = "";
     }
 
     isFieldsEmpty() {
-        let rating = this.state.rating,
-            question1 = this.state.question1,
-            question2 = this.state.question2,
-            question3 = this.state.question3,
-            question4 = this.state.question4,
-            question5 = this.state.question5,
-            question6 = this.state.question6,
+        let answers = [
+                this.state.answer1,
+                this.state.answer2,
+                this.state.answer3,
+                this.state.answer4,
+                this.state.answer5,
+                this.state.answer6
+            ],
+            rating = this.state.rating,
             emptyFieldMessage = "Please, fill the field",
-            questions = [question1, question2, question3, question4, question5, question6],
-            emptyQuestions = [],
+            emptyAnswers = [],
             fieldsEmpty = true;
 
         if(!rating) {
             this.setState({ratingError: emptyFieldMessage});
         }
 
-        questions.forEach((item, i) => {
-            let question = item,
-                emptyQuestion = !question || question.match(FIELD_SPACE_REGEX),
-                fieldId = "question"+(i+1)+"-span";
-            emptyQuestions.push(emptyQuestion);
-            if (emptyQuestion) {
+        answers.forEach((item, i) => {
+            let answerText = item.text,
+                emptyAnswer = !answerText || answerText.match(FIELD_SPACE_REGEX),
+                fieldId = "question" + ( i + 1 ) + "-span";
+            emptyAnswers.push(emptyAnswer);
+            if (emptyAnswer) {
                 let spanError = document.getElementById(fieldId);
                 spanError.innerHTML = emptyFieldMessage;
             }
         });
 
-        if(!emptyQuestions.includes(true) && rating) {
+        if(!emptyAnswers.includes(true) && rating) {
             fieldsEmpty = false;
         }
 
@@ -135,8 +221,75 @@ class InterviewFeedbackEdit extends Component {
 
     submitForm(event) {
         event.preventDefault();
+
         if (!this.isFieldsEmpty()) {
-            this.props.history.push("/interviews-upcoming");
+            this.props.history.push("/interviews-completed");
+            let interviewID = this.state.currentInterviewID,
+                ratings = this.props.ratings,
+                currentRating = ratings.find(item => item.grade === this.state.rating),
+                ratingID = currentRating.id;
+
+            const {dispatch} = this.props;
+            dispatch(updateFeedback(
+                {
+                    id: this.state.answer1.id,
+                    interview_id: interviewID,
+                    question_id: this.state.answer1.questionID,
+                    answer: this.state.answer1.text
+                }
+            )).then(() => {
+                dispatch(updateFeedback(
+                    {
+                        id: this.state.answer2.id,
+                        interview_id: interviewID,
+                        question_id: this.state.answer2.questionID,
+                        answer: this.state.answer2.text
+                    }
+                )).then(() => {
+                    dispatch(updateFeedback(
+                        {
+                            id: this.state.answer3.id,
+                            interview_id: interviewID,
+                            question_id: this.state.answer3.questionID,
+                            answer: this.state.answer3.text
+                        }
+                    )).then(() => {
+                        dispatch(updateFeedback(
+                            {
+                                id: this.state.answer4.id,
+                                interview_id: interviewID,
+                                question_id: this.state.answer4.questionID,
+                                answer: this.state.answer4.text
+                            }
+                        )).then(() => {
+                            dispatch(updateFeedback(
+                                {
+                                    id: this.state.answer5.id,
+                                    interview_id: interviewID,
+                                    question_id: this.state.answer5.questionID,
+                                    answer: this.state.answer5.text
+                                }
+                            )).then(() => {
+                                dispatch(updateFeedback(
+                                    {
+                                        id: this.state.answer6.id,
+                                        interview_id: interviewID,
+                                        question_id: this.state.answer6.questionID,
+                                        answer: this.state.answer6.text
+                                    }
+                                )).then(() => {
+                                    dispatch(updateInterview(
+                                        {
+                                            id: interviewID,
+                                            rating_id: ratingID,
+                                        }, "Feedback was updated"
+                                    ));
+                                });
+                            });
+                        });
+                    });
+                });
+            });
         }
     }
 
@@ -148,12 +301,12 @@ class InterviewFeedbackEdit extends Component {
     isFieldsNotEmpty(event) {
         event.preventDefault();
         if (this.state.rating ||
-            this.state.question1 ||
-            this.state.question2 ||
-            this.state.question3 ||
-            this.state.question4 ||
-            this.state.question5 ||
-            this.state.question6){
+            this.state.answer1.text ||
+            this.state.answer2.text ||
+            this.state.answer3.text ||
+            this.state.answer4.text ||
+            this.state.answer5.text ||
+            this.state.answer6.text){
             this.setState({
                 confirmText: "Are you sure you want to cancel without saving changes?"
             });
@@ -165,9 +318,53 @@ class InterviewFeedbackEdit extends Component {
 
     render() {
 
+
+
+        let questionsProps = this.props.questions,
+            questions = [];
+        let answers = [
+            this.state.answer1,
+            this.state.answer2,
+            this.state.answer3,
+            this.state.answer4,
+            this.state.answer5,
+            this.state.answer6
+        ];
+
+        if (questionsProps.length > 0) {
+            questions = questionsProps.map((item, index) => {
+                let answer = answers[index];
+                let answerIndex = index + 1;
+
+                return (
+                    <div className="form-group has-error" key={index}>
+                        <label className="control-label form-label">{item.content}</label>
+                        <p className="form-sublabel back-link">{item.hint}</p>
+                        <TextareaAutosize
+                            id={answer.id}
+                            type="text"
+                            name={"question" + answerIndex + "-" + item.id}
+                            placeholder='Input your answer'
+                            className="form-control boxed"
+                            maxLength="2000"
+                            value={answer.text}
+                            onChange={(event) => this.handleAnswersChange(event)}
+                        />
+                        <span
+                            id={"question" + answerIndex + "-span"}
+                            className="has-error error-message">
+                        </span>
+                    </div>
+                );
+            });
+        }
+
         let showRatingSelect = () => {
 
-            let ratingsList = this.props.ratings,
+            let ratingsProps = this.props.ratings,
+                ratingsList = ratingsProps.map((item, index) => {
+                    return item
+                }),
                 options = [];
 
             if (ratingsList.length) {
@@ -186,8 +383,8 @@ class InterviewFeedbackEdit extends Component {
                 <div className="form-group margin-none">
                     <select className="form-control form-control-sm filter-select custom-mode"
                             onChange={(event) => this.handleRatingChange(event)}
+                            value={this.state.rating}
                     >
-                        <option></option>
                         {options}
                     </select>
                 </div>
@@ -220,126 +417,16 @@ class InterviewFeedbackEdit extends Component {
                                     <span className="has-error error-message">{this.state.ratingError}</span>
                                 </div>
                             </div>
-
-                            <div className="form-group has-error">
-                                <label className="control-label form-label">Question 1</label>
-                                <p className="form-sublabel back-link">Maximum 2000 characters</p>
-                                <TextareaAutosize
-                                    id="feedback-edit-question1"
-                                    type="text"
-                                    name="question1"
-                                    placeholder='Input your '
-                                    className="form-control boxed"
-                                    maxLength="2000"
-                                    value={this.state.question1}
-                                    onChange={(event) => this.handleQuestion1Change(event)}
-                                    autoFocus
-                                />
-                                <span
-                                    id="question1-span"
-                                    className="has-error error-message">
-                                </span>
-                            </div>
-
-                            <div className="form-group form-field-margin">
-                                <label className="control-label form-label">Question 2</label>
-                                <p className="form-sublabel back-link">Maximum 2000 characters</p>
-                                <TextareaAutosize
-                                    id="feedback-edit-question2"
-                                    name="question2"
-                                    placeholder="Input Description"
-                                    className="form-control boxed"
-                                    maxLength="2000"
-                                    value={this.state.question2}
-                                    onChange={(event) => this.handleQuestion2Change(event)}
-                                />
-                                <span
-                                    id="question2-span"
-                                    className="has-error error-message">
-                                </span>
-                            </div>
-
-                            <div className="form-group form-field-margin">
-                                <label className="control-label form-label">Question 3</label>
-                                <p className="form-sublabel back-link">Maximum 2000 characters</p>
-                                <TextareaAutosize
-                                    id="feedback-edit-question3"
-                                    name="question3"
-                                    placeholder="Input Description"
-                                    className="form-control boxed"
-                                    maxLength="2000"
-                                    value={this.state.question3}
-                                    onChange={(event) => this.handleQuestion3Change(event)}
-                                />
-                                <span
-                                    id="question3-span"
-                                    className="has-error error-message">
-                                </span>
-                            </div>
-
-                            <div className="form-group form-field-margin">
-                                <label className="control-label form-label">Question 4</label>
-                                <p className="form-sublabel back-link">Maximum 2000 characters</p>
-                                <TextareaAutosize
-                                    id="feedback-edit-question4"
-                                    name="question4"
-                                    placeholder="Input Description"
-                                    className="form-control boxed"
-                                    maxLength="2000"
-                                    value={this.state.question4}
-                                    onChange={(event) => this.handleQuestion4Change(event)}
-                                />
-                                <span
-                                    id="question4-span"
-                                    className="has-error error-message">
-                                </span>
-                            </div>
-
-                            <div className="form-group form-field-margin">
-                                <label className="control-label form-label">Question 5</label>
-                                <p className="form-sublabel back-link">Maximum 2000 characters</p>
-                                <TextareaAutosize
-                                    id="feedback-edit-question5"
-                                    name="question5"
-                                    placeholder="Input Description"
-                                    className="form-control boxed"
-                                    maxLength="2000"
-                                    value={this.state.question5}
-                                    onChange={(event) => this.handleQuestion5Change(event)}
-                                />
-                                <span
-                                    id="question5-span"
-                                    className="has-error error-message">
-                                </span>
-                            </div>
-
-                            <div className="form-group form-field-margin">
-                                <label className="control-label form-label">Question 6</label>
-                                <p className="form-sublabel back-link">Maximum 2000 characters</p>
-                                <TextareaAutosize
-                                    id="interview-question6"
-                                    name="question6"
-                                    placeholder="Input Description"
-                                    className="form-control boxed"
-                                    maxLength="2000"
-                                    value={this.state.question6}
-                                    onChange={(event) => this.handleQuestion6Change(event)}
-                                />
-                                <span
-                                    id="question6-span"
-                                    className="has-error error-message">
-                                </span>
-                            </div>
-
+                            {questions}
                             <div className="form-group">
                                 <button
-                                    id="create-interview-submitBtn"
+                                    id="edit-feedback-submitBtn"
                                     type="submit"
                                     className="btn btn-primary"
-                                >Create
+                                >Save
                                 </button>
                                 <button
-                                    id="create-interview-resetBtn"
+                                    id="edit-feedback-resetBtn"
                                     type="reset"
                                     className="btn btn-danger"
                                     onClick={(event) => this.isFieldsNotEmpty(event)}
@@ -381,7 +468,10 @@ class InterviewFeedbackEdit extends Component {
 function mapStateToProps (state) {
     return {
         ratings: state.ratings.ratings,
+        questions: state.questions.questions,
+        interviews: state.interviews,
+        feedbacks: state.feedback.feedbacks,
     }
 }
 
-export default connect(mapStateToProps)(InterviewFeedbackEdit);
+export default connect(mapStateToProps)(CreateInterviewFeedback);

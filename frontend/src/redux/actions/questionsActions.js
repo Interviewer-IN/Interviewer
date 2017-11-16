@@ -4,6 +4,7 @@ import {makeNote} from "./notificationActions";
 
 
 function addQuestions(questions) {
+
     return { type: "SHOW_QUESTIONS", payload: questions };
 }
 

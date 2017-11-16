@@ -40,29 +40,33 @@ class CreateInterviewFeedback extends Component {
     componentWillMount() {
         let isUserHR = this.props.onCheckUserRole(true);
         if (isUserHR) {
-            this.props.history.push('/interviews-upcoming');
+            this.props.history.push('/interviews-completed');
         }
 
-        const {dispatch} = this.props;
-
         if (this.props.interviews.interviews.length > 0) {
+            let currentInterview = this.props.match.params;
+            this.setState({currentInterviewID: currentInterview.id});
+
+        } else {
+            const {dispatch} = this.props;
+
             dispatch(getInterview(this.props.match.params.id)).then(() => {
                 let currentInterview = this.props.interviews.currentInterview;
                 this.setState({currentInterviewID: currentInterview.id});
             });
-        } else {
-            let currentInterview = this.props.match.params;
-            this.setState({currentInterviewID: currentInterview.id});
         }
 
-        if (!this.props.questions.length) {
+        if (!this.props.questions.length > 0) {
+            const {dispatch} = this.props;
             dispatch(getQuestions());
         }
 
-        if (!this.props.ratings.length){
+        if (!this.props.ratings.length > 0) {
+            const {dispatch} = this.props;
             dispatch(getRatings());
         }
     }
+
 
     handleRatingChange(event) {
         this.setState({rating: event.target.value});
