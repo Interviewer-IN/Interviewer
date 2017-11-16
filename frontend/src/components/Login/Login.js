@@ -245,7 +245,7 @@ class Login extends Component {
                                     {/*<h1 className="auth-title">*/}
                                         {/*Interviewer Logo*/}
                                     {/*</h1>*/}
-                                    <div className="logo"/>
+                                    <div className="custom-logo"/>
                                 </header>
                                 <div className="auth-content">
                                     <p className="text-xs-center">LOGIN TO CONTINUE</p>
