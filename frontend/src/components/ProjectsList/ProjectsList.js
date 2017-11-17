@@ -98,8 +98,12 @@ class ProjectsList extends Component {
                                     </div>
                                 </div>
                                 <div className="custom-panel-title__left-side">
-                                    <div className="vacancy-info-block">
-                                        <div className="vacancy-info-block__item">{value.title}</div>
+                                    <div className="info-block__item">
+                                        <div className="info-block__project">
+                                            <span className="info-block__position-name">
+                                                {value.title}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

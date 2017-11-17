@@ -1,10 +1,10 @@
 import React, {Component} from "react";
+import {connect} from "react-redux";
 import TextareaAutosize from "react-autosize-textarea";
 import Helmet from "react-helmet";
 import PageTitle from "./../../containers/PageTitle";
 import {Modal, Button} from "react-bootstrap";
 import "./CreateProject.css";
-import {connect} from "react-redux";
 import {createProject} from "../../redux/actions/projectActions";
 import {FIELD_CHAR_REGEX, FIELD_SPACE_REGEX} from "../../config"
 
@@ -173,7 +173,9 @@ class CreateProject extends Component {
                         />
                         <form onSubmit={(event) => this.validateFormFields(event)}>
                             <div className="form-group has-error">
-                                <label className="control-label form-label">Project Title</label>
+                                <label className="control-label form-label">Project Title
+                                    <span className="required-field">*</span>
+                                </label>
                                 <p className="form-sublabel back-link">Maximum 60 characters</p>
                                 <input
                                     id="create-project-title"
@@ -189,7 +191,9 @@ class CreateProject extends Component {
                                 <span className="has-error error-message">{this.state.titleError}</span>
                             </div>
                             <div className="form-group form-field-margin">
-                                <label className="control-label form-label">Project Description</label>
+                                <label className="control-label form-label">Project Description
+                                    <span className="required-field">*</span>
+                                </label>
                                 <p className="form-sublabel back-link">Maximum 3000 characters</p>
                                 <TextareaAutosize
                                     id="create-project-descr"

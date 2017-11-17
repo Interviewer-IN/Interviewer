@@ -259,51 +259,53 @@ class InterviewsCompleted extends Component {
                         return current.status === false;
                     });
 
-                    //-- FILTERS  --------------------------
+                    if (interviews.length) {
 
-                    let projectFilterID = this.state.projectsFilterID,
-                        positionFilterID = this.state.positionsFilterID,
-                        levelFilterID = this.state.levelsFilterID,
-                        interviewerFilterId = this.state.interviewerFilterId,
-                        ratingFilterID = this.state.ratingFilterID,
-                        dateFromFilter = this.state.dateFromFilter,
-                        dateToFilter = this.state.dateToFilter;
+                        //-- FILTERS  --------------------------
 
-                    if (projectFilterID) {
-                        interviews = filterByProject(projectFilterID, interviews, vacancies);
-                    }
+                        let projectFilterID = this.state.projectsFilterID,
+                            positionFilterID = this.state.positionsFilterID,
+                            levelFilterID = this.state.levelsFilterID,
+                            interviewerFilterId = this.state.interviewerFilterId,
+                            ratingFilterID = this.state.ratingFilterID,
+                            dateFromFilter = this.state.dateFromFilter,
+                            dateToFilter = this.state.dateToFilter;
 
-                    if (positionFilterID) {
-                        interviews = filterByPosition(positionFilterID, interviews, vacancies);
-                    }
+                        if (projectFilterID) {
+                            interviews = filterByProject(projectFilterID, interviews, vacancies);
+                        }
 
-                    if (levelFilterID) {
-                        interviews = filterByLevel(levelFilterID, interviews, vacancies);
-                    }
+                        if (positionFilterID) {
+                            interviews = filterByPosition(positionFilterID, interviews, vacancies);
+                        }
 
-                    if (interviewerFilterId) {
-                        interviews = filterByInterviewer(interviewerFilterId, interviews);
-                    }
+                        if (levelFilterID) {
+                            interviews = filterByLevel(levelFilterID, interviews, vacancies);
+                        }
 
-                    if (ratingFilterID) {
-                        interviews = filterByRating(ratingFilterID, interviews);
-                    }
+                        if (interviewerFilterId) {
+                            interviews = filterByInterviewer(interviewerFilterId, interviews);
+                        }
 
-                    if (dateFromFilter || dateToFilter) {
-                        interviews = filterByDates(dateFromFilter, dateToFilter, interviews);
-                        filterErrorMessage = setErrorDateMessage(dateFromFilter, dateToFilter);
-                    }
+                        if (ratingFilterID) {
+                            interviews = filterByRating(ratingFilterID, interviews);
+                        }
 
-                    //-- FILTERS  END--------------------------
+                        if (dateFromFilter || dateToFilter) {
+                            interviews = filterByDates(dateFromFilter, dateToFilter, interviews);
+                            filterErrorMessage = setErrorDateMessage(dateFromFilter, dateToFilter);
+                        }
+
+                        //-- FILTERS  END--------------------------
 
 
-                    let compareDates = (a, b) => {
-                        let dateA = new Date(a.date_time).getTime(),
-                            dateB = new Date(b.date_time).getTime();
+                        let compareDates = (a, b) => {
+                            let dateA = new Date(a.date_time).getTime(),
+                                dateB = new Date(b.date_time).getTime();
 
-                        if (dateA < dateB) return 1;
-                        if (dateA > dateB) return -1;
-                    };
+                            if (dateA < dateB) return 1;
+                            if (dateA > dateB) return -1;
+                        };
 
 
                         let interviewsSortedByDates = interviews.sort(compareDates) || {};
@@ -318,82 +320,150 @@ class InterviewsCompleted extends Component {
                                 currentCandidate = candidates.find(item => value.candidate_id === item.id),
                                 currentInterviewer = interviewers.find(item => value.user_id === item.id),
                                 currentRating = ratings.find(item => value.rating_id === item.id),
-                                panelTitleText;
+                                panelTitle;
 
-                            if (this.state.isHR) {
-                                panelTitleText =
-                                    currentDate + " | " +
-                                    currentCandidate.name + " " +
-                                    currentCandidate.surname + " | " +
-                                    currentLevel.name + " " +
-                                    currentPosition.name + " for " +
-                                    currentProject.title + " | " +
-                                    "Rating: " + currentRating.grade + " | " +
-                                    currentInterviewer.surname + " " + currentInterviewer.name + " ";
-                            } else {
-                                panelTitleText =
-                                    currentDate + " | " +
-                                    currentCandidate.name + " " +
-                                    currentCandidate.surname + " | " +
-                                    currentLevel.name + " - " +
-                                    currentPosition.name + " - " +
-                                    currentProject.title + " | " +
-                                    "Rating: " + currentRating.grade;
-                            }
 
                             let showFeedback = () => {
                                 let currentFeedbackArray = [];
 
                                 feedbacks.map((item, index) => {
                                     if (value.id === item.interview_id) {
-                                        let currentQuestion = questions.find(question => item.question_id === question.id),
+                                        let currentQuestion = questions.find(
+                                            question => item.question_id === question.id
+                                            ),
                                             currentAnswer = item.answer,
                                             currentFeedback = {
                                                 question: currentQuestion.content,
                                                 answer: currentAnswer
                                             };
+
                                         currentFeedbackArray.push(currentFeedback);
                                     }
                                 });
 
-                                return (
-                                    <div>
-                                        <p className="sub-header">Rating</p>
-                                        <p>{currentRating.grade}</p>
-                                        <p className="sub-header">{currentFeedbackArray[5].question}</p>
-                                        <p>{currentFeedbackArray[5].answer}</p>
-                                        <p className="sub-header">{currentFeedbackArray[4].question}</p>
-                                        <p>{currentFeedbackArray[4].answer}</p>
-                                        <p className="sub-header">{currentFeedbackArray[3].question}</p>
-                                        <p>{currentFeedbackArray[3].answer}</p>
-                                        <p className="sub-header">{currentFeedbackArray[2].question}</p>
-                                        <p>{currentFeedbackArray[2].answer}</p>
-                                        <p className="sub-header">{currentFeedbackArray[1].question}</p>
-                                        <p>{currentFeedbackArray[1].answer}</p>
-                                        <p className="sub-header">{currentFeedbackArray[0].question}</p>
-                                        <p>{currentFeedbackArray[0].answer}</p>
-                                    </div>
-                                )
+                                    return (
+                                        <div>
+                                            <p className="sub-header">Rating</p>
+                                            <p>{currentRating.grade}</p>
+                                            <p className="sub-header">{currentFeedbackArray[5].question}</p>
+                                            <p>{currentFeedbackArray[5].answer}</p>
+                                            <p className="sub-header">{currentFeedbackArray[4].question}</p>
+                                            <p>{currentFeedbackArray[4].answer}</p>
+                                            <p className="sub-header">{currentFeedbackArray[3].question}</p>
+                                            <p>{currentFeedbackArray[3].answer}</p>
+                                            <p className="sub-header">{currentFeedbackArray[2].question}</p>
+                                            <p>{currentFeedbackArray[2].answer}</p>
+                                            <p className="sub-header">{currentFeedbackArray[1].question}</p>
+                                            <p>{currentFeedbackArray[1].answer}</p>
+                                            <p className="sub-header">{currentFeedbackArray[0].question}</p>
+                                            <p>{currentFeedbackArray[0].answer}</p>
+                                        </div>
+                                    )
 
                             };
 
-                            const PANEL_TITLE = (
-                                <div className="custom-panel-title panel-list-item">
-                                    <div className="custom-panel-title__right-side">
-                                        <div className="panel-collapse-btn">
-                                            <span className="panel-collapse-btn__title btn-js">Expand</span>
-                                            <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
+                            if (this.state.isHR) {
+                                panelTitle = (
+                                    <div className="custom-panel-title panel-list-item">
+                                        <div className="custom-panel-title__right-side">
+                                            <div className="panel-collapse-btn">
+                                                <span className="panel-collapse-btn__title btn-js">Expand</span>
+                                                <span
+                                                    className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="custom-panel-title__left-side">
-                                        <div className="vacancy-info-block">
-                                            <div className="vacancy-info-block__item">
-                                                {panelTitleText}
+                                        <div className="custom-panel-title__left-side">
+                                            <div className="info-block">
+                                                <div className="info-block__item">
+                                                    <div className="info-block__project">
+                                                            <span className="info-block__position-name">
+                                                                {currentDate}
+                                                            </span>
+                                                    </div>
+                                                    <div
+                                                        className="info-block__position separate-line margin-right">
+                                                            <span className="info-block__position-name">
+                                                            {currentCandidate.name + " " +
+                                                            currentCandidate.surname }
+                                                            </span>
+                                                    </div>
+                                                    <div className="info-block__position separate-line">
+                                                            <span className="info-block__position-name">
+                                                                {currentLevel.name + " " +
+                                                                currentPosition.name}
+                                                            </span>
+                                                        <span className="info-block__position-capture margin-left">
+                                                                for
+                                                            </span>
+                                                        <span className="info-block__position-name">
+                                                                {currentProject.title}
+                                                            </span>
+                                                    </div>
+                                                    <div className="info-block__position separate-line margin-left">
+                                                                Rating:
+                                                        <span className="info-block__position-name margin-left">
+                                                            {currentRating.grade}
+                                                            </span>
+                                                    </div>
+                                                    <div className="info-block__position separate-line margin-left">
+                                                            <span className="info-block__position-name">
+                                                            {currentInterviewer.surname + " " + currentInterviewer.name}
+                                                            </span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            );
+                                );
+                            } else {
+                                panelTitle = (
+                                    <div className="custom-panel-title panel-list-item">
+                                        <div className="custom-panel-title__right-side">
+                                            <div className="panel-collapse-btn">
+                                                <span className="panel-collapse-btn__title btn-js">Expand</span>
+                                                <span
+                                                    className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
+                                            </div>
+                                        </div>
+                                        <div className="custom-panel-title__left-side">
+                                            <div className="info-block">
+                                                <div className="info-block__item">
+                                                    <div className="info-block__project">
+                                                            <span className="info-block__position-name">
+                                                                {currentDate}
+                                                            </span>
+                                                    </div>
+                                                    <div
+                                                        className="info-block__position separate-line margin-right">
+                                                            <span className="info-block__position-name">
+                                                            {currentCandidate.name + " " +
+                                                            currentCandidate.surname }
+                                                            </span>
+                                                    </div>
+                                                    <div className="info-block__position separate-line">
+                                                            <span className="info-block__position-name">
+                                                                {currentLevel.name + " " +
+                                                                currentPosition.name}
+                                                            </span>
+                                                        <span className="info-block__position-capture margin-left">
+                                                                for
+                                                            </span>
+                                                        <span className="info-block__position-name">
+                                                                {currentProject.title}
+                                                            </span>
+                                                    </div>
+                                                    <div className="info-block__position separate-line margin-left">
+                                                                Rating:
+                                                        <span className="info-block__position-name margin-left">
+                                                            {currentRating.grade}
+                                                            </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            }
 
                             const PANEL_DESCRIPTION = (
                                 <div>
@@ -408,7 +478,7 @@ class InterviewsCompleted extends Component {
                                         key={id}
                                         id={"intCompl" + value.id}
                                         showActionBtn={false}
-                                        titleConst={PANEL_TITLE}
+                                        titleConst={panelTitle}
                                         description={PANEL_DESCRIPTION}
                                         showDeleteBtn={true}
                                         deleteBtnId={"delete-feedback-" + id}
@@ -422,7 +492,7 @@ class InterviewsCompleted extends Component {
                                         id={"intCompl" + value.id}
                                         showActionBtn={true}
                                         titleForActionBtn='Edit Feedback'
-                                        titleConst={PANEL_TITLE}
+                                        titleConst={panelTitle}
                                         description={PANEL_DESCRIPTION}
                                         showDeleteBtn={false}
                                         callAction={(event) => this.switchToEditMode(id)}
@@ -431,13 +501,17 @@ class InterviewsCompleted extends Component {
                             }
                         });
 
-                    return (
-                        <PanelGroup className='custom-panel-group'
-                                    accordion
-                        >
-                            {interviewsToDisplay}
-                        </PanelGroup>
-                    )
+                        return (
+                            <PanelGroup className='custom-panel-group'
+                                        accordion
+                            >
+                                {interviewsToDisplay}
+                            </PanelGroup>
+                        )
+                    } else {
+                        interviewsToDisplay = (<h5 className="noData"> There is no data to display </h5>);
+                    }
+
                 } else {
                     interviewsToDisplay = (<h5 className="noData"> There is no data to display </h5>);
                 }

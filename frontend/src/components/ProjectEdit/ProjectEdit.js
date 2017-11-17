@@ -1,8 +1,8 @@
 import React, {Component} from "react";
+import {connect} from "react-redux";
 import Helmet from "react-helmet";
 import TextareaAutosize from "react-autosize-textarea";
 import {Modal, Button} from "react-bootstrap";
-import {connect} from "react-redux";
 import "./ProjectEdit.css";
 import PageTitle from "./../../containers/PageTitle";
 import {updateProject, getProject} from "../../redux/actions/projectActions";
@@ -19,7 +19,7 @@ class ProjectEdit extends Component {
             projectDescription: "",
             showModalConfirm: false,
             confirmText: "",
-            titleError:"",
+            titleError: "",
             descriptionError: ""
         }
     }
@@ -143,12 +143,12 @@ class ProjectEdit extends Component {
         let id = this.state.currentProject.id;
         let isUnique = true;
         let title = this.state.projectTitle;
-        projects.forEach(function(item) {
+        projects.forEach(function (item) {
             if (item.title === title && item.id !== id) {
                 isUnique = false;
             }
         });
-        return (isUnique) ? true: false;
+        return (isUnique) ? true : false;
     }
 
     render() {
@@ -173,43 +173,53 @@ class ProjectEdit extends Component {
                             className="form-pe block-space"
                             onSubmit={(event) => this.validateFormFields(event)}
                         >
-                            <div className="title-block">
-                                <input
-                                    id={"pe-title-"+id}
-                                    className=" form-control boxed"
-                                    maxLength="60"
-                                    value={this.state.projectTitle}
-                                    onChange={(event) => this.handleTitleChange(event)}
-                                    autoFocus
-                                />
-                                <span className="error-message">{this.state.titleError}</span>
-                                <p className="form-sublabel no-margin"><small>Maximum 60 characters</small></p>
-
+                            <div className="form-group has-error">
+                                <label className="control-label form-label">Project Title
+                                    <span className="required-field">*</span>
+                                </label>
+                                <p className="form-sublabel back-link">Maximum 60 characters</p>
+                                <div className="title-block">
+                                    <input
+                                        id={"pe-title-" + id}
+                                        className=" form-control boxed"
+                                        maxLength="60"
+                                        value={this.state.projectTitle}
+                                        onChange={(event) => this.handleTitleChange(event)}
+                                        autoFocus
+                                    />
+                                    <span className="error-message">{this.state.titleError}</span>
+                                </div>
                             </div>
-                            <TextareaAutosize
-                                id={"pe-description-"+id}
-                                className="form-control boxed"
-                                maxLength="3000"
-                                rows={10}
-                                value={this.state.projectDescription}
-                                onChange={(event) => this.handleDescrChange(event)}
-                            />
-                            <span className="error-message">
+
+                            <div className="form-group form-field-margin">
+                                <label className="control-label form-label">Project Description
+                                    <span className="required-field">*</span>
+                                </label>
+                                <p className="form-sublabel back-link">Maximum 3000 characters</p>
+                                <TextareaAutosize
+                                    id={"pe-description-" + id}
+                                    className="form-control boxed"
+                                    maxLength="3000"
+                                    rows={10}
+                                    value={this.state.projectDescription}
+                                    onChange={(event) => this.handleDescrChange(event)}
+                                />
+                                <span className="error-message">
                                     {this.state.descriptionError}</span>
-                            <p className="form-sublabel"><small>Maximum 3000 characters</small></p>
+                            </div>
 
                             <div className="form-group">
                                 <button
-                                    id={"pe-btn-save-"+id}
+                                    id={"pe-btn-save-" + id}
                                     type="submit"
                                     className="btn btn-primary"
                                 >Save
                                 </button>
                                 <button
-                                    id={"pe-btn-cancel-"+id}
+                                    id={"pe-btn-cancel-" + id}
                                     type="reset"
                                     className="btn btn-danger"
-                                    onClick={()=> this.showMConfirmMessage()}
+                                    onClick={() => this.showMConfirmMessage()}
                                 >Cancel
                                 </button>
                             </div>
@@ -227,13 +237,13 @@ class ProjectEdit extends Component {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button
-                            id={"pe-btn-modal-yes-"+id}
+                            id={"pe-btn-modal-yes-" + id}
                             className="btn btn-primary"
                             onClick={() => this.leaveEdit()}
                         >Yes
                         </Button>
                         <Button
-                            id={"pe-btn-modal-no-"+id}
+                            id={"pe-btn-modal-no-" + id}
                             className="btn btn-danger"
                             onClick={() => this.closeModalConfirm()}
                         >No
@@ -245,7 +255,7 @@ class ProjectEdit extends Component {
     }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
     return {
         projects: state.project.projects,
         currentProject: state.project.currentProject,

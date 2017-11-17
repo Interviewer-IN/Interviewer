@@ -366,7 +366,7 @@ class InterviewsUpcoming extends Component {
                                     candidateCV = currentCandidate.cv.url,
                                     currentSate = (value.state) ? "Active" : "Activate",
                                     isBtnInactive = value.state,
-                                    panelTitleText;
+                                    panelTitle;
 
                                 let duplicateData = {
                                     date_time: value.date_time,
@@ -409,40 +409,95 @@ class InterviewsUpcoming extends Component {
                                 };
 
                                 if (this.state.isHR) {
-                                    panelTitleText = time + " | " +
-                                        currentCandidate.name + " " +
-                                        currentCandidate.surname + " | " +
-                                        currentLevel.name + " " +
-                                        currentPosition.name + " for " +
-                                        currentProject.title + " | " +
-                                        currentInterviewer.surname + " " + currentInterviewer.name + " ";
-                                } else {
-                                    panelTitleText = time + " | " +
-                                        currentCandidate.name + " " +
-                                        currentCandidate.surname + " | " +
-                                        currentLevel.name + " - " +
-                                        currentPosition.name + " - " +
-                                        currentProject.title + " | ";
-                                }
-
-                                const PANEL_TITLE = (
-                                    <div className="custom-panel-title panel-list-item">
-                                        <div className="custom-panel-title__right-side">
-                                            <div className="panel-collapse-btn">
-                                                <span className="panel-collapse-btn__title btn-js">Expand</span>
-                                                <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
+                                    panelTitle = (
+                                        <div className="custom-panel-title panel-list-item">
+                                            <div className="custom-panel-title__right-side">
+                                                <div className="panel-collapse-btn">
+                                                    <span className="panel-collapse-btn__title btn-js">Expand</span>
+                                                    <span
+                                                        className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="custom-panel-title__left-side">
-                                            <div className="vacancy-info-block">
-                                                <div className="vacancy-info-block__item">
-                                                    {panelTitleText}
-                                                    {overdueInterview()}
+                                            <div className="custom-panel-title__left-side">
+                                                <div className="info-block">
+                                                    <div className="info-block__item">
+                                                        <div className="info-block__project">
+                                                            <span className="info-block__position-name">
+                                                                {time}
+                                                            </span>
+                                                        </div>
+                                                        <div
+                                                            className="info-block__position separate-line margin-right">
+                                                            <span className="info-block__position-name">
+                                                            {currentCandidate.name + " " +
+                                                            currentCandidate.surname }
+                                                            </span>
+                                                        </div>
+                                                        <div className="info-block__position separate-line">
+                                                            <span className="info-block__position-name">
+                                                                {currentLevel.name + " " +
+                                                                currentPosition.name}
+                                                            </span>
+                                                            <span className="info-block__position-capture margin-left">
+                                                                for
+                                                            </span>
+                                                            <span className="info-block__position-name">
+                                                                {currentProject.title}
+                                                            </span>
+                                                        </div>
+                                                        <div className="info-block__position separate-line margin-left">
+                                                            <span className="info-block__position-name">
+                                                            {currentInterviewer.surname + " " + currentInterviewer.name}
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                );
+                                    );
+                                } else {
+                                   panelTitle = (
+                                        <div className="custom-panel-title panel-list-item">
+                                            <div className="custom-panel-title__right-side">
+                                                <div className="panel-collapse-btn">
+                                                    <span className="panel-collapse-btn__title btn-js">Expand</span>
+                                                    <span
+                                                        className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
+                                                </div>
+                                            </div>
+                                            <div className="custom-panel-title__left-side">
+                                                <div className="info-block">
+                                                    <div className="info-block__item">
+                                                        <div className="info-block__project">
+                                                            <span className="info-block__position-name">
+                                                                {time}
+                                                            </span>
+                                                        </div>
+                                                        <div
+                                                            className="info-block__position separate-line margin-right">
+                                                            <span className="info-block__position-name">
+                                                            {currentCandidate.name + " " +
+                                                            currentCandidate.surname }
+                                                            </span>
+                                                        </div>
+                                                        <div className="info-block__position separate-line">
+                                                            <span className="info-block__position-name">
+                                                                {currentLevel.name + " " +
+                                                                currentPosition.name}
+                                                            </span>
+                                                            <span className="info-block__position-capture margin-left">
+                                                                for
+                                                            </span>
+                                                            <span className="info-block__position-name">
+                                                                {currentProject.title}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                }
 
                                 const PANEL_DESCRIPTION = (
                                     <div>
@@ -487,7 +542,7 @@ class InterviewsUpcoming extends Component {
                                             defaultExpanded={toExpandElement()}
                                             titleForActionBtn={currentSate}
                                             addInactiveBtnClass={isBtnInactive}
-                                            titleConst={PANEL_TITLE}
+                                            titleConst={panelTitle}
                                             description={PANEL_DESCRIPTION}
                                             showEditBtn={true}
                                             showDeleteBtn={true}
@@ -510,7 +565,7 @@ class InterviewsUpcoming extends Component {
                                             showActionBtn={true}
                                             defaultExpanded={toExpandElement()}
                                             titleForActionBtn='Add feedback'
-                                            titleConst={PANEL_TITLE}
+                                            titleConst={panelTitle}
                                             description={PANEL_DESCRIPTION}
                                             callAction={(event) => this.addFeedback(id)}
                                         />

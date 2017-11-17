@@ -209,7 +209,9 @@ class CreateInterview extends Component {
                 return (
 
                     <div className="form-group search-box_input">
-                        <label className="control-label">Candidate</label>
+                        <label className="control-label">Candidate
+                            <span className="required-field">*</span>
+                        </label>
                         <Select
                             name="university"
                             options={options}
@@ -252,7 +254,9 @@ class CreateInterview extends Component {
                 return (
 
                     <div className="form-group search-box_input">
-                        <label className="control-label">Vacancy</label>
+                        <label className="control-label">Vacancy
+                            <span className="required-field">*</span>
+                        </label>
                         <Select
                             name="university"
                             options={options}
@@ -290,7 +294,9 @@ class CreateInterview extends Component {
             return (
 
                 <div className="form-group search-box_input">
-                    <label className="control-label">Interviewer</label>
+                    <label className="control-label">Interviewer
+                        <span className="required-field">*</span>
+                    </label>
                     <Select
                         name="university"
                         options={options}
@@ -324,7 +330,9 @@ class CreateInterview extends Component {
 
                             <div className="clearfix form-group">
                                 <div className="create-interview-select">
-                                    <label className="control-label">Date</label>
+                                    <label className="control-label">Date
+                                        <span className="required-field">*</span>
+                                    </label>
                                     <p className="form-sublabel back-link">You can pick only date starting from today</p>
                                     <DatePicker
                                         id="create-int-datePick"

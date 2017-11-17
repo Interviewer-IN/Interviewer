@@ -257,7 +257,9 @@ class CreateInterviewFeedback extends Component {
 
                 return (
                     <div className="form-group has-error" key={index}>
-                        <label className="control-label form-label">{item.content}</label>
+                        <label className="control-label form-label">{item.content}
+                            <span className="required-field">*</span>
+                        </label>
                         <p className="form-sublabel back-link">{item.hint}</p>
                         <TextareaAutosize
                             id={item.id}
@@ -331,7 +333,9 @@ class CreateInterviewFeedback extends Component {
 
                             <div className="clearfix form-group">
                                 <div className="float-left create-interview-select">
-                                    <label className="control-label">Rate the candidate</label>
+                                    <label className="control-label">Rate the candidate
+                                        <span className="required-field">*</span>
+                                    </label>
                                     {showRatingSelect()}
                                     <span className="has-error error-message">{this.state.ratingError}</span>
                                 </div>
