@@ -35,6 +35,7 @@ class InterviewsCompleted extends Component {
         this.state = {
             showModalConfirm: false,
             currentInterviewID: "",
+            feedbacks: "",
             isHR: false,
             positionsFilterID: "",
             levelsFilterID: "",
@@ -88,7 +89,10 @@ class InterviewsCompleted extends Component {
         }
 
         if (this.props.feedbacks.length < 1) {
-            dispatch(showFeedbacks());
+            dispatch(showFeedbacks()).then(() => {
+                let feedbacks = this.props.feedbacks;
+                this.setState({feedbacks: feedbacks})
+            });
         }
 
         if (this.props.questions.length < 1) {
@@ -119,6 +123,8 @@ class InterviewsCompleted extends Component {
         this.closeModalConfirm();
         const {dispatch} = this.props;
         dispatch(removeInterview(this.state.currentInterviewID));
+        let feedbacks = this.state.feedbacks;
+        let currentFeedbacks = feedbacks.filter((item => item.interview_id === this.state.currentInterviewID));
     }
 
     getPositionFilterVal(positionFilterVal) {
@@ -586,7 +592,7 @@ class InterviewsCompleted extends Component {
                     <Modal.Header closeButton>
                     </Modal.Header>
                     <Modal.Body>
-                        <p>Are you sure you want to delete a project?</p>
+                        <p>Are you sure you want to delete an interview?</p>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button
