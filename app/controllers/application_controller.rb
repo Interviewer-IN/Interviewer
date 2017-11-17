@@ -5,5 +5,12 @@ class ApplicationController < ActionController::Base
     rails_admin_path
   end
 
+  layout :set_layout
+
+  private
+
+  def set_layout
+    devise_controller? ? 'admin' : false
+  end
 
 end
