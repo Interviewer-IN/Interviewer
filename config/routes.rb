@@ -11,8 +11,8 @@ Rails.application.routes.draw do
 
 # root 'rails_admin/main#dashboard'
 
-  devise_for :admin
- # devise_for :admin, path_names: { sign_in: 'login', sign_out: 'logout', sign_up: 'signup' }
+  devise_for :admins, path: 'admin', skip: :registrations
+
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
