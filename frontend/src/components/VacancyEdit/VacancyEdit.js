@@ -287,7 +287,7 @@ class VacancyEdit extends Component {
                             <form className="custom-form" onSubmit={(event) => this.handleSubmitForm(event)}>
 
                                 <div className="form-group form-filter-block">
-                                    <label className="form-filter-block__title">Vacancy parameters</label>
+                                    <label className="form-filter-block__title">Vacancy parameters <span className="required-field">*</span></label>
                                     <div className="form-filter-block__selects-block" id="select-block">
                                         <div className="form-group">
                                             <select id="position-select"
@@ -329,7 +329,7 @@ class VacancyEdit extends Component {
 
 
                                 <div className="form-group">
-                                    <label className="control-label form-label">Vacancy Description</label>
+                                    <label className="control-label form-label">Vacancy Description <span className="required-field">*</span></label>
                                     <p className="form-sublabel">
                                         <small>Maximum 3000 characters</small>
                                     </p>

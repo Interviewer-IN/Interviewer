@@ -196,20 +196,6 @@ class SideMenu extends Component {
                 label = menuItem.label;
             }
 
-            // if (pathName.indexOf('#/user-info') === 0 || pathName.indexOf('#/password') === 0) {
-                // let to;
-                // if (menuItem && menuItem.label != ('Interviews' || 'Vacancies')) {
-                //     to = menuItem.to;
-                // }
-                //
-                // if(menuItem && menuItem.label === 'Interviews') {
-                //     to = '/interviews-upcoming';
-                // }
-                //
-                // if(menuItem && menuItem.label === 'Vacancies') {
-                //     to = '//vacancies-open';
-                // }
-            // }
 
             if (pathName.indexOf('#/user-info') === 0 || pathName.indexOf('#/password') === 0) {
                 return (
