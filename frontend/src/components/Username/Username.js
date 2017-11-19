@@ -54,11 +54,6 @@ class Username extends Component {
         removeCurrentError(event);
     }
 
-    handleUserPasswordChanges(event) {
-        this.setState({userPasswordVal: event.target.value});
-        removeCurrentError(event);
-    }
-
     handleSubmitForm(event) {
         event.preventDefault();
 
@@ -76,8 +71,7 @@ class Username extends Component {
             let currentUserId = this.state.currentUserId,
                 nameVal = this.state.nameVal,
                 surnameVal = this.state.surnameVal,
-                userEmailVal = this.state.userEmailVal,
-                userPasswordVal = this.state.userPasswordVal;
+                userEmailVal = this.state.userEmailVal;
 
 
             let formData = {
@@ -85,7 +79,6 @@ class Username extends Component {
                 name: nameVal,
                 surname: surnameVal,
                 email: userEmailVal,
-                // password: userPasswordVal
             };
 
 
@@ -201,20 +194,6 @@ class Username extends Component {
                                     onChange={(event) => this.handleUserEmailChanges(event)}
                                 />
                             </div>
-
-                            {/*<div className="form-group">*/}
-                            {/*<label className="control-label form-label">Password <span className="required-field">*</span></label>*/}
-                            {/*<input*/}
-                            {/*id="user-password"*/}
-                            {/*type="password"*/}
-                            {/*name="user-password"*/}
-                            {/*placeholder='Input current password'*/}
-                            {/*className="form-control boxed"*/}
-                            {/*ref="userPassword"*/}
-                            {/*value={this.state.userPasswordVal}*/}
-                            {/*onChange={(event) => this.handleUserPasswordChanges(event)}*/}
-                            {/*/>*/}
-                            {/*</div>*/}
 
                             <div className="form-group custom-btn-group">
                                 <button

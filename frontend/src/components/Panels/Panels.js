@@ -168,7 +168,6 @@ Panels.defaultProps = {
 };
 
 Panels.propTypes = {
-   // id: PropTypes.number,
     showActionBtn: PropTypes.bool,
     showEditBtn: PropTypes.bool,
     showDuplicateBtn: PropTypes.bool,

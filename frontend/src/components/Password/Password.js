@@ -24,12 +24,6 @@ class Password extends Component {
         this.props.onCheckUserRole();
     }
 
-    handleOldPasswordChanges(event) {
-        this.setState({oldPassword: event.target.value.trim()});
-        removeCurrentError(event);
-
-    }
-
     handleNewPasswordChanges(event) {
         this.setState({newPassword: event.target.value.trim()});
         removeCurrentError(event);
@@ -47,12 +41,10 @@ class Password extends Component {
 
         if (validationPass) {
 
-            let oldPassword = this.state.oldPassword,
-                newPassword = this.state.newPassword,
+            let newPassword = this.state.newPassword,
                 retypePassword = this.state.retypePassword;
 
             let formData = {
-                // oldPassword: oldPassword,
                 password: newPassword,
                 password_confirmation: retypePassword
             };
@@ -89,21 +81,6 @@ class Password extends Component {
                 <div className="row sameheight-container">
                     <div className="col-md-6">
                         <form className="custom-form" onSubmit={(event) => this.handleSubmitForm(event)}>
-                            {/*<div className="form-group">*/}
-                            {/*<label className="control-label form-label">Old password <span className="required-field">*</span></label>*/}
-                            {/*<input*/}
-                            {/*id="old-password"*/}
-                            {/*type="password"*/}
-                            {/*name="old-password"*/}
-                            {/*placeholder='Input old password'*/}
-                            {/*className="form-control boxed"*/}
-                            {/*maxLength="20"*/}
-                            {/*ref="oldPassword"*/}
-                            {/*value={this.state.nameVal}*/}
-                            {/*autoFocus*/}
-                            {/*onChange={(event) => this.handleOldPasswordChanges(event)}*/}
-                            {/*/>*/}
-                            {/*</div>*/}
 
                             <div className="form-group">
                                 <label className="control-label form-label">New password <span

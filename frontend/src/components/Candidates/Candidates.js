@@ -41,7 +41,7 @@ class Candidates extends Component {
         if (!this.props.candidates.length) {
             dispatch(getCandidates()).then(
                 (data) => {
-                    if (!data.length){
+                    if (!data.length) {
                         this.setState({
                             candidatesListExist: false
                         });
@@ -54,11 +54,11 @@ class Candidates extends Component {
             );
         }
 
-        if (!this.props.positions.length){
+        if (!this.props.positions.length) {
             dispatch(getPositions());
         }
 
-        if (!this.props.levels.length){
+        if (!this.props.levels.length) {
             dispatch(getLevels());
         }
 
@@ -114,7 +114,6 @@ class Candidates extends Component {
 
     render() {
 
-
         let candidatesList = this.props.candidates,
             levelsList = this.props.levels,
             positionsList = this.props.positions,
@@ -122,7 +121,7 @@ class Candidates extends Component {
             positionsTitleObj = positionsListName(positionsList),
             candidatesToDisplay = [];
 
-        if (this.state.candidatesListExist){
+        if (this.state.candidatesListExist) {
             if (candidatesList.length && levelsList.length && positionsList.length) {
 
 
@@ -147,7 +146,7 @@ class Candidates extends Component {
                 //-- END FILTER BY LEVEL  -----------------------
 
 
-                if (candidatesList.length){
+                if (candidatesList.length) {
                     candidatesToDisplay = candidatesList.map((item) => {
 
                         let candidateId = item.id,
@@ -166,7 +165,8 @@ class Candidates extends Component {
                         let checkCandidateCV = () => {
                             if (candidateCV) {
                                 return (
-                                    <a href={candidateCV} className="download-block form-group text-green text-green--hover"
+                                    <a href={candidateCV}
+                                       className="download-block form-group text-green text-green--hover"
                                        download>
                                         <span className="download-block__icon fa fa-download"/>
                                         <span className="download-block__title">Download CV</span>
@@ -185,15 +185,15 @@ class Candidates extends Component {
                         let checkCandidateAge = () => {
                             if (candidateAge) {
                                 return (
-                                    <p className="form-control-static">
+                                    <span className="form-control-static">
                                         {candidateAge}
-                                    </p>
+                                    </span>
                                 )
                             } else {
                                 return (
-                                    <p className="form-control-static text-muted text-bold--100">
+                                    <span className="form-control-static text-muted text-bold--100">
                                         {GET_EMPTY_DATA}
-                                    </p>
+                                    </span>
                                 )
                             }
                         };
@@ -201,16 +201,16 @@ class Candidates extends Component {
                         let checkCandidateExperience = () => {
                             if (candidateExperience) {
                                 return (
-                                    <p className="form-control-static">
+                                    <span className="form-control-static">
                                         {candidateExperience}
-                                    </p>
+                                    </span>
                                 )
 
                             } else {
                                 return (
-                                    <p className="form-control-static text-muted text-bold--100">
+                                    <span className="form-control-static text-muted text-bold--100">
                                         {GET_EMPTY_DATA}
-                                    </p>
+                                    </span>
 
                                 )
                             }
@@ -219,16 +219,16 @@ class Candidates extends Component {
                         let checkCandidateContacts = () => {
                             if (candidateContacts) {
                                 return (
-                                    <p className="form-control-static">
+                                    <span className="form-control-static">
                                         {candidateContacts}
-                                    </p>
+                                    </span>
                                 )
 
                             } else {
                                 return (
-                                    <p className="form-control-static text-muted text-bold--100">
+                                    <span className="form-control-static text-muted text-bold--100">
                                         {GET_EMPTY_DATA}
-                                    </p>
+                                    </span>
 
                                 )
                             }
@@ -237,16 +237,16 @@ class Candidates extends Component {
                         let checkCandidateNotes = () => {
                             if (candidateNotes) {
                                 return (
-                                    <p className="form-control-static">
+                                    <span className="form-control-static">
                                         {candidateNotes}
-                                    </p>
+                                    </span>
                                 )
 
                             } else {
                                 return (
-                                    <p className="form-control-static text-muted text-bold--100">
+                                    <span className="form-control-static text-muted text-bold--100">
                                         {GET_EMPTY_DATA}
-                                    </p>
+                                    </span>
 
                                 )
                             }
@@ -264,7 +264,8 @@ class Candidates extends Component {
                                 <div className="custom-panel-title__left-side">
                                     <div className="info-block">
                                         <div className="info-block__item">
-                                            <div className="info-block__project">{candidateName + ' ' + candidateSurname}</div>
+                                            <div
+                                                className="info-block__project">{candidateName + ' ' + candidateSurname}</div>
                                             <div className="info-block__position separate-line">
                                <span className="info-block__position-capture">
                                    Desired position:
@@ -282,22 +283,21 @@ class Candidates extends Component {
                             <form className="custom-form">
                                 <div className="col-md-6 no-padding">
                                     <div className="form-group">
-                                        <label className="control-label form-label text-green">Name:</label>
-                                        <p className="form-control-static">
+                                        <label className="control-label form-label">Name: <span
+                                            className="form-control-static">
                                             {candidateName + ' ' + candidateSurname}
-                                        </p>
+                                        </span></label>
+
                                     </div>
 
                                     <div className="form-group">
-                                        <label className="control-label form-label text-green">Desired position:</label>
-                                        <p className="form-control-static">
-                                            {candidatePosition + ' ' + candidateLevel}
-                                        </p>
+                                        <label className="control-label form-label">Desired position: <span
+                                            className="form-control-static">{candidatePosition + ' ' + candidateLevel}</span></label>
                                     </div>
 
                                     <div className="form-group">
-                                        <label className="control-label form-label text-green">Age:</label>
-                                        {checkCandidateAge()}
+                                        <label className="control-label form-label">Age: {checkCandidateAge()}</label>
+
                                     </div>
                                 </div>
                                 <div className="col-md-6 no-padding">
@@ -306,18 +306,18 @@ class Candidates extends Component {
                                 <div className="col-md-12 no-padding">
 
                                     <div className="form-group">
-                                        <label className="control-label form-label text-green">Contact info:</label>
-                                        {checkCandidateContacts()}
+                                        <label className="control-label form-label">Contact
+                                            info: {checkCandidateContacts()}</label>
                                     </div>
 
                                     <div className="form-group">
-                                        <label className="control-label form-label text-green">Work experience:</label>
-                                        {checkCandidateExperience()}
+                                        <label className="control-label form-label">Work
+                                            experience: {checkCandidateExperience()}</label>
                                     </div>
 
                                     <div className="form-group">
-                                        <label className="control-label form-label text-green">Additional notes:</label>
-                                        {checkCandidateNotes()}
+                                        <label className="control-label form-label">Additional
+                                            notes: {checkCandidateNotes()}</label>
                                     </div>
 
 
@@ -348,13 +348,10 @@ class Candidates extends Component {
                 }
 
 
-
             }
         } else {
             candidatesToDisplay = (<h5 className="noData"> There is no data to display </h5>);
         }
-
-
 
 
         return (

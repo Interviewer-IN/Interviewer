@@ -394,19 +394,6 @@ class Main extends Component {
                                         (<Redirect to="/login"/>)
                                 )}
                             />
-                            {/*<Route*/}
-                                {/*exact path="/projects/project/:id"*/}
-                                {/*name="Project Details"*/}
-                                {/*render={(props) => (*/}
-                                    {/*isLoggedIn() ?*/}
-                                        {/*(<ProjectDetails {...props}*/}
-                                                         {/*callMakeNote={(status, text, hide) =>*/}
-                                                             {/*this.handleMakeNote(status, text, hide)}*/}
-                                                         {/*onCheckUserRole={() => this.isHR()}*/}
-                                        {/*/>) :*/}
-                                        {/*(<Redirect to="/login"/>)*/}
-                                {/*)}*/}
-                            {/*/>*/}
 
                             <Route
                                 exact path="/projects/project/:id/edit"

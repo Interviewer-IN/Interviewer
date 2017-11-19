@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Route, Switch, BrowserRouter, HashRouter, Redirect} from 'react-router-dom';
+import {Route, Switch, HashRouter, Redirect} from 'react-router-dom';
 import Login from './components/Login';
 import RecoveryPassword from './components/RecoveryPassword';
 import Main from './components/Main';

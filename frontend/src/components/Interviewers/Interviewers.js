@@ -181,31 +181,19 @@ class Interviewers extends Component {
                             <form className="custom-form">
                                 <div className="col-md-6 no-padding">
                                     <div className="form-group">
-                                        <label className="control-label form-label text-green">Email:</label>
-                                        <p className="form-control-static">
+                                        <label className="control-label form-label">Email: <span className="form-control-static">
                                             {interviewerEmail}
-                                        </p>
+                                        </span></label>
                                     </div>
 
                                     <div className="form-group">
-                                        <label className="control-label form-label text-green">Role:</label>
-                                        <p className="form-control-static">
+                                        <label className="control-label form-label">Role: <span className="form-control-static">
                                             {interviewerRole}
-                                        </p>
+                                        </span></label>
                                     </div>
 
 
                                 </div>
-                                {/*<div className="col-md-12 no-padding">*/}
-                                {/*<div className="form-group">*/}
-                                {/*<label className="control-label form-label text-green">Description:</label>*/}
-                                {/*<div className="form-control-static">*/}
-                                {/*Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis perferendis quaerat qui*/}
-                                {/*quis reprehenderit, unde vel. Aliquam aspernatur dolorum expedita id iusto minima, non*/}
-                                {/*praesentium quibusdam sint vitae. Nam, voluptatibus.*/}
-                                {/*</div>*/}
-                                {/*</div>*/}
-                                {/*</div>*/}
                             </form>
 
                         );

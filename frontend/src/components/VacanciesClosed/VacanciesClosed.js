@@ -225,10 +225,9 @@ class VacanciesClosed extends Component {
                         const DESCRIPTION = (
                             <form className="custom-form">
                                 <div className="form-group">
-                                    <label className="control-label form-label text-green">Description:</label>
-                                    <p className="form-control-static">
+                                    <label className="control-label form-label">Description:  <span className="form-control-static">
                                         {item.description}
-                                    </p>
+                                    </span></label>
                                 </div>
                             </form>
                         );
