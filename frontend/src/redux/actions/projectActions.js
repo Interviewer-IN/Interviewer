@@ -137,7 +137,7 @@ export function removeProject(id) {
                     case 500:
                         dispatch(makeNote({
                             status: 'warning',
-                            text: 'Error: You have an associated entity with this vacancy',
+                            text: 'Error: You have an associated entity with this project',
                             hide: true
                         }));
                         return;
