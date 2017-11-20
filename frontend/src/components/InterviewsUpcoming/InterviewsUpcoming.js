@@ -271,9 +271,15 @@ class InterviewsUpcoming extends Component {
                 candidates.length &&
                 interviewers.length) {
 
-                interviews = interviews.filter((current) => {
-                    return current.status === true;
-                });
+                if (this.state.isHR ) {
+                    interviews = interviews.filter((current) => {
+                        return current.status === true;
+                    });
+                } else {
+                    interviews = interviews.filter((current) => {
+                        return current.status && current.state === true;
+                    });
+                }
 
                 //-- FILTERS  --------------------------
 
@@ -335,6 +341,8 @@ class InterviewsUpcoming extends Component {
                             dates.push(date);
                         }
                     });
+
+                    //-- Creating List of Interviews --------------------------
 
                     interviewsByDates = dates.map((value, index) => {
                         let todayInterviews = [],
@@ -556,7 +564,7 @@ class InterviewsUpcoming extends Component {
                                         />
 
                                     )
-                                } else if (!this.state.isHR && value.state) {
+                                } else {
                                     return (
                                         <Panels
                                             key={id}
@@ -584,6 +592,10 @@ class InterviewsUpcoming extends Component {
                             </div>
                         )
                     });
+
+                    //-- End creating List of Interviews --------------------------
+
+
                 } else {
                     interviewsByDates = (<h5 className="noData">No data of the requested type was found</h5>);
                 }
