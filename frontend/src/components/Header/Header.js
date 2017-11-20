@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import './header.css';
-import ReactDOM from 'react-dom';
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
