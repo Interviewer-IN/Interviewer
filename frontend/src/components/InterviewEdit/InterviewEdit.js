@@ -194,7 +194,6 @@ class InterviewEdit extends Component {
                 candidate_id: candidateID,
                 vacancy_id: vacancyID,
                 user_id: interviewerID,
-                rating_id: 12
             }
         ));
     }

@@ -271,9 +271,16 @@ class InterviewsUpcoming extends Component {
                 candidates.length &&
                 interviewers.length) {
 
-                interviews = interviews.filter((current) => {
-                    return current.status === true;
-                });
+                if (this.state.isHR ) {
+                    interviews = interviews.filter((current) => {
+                        return current.status === true;
+                    });
+                } else {
+                    interviews = interviews.filter((current) => {
+                        return current.status && current.state === true;
+                    });
+                }
+
 
                 //-- FILTERS  --------------------------
 
@@ -336,6 +343,8 @@ class InterviewsUpcoming extends Component {
                         }
                     });
 
+                    //-- Creating List of Interviews --------------------------
+
                     interviewsByDates = dates.map((value, index) => {
                         let todayInterviews = [],
                             currentDate = value,
@@ -373,7 +382,6 @@ class InterviewsUpcoming extends Component {
                                     candidate_id: value.candidate_id,
                                     vacancy_id: value.vacancy_id,
                                     user_id: value.user_id,
-                                    rating_id: 12
                                 };
 
                                 let overdueInterview = () => {
@@ -557,7 +565,7 @@ class InterviewsUpcoming extends Component {
                                         />
 
                                     )
-                                } else if (!this.state.isHR && value.state) {
+                                } else {
                                     return (
                                         <Panels
                                             key={id}
@@ -585,6 +593,10 @@ class InterviewsUpcoming extends Component {
                             </div>
                         )
                     });
+
+                    //-- End creating List of Interviews --------------------------
+
+
                 } else {
                     interviewsByDates = (<h5 className="noData">No data of the requested type was found</h5>);
                 }

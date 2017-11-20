@@ -369,17 +369,17 @@ class Filters extends Component {
             }
         };
 
-        let showSearchBoxFilter = (searchBoxFilter) => {
-            if (searchBoxFilter) {
-                return (
-                    <div className="form-group fields-group cant-hide">
-                        <input className="form-control form-control-sm filter-select search-box"
-                               id="filterSearchBox"
-                               placeholder="Search..."/>
-                    </div>
-                )
-            }
-        };
+        // let showSearchBoxFilter = (searchBoxFilter) => {
+        //     if (searchBoxFilter) {
+        //         return (
+        //             <div className="form-group fields-group cant-hide">
+        //                 <input className="form-control form-control-sm filter-select search-box"
+        //                        id="filterSearchBox"
+        //                        placeholder="Search..."/>
+        //             </div>
+        //         )
+        //     }
+        // };
 
         return (
             <div className="filters-section clearfix">
@@ -396,9 +396,9 @@ class Filters extends Component {
                             {showLevelFilter(levelFilter)}
                             {showInterviewersFilter(interviewerFilter)}
                             {showRatingFilter(ratingFilter)}
-                            <div className="float-left search-box-container">
-                            {showSearchBoxFilter(searchBoxFilter)}
-                            </div>
+                            {/*<div className="float-left search-box-container">*/}
+                            {/*{showSearchBoxFilter(searchBoxFilter)}*/}
+                            {/*</div>*/}
                         </div>
                         <div className="clearfix">
                             {showDateFilter(dateFilter)}

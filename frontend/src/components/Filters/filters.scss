@@ -120,6 +120,12 @@
     margin-bottom: 20px !important;
     width: 100%;
   }
+
+  &:last-child {
+    @media (max-width: 580px) {
+      margin-bottom: 0 !important;;
+    }
+  }
 }
 
 .custom-icon {
@@ -246,14 +252,6 @@
     background-color: transparent !important;
 
   }
-
-  //&__input-container {
-  //  width: 100%
-  //}
-  //
-  //&-wrapper {
-  //  width: 100%;
-  //}
 }
 
 .react-datepicker-popper[data-placement^="bottom"] {
