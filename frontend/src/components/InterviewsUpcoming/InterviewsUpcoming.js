@@ -373,7 +373,6 @@ class InterviewsUpcoming extends Component {
                                     candidate_id: value.candidate_id,
                                     vacancy_id: value.vacancy_id,
                                     user_id: value.user_id,
-                                    rating_id: 12
                                 };
 
                                 let overdueInterview = () => {

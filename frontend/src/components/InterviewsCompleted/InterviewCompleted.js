@@ -89,10 +89,7 @@ class InterviewsCompleted extends Component {
         }
 
         if (this.props.feedbacks.length < 1) {
-            dispatch(showFeedbacks()).then(() => {
-                let feedbacks = this.props.feedbacks;
-                this.setState({feedbacks: feedbacks})
-            });
+            dispatch(showFeedbacks());
         }
 
         if (this.props.questions.length < 1) {
@@ -123,8 +120,6 @@ class InterviewsCompleted extends Component {
         this.closeModalConfirm();
         const {dispatch} = this.props;
         dispatch(removeInterview(this.state.currentInterviewID));
-        let feedbacks = this.state.feedbacks;
-        let currentFeedbacks = feedbacks.filter((item => item.interview_id === this.state.currentInterviewID));
     }
 
     getPositionFilterVal(positionFilterVal) {
