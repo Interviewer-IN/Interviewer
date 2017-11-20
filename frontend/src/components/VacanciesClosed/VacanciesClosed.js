@@ -209,12 +209,12 @@ class VacanciesClosed extends Component {
                                 </div>
                                 <div className="custom-panel-title__left-side">
                                     <div className="info-block">
-                                        <div className="info-block__item text-bold--200">
-                                            <span className="text-bold--600">{positionsTitleObj[positionId]}</span>
+                                        <div className="info-block__item">
+                                            <span className="text-bold">{positionsTitleObj[positionId]}</span>
                                             <span> </span>
-                                            <span className="text-bold--600">{levelsTitleObj[levelId]}</span>
+                                            <span className="text-bold">{levelsTitleObj[levelId]}</span>
                                             <span> for </span>
-                                            <span className="text-bold--600">{projectsTitleObj[projectId]}</span>
+                                            <span className="text-bold">{projectsTitleObj[projectId]}</span>
                                             <span> project</span>
                                         </div>
                                     </div>

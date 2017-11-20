@@ -1,7 +1,7 @@
 import fetch from "isomorphic-fetch";
 import {makeNote} from "./notificationActions";
 import {getCookies, setCookies} from "../../utils/index";
-import {CHANGE_PASSWORD_SUCCESS} from "../../config";
+
 
 export function changePassword(data){
 
