@@ -4,4 +4,5 @@ class Interview < ApplicationRecord
   belongs_to :user
   #belongs_to :rating
   has_many :feedbacks, dependent: :destroy
+  validates :user_id, :presence => true
 end

@@ -5,13 +5,17 @@ module Api
       # before_action :authenticate_user!
 
       def index
-        interviews = Interview.order('created_at DESC')
+        interviews = Interview.where(user_id: params[:user_id])
         render json: {status:"SUCCESS", message: "Interviews loaded", data:interviews}, status: :ok
       end
 
       def show
-        interview = Interview.find(params[:id])
+        interview = Interview.where(id: params[:id], user_id: params[:user_id])
+        if !interview.blank?
         render json: {status:"SUCCESS", message: "Interview id=#{params[:id]} loaded", data:interview}, status: :ok
+        else
+        render json: {status:"ERROR", message: "Nothing found"}, status: :ok
+        end
       end
 
       def create
