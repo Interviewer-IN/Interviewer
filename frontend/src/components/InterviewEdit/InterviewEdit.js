@@ -136,7 +136,7 @@ class InterviewEdit extends Component {
 
         let currentInterviewerState = {
             value: currentInterviewerObj.id,
-            label: "" + currentInterviewerObj.surname + " " + currentInterviewerObj.surname + "",
+            label: "" + currentInterviewerObj.surname + " " + currentInterviewerObj.name + "",
             className: "option-class"
         };
 

@@ -319,7 +319,6 @@ class CreateInterviewFeedback extends Component {
     render() {
 
 
-
         let questionsProps = this.props.questions,
             questions = [];
         let answers = [
