@@ -4,7 +4,8 @@ import {Modal, Button} from 'react-bootstrap';
 import TextareaAutosize from "react-autosize-textarea";
 import {createBrowserHistory} from 'history';
 import {connect} from "react-redux";
-import {fieldCharRegex} from "../../config"
+import {FIELD_CHAR_REGEX, CONFIRM_TEXT} from "../../config"
+import {removeCurrentError, removeAllErrorMessages, createErrorElem, getValueFromArr} from '../../utils/index';
 import {showProjects} from "../../redux/actions/projectActions";
 import {getLevels} from "../../redux/actions/levelsActions";
 import {getPositions} from "../../redux/actions/positionActions";
@@ -22,7 +23,7 @@ class VacancyEdit extends Component {
         this.state = {
             currentVacancy: "",
             vacancyDescription: "",
-            confirmText: "Are you sure you want to cancel without saving changes?",
+            confirmText: CONFIRM_TEXT,
             wrongCharMessage: "Please use only latin letters, numbers and special symbols",
             emptySelectsMessage: "Please set the parameter",
             showModalConfirm: false,
@@ -100,32 +101,8 @@ class VacancyEdit extends Component {
         event.preventDefault();
 
         let currentForm = event.target;
-
-
-        let removeAllErrorMessage = (currentForm) => {
-            let allErrorMessages = currentForm.querySelectorAll('span.has-error'),
-                allErrorTitles = currentForm.querySelectorAll('div.has-error');
-
-            for (let i = 0; i < allErrorTitles.length; i++) {
-                allErrorTitles[i].classList.remove('has-error');
-            }
-
-            for (let i = 0; i < allErrorMessages.length; i++) {
-                allErrorMessages[i].remove();
-            }
-        };
-
-        let createErrorElem = (errorMessage) => {
-            let errorElem = document.createElement('span');
-            errorElem.innerHTML = errorMessage;
-            errorElem.classList.add('has-error');
-            errorElem.classList.add('custom-error');
-
-            return errorElem;
-        };
-
-
-        removeAllErrorMessage(currentForm);
+        
+        removeAllErrorMessages(currentForm);
 
         //THE SELECTS BOXES CHECKING
         let mainSelectsDiv = document.getElementById('select-block'),
@@ -141,8 +118,7 @@ class VacancyEdit extends Component {
 
             if (!index) {
                 counter -= 1;
-                selectItem.parentNode.classList.add('has-error');
-                selectItem.parentNode.appendChild(createErrorElem(this.state.emptySelectsMessage));
+                selectItem.parentNode.appendChild(createErrorElem(selectItem, this.state.emptySelectsMessage));
             } else {
                 counter += 1;
             }
@@ -161,10 +137,9 @@ class VacancyEdit extends Component {
             descriptionPassValidation = false;
 
 
-        if (!fieldCharRegex.test(descriptionValue)) {
+        if (!FIELD_CHAR_REGEX.test(descriptionValue)) {
             descriptionPassValidation = false;
-            descriptionField.parentNode.classList.add('has-error');
-            descriptionField.parentNode.appendChild(createErrorElem(this.state.wrongCharMessage));
+            descriptionField.parentNode.appendChild(createErrorElem(descriptionField, this.state.wrongCharMessage));
         } else {
             descriptionPassValidation = true;
         }
@@ -180,30 +155,17 @@ class VacancyEdit extends Component {
                 projectsList = this.props.projects,
                 positionsList = this.props.positions,
                 levelsList = this.props.levels,
-                projectsTitleObj = {},
-                levelsTitleObj = {},
-                positionsTitleObj = {};
-
-
-            projectsList.forEach((item) => {
-                projectsTitleObj[item.title] = item.id;
-            });
-
-            levelsList.forEach((item) => {
-                levelsTitleObj[item.name] = item.id;
-            });
-
-            positionsList.forEach((item) => {
-                positionsTitleObj[item.name] = item.id;
-            });
-
+                levelId = getValueFromArr(levelsList,levelSelectVal, 'name'),
+                positionId = getValueFromArr(positionsList, positionSelectVal, 'name'),
+                projectId = getValueFromArr(projectsList, projectSelectVal, 'title');
+                
 
             let formData = {
                 id: this.props.match.params.id,
                 description: this.state.vacancyDescription,
-                level_id: levelsTitleObj[levelSelectVal],
-                position_id: positionsTitleObj[positionSelectVal],
-                project_id: projectsTitleObj[projectSelectVal]
+                level_id: levelId,
+                position_id: positionId,
+                project_id: projectId
             };
 
             let {dispatch} = this.props,
@@ -220,33 +182,25 @@ class VacancyEdit extends Component {
 
 
     }
-
-
-    removeCurrentError(event) {
-        if (event.target.nextSibling !== null) {
-            event.target.parentNode.classList.remove('has-error');
-            event.target.nextSibling.remove();
-        }
-    }
-
+    
     handlePositionChange(event) {
-        this.removeCurrentError(event);
+        removeCurrentError(event);
         this.setState({positionVal: event.target.value});
     }
 
     handleLevelChange(event) {
-        this.removeCurrentError(event);
+        removeCurrentError(event);
         this.setState({levelVal: event.target.value});
     }
 
     handleProjectChange(event) {
-        this.removeCurrentError(event);
+        removeCurrentError(event);
         this.setState({projectVal: event.target.value});
     }
 
 
     handleDescriptionChange(event) {
-        this.removeCurrentError(event);
+        removeCurrentError(event);
         this.setState({vacancyDescription: event.target.value});
     }
 
@@ -330,10 +284,10 @@ class VacancyEdit extends Component {
                 <section className="section">
                     <div className="row sameheight-container">
                         <div className="col-md-12">
-                            <form onSubmit={(event) => this.handleSubmitForm(event)}>
+                            <form className="custom-form" onSubmit={(event) => this.handleSubmitForm(event)}>
 
                                 <div className="form-group form-filter-block">
-                                    <label className="form-filter-block__title">Vacancy parameters</label>
+                                    <label className="form-filter-block__title">Vacancy parameters <span className="required-field">*</span></label>
                                     <div className="form-filter-block__selects-block" id="select-block">
                                         <div className="form-group">
                                             <select id="position-select"
@@ -375,7 +329,7 @@ class VacancyEdit extends Component {
 
 
                                 <div className="form-group">
-                                    <label className="control-label form-label">Vacancy Description</label>
+                                    <label className="control-label form-label">Vacancy Description <span className="required-field">*</span></label>
                                     <p className="form-sublabel">
                                         <small>Maximum 3000 characters</small>
                                     </p>
@@ -413,18 +367,21 @@ class VacancyEdit extends Component {
                                 <Modal.Header closeButton>
                                 </Modal.Header>
                                 <Modal.Body>
-                                    <p>Are you sure you want to cancel without saving changes?</p>
+                                    <p>{this.state.confirmText}</p>
                                 </Modal.Body>
                                 <Modal.Footer>
                                     <div className="custom-btn-group">
                                         <Button
                                             id="modal-confirm-cancel"
-                                            className="btn-danger"
-                                            onClick={() => this.leaveForm()}>Cancel</Button>
+                                            className="btn-primary"
+                                            onClick={() => this.leaveForm()}>Yes
+                                        </Button>
                                         <Button
                                             id="modal-confirm-back"
-                                            onClick={() => this.closeModalConfirm()} bsStyle="primary">Back to Create
-                                            Vacancy</Button>
+                                            className="btn-danger"
+                                            onClick={() => this.closeModalConfirm()}
+                                        >No
+                                        </Button>
                                     </div>
                                 </Modal.Footer>
                             </Modal>

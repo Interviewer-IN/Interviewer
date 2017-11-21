@@ -1,5 +1,6 @@
 import fetch from "isomorphic-fetch";
-import {makeNote, showNote} from "./notificationActions";
+import {showNote} from "./notificationActions";
+import {getCookies} from "../../utils/index"
 
 
 export function loggedUser(data) {
@@ -43,8 +44,6 @@ export function doLogin(data) {
                         document.cookie = "uid=" + uid + "; path=/; expires=" + expiry;
                         document.cookie = "client=" + client + "; path=/; expires=" + expiry;
 
-
-                        dispatch(loggedUser(true));
                         return response.json();
 
                     case 401:
@@ -64,15 +63,19 @@ export function doLogin(data) {
             .then((data) => {
 
                 if (data.data === undefined) {
-                    dispatch(makeNote(
-                        {
-                            status: "warning",
-                            text: data.errors[0],
-                            hide: true
-                        }
-                    ));
+
+                    let submitFormGroup = document.querySelector('.submit-btn');
+
+                    let errorElem = document.createElement('span');
+                    errorElem.innerHTML = data.errors[0];
+                    errorElem.classList.add('has-error', 'custom-error');
+
+                    submitFormGroup.appendChild(errorElem);
+                    submitFormGroup.classList.add('has-error');
+
                 } else {
                     localStorage.setItem('userData', JSON.stringify(data.data));
+                    dispatch(loggedUser(true));
                     dispatch(setUserData(data));
 
                 }
@@ -90,19 +93,6 @@ export function doLogin(data) {
 
 }
 
-export function getCookies() {
-    let cookies = document.cookie.split('; '),
-        cookiesObj = {};
-
-    for (let i = 0; i < cookies.length; i++) {
-        let result = cookies[i].split('=');
-        cookiesObj[result[0]] = result[1];
-    }
-
-    return cookiesObj;
-}
-
-
 export function authorizationCheck() {
 
     let cookiesObj = getCookies();
@@ -113,9 +103,11 @@ export function authorizationCheck() {
         isUserLogged = true,
         userData = localStorage.getItem('userData');
 
-    if (!(accessToken && client && uid)) {
+
+    if (!(accessToken && client && uid && userData)) {
+
         isUserLogged = false;
-        userData = {};
+        userData = false;
 
         let date = new Date(0);
 
@@ -125,8 +117,8 @@ export function authorizationCheck() {
 
         localStorage.removeItem('userData');
 
-    }
 
+    }
 
     return {
         type: 'AUTH_CHECK',

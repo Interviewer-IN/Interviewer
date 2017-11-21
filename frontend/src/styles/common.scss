@@ -6,6 +6,10 @@ select {
   cursor: pointer;
 }
 
+.no-padding{
+  padding: 0;
+}
+
 .custom-mode {
   &:focus {
     border-color: #85CE36;
@@ -20,12 +24,24 @@ select {
 .text-bold {
   font-weight: bold;
 
+  &--100{
+    font-weight: 100;
+  }
+
   &--200{
     font-weight: 200;
   }
 
   &--600{
     font-weight: 600;
+  }
+}
+
+.text-green{
+  color: #85CE36 !important;
+
+  &.text-green--hover:hover{
+    color: #66a027 !important;
   }
 }
 
@@ -40,6 +56,39 @@ div.has-error {
     display: block !important;
   }
 }
+
+.required-field{
+  color: #FF4444;
+  font-size: 12px;
+  vertical-align: top;
+}
+
+.custom-form{
+  overflow: hidden;
+
+  .form-control-static{
+    margin-bottom: 0;
+    padding: 0;
+    font-weight: normal;
+  }
+
+  .form-label{
+    font-weight: bold;
+  }
+
+  .form-sublabel{
+    margin-bottom: 0;
+  }
+}
+
+.noData{
+  text-align: center;
+  color: #b0bec5;
+  margin-top: 5em;
+}
+
+
+
 
 .app {
   min-height: 100vh;
@@ -167,7 +216,7 @@ div.has-error {
     }
 
     .panel-body {
-      padding: 40px 20px 20px 20px;
+      padding: 20px 20px 20px 20px;
       border-top: 1px solid #d7dde4;
     }
 
@@ -205,7 +254,6 @@ div.has-error {
   }
 }
 
-
 .float-left {
   float: left
 }
@@ -223,4 +271,15 @@ div.has-error {
   height: 0;
 }
 
+.show {
+  display: block;
+}
+
+.hide {
+  display: none !important;
+}
+
+.margin-none {
+  margin: 0 !important;
+}
 //-----------------------------------------

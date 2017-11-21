@@ -6,6 +6,12 @@ import authentication from './authentication';
 import vacancies from './vacancies';
 import levels from './levels'
 import positions from './positions'
+import interviews from './interviews'
+import ratings from './ratings'
+import candidates from './candidates'
+import interviewers from './interviewers'
+import questions from './questions'
+import feedback from './feedback'
 
 
 export default combineReducers({
@@ -15,6 +21,11 @@ export default combineReducers({
     authentication,
     vacancies,
     levels,
-    positions
-
+    positions,
+    interviews,
+    ratings,
+    candidates,
+    interviewers,
+    questions,
+    feedback
 })

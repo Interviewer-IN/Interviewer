@@ -1,9 +1,25 @@
+header{
+  &.auth-header{
+    height: 70px;
+  }
+}
+
 .form-group {
   overflow: hidden;
 }
 
 .submit-btn {
-  margin-top: 3rem;
+  position: relative;
+  padding-top: 3rem;
+  overflow: auto;
+
+  .custom-error{
+    position: absolute;
+    top: 10px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+  }
 }
 
 .forgot-pass {
@@ -81,4 +97,20 @@
   background-color: #85CE36;
   border-color: #85CE36;
   cursor: pointer;
+}
+
+.custom-logo{
+  background: url("../../img/logo.png") no-repeat center center;
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+}
+
+.sideMenuLogo{
+  display: block;
+  background: url("../../img/logo.png") no-repeat center center;
+  width: 80%;
+  height: 100%;
+  background-size: contain;
+  margin: 0 auto;
 }

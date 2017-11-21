@@ -5,8 +5,8 @@ import {bindActionCreators} from "redux";
 import {connect} from 'react-redux';
 import Notifications from '../../containers/Notifications';
 import './login.css';
-import {Redirect} from 'react-router-dom';
 import Helmet from 'react-helmet';
+import {EMAIL_VALIDATION} from './../../config'
 
 
 import * as pageActions from "../../redux/actions/authenticationActions";
@@ -105,7 +105,7 @@ class Login extends Component {
             if (passCheckOnEmptyEmail) {
                 if (loginValidationSettings.rules.email.isEmail) {
                     let emailValue = email.value;
-                    let result = emailValue.match(/^[0-9a-z-.]+@[0-9a-z-]{2,}\.[a-z]{2,}$/i);
+                    let result = emailValue.match(EMAIL_VALIDATION);
 
                     if (!result) {
 
@@ -242,9 +242,7 @@ class Login extends Component {
                         <div className="auth-container">
                             <div className="card">
                                 <header className="auth-header">
-                                    <h1 className="auth-title">
-                                        Interviewer Logo
-                                    </h1>
+                                    <div className="custom-logo"/>
                                 </header>
                                 <div className="auth-content">
                                     <p className="text-xs-center">LOGIN TO CONTINUE</p>

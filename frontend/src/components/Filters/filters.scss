@@ -1,63 +1,91 @@
 .filters-section{
   width: 100%;
   background: #d7dde4;
-  overflow: hidden;
-  padding: 0 20px;
+  padding: 20px 20px;
 
 }
 
-.filter-block{
-  //overflow: hidden;
+.filter-block {
+  overflow: hidden;
 
-  &.filter-block--date{
-   // float: left;
-    margin-top: 10px;
-
-  }
-
-  &__title{
+  &__date{
+    margin-top: 20px;
     float: left;
-    margin-right: 30px;
-    line-height: 29px;
 
-    @media (max-width: 1110px) {
+    & p {
+      margin-bottom: 0 !important;
+    }
+    @media (max-width: 1250px) {
       float: none;
+      margin: 0;
+      margin-top: 20px !important;
     }
   }
 
-  &__selects{
+  &__selects {
     float: left;
-    overflow: hidden;
-
-    @media (max-width: 1110px) {
+    @media (max-width: 1250px) {
       float: none;
-    }
-    @media (max-width: 580px){
       width: 100%;
     }
-
+    @media (max-width: 580px) {
+      width: 100%;
+    }
   }
 
-  .form-group{
+  .fields-group{
     float: left;
     margin-bottom: 0;
     margin-right: 10px;
-    padding: 15px 0;
 
-    @media (max-width: 580px){
-      float: none;
-      margin-right: 0;
-      padding: 0;
-      margin-bottom: 15px;
+
+    &.can-hide{
+      display: block;
+      width: 130px;
+
+      @media (max-width: 1250px) {
+        margin: 20px 10px 0 0;
+
+        &:last-child{
+          margin-right: 0;
+        }
+      }
+
+      @media (max-width: 580px){
+        float: none;
+        margin-right: 0;
+        padding: 0;
+        margin-bottom: 20px;
+        width: 100%;
+
+        &:first-child{
+          margin-top: 20px;
+        }
+      }
     }
 
-    &:last-child{
-      margin-right: 0;
+    &.cant-hide {
+    width: 130px;
+
+      @media (max-width: 1250px) {
+        display: block;
+        width: 100%;
+      }
+
+      @media (max-width: 580px) {
+        margin-top: 0;
+      }
+    }
+
+
+
+    &.search-box {
+      @media (max-width: 1250px) {
+        width: 100%;
+      }
     }
 
     .form-control{
-      width: 140px;
-
       @media (max-width: 580px){
         width: 100%;
       }
@@ -67,8 +95,8 @@
 
 .filter-select {
   border-radius: 0;
-  width: 120px !important;
   height: 2rem !important;
+  color: #4f5f6f !important;
 
   &:hover {
     border: 1px solid #85CE36 !important;
@@ -81,4 +109,161 @@
 .filter-date {
   margin-left: 10px;
 }
+
+.date-fields {
+  width: 130px;
+
+  @media (max-width: 580px) {
+    float: none;
+    margin-right: 0;
+    padding: 0;
+    margin-bottom: 20px !important;
+    width: 100%;
+  }
+
+  &:last-child {
+    @media (max-width: 580px) {
+      margin-bottom: 0 !important;;
+    }
+  }
+}
+
+.custom-icon {
+  font-size: 1.8em;
+  margin: 2px 20px 0 0 ;
+
+  @media (max-width: 1250px) {
+    display: block !important;
+    float: left;
+  }
+
+  &:hover {
+    color: #85CE36;
+  }
+}
+
+#allFiltersContainer{
+  display: block;
+
+  @media (max-width: 1250px) {
+    display: none;
+    float: none;
+  }
+}
+
+.filter-icon {
+  display: none;
+  @media (max-width: 1250px) {
+    display: block;
+  }
+}
+
+.selects-container {
+  float: left;
+  @media (max-width: 1250px) {
+    float: none;
+  }
+}
+
+.date-container {
+  @media (max-width: 1250px) {
+    margin-top: 20px;
+  }
+}
+
+.search-box-container {
+  @media (max-width: 1250px) {
+    margin-top: 20px;
+    width: 100%;
+  }
+
+  @media (max-width: 580px) {
+    margin-top: 0;
+    width: 100%;
+  }
+}
+
+
+//------------React Date Picker ---------------
+
+.react-datepicker {
+  border-radius: 1px !important;
+  color: #4f5f6f !important;
+
+  &__month-container {
+    color: inherit !important;
+  }
+
+  &__current-month {
+    color: inherit !important;
+  }
+
+  &__day-name {
+    color: inherit !important;
+  }
+
+  &__day {
+    background-color: #FFF !important;
+    color: #4f5f6f !important;
+    border-radius: 1px !important;
+  }
+
+  &__day:hover {
+    background-color: #f0f3f6 !important;
+    border-radius: 1px !important;
+  }
+
+  &__day--selected {
+    background-color: #85CE36 !important;
+    color: #FFF !important;
+    border-radius: 1px !important;
+  }
+
+  &__day--selected:hover {
+    background-color: #6ba829 !important;
+    border-color: #66a027 !important;
+    border-radius: 0;
+  }
+
+  &__close-icon{
+   float: left !important;
+  }
+
+  &__close-icon::after {
+    border-radius: 1px !important;
+    font-size: 15px !important;
+    padding: 0 !important;
+    background-color: #d7dde4 !important;
+  }
+
+  &__time-list-item--selected {
+    background-color: #85CE36 !important;
+  }
+
+  &-time__header {
+    color: #4f5f6f !important;
+  }
+
+  &__day--disabled {
+    color: #ccc !important;
+  }
+
+  &__day--disabled:hover {
+    background-color: transparent !important;
+
+  }
+}
+
+.react-datepicker-popper[data-placement^="bottom"] {
+  margin-top: 0 !important;
+}
+
+.react-datepicker__time-container .react-datepicker__time
+.react-datepicker__time-box ul.react-datepicker__time-list {
+  padding: 0px !important;
+}
+
+
+
+
 

@@ -5,7 +5,6 @@ import "./panels.css";
 
 class Panels extends Component {
 
-
     handlePanelCollapseClick(event) {
 
 
@@ -56,13 +55,24 @@ class Panels extends Component {
             dublicateBtnId = this.props.dublicateBtnId,
             deleteBtnId = this.props.deleteBtnId,
             description = this.props.description,
-            id = this.props.id;
+            id = this.props.id,
+            addInactiveBtnClass = this.props.addInactiveBtnClass,
+            inactiveBtnClass = false;
 
+        if (addInactiveBtnClass) {
+            inactiveBtnClass = true;
+        }
 
         let toShowActionBtn = (showActionBtn, titleBtn) => {
             if (showActionBtn){
               return (
-                  <button type="button" className="btn btn-primary" onClick={() => this.onAction()}>{titleBtn}</button>
+                  <button type="button"
+                          className="btn btn-primary"
+                          onClick={(event) => this.onAction(event)}
+                          disabled={inactiveBtnClass}
+                  >
+                      {titleBtn}
+                  </button>
               );
             }
         };
@@ -113,10 +123,12 @@ class Panels extends Component {
         }
 
         return (
-            <Panel collapsible header={panelTitle}
-                   onClick={(event) => this.handlePanelCollapseClick(event)}
+            <Panel collapsible
                    id={id}
-                >
+                   header={panelTitle}
+                   defaultExpanded={this.props.defaultExpanded}
+                   onClick={(event) => this.handlePanelCollapseClick(event)}
+            >
                 <div className={panelBodyClass}>
                     <div className="custom-panel-body__left">
                         <div className="vacancy-description">
@@ -133,7 +145,6 @@ class Panels extends Component {
                     </div>
                 </div>
             </Panel>
-
         );
     }
 }
@@ -157,7 +168,6 @@ Panels.defaultProps = {
 };
 
 Panels.propTypes = {
-   // id: PropTypes.number,
     showActionBtn: PropTypes.bool,
     showEditBtn: PropTypes.bool,
     showDuplicateBtn: PropTypes.bool,
@@ -165,7 +175,8 @@ Panels.propTypes = {
     titleForActionBtn: PropTypes.string,
     editBtnId: PropTypes.string,
     dublicateBtnId: PropTypes.string,
-    deleteBtnId: PropTypes.string
+    deleteBtnId: PropTypes.string,
+    addInactiveBtnClass: PropTypes.bool
 
 };
 

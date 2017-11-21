@@ -13,3 +13,36 @@
     border: 1px solid #85CE36 !important;
   }
 }
+
+.search-box_ul {
+  list-style-type: none;
+  font-size: 14px;
+}
+
+.search-box_input {
+  overflow: visible !important;
+}
+
+
+.has-value.Select--single > .Select-control .Select-value .Select-value-label {
+  color: #55595c !important;
+}
+
+.Select-control {
+  border-radius: 0 !important;
+  font-size: 0.875rem !important;
+
+  &:hover {
+    border: 1px solid #85CE36 !important;
+  }
+}
+
+.is-focused:not(.is-open) > .Select-control{
+  border: 1px solid #85CE36 !important;
+  box-shadow: none !important;
+}
+
+.option-class {
+  font-size: 0.875rem;
+}
+
