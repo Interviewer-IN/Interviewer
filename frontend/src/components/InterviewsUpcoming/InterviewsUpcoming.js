@@ -4,7 +4,11 @@ import {Modal, Button, PanelGroup} from "react-bootstrap";
 import Helmet from "react-helmet";
 import moment from "moment";
 import "./interviewsUpcoming.css";
-import {showInterviews, removeInterview, createInterview, updateInterview} from "../../redux/actions/interviewActions";
+import {showInterviews,
+    removeInterview,
+    createInterview,
+    updateInterview,
+    showInterviewsForInterviewer} from "../../redux/actions/interviewActions";
 import {getVacancies} from "../../redux/actions/vacanciesActions";
 import {showProjects} from "../../redux/actions/projectActions";
 import {getCandidates} from "../../redux/actions/candidatesActions";
@@ -28,6 +32,7 @@ class InterviewsUpcoming extends Component {
         super(props);
         this.state = {
             isHR: false,
+            loggedUserID: "",
             currentInterview: "",
             currentInterviewID: "",
             interviewId: "",
@@ -50,22 +55,41 @@ class InterviewsUpcoming extends Component {
 
     componentWillMount() {
         let isUserHR = this.props.onCheckUserRole(true);
-        const {dispatch} = this.props;
+        let loggedUserID = this.props.getUserID();
+        this.setState({loggedUserID: loggedUserID});
 
-        if (!this.props.interviews.interviews.length) {
-            dispatch(showInterviews()).then(
-                (data) => {
-                    if (!data.length) {
-                        this.setState({
-                            interviewsListExist: false
-                        });
-                    } else {
-                        this.setState({
-                            interviewsListExist: true
-                        });
+        const {dispatch} = this.props;
+        if (this.props.interviews.interviews.length < 1) {
+            if(isUserHR) {
+                dispatch(showInterviews()).then(
+                    (data) => {
+                        if (!data.length) {
+                            this.setState({
+                                interviewsListExist: false
+                            });
+                        } else {
+                            this.setState({
+                                interviewsListExist: true
+                            });
+                        }
                     }
-                }
-            );
+                );
+            } else {
+
+                dispatch(showInterviewsForInterviewer(loggedUserID)).then(
+                    (data) => {
+                        if (!data.length) {
+                            this.setState({
+                                interviewsListExist: false
+                            });
+                        } else {
+                            this.setState({
+                                interviewsListExist: true
+                            });
+                        }
+                    }
+                );
+            }
         }
 
         if (!this.props.vacancies.length) {

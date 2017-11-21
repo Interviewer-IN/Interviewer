@@ -36,11 +36,12 @@ class InterviewEdit extends Component {
     }
 
     componentWillMount() {
+        this.props.onCheckUserRole();
 
-        let isUserHR = this.props.onCheckUserRole(true);
-        if (isUserHR) {
-            this.setState({isHR: true})
-        }
+        // let isUserHR = this.props.onCheckUserRole(true);
+        // if (isUserHR) {
+        //     this.setState({isHR: true})
+        // }
 
         if (this.props.interviews.interviews.length > 0 ||
             this.props.candidates.length > 0 ||
