@@ -37,7 +37,8 @@ class CreateInterview extends Component {
     }
 
     componentWillMount() {
-        this.props.onCheckUserRole(true);
+        this.props.onCheckUserRole();
+
         const {dispatch} = this.props;
 
         if (!this.props.vacancies.length){
