@@ -15,6 +15,24 @@ end
 
 Admin.new({:email => "admin@admin.com", :password => "123456", :password_confirmation => "123456" }).save(:validate => false) unless Admin.where(email: "admin@admin.com").exists?
 
+Level.new({:name => "Trainee"}).save(:validate => false)  unless Level.where(name: "Trainee").exists?
+Level.new({:name => "Junior"}).save(:validate => false)  unless Level.where(name: "Junior").exists?
+Level.new({:name => "Middle"}).save(:validate => false)  unless Level.where(name: "Middle").exists?
+Level.new({:name => "Senior"}).save(:validate => false)  unless Level.where(name: "Senior").exists?
+Level.new({:name => "Lead"}).save(:validate => false)  unless Level.where(name: "Senior").exists?
+
+Rating.new({:grade => "Supa Bad"}).save(:validate => false)  unless Rating.where(grade: "Supa Bad").exists?
+Rating.new({:grade => "Bad"}).save(:validate => false)  unless Rating.where(grade: "Bad").exists?
+Rating.new({:grade => "Neutral"}).save(:validate => false)  unless Rating.where(grade: "Neutral").exists?
+Rating.new({:grade => "Good"}).save(:validate => false)  unless Rating.where(grade: "Good").exists?
+Rating.new({:grade => "Supa Good"}).save(:validate => false)  unless Rating.where(grade: "Supa Good").exists?
+
+Position.new({:name => "QA"}).save(:validate => false)  unless Position.where(name: "QA").exists?
+Position.new({:name => "PM"}).save(:validate => false)  unless Position.where(name: "PM").exists?
+Position.new({:name => "Front-end"}).save(:validate => false)  unless Position.where(name: "Front-end").exists?
+Position.new({:name => "Back-end"}).save(:validate => false)  unless Position.where(name: "Back-end").exists?
+Position.new({:name => "HR"}).save(:validate => false)  unless Position.where(name: "HR").exists?
+
 User.create({
                 email:  "user@user.com",
                 password:  "123456",
@@ -38,24 +56,6 @@ User.create({
                 position_id: Position.offset(rand(Position.count)).first.id,
                 confirmation_token: Faker::DrWho.quote
             })  unless User.where(email: "user1@user.com").exists?
-
-Level.new({:name => "Trainee"}).save(:validate => false)  unless Level.where(name: "Trainee").exists?
-Level.new({:name => "Junior"}).save(:validate => false)  unless Level.where(name: "Junior").exists?
-Level.new({:name => "Middle"}).save(:validate => false)  unless Level.where(name: "Middle").exists?
-Level.new({:name => "Senior"}).save(:validate => false)  unless Level.where(name: "Senior").exists?
-Level.new({:name => "Lead"}).save(:validate => false)  unless Level.where(name: "Senior").exists?
-
-Rating.new({:grade => "Supa Bad"}).save(:validate => false)  unless Rating.where(grade: "Supa Bad").exists?
-Rating.new({:grade => "Bad"}).save(:validate => false)  unless Rating.where(grade: "Bad").exists?
-Rating.new({:grade => "Neutral"}).save(:validate => false)  unless Rating.where(grade: "Neutral").exists?
-Rating.new({:grade => "Good"}).save(:validate => false)  unless Rating.where(grade: "Good").exists?
-Rating.new({:grade => "Supa Good"}).save(:validate => false)  unless Rating.where(grade: "Supa Good").exists?
-
-Position.new({:name => "QA"}).save(:validate => false)  unless Position.where(name: "QA").exists?
-Position.new({:name => "PM"}).save(:validate => false)  unless Position.where(name: "PM").exists?
-Position.new({:name => "Front-end"}).save(:validate => false)  unless Position.where(name: "Front-end").exists?
-Position.new({:name => "Back-end"}).save(:validate => false)  unless Position.where(name: "Back-end").exists?
-Position.new({:name => "HR"}).save(:validate => false)  unless Position.where(name: "HR").exists?
 
 5.times do
   Vacancy.create({
