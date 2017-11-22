@@ -69,12 +69,26 @@ div.has-error {
   .form-control-static{
     margin-bottom: 0;
     padding: 0;
+    font-weight: normal;
+  }
+
+  .form-label{
+    font-weight: bold;
   }
 
   .form-sublabel{
     margin-bottom: 0;
   }
 }
+
+.noData{
+  text-align: center;
+  color: #b0bec5;
+  margin-top: 5em;
+}
+
+
+
 
 .app {
   min-height: 100vh;
@@ -240,7 +254,6 @@ div.has-error {
   }
 }
 
-
 .float-left {
   float: left
 }
@@ -263,7 +276,7 @@ div.has-error {
 }
 
 .hide {
-  display: none;
+  display: none !important;
 }
 
 .margin-none {

@@ -1,6 +1,6 @@
-export const fieldCharRegex = /^[a-zA-Z0-9\s!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
+export const FIELD_CHAR_REGEX = /^[a-zA-Z0-9\s!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
 export const LETTERS_ONLY = /^[a-zA-Z]*$/;
-export const fieldSpaceRegex = /^\s*$/;
+export const FIELD_SPACE_REGEX = /^\s*$/;
 export const EMAIL_VALIDATION = /^[0-9a-z-.]+@[0-9a-z-]{2,}\.[a-z]{2,}$/i;
 
 export const TYPE_FILES = '.pdf,.doc,.docx';
@@ -31,3 +31,13 @@ export const DELETE_INTERVIEWER = 'Are you sure you want to delete the interview
 
 //-- PANEL ---------
 export const EXPANDED_ELEMENT_INDEX = 1; //index of the panel which should be opened after duplicating process.
+
+
+//-- INTERVIEWERS ---------
+export const PASSWORD_BY_DEFAULT = 123456;
+
+//-- CHANGE PASSWORD -----------
+export const CHANGE_PASSWORD_SUCCESS = 'The password was changed successfully';
+
+//-- USER INFO ------------
+export const UPDATE_USER_INFO = 'The user-info data was updated successfully';

@@ -9,6 +9,7 @@ import Panels from '../../components/Panels';
 import {connect} from 'react-redux';
 import {getPositions} from '../../redux/actions/positionActions';
 import {getLevels} from '../../redux/actions/levelsActions';
+import {getInterviewers, deleteInterviewer} from '../../redux/actions/interviewersActions';
 import {levelsListName, positionsListName, getValueFromArr} from '../../utils/index';
 import {GET_EMPTY_DATA, DELETE_INTERVIEWER} from '../../config';
 
@@ -25,6 +26,7 @@ class Interviewers extends Component {
             currentInterviewerId: '',
             positionsFilterID: '',
             levelsFilterID: '',
+            interviewersListExist: true
 
         }
 
@@ -42,11 +44,27 @@ class Interviewers extends Component {
         if (!this.props.positions.length) {
             dispatch(getPositions());
         }
+
+        if (!this.props.interviewers.length) {
+            dispatch(getInterviewers()).then(
+                (data) => {
+                    if (!data.length){
+                        this.setState({
+                            interviewersListExist: false
+                        });
+                    } else {
+                        this.setState({
+                            interviewersListExist: true
+                        });
+                    }
+                }
+            );
+        }
     }
 
     openModalConfirm(currentID) {
         this.setState({
-            currentCandidateId: currentID,
+            currentInterviewerId: currentID,
             showModalConfirm: true
         });
     }
@@ -57,8 +75,14 @@ class Interviewers extends Component {
         })
     }
 
+    deleteInterviewer() {
+        this.closeModalConfirm();
+        const {dispatch} = this.props;
+        dispatch(deleteInterviewer(this.state.currentInterviewerId));
+    }
+
     switchToEditMode(currentID) {
-        this.props.history.push("/interviewers/edit");
+        this.props.history.push("/interviewers/" + currentID + "/edit");
     }
 
     getPositionFilterVal(positionFilterVal) {
@@ -86,51 +110,127 @@ class Interviewers extends Component {
 
     render() {
 
+        let interviewersList = this.props.interviewers,
+            levelsList = this.props.levels,
+            positionsList = this.props.positions,
+            levelsTitleObj = levelsListName(levelsList),
+            positionsTitleObj = positionsListName(positionsList),
+            interviewersToDisplay = [];
 
-        const PANEL_TITLE = (
-            <div className="custom-panel-title panel-list-item">
-                <div className="custom-panel-title__right-side">
-                    <div className="panel-collapse-btn">
-                        <span className="panel-collapse-btn__title btn-js">Expand</span>
-                        <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
-                    </div>
-                </div>
-                <div className="custom-panel-title__left-side">
-                    <div className="info-block">
-                        <div className="info-block__item">
-                            <div className="info-block__project">Anton Burkun</div>
-                            <div className="info-block__position separate-line">
-                                <span className="info-block__position-name">Middle QA</span>
+        if (this.state.interviewersListExist){
+            if (interviewersList.length && levelsList.length && positionsList.length) {
+
+                //-- FILTER BY POSITION  --------------------------
+                let positionFilterID = this.state.positionsFilterID;
+
+                if (positionFilterID) {
+                    interviewersList = interviewersList.filter((current) => {
+                        return (current.position_id === positionFilterID);
+                    });
+                }
+                //-- END FILTER BY LEVEL -----------------------
+
+                //-- FILTER BY LEVEL  --------------------------
+                let levelFilterID = this.state.levelsFilterID;
+
+                if (levelFilterID) {
+                    interviewersList = interviewersList.filter((current) => {
+                        return (current.level_id === levelFilterID);
+                    });
+                }
+                //-- END FILTER BY LEVEL  -----------------------
+
+                if (interviewersList.length) {
+                    interviewersToDisplay = interviewersList.map(item => {
+                        let interviewerId = item.id,
+                            interviewerName = item.name,
+                            interviewerSurname = item.surname,
+                            interviewerEmail = item.email,
+                            interviewerPositionId = item.position_id,
+                            interviewerPosition = positionsTitleObj[interviewerPositionId],
+                            interviewerLevelId = item.level_id,
+                            interviewerLevel = levelsTitleObj[interviewerLevelId],
+                            interviewerRole = '';
+
+                        (item.is_hr) ? interviewerRole = 'HR' : interviewerRole = 'User';
+
+
+
+                        const PANEL_TITLE = (
+                            <div className="custom-panel-title panel-list-item">
+                                <div className="custom-panel-title__right-side">
+                                    <div className="panel-collapse-btn">
+                                        <span className="panel-collapse-btn__title btn-js">Expand</span>
+                                        <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
+                                    </div>
+                                </div>
+                                <div className="custom-panel-title__left-side">
+                                    <div className="info-block">
+                                        <div className="info-block__item">
+                                            <div className="info-block__project">{interviewerName  + ' ' +  interviewerSurname }</div>
+                                            <div className="info-block__position separate-line">
+                                                <span className="info-block__position-name">{interviewerLevel + ' ' + interviewerPosition}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
+                        );
 
-        const DESCRIPTION = (
-            <form className="custom-form">
-                <div className="col-md-6 no-padding">
-                    <div className="form-group">
-                        <label className="control-label form-label text-green">Email:</label>
-                        <p className="form-control-static">
-                            mail@mail.ru
-                        </p>
-                    </div>
-                </div>
-                <div className="col-md-12 no-padding">
-                    <div className="form-group">
-                        <label className="control-label form-label text-green">Description:</label>
-                        <div className="form-control-static">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis perferendis quaerat qui
-                            quis reprehenderit, unde vel. Aliquam aspernatur dolorum expedita id iusto minima, non
-                            praesentium quibusdam sint vitae. Nam, voluptatibus.
-                        </div>
-                    </div>
-                </div>
-            </form>
+                        const DESCRIPTION = (
+                            <form className="custom-form">
+                                <div className="col-md-6 no-padding">
+                                    <div className="form-group">
+                                        <label className="control-label form-label">Email: <span className="form-control-static">
+                                            {interviewerEmail}
+                                        </span></label>
+                                    </div>
 
-        );
+                                    <div className="form-group">
+                                        <label className="control-label form-label">Role: <span className="form-control-static">
+                                            {interviewerRole}
+                                        </span></label>
+                                    </div>
+
+
+                                </div>
+                            </form>
+
+                        );
+
+                        return (
+                            <Panels
+                                key={interviewerId}
+                                id={interviewerId}
+                                titleConst={PANEL_TITLE}
+                                description={DESCRIPTION}
+                                showEditBtn={true}
+                                editBtnId={"edit-candidate-" + interviewerId}
+                                showDeleteBtn={true}
+                                deleteBtnId={"delete-candidate-" + interviewerId}
+                                callDelete={() => {
+                                    this.openModalConfirm(interviewerId)
+                                }}
+                                callEdit={() => this.switchToEditMode(interviewerId)}
+                            />
+                        )
+
+
+                    });
+                } else {
+                    interviewersToDisplay = (<h5 className="noData">No data of the requested type was found</h5>);
+                }
+
+
+            }
+        } else {
+            interviewersToDisplay = (<h5 className="noData"> There is no data to display </h5>);
+        }
+
+
+
+
+
 
         return (
             <div>
@@ -155,20 +255,7 @@ class Interviewers extends Component {
                             />
 
                             <PanelGroup bsClass="custom-panel-group">
-                                <Panels
-                                    // key={}
-                                    // id={}
-                                    titleConst={PANEL_TITLE}
-                                    description={DESCRIPTION}
-                                    showEditBtn={true}
-                                    editBtnId={"edit-candidate-"}
-                                    showDeleteBtn={true}
-                                    deleteBtnId={"delete-candidate-"}
-                                    callDelete={() => {
-                                        this.openModalConfirm()
-                                    }}
-                                    callEdit={() => this.switchToEditMode()}
-                                />
+                                {interviewersToDisplay}
                             </PanelGroup>
                             <Modal show={this.state.showModalConfirm}
                                    onHide={() => this.closeModalConfirm()}
@@ -182,7 +269,7 @@ class Interviewers extends Component {
                                     <Button
                                         id={"btn-modal-yes-" + this.state.currentInterviewerId}
                                         className="btn btn-primary"
-                                        onClick={() => this.deleteProject()}
+                                        onClick={() => this.deleteInterviewer()}
                                     >Yes
                                     </Button>
                                     <Button
@@ -205,7 +292,8 @@ class Interviewers extends Component {
 function mapStateToProps(state) {
     return {
         levels: state.levels.levels,
-        positions: state.positions.positions
+        positions: state.positions.positions,
+        interviewers: state.interviewers.interviewers
     }
 }
 

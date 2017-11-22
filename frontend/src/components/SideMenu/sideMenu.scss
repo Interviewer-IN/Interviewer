@@ -1,5 +1,13 @@
 @import "https://cdn.rawgit.com/alpertuna/react-metismenu/master/dist/react-metismenu-standart.min.css";
 
+.sidebar{
+  .brand{
+    height: 70px;
+    padding: 0;
+  }
+}
+
+
 .metismenu{
   background: none;
   &:after{
@@ -50,10 +58,10 @@
       text-decoration: none;
     }
     &.active{
-      background: #78bd2e;
+      background: #78bd2e !important;
     }
     &.has-active-child{
-      background: #78bd2e;
+      background: transparent;
       color: #fff;
     }
   }

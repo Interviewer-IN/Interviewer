@@ -5,14 +5,16 @@ import {Modal, Button} from "react-bootstrap";
 import "./CreateInterview.css";
 import {connect} from "react-redux";
 import DatePicker from "react-datepicker";
+import moment from "moment";
 import {createInterview} from "../../redux/actions/interviewActions";
 import {getVacancies} from "../../redux/actions/vacanciesActions";
 import {getCandidates} from "../../redux/actions/candidatesActions";
 import {showProjects} from "../../redux/actions/projectActions";
 import {getPositions} from "../../redux/actions/positionActions";
 import {getLevels} from "../../redux/actions/levelsActions";
-import Select from 'react-select';
-import 'react-select/dist/react-select.css';
+import {getInterviewers} from "../../redux/actions/interviewersActions";
+import Select from "react-select";
+import "react-select/dist/react-select.css";
 
 class CreateInterview extends Component {
 
@@ -35,7 +37,8 @@ class CreateInterview extends Component {
     }
 
     componentWillMount() {
-        this.props.onCheckUserRole(true);
+        this.props.onCheckUserRole();
+
         const {dispatch} = this.props;
 
         if (!this.props.vacancies.length){
@@ -50,6 +53,9 @@ class CreateInterview extends Component {
             dispatch(getCandidates());
         }
 
+        if (!this.props.interviewers.length){
+            dispatch(getInterviewers());
+        }
 
         if (!this.props.positions.length){
             dispatch(getPositions());
@@ -68,6 +74,11 @@ class CreateInterview extends Component {
     handleCandidateChange(candidate) {
         this.setState({candidate: candidate.candidate});
         this.setState({candidateError: ""});
+    }
+
+    handleInterviewerChange(interviewer) {
+        this.setState({interviewer: interviewer.interviewer});
+        this.setState({interviewerError: ""});
     }
 
     handleVacancyChange(vacancy) {
@@ -120,9 +131,11 @@ class CreateInterview extends Component {
         }
         if (date &&
             candidate &&
-            vacancy) {
+            vacancy &&
+            interviewer) {
             let candidateID = this.state.candidate.value,
-                vacancyID = this.state.vacancy.value;
+                vacancyID = this.state.vacancy.value,
+                interviewerID = this.state.interviewer.value;
             event.preventDefault();
             this.props.history.push("/interviews-upcoming");
             const {dispatch} = this.props;
@@ -131,13 +144,11 @@ class CreateInterview extends Component {
                     date_time: date,
                     candidate_id: candidateID,
                     vacancy_id: vacancyID,
-                    user_id: 19,
-                    rating_id: 12
+                    user_id: interviewerID,
                 }
             ));
         }
     }
-
 
     leaveForm() {
         this.resetFormFields();
@@ -175,9 +186,7 @@ class CreateInterview extends Component {
             projects = this.props.projects,
             levels = this.props.levels,
             positions = this.props.positions,
-            vacancy = this.state.vacancy,
-            candidate = this.state.candidate;
-
+            interviewers = this.props.interviewers;
 
         let showCandidates = () => {
 
@@ -201,7 +210,9 @@ class CreateInterview extends Component {
                 return (
 
                     <div className="form-group search-box_input">
-                        <label className="control-label">Candidate</label>
+                        <label className="control-label">Candidate
+                            <span className="required-field">*</span>
+                        </label>
                         <Select
                             name="university"
                             options={options}
@@ -244,7 +255,9 @@ class CreateInterview extends Component {
                 return (
 
                     <div className="form-group search-box_input">
-                        <label className="control-label">Vacancy</label>
+                        <label className="control-label">Vacancy
+                            <span className="required-field">*</span>
+                        </label>
                         <Select
                             name="university"
                             options={options}
@@ -256,6 +269,47 @@ class CreateInterview extends Component {
                     </div>
                 );
         };
+
+        let showInterviewer = () => {
+
+            let options = [];
+
+            if (interviewers.length) {
+                let compareSurname = (a, b) => {
+                        if (a.surname > b.surname) return 1;
+                        if (a.surname < b.surname) return -1;
+                    },
+                    sortedInterviewers = interviewers.sort(compareSurname) || {};
+
+
+                sortedInterviewers.map((item, index) => {
+                    let currentInterviewer = {
+                        value: item.id,
+                        label: "" + item.surname + " " + item.name + "",
+                        className: "option-class"
+                    };
+                    options.push(currentInterviewer);
+                });
+            }
+
+            return (
+
+                <div className="form-group search-box_input">
+                    <label className="control-label">Interviewer
+                        <span className="required-field">*</span>
+                    </label>
+                    <Select
+                        name="university"
+                        options={options}
+                        onChange={(interviewer) => this.handleInterviewerChange({ interviewer })}
+                        value={this.state.interviewer}
+                        placeholder={'Start typing for search...'}
+                    />
+                    <span className="has-error error-message">{this.state.interviewerError}</span>
+                </div>
+            );
+        };
+
 
         return (
             <div>
@@ -277,7 +331,10 @@ class CreateInterview extends Component {
 
                             <div className="clearfix form-group">
                                 <div className="create-interview-select">
-                                    <label className="control-label">Date</label>
+                                    <label className="control-label">Date
+                                        <span className="required-field">*</span>
+                                    </label>
+                                    <p className="form-sublabel back-link">You can pick only date starting from today</p>
                                     <DatePicker
                                         id="create-int-datePick"
                                         className="form-control form-control-sm filter-select"
@@ -288,6 +345,7 @@ class CreateInterview extends Component {
                                         timeFormat="HH:mm"
                                         timeIntervals={15}
                                         dateFormat="LLL"
+                                        minDate={moment()}
                                     />
                                     <span className="has-error error-message">{this.state.dateError}</span>
                                 </div>
@@ -295,20 +353,8 @@ class CreateInterview extends Component {
 
                             {showCandidates()}
                             {showVacancies()}
+                            {showInterviewer()}
 
-                            {/*<div className="form-group form-field-margin">*/}
-                            {/*<div>*/}
-                            {/*<label className="control-label">Interviewer</label>*/}
-                            {/*<select className="form-control form-control-sm create-interview-select-long"*/}
-                            {/*onChange={(event) => this.handleInterviewerChange(event)}*/}
-                            {/*>*/}
-                            {/*<option>K. Makiy</option>*/}
-                            {/*<option>A. Larin</option>*/}
-                            {/*<option>T. Grabets</option>*/}
-                            {/*</select>*/}
-                            {/*<span className="has-error error-message">{this.state.interviewerError}</span>*/}
-                            {/*</div>*/}
-                            {/*</div>*/}
                             <div className="form-group">
                                 <button
                                     id="create-interview-submitBtn"
@@ -363,6 +409,7 @@ function mapStateToProps(state) {
         projects: state.project.projects,
         levels: state.levels.levels,
         positions: state.positions.positions,
+        interviewers: state.interviewers.interviewers,
     }
 }
 

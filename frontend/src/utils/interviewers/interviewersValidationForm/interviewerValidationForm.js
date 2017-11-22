@@ -1,18 +1,24 @@
 import {removeAllErrorMessages} from './../../removeAllErrorMessages/removeAllErrorMessages';
 import {createErrorElem} from './../../createErrorElem/createErrorElem';
-import {fieldCharRegex, EMAIL_VALIDATION} from "../../../config";
+import {FIELD_CHAR_REGEX, LETTERS_ONLY, EMAIL_VALIDATION} from "../../../config";
 
 export function interviewersValidationForm(event) {
     let currentForm = event.target,
+        nameElem = this.refs.interviewerName,
+        nameVal = this.state.nameVal,
+        namePass = false,
+        surnameElem = this.refs.interviewerSurname,
+        surnameVal = this.state.surnameVal,
+        surnamePass = false,
         emailElem = this.refs.interviewerEmail,
         emailVal = this.state.emailVal,
         emailPass = false,
         levelElem = this.refs.interviewerLevel,
-        levelVal = this.state.levelVal,
+        // levelVal = this.state.levelVal,
         levelIndex = this.refs.interviewerLevel.options.selectedIndex,
         levelPass = false,
         positionElem = this.refs.interviewerPosition,
-        positionVal = this.state.positionVal,
+        // positionVal = this.state.positionVal,
         positionIndex = this.refs.interviewerPosition.options.selectedIndex,
         positionPass = false,
         descriptionElem = document.getElementById('interviewer-description'),
@@ -21,6 +27,16 @@ export function interviewersValidationForm(event) {
 
     let interviewerValidationSettings = {
         rules: {
+            name: {
+                required: true,
+                pattern: LETTERS_ONLY,
+                minLength: 2
+            },
+            surname: {
+                required: true,
+                pattern: LETTERS_ONLY,
+                minLength: 2
+            },
             email: {
                 required: true,
                 pattern: EMAIL_VALIDATION,
@@ -34,12 +50,22 @@ export function interviewersValidationForm(event) {
                 required: true
             },
             description: {
-                required: true,
-                pattern: fieldCharRegex
+                required: false,
+                pattern: FIELD_CHAR_REGEX
             },
 
         },
         messages: {
+            name: {
+                required: "Please enter name",
+                format: "Please use only latin letters",
+                minLength: "Name should contain minimum 2 characters"
+            },
+            surname: {
+                required: "Please enter surname",
+                format: "Please use only latin letters",
+                minLength: "Surname should contain minimum 2 characters"
+            },
             email: {
                 required: "Please enter email",
                 format: "Please enter a valid email address",
@@ -59,6 +85,50 @@ export function interviewersValidationForm(event) {
     };
 
     removeAllErrorMessages(currentForm);
+
+    if (interviewerValidationSettings.rules.name.required || nameVal) {
+        if (nameVal) {
+            if (nameVal.length >= interviewerValidationSettings.rules.name.minLength){
+                if (nameVal.match(interviewerValidationSettings.rules.name.pattern)) {
+                    namePass = true;
+                } else {
+                    nameElem.parentNode.appendChild(createErrorElem(nameElem, interviewerValidationSettings.messages.name.format));
+                    namePass = false;
+                }
+            } else {
+                namePass = false;
+                nameElem.parentNode.appendChild(createErrorElem(nameElem, interviewerValidationSettings.messages.name.minLength));
+            }
+
+        } else {
+            nameElem.parentNode.appendChild(createErrorElem(nameElem, interviewerValidationSettings.messages.name.required));
+            namePass = false;
+        }
+    } else {
+        namePass = true;
+    }
+
+    if (interviewerValidationSettings.rules.surname.required || surnameVal) {
+        if (surnameVal) {
+            if (surnameVal.length >= interviewerValidationSettings.rules.surname.minLength){
+                if (surnameVal.match(interviewerValidationSettings.rules.surname.pattern)) {
+                    surnamePass = true;
+                } else {
+                    surnameElem.parentNode.appendChild(createErrorElem(surnameElem, interviewerValidationSettings.messages.surname.format));
+                    surnamePass = false;
+                }
+            } else {
+                surnameElem.parentNode.appendChild(createErrorElem(surnameElem, interviewerValidationSettings.messages.surname.minLength));
+                surnamePass = false;
+            }
+
+        } else {
+            surnameElem.parentNode.appendChild(createErrorElem(surnameElem, interviewerValidationSettings.messages.surname.required));
+            surnamePass = false;
+        }
+    } else {
+        surnamePass = true;
+    }
 
     if (interviewerValidationSettings.rules.email.required || emailVal) {
         if (emailVal) {
@@ -115,7 +185,7 @@ export function interviewersValidationForm(event) {
         descriptionPass = true;
     }
 
-    if (emailPass && positionPass && levelPass && descriptionPass){
+    if (namePass && surnamePass && emailPass && positionPass && levelPass && descriptionPass){
         return true;
     } else {
         return false;

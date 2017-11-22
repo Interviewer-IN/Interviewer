@@ -18,8 +18,8 @@ export function addIndexExpandedElement(data) {
 }
 
 export function getVacancies(indexExpandedElement = false) {
-
     return (dispatch) => new Promise((resolve) =>{
+
         fetch('/api/v1/vacancies',
             {
                 method: 'GET',
@@ -34,19 +34,21 @@ export function getVacancies(indexExpandedElement = false) {
                         return response.json();
 
                     default:
-                        return {data: []}
+                        return response.json();
                 }
             })
             .then(data => {
                 dispatch(addIndexExpandedElement(indexExpandedElement));
                 dispatch(addVacancies(data));
+                resolve(data.data);
             })
             .catch((error) => {
                 dispatch(makeNote({
                     status: 'danger',
                     text: 'Error: ' + error,
                     hide: false
-                }))
+                }));
+                resolve(error);
             })
     })
 }
@@ -126,7 +128,7 @@ export function createVacancy(data, message, backPath, openPanelIndex = 0) {
                         hide: true
                     }
                 ));
-                if (backPath){
+                if (backPath) {
                     window.location.replace(backPath);
                 }
 
@@ -171,7 +173,7 @@ export function updateVacancy(data, message, backPath) {
                     }
                 ));
 
-                if (backPath !== undefined){
+                if (backPath !== undefined) {
                     window.location.replace(backPath);
                 }
             })
@@ -199,19 +201,41 @@ export function deleteVacancy(id) {
                     case 200:
                     case 201:
                         return response.json();
+                    case 500:
+                        return {data: 500};
                     default:
                         return {data: []}
                 }
             })
             .then(data => {
-                dispatch(getVacancies());
-                dispatch(makeNote(
-                    {
-                        status: "success",
-                        text: "Vacancy was deleted",
-                        hide: true
-                    }
-                ));
+                switch (data.data) {
+                    case 500:
+                        dispatch(makeNote({
+                            status: 'warning',
+                            text: 'Error: You have an associated entity with this vacancy',
+                            hide: true
+                        }));
+                        return;
+                    case undefined:
+                        let error = data.error;
+
+                        dispatch(makeNote({
+                            status: 'danger',
+                            text: 'Error: ' + error,
+                            hide: false
+                        }));
+                        return;
+                    default:
+                        dispatch(getVacancies());
+                        dispatch(makeNote(
+                            {
+                                status: "success",
+                                text: "Vacancy was deleted",
+                                hide: true
+                            }
+                        ));
+                        return;
+                }
             })
             .catch((error) => {
                 dispatch(makeNote({

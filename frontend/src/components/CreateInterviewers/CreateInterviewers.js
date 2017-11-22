@@ -9,8 +9,9 @@ import {Modal, Button} from "react-bootstrap";
 
 import {getPositions} from "../../redux/actions/positionActions";
 import {getLevels} from "../../redux/actions/levelsActions";
-import {getValueFromArr, removeCurrentError, interviewersValidationForm, createErrorElem} from '../../utils/index';
-import {CONFIRM_TEXT} from "../../config";
+import {createInterviewer} from "../../redux/actions/interviewersActions";
+import {getValueFromArr, removeCurrentError, interviewersValidationForm} from '../../utils/index';
+import {CONFIRM_TEXT, PASSWORD_BY_DEFAULT} from "../../config";
 
 class CreateInterviewers extends Component {
 
@@ -19,15 +20,17 @@ class CreateInterviewers extends Component {
         this.state = {
             confirmText: CONFIRM_TEXT,
             showModalConfirm: false,
+            nameVal: '',
+            surnameVal: '',
             emailVal: '',
-            descriptionVal: '',
             levelVal: '',
-            positionVal: ''
+            positionVal: '',
+            descriptionVal: ''
         };
     }
 
 
-    componentWillUpdate() {
+    componentWillMount() {
         this.props.onCheckUserRole();
         const {dispatch} = this.props;
 
@@ -44,6 +47,8 @@ class CreateInterviewers extends Component {
         event.preventDefault();
 
         this.setState({
+            nameVal: this.state.nameVal.trim(),
+            surnameVal: this.state.surnameVal.trim(),
             emailVal: this.state.emailVal.trim(),
             descriptionVal: this.state.descriptionVal.trim(),
         });
@@ -56,32 +61,50 @@ class CreateInterviewers extends Component {
                 positionVal = this.state.positionVal,
                 levelsList = this.props.levels,
                 levelVal = this.state.levelVal,
+                nameVal = this.state.nameVal,
+                surnameVal = this.state.surnameVal,
                 emailVal = this.state.emailVal,
+                // isHr = this.refs.interviewerIsHR.checked,
                 descriptionVal = this.state.descriptionVal,
                 positionId = getValueFromArr(positionsList, positionVal, 'name'),
                 levelId = getValueFromArr(levelsList, levelVal, 'name'),
                 formData = {};
 
+            nameVal ? formData.name = nameVal : false;
+            surnameVal ? formData.surname = surnameVal : false;
             emailVal ? formData.email = emailVal : false;
-            descriptionVal ? formData.description = descriptionVal : false;
             positionId ? formData.position_id = positionId : false;
             levelId ? formData.level_id = levelId : false;
-
+            descriptionVal ? formData.description = descriptionVal : false;
+            formData.password = PASSWORD_BY_DEFAULT;
+            formData.confirmation_token = emailVal;
 
 
             let {dispatch} = this.props,
                 pathName = window.location.hash,
                 backPath = '#/' + pathName.split('/')[1];
+
+            dispatch(createInterviewer(formData, null, backPath));
         }
 
     }
 
     isFieldsNotEmpty() {
-        if (this.state.emailVal || this.state.descriptionVal || this.state.positionVal || this.state.levelVal) {
+        if (this.state.nameVal || this.state.surnameVal || this.state.emailVal || this.state.descriptionVal || this.state.positionVal || this.state.levelVal) {
             this.openModalConfirm();
         } else {
             this.props.history.goBack();
         }
+    }
+
+    handleNameChanges(event) {
+        this.setState({nameVal: event.target.value.trim()});
+        removeCurrentError(event);
+    }
+
+    handleSurnameChanges(event) {
+        this.setState({surnameVal: event.target.value.trim()});
+        removeCurrentError(event);
     }
 
     handleEmailChanges(event) {
@@ -124,6 +147,7 @@ class CreateInterviewers extends Component {
 
     render() {
 
+
         let showPositionsList = () => {
             let positionsList = this.props.positions,
                 options = [];
@@ -148,7 +172,7 @@ class CreateInterviewers extends Component {
 
         return (
             <div className="bcgr">
-                <Helmet>Create Interviewers</Helmet>
+                <Helmet>Create Interviewer</Helmet>
                 <div className="row sameheight-container">
                     <div className="col-md-12">
                         <PageTitle pageTitle="Create Interviewer"
@@ -163,6 +187,41 @@ class CreateInterviewers extends Component {
                     <div className="row sameheight-container">
                         <form className="custom-form" onSubmit={(event) => this.handleSubmitForm(event)}>
                             <div className="col-md-6">
+
+                                <div className="form-group">
+                                    <label className="control-label form-label">Name <span
+                                        className="required-field">*</span></label>
+                                    <input
+                                        type="text"
+                                        id="interviewer-name"
+                                        name="interviewer-name"
+                                        placeholder="Input name"
+                                        className="form-control boxed"
+                                        maxLength="60"
+                                        ref="interviewerName"
+                                        value={this.state.nameVal}
+                                        autoFocus
+                                        onChange={(event) => this.handleNameChanges(event)}
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label className="control-label form-label">Surname <span
+                                        className="required-field">*</span></label>
+                                    <input
+                                        type="text"
+                                        id="interviewer-surname"
+                                        name="interviewer-surname"
+                                        placeholder="Input surname"
+                                        className="form-control boxed"
+                                        maxLength="60"
+                                        ref="interviewerSurname"
+                                        value={this.state.surnameVal}
+                                        onChange={(event) => this.handleSurnameChanges(event)}
+
+                                    />
+                                </div>
+
                                 <div className="form-group">
                                     <label className="control-label form-label">Email <span
                                         className="required-field">*</span></label>
@@ -175,7 +234,6 @@ class CreateInterviewers extends Component {
                                         maxLength="60"
                                         ref="interviewerEmail"
                                         value={this.state.emailVal}
-                                        autoFocus
                                         onChange={(event) => this.handleEmailChanges(event)}
 
                                     />
@@ -205,11 +263,15 @@ class CreateInterviewers extends Component {
                                     </select>
                                 </div>
 
+                                <p className="text-muted">
+                                    <small> NOTICE: The User will have password '{PASSWORD_BY_DEFAULT}' by default
+                                    </small>
+                                </p>
+
                             </div>
                             <div className="col-md-12">
                                 <div className="form-group">
-                                    <label className="control-label form-label">Descriptions <span
-                                        className="required-field">*</span></label>
+                                    <label className="control-label form-label">Descriptions</label>
                                     <p className="form-sublabel">
                                         <small>Maximum 3000 characters</small>
                                     </p>
@@ -253,12 +315,15 @@ class CreateInterviewers extends Component {
                                 <div className="custom-btn-group">
                                     <Button
                                         id="modal-confirm-cancel"
-                                        className="btn-danger"
-                                        onClick={() => this.leaveForm()}>Cancel</Button>
+                                        className="btn-primary"
+                                        onClick={() => this.leaveForm()}>Yes
+                                    </Button>
                                     <Button
                                         id="modal-confirm-back"
-                                        onClick={() => this.closeModalConfirm()} bsStyle="primary">Back to Create
-                                        Interviewer</Button>
+                                        className="btn-danger"
+                                        onClick={() => this.closeModalConfirm()}
+                                    >No
+                                    </Button>
                                 </div>
                             </Modal.Footer>
                         </Modal>

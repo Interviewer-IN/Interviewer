@@ -132,8 +132,6 @@ class CandidateEdit extends Component {
 
     handleUploadFile(event) {
 
-        console.log(event.target.files);
-
         let parentWrapper = event.target.parentNode.parentNode,
             resultUploadBlock = parentWrapper.querySelector('.upload-file__result'),
             hasErrorBlock = parentWrapper.querySelector('.has-error');
@@ -491,12 +489,15 @@ class CandidateEdit extends Component {
                                 <div className="custom-btn-group">
                                     <Button
                                         id="modal-confirm-cancel"
-                                        className="btn-danger"
-                                        onClick={() => this.leaveForm()}>Cancel</Button>
+                                        className="btn-primary"
+                                        onClick={() => this.leaveForm()}>Yes
+                                    </Button>
                                     <Button
                                         id="modal-confirm-back"
-                                        onClick={() => this.closeModalConfirm()} bsStyle="primary">Back to Add
-                                        Candidate</Button>
+                                        className="btn-danger"
+                                        onClick={() => this.closeModalConfirm()}
+                                    >No
+                                    </Button>
                                 </div>
                             </Modal.Footer>
                         </Modal>

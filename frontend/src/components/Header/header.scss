@@ -1,38 +1,80 @@
 
-.header{
+.header {
 
-  .collapse-btn{
+  .collapse-btn {
     cursor: pointer;
   }
 
-
-  .header-block-nav{
+  .header-block-nav {
     height: 100%;
-    ul{
+    padding-right: 35px;
+
+    @media (max-width: 991px) {
+      padding-right: 20px;
+    }
+
+    .username {
+      font-weight: bold;
+      text-align: right;
+    }
+
+    & > ul > li > a {
+      padding: 0;
+    }
+
+    @media (max-width: 767px) {
+      .profile {
+        .name {
+          display: inline-block;
+        }
+      }
+    }
+
+    @media (max-width: 380px) {
+      .profile {
+        .name {
+          max-width: 170px;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          vertical-align: bottom;
+        }
+      }
+    }
+
+    .dropdown-menu__custom {
+      margin-top: -6px;
+
+      @media (max-width: 767px) {
+        margin-top: 0;
+      }
+
+      .dropdown-item {
+
+        &.hover {
+          background: whitesmoke;
+        }
+
+        &.active {
+          color: #85CE36;
+          background: none;
+        }
+
+        &.active:hover {
+          background: whitesmoke;
+        }
+
+
+      }
+    }
+
+    ul {
       height: 100%;
       float: right;
-      li{
+      li {
         vertical-align: middle;
       }
     }
-  }
-
-
-  .header-block-nav > ul > li > a {
-    padding: 0;
-  }
-
-  .header-block-nav > ul > li{
-    padding: 0 15px;
-  }
-
-
-  .username{
-    font-weight: bold;
-  }
-
-  .header-block-nav > ul > li > .active{
-    color: #85CE36;
   }
 
 }

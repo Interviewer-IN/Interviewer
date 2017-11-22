@@ -6,7 +6,7 @@ import TextareaAutosize from "react-autosize-textarea";
 import {Modal, Button} from "react-bootstrap";
 import {createBrowserHistory} from 'history';
 import {connect} from "react-redux";
-import {fieldCharRegex, CONFIRM_TEXT} from "../../config"
+import {FIELD_CHAR_REGEX, CONFIRM_TEXT} from "../../config"
 import {removeCurrentError, removeAllErrorMessages, createErrorElem, getValueFromArr} from '../../utils/index';
 import {showProjects} from "../../redux/actions/projectActions";
 import {getLevels} from "../../redux/actions/levelsActions";
@@ -35,8 +35,6 @@ class CreateVacancy extends Component {
     componentWillMount() {
         this.props.onCheckUserRole();
         const {dispatch} = this.props;
-
-        console.log(this.props);
 
         if (!this.props.newProject.length){
             dispatch(showProjects());
@@ -91,7 +89,7 @@ class CreateVacancy extends Component {
             descriptionPassValidation = false;
 
 
-        if (!fieldCharRegex.test(descriptionValue)) {
+        if (!FIELD_CHAR_REGEX.test(descriptionValue)) {
             descriptionPassValidation = false;
             descriptionField.parentNode.appendChild(createErrorElem(descriptionField, this.state.wrongCharMessage));
         } else {
@@ -237,7 +235,7 @@ class CreateVacancy extends Component {
                             <form className="custom-form" onSubmit={(event) => this.handleSubmitForm(event)}>
 
                                 <div className="form-group form-filter-block">
-                                    <label className="form-filter-block__title">Vacancy parameters</label>
+                                    <label className="form-filter-block__title">Vacancy parameters <span className="required-field">*</span></label>
                                     <div className="form-filter-block__selects-block" id="select-block">
                                         <div className="form-group">
                                             <select id="position-select"
@@ -279,7 +277,7 @@ class CreateVacancy extends Component {
 
 
                                 <div className="form-group">
-                                    <label className="control-label form-label">Vacancy Description</label>
+                                    <label className="control-label form-label">Vacancy Description <span className="required-field">*</span></label>
                                     <p className="form-sublabel">
                                         <small>Maximum 3000 characters</small>
                                     </p>
@@ -323,12 +321,15 @@ class CreateVacancy extends Component {
                                     <div className="custom-btn-group">
                                         <Button
                                             id="modal-confirm-cancel"
-                                            className="btn-danger"
-                                            onClick={() => this.leaveForm()}>Cancel</Button>
+                                            className="btn-primary"
+                                            onClick={() => this.leaveForm()}>Yes
+                                        </Button>
                                         <Button
                                             id="modal-confirm-back"
-                                            onClick={() => this.closeModalConfirm()} bsStyle="primary">Back to Create
-                                            Vacancy</Button>
+                                            className="btn-danger"
+                                            onClick={() => this.closeModalConfirm()}
+                                        >No
+                                        </Button>
                                     </div>
                                 </Modal.Footer>
                             </Modal>

@@ -83,11 +83,12 @@ export function showProjects() {
                         hide: false
                     }
                 ));
+                resolve(err);
             });
     });
 }
 
-export function getProjects(id) {
+export function getProject(id) {
     return (dispatch) => new Promise(function(resolve, reject) {
         fetch("/api/v1/projects/" + id)
             .then(function(response) {
@@ -120,19 +121,47 @@ export function removeProject(id) {
                     "Content-Type": "application/json"
                 }
             })
-            .then(res =>
-                res.json()
-            )
-            .then(date => {
-                let noteData = "'" + date.data.title.slice(0, 20) + "'";
-                dispatch(showProjects());
-                dispatch(makeNote(
-                    {
-                        status: "success",
-                        text: "Project " + noteData + "... was deleted!",
-                        hide: true
-                    }
-                ))
+            .then(response => {
+                switch (response.status) {
+                    case 200:
+                    case 201:
+                        return response.json();
+                    case 500:
+                        return {data: 500};
+                    default:
+                        return {data: []}
+                }
+            })
+            .then(data => {
+                switch (data.data) {
+                    case 500:
+                        dispatch(makeNote({
+                            status: 'warning',
+                            text: 'Error: You have an associated entity with this project',
+                            hide: true
+                        }));
+                        return;
+                    case undefined:
+                        let error = data.error;
+
+                        dispatch(makeNote({
+                            status: 'danger',
+                            text: 'Error: ' + error,
+                            hide: false
+                        }));
+                        return;
+                    default:
+                        let noteData = "'" + data.data.title.slice(0, 20) + "'";
+                        dispatch(showProjects());
+                        dispatch(makeNote(
+                            {
+                                status: "success",
+                                text: "Project " + noteData + "... was deleted!",
+                                hide: true
+                            }
+                        ));
+                        return;
+                }
             })
             .catch(function(err) {
                 dispatch(makeNote(

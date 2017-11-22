@@ -26,7 +26,8 @@ class VacanciesClosed extends Component {
             levelsFilterID: '',
             projectsFilterID: '',
             levelsFilterVal: '',
-            projectFilterVal: ''
+            projectFilterVal: '',
+            vacanciesListExist: true
         }
 
     }
@@ -36,7 +37,20 @@ class VacanciesClosed extends Component {
         const {dispatch} = this.props;
 
         if (!this.props.vacancies.length){
-            dispatch(getVacancies());
+            dispatch(getVacancies()).then(
+                (data) => {
+
+                    if (!data.length){
+                        this.setState({
+                            vacanciesListExist: false
+                        });
+                    } else {
+                        this.setState({
+                            vacanciesListExist: true
+                        });
+                    }
+                }
+            );
         }
 
     }
@@ -128,126 +142,132 @@ class VacanciesClosed extends Component {
             vacanciesToDisplay = [],
             indexExpandedElement = this.props.indexExpandedElement;
 
+        if (this.state.vacanciesListExist){
+            if (vacanciesList.length && projectsList.length && levelsList.length && positionsList.length) {
 
-        if (vacanciesList.length && projectsList.length && levelsList.length && positionsList.length) {
-
-            vacanciesList = vacanciesList.filter((current) => {
-                return current.status === false;
-            });
-
-            //-- FILTER BY POSITION  --------------------------
-            let positionFilterID = this.state.positionsFilterID;
-
-            if (positionFilterID) {
                 vacanciesList = vacanciesList.filter((current) => {
-                    return (current.position_id === positionFilterID);
+                    return current.status === false;
                 });
-            }
-            //-- END FILTER BY LEVEL -----------------------
 
-            //-- FILTER BY LEVEL  --------------------------
-            let levelFilterID = this.state.levelsFilterID;
+                //-- FILTER BY POSITION  --------------------------
+                let positionFilterID = this.state.positionsFilterID;
 
-            if (levelFilterID) {
-                vacanciesList = vacanciesList.filter((current) => {
-                    return (current.level_id === levelFilterID);
-                });
-            }
-            //-- END FILTER BY LEVEL  -----------------------
+                if (positionFilterID) {
+                    vacanciesList = vacanciesList.filter((current) => {
+                        return (current.position_id === positionFilterID);
+                    });
+                }
+                //-- END FILTER BY LEVEL -----------------------
 
-            //-- FILTER BY PROJECT  --------------------------
-            let projectFilterID = this.state.projectsFilterID;
+                //-- FILTER BY LEVEL  --------------------------
+                let levelFilterID = this.state.levelsFilterID;
 
-            if (projectFilterID) {
-                vacanciesList = vacanciesList.filter((current) => {
-                    return (current.project_id === projectFilterID);
-                });
-            }
-            //-- END FILTER BY PROJECT  -----------------------
+                if (levelFilterID) {
+                    vacanciesList = vacanciesList.filter((current) => {
+                        return (current.level_id === levelFilterID);
+                    });
+                }
+                //-- END FILTER BY LEVEL  -----------------------
 
-            vacanciesToDisplay = vacanciesList.map((item, index) => {
+                //-- FILTER BY PROJECT  --------------------------
+                let projectFilterID = this.state.projectsFilterID;
 
-                let vacancyId = item.id,
-                    projectId = item.project_id,
-                    levelId = item.level_id,
-                    positionId = item.position_id,
-                    indexElement = ++index,
-                    statusData = {
-                        id: vacancyId,
-                        status: true
-                    },
-                    duplicateData = {
-                        description: item.description,
-                        level_id: levelId,
-                        position_id: positionId,
-                        project_id: projectId,
-                        status: false
-                    };
+                if (projectFilterID) {
+                    vacanciesList = vacanciesList.filter((current) => {
+                        return (current.project_id === projectFilterID);
+                    });
+                }
+                //-- END FILTER BY PROJECT  -----------------------
 
-                const PAGE_TITLE = (
-                    <div className="custom-panel-title panel-list-item">
-                        <div className="custom-panel-title__right-side">
-                            <div className="panel-collapse-btn">
-                                <span className="panel-collapse-btn__title btn-js">Expand</span>
-                                <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
-                            </div>
-                        </div>
-                        <div className="custom-panel-title__left-side">
-                            <div className="info-block">
-                                <div className="info-block__item text-bold--200">
-                                    <span className="text-bold--600">{positionsTitleObj[positionId]}</span>
-                                    <span> </span>
-                                    <span className="text-bold--600">{levelsTitleObj[levelId]}</span>
-                                    <span> for </span>
-                                    <span className="text-bold--600">{projectsTitleObj[projectId]}</span>
-                                    <span> project</span>
+                if (vacanciesList.length) {
+                    vacanciesToDisplay = vacanciesList.map((item, index) => {
+
+                        let vacancyId = item.id,
+                            projectId = item.project_id,
+                            levelId = item.level_id,
+                            positionId = item.position_id,
+                            indexElement = ++index,
+                            statusData = {
+                                id: vacancyId,
+                                status: true
+                            },
+                            duplicateData = {
+                                description: item.description,
+                                level_id: levelId,
+                                position_id: positionId,
+                                project_id: projectId,
+                                status: false
+                            };
+
+                        const PAGE_TITLE = (
+                            <div className="custom-panel-title panel-list-item">
+                                <div className="custom-panel-title__right-side">
+                                    <div className="panel-collapse-btn">
+                                        <span className="panel-collapse-btn__title btn-js">Expand</span>
+                                        <span className="fa fa-angle-right panel-collapse-btn__arrow arrow-js"/>
+                                    </div>
+                                </div>
+                                <div className="custom-panel-title__left-side">
+                                    <div className="info-block">
+                                        <div className="info-block__item">
+                                            <span className="text-bold">{positionsTitleObj[positionId]}</span>
+                                            <span> </span>
+                                            <span className="text-bold">{levelsTitleObj[levelId]}</span>
+                                            <span> for </span>
+                                            <span className="text-bold">{projectsTitleObj[projectId]}</span>
+                                            <span> project</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                );
+                        );
 
-                const DESCRIPTION = (
-                    <form className="custom-form">
-                        <div className="form-group">
-                            <label className="control-label form-label text-green">Description:</label>
-                            <p className="form-control-static">
-                                {item.description}
-                            </p>
-                        </div>
-                    </form>
-                );
+                        const DESCRIPTION = (
+                            <form className="custom-form">
+                                <div className="form-group">
+                                    <label className="control-label form-label">Description:  <span className="form-control-static">
+                                        {item.description}
+                                    </span></label>
+                                </div>
+                            </form>
+                        );
 
-                let toExpandElement = () => {
-                    return (indexElement === indexExpandedElement) ? (true) : (false);
-                };
+                        let toExpandElement = () => {
+                            return (indexElement === indexExpandedElement) ? (true) : (false);
+                        };
 
-                return (
-                    <Panels
-                        key={vacancyId}
-                        id={vacancyId}
-                        defaultExpanded={toExpandElement()}
-                        showActionBtn={true}
-                        titleForActionBtn='Reopen vacancy'
-                        titleConst={PAGE_TITLE}
-                        description={DESCRIPTION}
-                        showEditBtn={true}
-                        showDuplicateBtn={true}
-                        showDeleteBtn={true}
-                        editBtnId={"edit-vacancy-" + vacancyId}
-                        dublicateBtnId={"dublicate-vacancy-" + vacancyId}
-                        deleteBtnId={"delete-vacancy-" + vacancyId}
-                        callDelete={() => {
-                            this.openModalConfirm(vacancyId)
-                        }}
-                        callEdit={() => this.switchToEditMode(vacancyId)}
-                        callAction={() => this.switchToClose(statusData)}
-                        callDublicate={() => this.duplicateVacancy(duplicateData)}
-                    />
-                )
-            })
+                        return (
+                            <Panels
+                                key={vacancyId}
+                                id={vacancyId}
+                                defaultExpanded={toExpandElement()}
+                                showActionBtn={true}
+                                titleForActionBtn='Reopen vacancy'
+                                titleConst={PAGE_TITLE}
+                                description={DESCRIPTION}
+                                showEditBtn={true}
+                                showDuplicateBtn={true}
+                                showDeleteBtn={true}
+                                editBtnId={"edit-vacancy-" + vacancyId}
+                                dublicateBtnId={"dublicate-vacancy-" + vacancyId}
+                                deleteBtnId={"delete-vacancy-" + vacancyId}
+                                callDelete={() => {
+                                    this.openModalConfirm(vacancyId)
+                                }}
+                                callEdit={() => this.switchToEditMode(vacancyId)}
+                                callAction={() => this.switchToClose(statusData)}
+                                callDublicate={() => this.duplicateVacancy(duplicateData)}
+                            />
+                        )
+                    })
+                } else {
+                    vacanciesToDisplay = (<h5 className="noData">No data of the requested type was found</h5>);
+                }
+                
+            }
+        } else {
+            vacanciesToDisplay = (<h5 className="noData"> There is no data to display </h5>);
         }
-
 
         return (
             <div className="bcgr">

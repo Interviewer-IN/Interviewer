@@ -39,3 +39,41 @@
   }
 
 }
+
+.interview-icon {
+  color: #ff1111;
+}
+
+.tooltip-icon {
+  display: inline-block;
+
+  &__text {
+    visibility: hidden;
+    width: 200px;
+    color: #70b02b;
+    text-align: center;
+    border-radius: 1px;
+    border: 1px solid #70b02b;
+    padding: 4px 4px;
+    z-index: 1;
+    margin-left: 10px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 80%;
+    background-color: white;
+  }
+
+  &:hover {
+    .tooltip-icon__text {
+      visibility: visible;
+    }
+  }
+
+}
+
+.margin-left {
+  margin-left: 10px;
+}
+
+.margin-right {
+  margin-right: 10px;
+}

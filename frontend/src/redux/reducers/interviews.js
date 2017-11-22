@@ -1,4 +1,3 @@
-import {CREATE_INTERVIEW, SHOW_INTERVIEWS, SET_INTERVIEW} from "../actions/interviewActions";
 
 const initialState = {
     interviews: [],
@@ -9,17 +8,15 @@ const initialState = {
         vacancyID:"",
         userID: "",
         ratingID:"",
-
-
     },
-    currentInterview: {}
+    currentInterview: {},
+    idExpandedElement: ""
 };
-
 
 export default function interviews (state = initialState, action) {
 
     switch (action.type) {
-        case CREATE_INTERVIEW:
+        case "CREATE_INTERVIEW":
             return {
                 ...state,
                 newInterview: {...state,
@@ -30,10 +27,12 @@ export default function interviews (state = initialState, action) {
                     ratingID: action.payload.ratingID
                 }
             };
-        case SHOW_INTERVIEWS:
+        case "SHOW_INTERVIEWS":
             return { ...state, interviews: action.payload};
-        case SET_INTERVIEW:
+        case "SET_INTERVIEW":
             return { ...state, currentInterview: action.payload};
+        case 'ID_ELEMENT':
+            return { ...state, idExpandedElement: action.payload};
         default:
             return state;
     }

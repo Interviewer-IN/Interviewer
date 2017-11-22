@@ -5,13 +5,22 @@ module Api
       # before_action :authenticate_user!
 
       def index
-        interviews = Interview.order('created_at DESC')
-        render json: {status:"SUCCESS", message: "Projects loaded", data:interviews}, status: :ok
+        if params.key?(:user_id)
+        interviews = Interview.where(user_id: params[:user_id])
+        render json: {status:"SUCCESS", message: "Interviews loaded", data:interviews}, status: :ok
+        else
+          interviews = Interview.order('created_at DESC')
+          render json: {status:"SUCCESS", message: "Interviews loaded", data:interviews}, status: :ok
+        end
       end
 
       def show
-        interview = Interview.find(params[:id])
+        interview = Interview.where(id: params[:id], user_id: params[:user_id])
+        if !interview.blank?
         render json: {status:"SUCCESS", message: "Interview id=#{params[:id]} loaded", data:interview}, status: :ok
+        else
+        render json: {status:"ERROR", message: "Nothing found"}, status: :ok
+        end
       end
 
       def create
@@ -44,7 +53,7 @@ module Api
 
       private
       def interview_params
-        params.permit(:status, :state, :feedback, :date_time,
+        params.permit(:status, :state, :date_time,
                       :candidate_id, :vacancy_id, :user_id, :rating_id)
       end
     end
