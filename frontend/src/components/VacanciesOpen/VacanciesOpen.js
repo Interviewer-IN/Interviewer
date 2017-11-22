@@ -9,7 +9,7 @@ import Filters from './../../components/Filters';
 import Panels from './../../components/Panels';
 import {getVacancies, deleteVacancy, updateVacancy, createVacancy, addIndexExpandedElement} from "../../redux/actions/vacanciesActions";
 import {levelsListName, positionsListName, projectsListName, getValueFromArr} from '../../utils/index';
-import {DELETE_VACANCY, CLOSE_VACANCY, DUPLICATE_VACANCY, EXPANDED_ELEMENT_INDEX } from '../../config';
+import {DELETE_VACANCY, CLOSE_VACANCY, DUPLICATE_VACANCY, EXPANDED_ELEMENT_INDEX, GET_EMPTY_DATA, FILTER_EMPTY_DATA } from '../../config';
 
 class VacanciesOpen extends Component {
 
@@ -260,14 +260,14 @@ class VacanciesOpen extends Component {
 
                     })
                 } else {
-                    vacanciesToDisplay = (<h5 className="noData">No data of the requested type was found</h5>);
+                    vacanciesToDisplay = (<h5 className="noData"> {FILTER_EMPTY_DATA}</h5>);
                 }
 
 
 
             }
         } else {
-            vacanciesToDisplay = (<h5 className="noData"> There is no data to display </h5>);
+            vacanciesToDisplay = (<h5 className="noData"> {GET_EMPTY_DATA} </h5>);
         }
 
 

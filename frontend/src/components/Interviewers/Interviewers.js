@@ -11,7 +11,7 @@ import {getPositions} from '../../redux/actions/positionActions';
 import {getLevels} from '../../redux/actions/levelsActions';
 import {getInterviewers, deleteInterviewer} from '../../redux/actions/interviewersActions';
 import {levelsListName, positionsListName, getValueFromArr} from '../../utils/index';
-import {GET_EMPTY_DATA, DELETE_INTERVIEWER} from '../../config';
+import {GET_EMPTY_DATA, FILTER_EMPTY_DATA, DELETE_INTERVIEWER} from '../../config';
 
 import PageTitle from '../../containers/PageTitle';
 
@@ -218,13 +218,13 @@ class Interviewers extends Component {
 
                     });
                 } else {
-                    interviewersToDisplay = (<h5 className="noData">No data of the requested type was found</h5>);
+                    interviewersToDisplay = (<h5 className="noData"> {FILTER_EMPTY_DATA} </h5>);
                 }
 
 
             }
         } else {
-            interviewersToDisplay = (<h5 className="noData"> There is no data to display </h5>);
+            interviewersToDisplay = (<h5 className="noData"> {GET_EMPTY_DATA} </h5>);
         }
 
 

@@ -25,6 +25,7 @@ import {
 import PageTitle from "./../../containers/PageTitle";
 import Panels from "../Panels/Panels";
 import Filters from "./../../components/Filters";
+import {GET_EMPTY_DATA, FILTER_EMPTY_DATA} from '../../config';
 
 
 class InterviewsCompleted extends Component {
@@ -530,14 +531,14 @@ class InterviewsCompleted extends Component {
                             </PanelGroup>
                         )
                     } else {
-                        interviewsToDisplay = (<h5 className="noData"> There is no data to display </h5>);
+                        interviewsToDisplay = (<h5 className="noData"> {FILTER_EMPTY_DATA} </h5>);
                     }
 
                 } else {
-                    interviewsToDisplay = (<h5 className="noData"> There is no data to display </h5>);
+                    interviewsToDisplay = (<h5 className="noData"> {FILTER_EMPTY_DATA} </h5>);
                 }
             } else {
-                interviewsToDisplay = (<h5 className="noData"> There is no data to display </h5>);
+                interviewsToDisplay = (<h5 className="noData"> {GET_EMPTY_DATA} </h5>);
             }
         };
 
