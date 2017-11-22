@@ -749,7 +749,7 @@
   * @api {get} api/v1/positions/:id Get Positions
   *
   *
-  * @apiDescription Returns all Positions which are visible for the currently logged in user, with ID in URL- returns one position which match ID. 
+  * @apiDescription Returns all Positions which are visible for the currently logged in user, with ID in URL- returns one position which match ID.
   *
   * @apiHeader {String} content-type application/json; charset=utf-8
   * @apiHeader {String} accept application/json
@@ -1012,7 +1012,7 @@
      * @apiParam {String} name    Name of candidate.
      * @apiParam {String} surname    Surname of candidate.
      * @apiParam {String} notes    Some notes of candidate.
-	 
+
      * @apiParamExample {json} Request-Example:
      *
      {
@@ -1101,7 +1101,7 @@
       }
      *
 	* @apiSuccess {int} id  Unique id of the Candidate.
-   * @apiSuccess {String} age  Age of the Candidate.   
+   * @apiSuccess {String} age  Age of the Candidate.
    * @apiSuccess {String} experience  Candidate`s experience.
    * @apiSuccess {String} contacts  Candidate`s contacts.
    * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
@@ -1172,7 +1172,7 @@
 	  "surname": "Jimson",
 	  "notes": "Some notes about Jim Jimson fot patch"
       }
-	  
+
  * @apiSuccess {int} id  Unique id of the Candidate.
    * @apiSuccess {String} age  Age of the Candidate.
    * @apiSuccess {String} experience  Candidate`s experience.
@@ -1226,7 +1226,7 @@
    * @apiHeader {String} accept application/json
    *
    * @apiSuccess {int} id  Unique id of the Candidate.
-   * @apiSuccess {String} age  Age of the Candidate.   
+   * @apiSuccess {String} age  Age of the Candidate.
    * @apiSuccess {String} contacts  Candidate`s contacts.
    * @apiSuccess {String} experience  Candidate`s experience.
    * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
@@ -1234,7 +1234,7 @@
    * @apiSuccess {int} level_id      Level of Candidate.
    * @apiSuccess {int} position_id    Position of Candidate.
    * @apiSuccess {base64} cv    CV of Candidate.
-   
+
      * @apiSuccess {String} name    Name of candidate.
      * @apiSuccess {String} surname    Surname of candidate.
      * @apiSuccess {String} notes    Some notes for candidate.
@@ -1264,11 +1264,11 @@
 }
    * @apiError Unauthorized Returned if the user is not logged in.
    * @apiError CandidateNotFound Returned if the candidate does not exist.
-   */ 
-   
-   
-   
-   
+   */
+
+
+
+
   * ======================Interviews=====================
   *=====get======
 
@@ -1305,7 +1305,7 @@
             "rating_id": 1
         }
    }
-		
+
    * @apiSuccess {int} id  Unique id of the Interviews.
    * @apiSuccess {Boolen} status  Status of the Interviews(true/false).
    * @apiSuccess {String} state  State of the Interviews.
@@ -1353,10 +1353,10 @@
 	"vacancy_id": 3,
 	"user_id": 19,
 	"rating_id": 2
-	
+
 }
  *
-		
+
    * @apiSuccess {int} id  Unique id of the Interviews.
    * @apiSuccess {Boolen} status  Status of the Interviews(true/false).
    * @apiSuccess {String} state  State of the Interviews.
@@ -1423,10 +1423,10 @@
 	"vacancy_id": 3,
 	"user_id": 19,
 	"rating_id": 2
-	
+
 	}
      *
-	 
+
    * @apiSuccess {int} id  Unique id of the Interviews.
    * @apiSuccess {Boolen} status  Status of the Interviews(true/false).
    * @apiSuccess {String} state  State of the Interviews.
@@ -1494,10 +1494,10 @@
 	"vacancy_id": 3,
 	"user_id": 19,
 	"rating_id": 2
-	
+
 	}
      *
-	 
+
    * @apiSuccess {int} id  Unique id of the Interviews.
    * @apiSuccess {Boolen} status  Status of the Interviews(true/false).
    * @apiSuccess {String} state  State of the Interviews.
@@ -1509,7 +1509,7 @@
    * @apiSuccess {int} vacancy_id  ID of vacancy for this interviews.
    * @apiSuccess {int} user_id  ID of user for this interviews.
    * @apiSuccess {int} rating_id  ID of rating for this interviews.
-	 
+
    *
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200 OK
@@ -1546,7 +1546,7 @@
    * @apiHeader {String} content-type application/json; charset=utf-8
    * @apiHeader {String} accept application/json
    *
- 
+
    * @apiSuccess {int} id  Unique id of the Interviews.
    * @apiSuccess {Boolen} status  Status of the Interviews(true/false).
    * @apiSuccess {String} state  State of the Interviews.
@@ -1557,7 +1557,7 @@
    * @apiSuccess {int} candidate_id  ID of candidate for this interviews.
    * @apiSuccess {int} vacancy_id  ID of vacancy for this interviews.
    * @apiSuccess {int} user_id  ID of user for this interviews.
-   * @apiSuccess {int} rating_id  ID of rating for this interviews. 
+   * @apiSuccess {int} rating_id  ID of rating for this interviews.
    *
    *
    * @apiSuccessExample {json} Success-Response:
@@ -1584,10 +1584,10 @@
    */
 
 
-   
-   
-   
-   
+
+
+
+
      * =======================Ratings====================
   *=====get======
 
@@ -1616,7 +1616,7 @@
             "created_at": "2017-10-10T23:23:08.582Z",
             "updated_at": "2017-10-20T12:17:10.368Z"
         }}
-		
+
    * @apiSuccess {int} id  Unique id of the Rating.
    * @apiSuccess {String} grade  Grade of the Rating.
    * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
@@ -1760,7 +1760,7 @@
      * @apiSuccess {String} grade  Grade of the rating.
      * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
      * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
-    
+
    *
    *
    * @apiSuccessExample {json} Success-Response:
@@ -1779,9 +1779,9 @@
   * @apiError Unauthorized Returned if the user is not logged in.
    * @apiError RatingNotFound Returned if the rating does not exist.
    */
-   
-   
-   
+
+
+
    *=========Users=================
 *=====get======
 
@@ -1820,7 +1820,7 @@
             "is_hr": false
         }
    }
-		
+
    * @apiSuccess {int} id  Unique id of the user.
    * @apiSuccess {String} provider  User`s provider.
    * @apiSuccess {String} uid  User`s uid
@@ -1834,11 +1834,11 @@
    * @apiSuccess {Integer} level_id  User`s level which connected with Levels table.
    * @apiSuccess {Integer} position_id  User`s position which connected with Levels table.
    * @apiSuccess {Boolean} is_hr  Is HR oe not.
-   
+
    * @apiError UserNotFound The <code>id</code> of the user was not found.
    *
    */
-   
+
     *========CreateUsers======
     /**
      * @api {post} api/v1/users/ Create Users
@@ -1943,7 +1943,7 @@
    * @apiSuccess {Integer} level_id  User`s level which connected with Levels table.
    * @apiSuccess {Integer} position_id  User`s position which connected with Levels table.
     * @apiSuccess {Boolean} is_hr  Is HR oe not.
-	 
+
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200 OK
      *
@@ -1988,7 +1988,7 @@
 	 * @apiParam {Integer} position_id User`s name which connected with Levels table.
      *
      * @apiParamExample {json} Request-Example:
-       { 
+       {
 	   "name": "LuciusTF",
 	  "email": "email@domen.com",
 	  "surname": "Morningstar",
@@ -2007,7 +2007,7 @@
    * @apiSuccess {String} surname  User`s surname.
    * @apiSuccess {Integer} level_id  User`s level which connected with Levels table.
    * @apiSuccess {Integer} position_id  User`s position which connected with Levels table.
-  * @apiSuccess {Boolean} is_hr  Is HR oe not.  
+  * @apiSuccess {Boolean} is_hr  Is HR oe not.
      * @apiSuccessExample {json} Success-Response:
      *     HTTP/1.1 200 OK
      *
@@ -2083,5 +2083,266 @@
 
    * @apiError UserNotFound Returned if the user does not exist.
    */
-   
-   
+
+
+
+   *=========Feedbacks=================
+*=====get======
+
+  /**
+   * @apiName GetFeedbacks
+   * @apiGroup Feedbacks
+   *
+   * @api {get} api/v1/Feedbacks/:id Get Feedback
+   *
+   *
+   * @apiDescription Returns all Feedbacks which are visible for the currently logged in user.
+   *
+   * @apiHeader {String} content-type application/json; charset=utf-8
+   * @apiHeader {String} accept application/json
+   *
+   *
+   * @apiSuccessExample {json} Success-Response:
+   *     HTTP/1.1 200 OK
+   {
+     "status": "SUCCESS",
+     "message": "Feedbacks loaded",
+     "data": [
+         {
+             "id": 343,
+             "answer": "test",
+             "created_at": "2017-11-20T15:37:06.539Z",
+             "updated_at": "2017-11-20T15:37:06.539Z",
+             "interview_id": 228,
+             "question_id": 1
+         }
+   }
+
+   * @apiSuccess {int} id  Unique id of the feedback.
+   * @apiSuccess {String} answer  Feedback`s snswer .
+   * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+   * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+   * @apiSuccess {int} interview_id  Interview`s id connected with Interview table
+   * @apiSuccess {int} question_id  Question`s id connected with Question table
+
+   * @apiError FeedbacksNotFound The <code>id</code> of the feedback was not found.
+   *
+   */
+
+    *========CreateFeedbacks======
+    /**
+     * @api {post} api/v1/Feedbacks/ Create Feedbacks
+     * @apiName PostFeedbacks
+     * @apiGroup Feedbacks
+     *
+     * @apiHeader {String} content-type application/json; charset=utf-8
+     * @apiHeader {String} accept application/json
+     *
+     * @apiParam {int} interview_id  Interview`s id.
+	 * @apiParam {int} question_id  Question`s id.
+	 * @apiParam {String} answer Answer.
+     *
+     * @apiParamExample {json} Request-Example:
+     *
+     {  "interview_id": 206,
+            "question_id": 1,
+              "answer": "Maybe"
+            }
+     *
+     * @apiSuccess {int} id  Unique id of the feedback.
+    * @apiSuccess {String} answer  Feedback`s snswer .
+     * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+     * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+     * @apiSuccess {int} interview_id  Interview`s id connected with Interview table
+     * @apiSuccess {int} question_id  Question`s id connected with Question table
+
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200 OK
+     {
+    "status": "SUCCESS",
+    "message": "Saved feedback",
+    "data": {
+        "id": 345,
+        "answer": "Maybe",
+        "created_at": "2017-11-22T08:33:49.855Z",
+        "updated_at": "2017-11-22T08:33:49.855Z",
+        "interview_id": 206,
+        "question_id": 1
+    }
+}
+   *
+     */
+     *=====EditFeedbacks======
+     /**
+     * @api {put} api/v1/feedbacks/:id Update Feedbacks
+     * @apiName PutFeedbacks
+     * @apiGroup Feedbacks
+     * @apiDescription Replace parts of existing feedback.
+     *
+     *
+     * @apiHeader {String} content-type application/json; charset=utf-8
+     * @apiHeader {String} accept application/json
+     *
+     * @apiParam {int} interview_id  Interview`s id.
+   * @apiParam {int} question_id  Question`s id.
+   * @apiParam {String} answer Answer.
+     *
+     * @apiParamExample {json} Request-Example:
+     {
+            "answer": "No"
+          }
+     *
+      *
+      * @apiSuccess {int} id  Unique id of the feedback.
+      * @apiSuccess {String} answer  Feedback`s snswer .
+      * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+      * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+      * @apiSuccess {int} interview_id  Interview`s id connected with Interview table
+      * @apiSuccess {int} question_id  Question`s id connected with Question table
+
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200 OK
+     *
+     {
+       "status": "SUCCESS",
+       "message": "Update feedback",
+       "data": {
+           "id": 345,
+           "answer": "No",
+           "interview_id": 206,
+           "question_id": 1,
+           "created_at": "2017-11-22T08:33:49.855Z",
+           "updated_at": "2017-11-22T08:39:07.664Z"
+       }
+   }
+     * @apiError FeedbackNotFound Returned if the feedback does not exist.
+     */
+
+  *======PatchFeedbacks======
+  /**
+  * @api {patch} api/v1/feedbacks/:id Edit Feedbacks
+  * @apiName PatchFeedbacks
+  * @apiGroup Feedbacks
+  * @apiDescription Replace parts of existing Feedbacks.
+  *
+  *
+     * @apiHeader {String} content-type application/json; charset=utf-8
+     * @apiHeader {String} accept application/json
+     *
+     * @apiParam {int} interview_id  Interview`s id.
+   * @apiParam {int} question_id  Question`s id.
+   * @apiParam {String} answer Answer.
+     *
+     * @apiParamExample {json} Request-Example:
+     {
+            "answer": "No"
+          }
+     *
+      *
+      * @apiSuccess {int} id  Unique id of the feedback.
+    * @apiSuccess {String} answer  Feedback`s snswer .
+      * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+      * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+      * @apiSuccess {int} interview_id  Interview`s id connected with Interview table
+      * @apiSuccess {int} question_id  Question`s id connected with Question table
+
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200 OK
+     *
+     {
+       "status": "SUCCESS",
+       "message": "Update feedback",
+       "data": {
+           "id": 345,
+           "answer": "No",
+           "interview_id": 206,
+           "question_id": 1,
+           "created_at": "2017-11-22T08:33:49.855Z",
+           "updated_at": "2017-11-22T08:39:07.664Z"
+       }
+   }
+     * @apiError FeedbackNotFound Returned if the feedback does not exist.
+     */
+
+  *======DeleteFeedbacks=======
+  /**
+   * @api {delete} api/v1/feedbacks/:id Delete Feedback
+   * @apiName DeleteFeedbacks
+   * @apiGroup Feedbacks
+   *
+   *
+   *
+   * @apiHeader {String} content-type application/json; charset=utf-8
+   * @apiHeader {String} accept application/json
+   *
+   * @apiSuccess {int} id  Unique id of the feedback.
+   * @apiSuccess {String} answer  Feedback`s snswer .
+   * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+   * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+   * @apiSuccess {int} interview_id  Interview`s id connected with Interview table
+   * @apiSuccess {int} question_id  Question`s id connected with Question table
+
+   *
+   * @apiSuccessExample {json} Success-Response:
+   *     HTTP/1.1 200 OK
+   {
+       "status": "SUCCESS",
+       "message": "Feedback deleted",
+       "data": {
+           "id": 345,
+           "answer": "No",
+           "created_at": "2017-11-22T08:33:49.855Z",
+           "updated_at": "2017-11-22T08:39:07.664Z",
+           "interview_id": 206,
+           "question_id": 1
+       }
+   }
+
+   * @apiError FeedbacksNotFound Returned if the feedback does not exist.
+   */
+
+
+
+
+      *=========Questions=================
+   *=====get======
+
+     /**
+      * @apiName GetQuestions
+      * @apiGroup Questions
+      *
+      * @api {get} api/v1/questions/:id Get Questions
+      *
+      *
+      * @apiDescription Returns all Questions which are visible for the currently logged in user.
+      *
+      * @apiHeader {String} content-type application/json; charset=utf-8
+      * @apiHeader {String} accept application/json
+      *
+      *
+      * @apiSuccessExample {json} Success-Response:
+      *     HTTP/1.1 200 OK
+      {
+      "status": "SUCCESS",
+      "message": "Questions loaded",
+      "data": [
+          {
+              "id": 6,
+              "content": "Don’t Panic",
+              "hint": "Stench non-euclidean unmentionable stygian immemorial eldritch.",
+              "created_at": "2017-11-12T21:27:56.149Z",
+              "updated_at": "2017-11-12T21:27:56.149Z",
+              "active": true
+          }
+      }
+
+      * @apiSuccess {int} id  Unique id of the question.
+      * @apiSuccess {String} content  Question content.
+      * @apiSuccess {String} created_at    Mandatory with data of creating(By default).
+      * @apiSuccess {String} updated_at    Mandatory with data of update(By default).
+      * @apiSuccess {Boolean} active  Status of question.
+
+      * @apiError QuestionsNotFound The <code>id</code> of the Questions was not found.
+      *
+      */
