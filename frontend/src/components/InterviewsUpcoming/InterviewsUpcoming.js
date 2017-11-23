@@ -25,6 +25,7 @@ import {
     filterByProject,
     filterByInterviewer
 } from "../../utils/index";
+import {GET_EMPTY_DATA, FILTER_EMPTY_DATA} from '../../config';
 class InterviewsUpcoming extends Component {
 
 
@@ -622,11 +623,11 @@ class InterviewsUpcoming extends Component {
 
 
                 } else {
-                    interviewsByDates = (<h5 className="noData">No data of the requested type was found</h5>);
+                    interviewsByDates = (<h5 className="noData"> {FILTER_EMPTY_DATA} </h5>);
                 }
             }
         } else {
-            interviewsByDates = (<h5 className="noData"> There is no data to display </h5>);
+            interviewsByDates = (<h5 className="noData"> {GET_EMPTY_DATA} </h5>);
         }
         let filter;
 

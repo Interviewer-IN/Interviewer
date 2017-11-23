@@ -33,6 +33,30 @@ Position.new({:name => "Front-end"}).save(:validate => false)  unless Position.w
 Position.new({:name => "Back-end"}).save(:validate => false)  unless Position.where(name: "Back-end").exists?
 Position.new({:name => "HR"}).save(:validate => false)  unless Position.where(name: "HR").exists?
 
+User.create({
+                email:  "user@user.com",
+                password:  "123456",
+                password_confirmation: "123456",
+                provider:  "email",
+                uid: "user@user.com",
+                confirmed_at:  "22.07.2016 " ,
+                level_id:  Level.offset(rand(Level.count)).first.id,
+                position_id: Position.offset(rand(Position.count)).first.id,
+                confirmation_token: "hello"
+            })  unless User.where(email: "user@user.com").exists?
+
+User.create({
+                email:  "user1@user.com",
+                password:  "123456",
+                password_confirmation: "123456",
+                provider:  "email",
+                uid: "user1@user.com",
+                confirmed_at:  "22.07.2016 " ,
+                level_id:  Level.offset(rand(Level.count)).first.id,
+                position_id: Position.offset(rand(Position.count)).first.id,
+                confirmation_token: "world"
+            })  unless User.where(email: "user1@user.com").exists?
+
 5.times do
   Vacancy.create({
                      status: Faker::DrWho.quote,

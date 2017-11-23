@@ -60,3 +60,62 @@ export function changePassword(data){
 
 
 }
+
+export function recoveryPassword(data) {
+    return (dispatch) =>  new Promise ( resolve => {
+        fetch('/auth/password',
+            {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => {
+                switch (response.status) {
+                    case 200:
+                    case 201:
+
+                        return response.json();
+
+                    case 404:
+                        return response.json();
+                    default:
+                        return response.json();
+                }
+            })
+            .then (data => {
+
+                if (data.success){
+                    dispatch(makeNote(
+                        {
+                            status: "success",
+                            text: data.message,
+                            hide: true
+                        }
+                    ));
+                    window.location.replace('#/login');
+                } else {
+                    let submitFormGroup = document.querySelector('.submit-btn');
+
+                    let errorElem = document.createElement('span');
+                    errorElem.innerHTML = data.errors[0];
+                    errorElem.classList.add('has-error', 'custom-error');
+
+                    submitFormGroup.appendChild(errorElem);
+                    submitFormGroup.classList.add('has-error');
+
+                }
+
+                resolve(data.data);
+            })
+            .catch(error => {
+                dispatch(makeNote({
+                    status: 'danger',
+                    text: 'Error: ' + error,
+                    hide: false
+                }));
+                resolve();
+            })
+    });
+}

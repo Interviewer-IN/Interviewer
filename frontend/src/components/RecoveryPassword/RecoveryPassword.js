@@ -3,7 +3,10 @@ import './recoveryPassword.css';
 import {Link} from 'react-router-dom';
 import {Modal} from 'react-bootstrap';
 import Helmet from 'react-helmet';
-import {EMAIL_VALIDATION} from './../../config'
+import {EMAIL_VALIDATION, REDIRECT_AFTER_RECOVERY_PASS} from './../../config';
+import {removeAllErrorMessages} from './../../utils/index';
+import {recoveryPassword} from "../../redux/actions/changePasswordActions";
+import {connect} from "react-redux";
 
 class RecoveryPassword extends Component {
     constructor(props) {
@@ -58,7 +61,7 @@ class RecoveryPassword extends Component {
             let passCheckOnEmptyEmail = false,
                 passCheckOnEmail = false;
 
-            removeAllErrorMessage(currentForm);
+            removeAllErrorMessages(currentForm);
 
             if (loginValidationSettings.rules.email.required) {
                 if (email.value.trim() === '') {
@@ -125,26 +128,32 @@ class RecoveryPassword extends Component {
             };
         }
 
-        let removeAllErrorMessage = (currentForm) => {
-            let allErrorMessages = currentForm.querySelectorAll('span.has-error'),
-                allErrorTitles = currentForm.querySelectorAll('div.has-error');
-
-            for (let i = 0; i < allErrorTitles.length; i++) {
-                allErrorTitles[i].classList.remove('has-error');
-            }
-
-            for (let i = 0; i < allErrorMessages.length; i++) {
-                allErrorMessages[i].remove();
-            }
-        };
-
-
         let isPassValidation = validate(loginValidationSettings, email, currentForm);
+
+        if (isPassValidation) {
+
+
+
+            let {dispatch} = this.props,
+                host = window.location.host,
+                redirect = host + '/#' + REDIRECT_AFTER_RECOVERY_PASS,
+                formData = {
+                  email: email.value,
+                    redirect_url: redirect
+
+                };
+
+            // console.log(formData);
+
+            dispatch(recoveryPassword(formData));
+        }
 
 
     }
 
     render() {
+        console.log(this);
+
         return (
             <div className="main-wrapper">
                 <Helmet>
@@ -165,9 +174,7 @@ class RecoveryPassword extends Component {
                         <div className="auth-container">
                             <div className="card">
                                 <header className="auth-header">
-                                    <h1 className="auth-title">
-                                        Interviewer Logo
-                                    </h1>
+                                    <div className="custom-logo"/>
                                 </header>
                                 <div className="auth-content">
                                     <p className="text-center">PASSWORD RECOVER</p>
@@ -186,7 +193,7 @@ class RecoveryPassword extends Component {
                                                    ref="forgotPass_email"
                                             />
                                         </div>
-                                        <div className="form-group">
+                                        <div className="form-group submit-btn">
                                             <button id="resetSubmit" type="submit" className="btn btn-block btn-primary">Reset password</button>
                                         </div>
                                         <div className="form-group">
@@ -212,7 +219,10 @@ class RecoveryPassword extends Component {
 }
 
 
+function mapStateToProps(state) {
+    return {}
+}
 
+export default connect(mapStateToProps)(RecoveryPassword);
 
-export default RecoveryPassword;
 

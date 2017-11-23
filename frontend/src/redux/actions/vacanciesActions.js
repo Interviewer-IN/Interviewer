@@ -119,7 +119,7 @@ export function createVacancy(data, message, backPath, openPanelIndex = 0) {
                 }
             })
             .then(data => {
-                dispatch(addNewVacancy(data));
+                // dispatch(addNewVacancy(data));
                 dispatch(getVacancies(openPanelIndex));
                 dispatch(makeNote(
                     {

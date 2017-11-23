@@ -43,11 +43,11 @@ module Api
 
       private
       def user_params_post
-        params.permit(:level_id,:position_id,:email,:confirmation_token, :name, :surname, :password)
+        params.permit(:level_id,:position_id,:email,:confirmation_token, :name, :surname, :password,  :description)
       end
 
       def user_params_put
-        params.permit(:level_id,:position_id,:email, :name, :surname)
+        params.permit(:level_id,:position_id,:email, :name, :surname,  :description)
       end
 
     end
