@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://dev-interviewer.herokuapp.com",
+  "proxy": "http://prod-interviewer.herokuapp.com",
   "dependencies": {
     "autosize": "^4.0.0",
     "es6-promise": "^4.1.1",
