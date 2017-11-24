@@ -530,11 +530,9 @@ class InterviewsUpcoming extends Component {
                                                                 {currentProject.title}
                                                             </span>
                                                         </div>
-                                                        <div className="info-block__position separate-line margin-left">
-                                                            <span className="info-block__position-name">
+                                                        <span className="info-block__position-name margin-left">
                                                             {overdueInterview()}
-                                                            </span>
-                                                        </div>
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
