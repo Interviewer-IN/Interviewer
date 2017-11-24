@@ -531,14 +531,14 @@ class InterviewsCompleted extends Component {
                             </PanelGroup>
                         )
                     } else {
-                        interviewsToDisplay = (<h5 className="noData"> {FILTER_EMPTY_DATA} </h5>);
+                        return <h5 className="noData"> {FILTER_EMPTY_DATA} </h5>;
                     }
 
                 } else {
-                    interviewsToDisplay = (<h5 className="noData"> {FILTER_EMPTY_DATA} </h5>);
+                    return <h5 className="noData"> {FILTER_EMPTY_DATA} </h5>;
                 }
             } else {
-                interviewsToDisplay = (<h5 className="noData"> {GET_EMPTY_DATA} </h5>);
+                return <h5 className="noData"> {GET_EMPTY_DATA} </h5>;
             }
         };
 
