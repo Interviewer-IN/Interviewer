@@ -24,7 +24,6 @@ class Username extends Component {
     }
 
     componentWillMount() {
-        this.props.onCheckUserRole();
         const {dispatch} = this.props;
 
         let userData = JSON.parse(localStorage.getItem('userData'));
