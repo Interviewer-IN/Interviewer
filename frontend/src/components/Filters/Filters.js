@@ -340,7 +340,7 @@ class Filters extends Component {
                     <div className="filter-block filter-block__date clearfix hide"
                          id="filterDatePicker">
                         <div className="filter-block__selects">
-                            <div className="form-group fields-group date-fields clearfix">
+                            <div className="form-group fields-group space-between clearfix">
                                 <DatePicker
                                     id={dateFromFilterId}
                                     className="form-control form-control-sm filter-select"
@@ -351,7 +351,7 @@ class Filters extends Component {
                                     onChange={(event) => this.getDateFromFilterVal(event)}
                                 />
                             </div>
-                            <div className="form-group fields-group date-fields  float-left">
+                            <div className="form-group fields-group space-between float-left">
                                 <DatePicker
                                     id={dateToFilterId}
                                     className="form-control form-control-sm filter-select"
