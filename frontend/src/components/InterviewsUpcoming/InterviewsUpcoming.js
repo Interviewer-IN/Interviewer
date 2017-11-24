@@ -4,11 +4,13 @@ import {Modal, Button, PanelGroup} from "react-bootstrap";
 import Helmet from "react-helmet";
 import moment from "moment";
 import "./interviewsUpcoming.css";
-import {showInterviews,
+import {
+    showInterviews,
     removeInterview,
     createInterview,
     updateInterview,
-    showInterviewsForInterviewer} from "../../redux/actions/interviewActions";
+    showInterviewsForInterviewer
+} from "../../redux/actions/interviewActions";
 import {getVacancies} from "../../redux/actions/vacanciesActions";
 import {showProjects} from "../../redux/actions/projectActions";
 import {getCandidates} from "../../redux/actions/candidatesActions";
@@ -25,7 +27,7 @@ import {
     filterByProject,
     filterByInterviewer
 } from "../../utils/index";
-import {GET_EMPTY_DATA, FILTER_EMPTY_DATA} from '../../config';
+import {GET_EMPTY_DATA, FILTER_EMPTY_DATA} from "../../config";
 class InterviewsUpcoming extends Component {
 
 
@@ -483,6 +485,9 @@ class InterviewsUpcoming extends Component {
                                                             {currentInterviewer.surname + " " + currentInterviewer.name}
                                                             </span>
                                                         </div>
+                                                        <span className="info-block__position-name margin-left">
+                                                            {overdueInterview()}
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -523,6 +528,11 @@ class InterviewsUpcoming extends Component {
                                                             </span>
                                                             <span className="info-block__position-name">
                                                                 {currentProject.title}
+                                                            </span>
+                                                        </div>
+                                                        <div className="info-block__position separate-line margin-left">
+                                                            <span className="info-block__position-name">
+                                                            {overdueInterview()}
                                                             </span>
                                                         </div>
                                                     </div>
