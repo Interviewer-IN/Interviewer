@@ -19,10 +19,6 @@ class Password extends Component {
         };
     }
 
-    componentWillMount() {
-        this.props.onCheckUserRole();
-    }
-
     handleNewPasswordChanges(event) {
         this.setState({newPassword: event.target.value.trim()});
         removeCurrentError(event);
