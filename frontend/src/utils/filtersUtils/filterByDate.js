@@ -1,3 +1,6 @@
+import moment from "moment";
+
+
 export function filterByDates(dateFromFilter, dateToFilter, interviews) {
 
     let dateDay = new Date(dateToFilter).toLocaleString('en-GB', {day: 'numeric'}),
@@ -16,20 +19,18 @@ export function filterByDates(dateFromFilter, dateToFilter, interviews) {
     if (dateFromFilter && isDateFilterValid) {
         interviews = interviews.filter((current) => {
             let currentDate = new Date(current.date_time).getTime();
-            return (currentDate > dateFromFilter);
+            return (currentDate >= dateFromFilter);
         });
     }
 
     if (dateToFilter && isDateFilterValid) {
+        let searchableDateToFilter = moment(dateToFilter._d);
+        searchableDateToFilter = searchableDateToFilter.add(1,"days");
         interviews = interviews.filter((current) => {
             let currentDate = new Date(current.date_time).getTime();
-            return (currentDate < dateToFilter);
+            return (currentDate < searchableDateToFilter);
         });
     }
-
-    // if (!isDateFilterValid && !equalFilterDates) {
-    //     filterErrorMessage = "Invalid date range"
-    // }
 
     if (dateToFilter && dateToFilter && equalFilterDates) {
         interviews = interviews.filter((current) => {
@@ -46,7 +47,6 @@ export function filterByDates(dateFromFilter, dateToFilter, interviews) {
             currentDateYear === dateYear);
         });
     }
-
     return interviews;
 }
 
