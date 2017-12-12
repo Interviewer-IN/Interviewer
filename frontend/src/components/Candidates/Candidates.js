@@ -12,7 +12,8 @@ import {getCandidates, deleteCandidate} from '../../redux/actions/candidatesActi
 import {getPositions} from '../../redux/actions/positionActions';
 import {getLevels} from '../../redux/actions/levelsActions';
 import {levelsListName, positionsListName, getValueFromArr} from '../../utils/index';
-import {GET_EMPTY_DATA, DELETE_CANDIDATE} from '../../config';
+import {GET_EMPTY_DATA, FILTER_EMPTY_DATA, DELETE_CANDIDATE} from '../../config';
+
 
 
 class Candidates extends Component {
@@ -344,13 +345,13 @@ class Candidates extends Component {
 
                     });
                 } else {
-                    candidatesToDisplay = (<h5 className="noData">No data of the requested type was found</h5>);
+                    candidatesToDisplay = (<h5 className="noData"> {FILTER_EMPTY_DATA}</h5>);
                 }
 
 
             }
         } else {
-            candidatesToDisplay = (<h5 className="noData"> There is no data to display </h5>);
+            candidatesToDisplay = (<h5 className="noData"> {GET_EMPTY_DATA} </h5>);
         }
 
 

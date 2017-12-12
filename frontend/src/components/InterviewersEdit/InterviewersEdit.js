@@ -368,12 +368,15 @@ class InterviewersEdit extends Component {
                                 <div className="custom-btn-group">
                                     <Button
                                         id="modal-confirm-cancel"
-                                        className="btn-danger"
-                                        onClick={() => this.leaveForm()}>Cancel</Button>
+                                        className="btn-primary"
+                                        onClick={() => this.leaveForm()}>Yes
+                                    </Button>
                                     <Button
                                         id="modal-confirm-back"
-                                        onClick={() => this.closeModalConfirm()} bsStyle="primary">Back to Create
-                                        Interviewer</Button>
+                                        className="btn-danger"
+                                        onClick={() => this.closeModalConfirm()}
+                                    >No
+                                    </Button>
                                 </div>
                             </Modal.Footer>
                         </Modal>

@@ -15,30 +15,6 @@ end
 
 Admin.new({:email => "admin@admin.com", :password => "123456", :password_confirmation => "123456" }).save(:validate => false) unless Admin.where(email: "admin@admin.com").exists?
 
-User.create({
-                email:  "user@user.com",
-                password:  "123456",
-                password_confirmation: "123456",
-                provider:  "email",
-                uid: "user@user.com",
-                confirmed_at:  "22.07.2016 " ,
-                level_id:  Level.offset(rand(Level.count)).first.id,
-                position_id: Position.offset(rand(Position.count)).first.id,
-                confirmation_token: Faker::DrWho.quote
-            })  unless User.where(email: "user@user.com").exists?
-
-User.create({
-                email:  "user1@user.com",
-                password:  "123456",
-                password_confirmation: "123456",
-                provider:  "email",
-                uid: "user1@user.com",
-                confirmed_at:  "22.07.2016 " ,
-                level_id:  Level.offset(rand(Level.count)).first.id,
-                position_id: Position.offset(rand(Position.count)).first.id,
-                confirmation_token: Faker::DrWho.quote
-            })  unless User.where(email: "user1@user.com").exists?
-
 Level.new({:name => "Trainee"}).save(:validate => false)  unless Level.where(name: "Trainee").exists?
 Level.new({:name => "Junior"}).save(:validate => false)  unless Level.where(name: "Junior").exists?
 Level.new({:name => "Middle"}).save(:validate => false)  unless Level.where(name: "Middle").exists?
@@ -56,6 +32,30 @@ Position.new({:name => "PM"}).save(:validate => false)  unless Position.where(na
 Position.new({:name => "Front-end"}).save(:validate => false)  unless Position.where(name: "Front-end").exists?
 Position.new({:name => "Back-end"}).save(:validate => false)  unless Position.where(name: "Back-end").exists?
 Position.new({:name => "HR"}).save(:validate => false)  unless Position.where(name: "HR").exists?
+
+User.create({
+                email:  "user@user.com",
+                password:  "123456",
+                password_confirmation: "123456",
+                provider:  "email",
+                uid: "user@user.com",
+                confirmed_at:  "22.07.2016 " ,
+                level_id:  Level.offset(rand(Level.count)).first.id,
+                position_id: Position.offset(rand(Position.count)).first.id,
+                confirmation_token: "hello"
+            })  unless User.where(email: "user@user.com").exists?
+
+User.create({
+                email:  "user1@user.com",
+                password:  "123456",
+                password_confirmation: "123456",
+                provider:  "email",
+                uid: "user1@user.com",
+                confirmed_at:  "22.07.2016 " ,
+                level_id:  Level.offset(rand(Level.count)).first.id,
+                position_id: Position.offset(rand(Position.count)).first.id,
+                confirmation_token: "world"
+            })  unless User.where(email: "user1@user.com").exists?
 
 5.times do
   Vacancy.create({
@@ -97,3 +97,27 @@ end
   }
                   )
 end
+
+User.create({
+                email:  "user@user.com",
+                password:  "123456",
+                password_confirmation: "123456",
+                provider:  "email",
+                uid: "user@user.com",
+                confirmed_at:  "22.07.2016 " ,
+                level_id:  Level.offset(rand(Level.count)).first.id,
+                position_id: Position.offset(rand(Position.count)).first.id,
+                confirmation_token: "Faker::DrWho.quote"
+            })  unless User.where(email: "user@user.com").exists?
+
+User.create({
+                email:  "user1@user.com",
+                password:  "123456",
+                password_confirmation: "123456",
+                provider:  "email",
+                uid: "user1@user.com",
+                confirmed_at:  "22.07.2016 " ,
+                level_id:  Level.offset(rand(Level.count)).first.id,
+                position_id: Position.offset(rand(Position.count)).first.id,
+                confirmation_token: "Faker::DrWho.quote1"
+            })  unless User.where(email: "user1@user.com").exists?

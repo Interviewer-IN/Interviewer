@@ -141,7 +141,7 @@ class Filters extends Component {
 
                     options = sortedProjects.map((item, index) => {
 
-                        let title = item.title.length < 10 ? item.title : item.title.slice(0, 10) + "...";
+                        let title = item.title;
 
                         return (
                             <option key={index}>{title}</option>
@@ -177,7 +177,7 @@ class Filters extends Component {
                     sortedPositions = positionsList.sort(compareName) || {};
                 options = sortedPositions.map((item, index) => {
 
-                    let name = item.name.length < 10 ? item.name : item.name.slice(0, 10) + "...";
+                    let name = item.name;
 
                     return (
                         <option key={index}>{name}</option>
@@ -212,7 +212,7 @@ class Filters extends Component {
                     },
                     sortedLevels = levelsList.sort(compareName) || {};
                 options = sortedLevels.map((item, index) => {
-                    let name = item.name.length < 10 ? item.name : item.name.slice(0, 10) + "...";
+                    let name = item.name;
 
                     return (
                         <option key={index}>{name}</option>
@@ -340,7 +340,7 @@ class Filters extends Component {
                     <div className="filter-block filter-block__date clearfix hide"
                          id="filterDatePicker">
                         <div className="filter-block__selects">
-                            <div className="form-group fields-group date-fields clearfix">
+                            <div className="form-group fields-group space-between clearfix">
                                 <DatePicker
                                     id={dateFromFilterId}
                                     className="form-control form-control-sm filter-select"
@@ -351,7 +351,7 @@ class Filters extends Component {
                                     onChange={(event) => this.getDateFromFilterVal(event)}
                                 />
                             </div>
-                            <div className="form-group fields-group date-fields  float-left">
+                            <div className="form-group fields-group space-between float-left">
                                 <DatePicker
                                     id={dateToFilterId}
                                     className="form-control form-control-sm filter-select"

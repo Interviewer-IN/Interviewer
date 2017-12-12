@@ -24,24 +24,6 @@ class CreateProject extends Component {
             descriptionError: "",
         };
     }
-    //----------------------------------
-    //      Will be implemented further
-    //------------------------------------
-    // componentDidMount(props) {
-    //     window.addEventListener("beforeunload", this.handleConfirmLeavePage.bind(this));
-    // }
-    //
-    // handleConfirmLeavePage(event) {
-    //     let notEmptyFields = this.state.projectTitle || this.state.projectDescription;
-    //     if (notEmptyFields && event.target.activeElement.id != "create-project-resetBtn") {
-    //         let confirmationMessage = "confirm";
-    //         event.returnValue = confirmationMessage;
-    //         return confirmationMessage;
-    //     }
-    // }
-    //-------------------------------------
-    //      End of the code
-    //--------------------------------------
 
     componentWillMount() {
         this.props.onCheckUserRole();

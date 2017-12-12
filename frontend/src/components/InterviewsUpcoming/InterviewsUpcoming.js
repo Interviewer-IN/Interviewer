@@ -4,11 +4,13 @@ import {Modal, Button, PanelGroup} from "react-bootstrap";
 import Helmet from "react-helmet";
 import moment from "moment";
 import "./interviewsUpcoming.css";
-import {showInterviews,
+import {
+    showInterviews,
     removeInterview,
     createInterview,
     updateInterview,
-    showInterviewsForInterviewer} from "../../redux/actions/interviewActions";
+    showInterviewsForInterviewer
+} from "../../redux/actions/interviewActions";
 import {getVacancies} from "../../redux/actions/vacanciesActions";
 import {showProjects} from "../../redux/actions/projectActions";
 import {getCandidates} from "../../redux/actions/candidatesActions";
@@ -25,6 +27,7 @@ import {
     filterByProject,
     filterByInterviewer
 } from "../../utils/index";
+import {GET_EMPTY_DATA, FILTER_EMPTY_DATA} from "../../config";
 class InterviewsUpcoming extends Component {
 
 
@@ -482,6 +485,9 @@ class InterviewsUpcoming extends Component {
                                                             {currentInterviewer.surname + " " + currentInterviewer.name}
                                                             </span>
                                                         </div>
+                                                        <span className="info-block__position-name margin-left">
+                                                            {overdueInterview()}
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -524,6 +530,9 @@ class InterviewsUpcoming extends Component {
                                                                 {currentProject.title}
                                                             </span>
                                                         </div>
+                                                        <span className="info-block__position-name margin-left">
+                                                            {overdueInterview()}
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -622,11 +631,11 @@ class InterviewsUpcoming extends Component {
 
 
                 } else {
-                    interviewsByDates = (<h5 className="noData">No data of the requested type was found</h5>);
+                    interviewsByDates = (<h5 className="noData"> {FILTER_EMPTY_DATA} </h5>);
                 }
             }
         } else {
-            interviewsByDates = (<h5 className="noData"> There is no data to display </h5>);
+            interviewsByDates = (<h5 className="noData"> {GET_EMPTY_DATA} </h5>);
         }
         let filter;
 

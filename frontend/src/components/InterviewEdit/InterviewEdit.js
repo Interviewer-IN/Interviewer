@@ -367,13 +367,13 @@ class InterviewEdit extends Component {
                                     </label>
                                     <p className="form-sublabel back-link">You can pick only date starting from today</p>
                                     <DatePicker
-                                        className="form-control form-control-sm filter-select"
+                                        className="form-control form-control-sm date-fields"
                                         selected={this.state.date}
                                         onChange={(event) => this.handleDateChange(event)}
                                         showTimeSelect
                                         timeFormat="HH:mm"
-                                        timeIntervals={15}
-                                        dateFormat="LLL"
+                                        timeIntervals={30}
+                                        dateFormat="lll"
                                         minDate={moment()}
                                     />
                                     <span className="has-error error-message">{this.state.dateError}</span>

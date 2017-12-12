@@ -11,7 +11,8 @@ export const TYPE_FILE_ERROR_TEXT = 'Please, choose the file with ' + TYPE_FILES
 
 
 //-- FORM ----------
-export const GET_EMPTY_DATA = 'no information available';
+export const GET_EMPTY_DATA = 'There is no data to display';
+export const FILTER_EMPTY_DATA = 'No data of the requested type was found';
 
 
 
@@ -39,5 +40,10 @@ export const PASSWORD_BY_DEFAULT = 123456;
 //-- CHANGE PASSWORD -----------
 export const CHANGE_PASSWORD_SUCCESS = 'The password was changed successfully';
 
+
 //-- USER INFO ------------
 export const UPDATE_USER_INFO = 'The user-info data was updated successfully';
+
+//-- RECOVERY PASSWORD -------------
+export const REDIRECT_AFTER_RECOVERY_PASS = '/set_new_password';
+

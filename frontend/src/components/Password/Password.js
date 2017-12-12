@@ -13,15 +13,10 @@ class Password extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showModalConfirm: false,
             oldPassword: '',
             newPassword: '',
             retypePassword: ''
         };
-    }
-
-    componentWillMount() {
-        this.props.onCheckUserRole();
     }
 
     handleNewPasswordChanges(event) {
@@ -107,6 +102,7 @@ class Password extends Component {
                                     name="user-retype-password"
                                     placeholder='Re-type new password'
                                     className="form-control boxed"
+                                    maxLength="20"
                                     ref="retypePassword"
                                     value={this.state.retypePassword}
                                     onChange={(event) => this.handleRepeatNewPassChanges(event)}

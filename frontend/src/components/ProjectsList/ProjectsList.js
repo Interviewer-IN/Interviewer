@@ -6,6 +6,7 @@ import "./ProjectsList.css";
 import {showProjects, removeProject} from "../../redux/actions/projectActions";
 import PageTitle from "./../../containers/PageTitle";
 import Panels from "../Panels/Panels";
+import {GET_EMPTY_DATA} from './../../config';
 
 
 class ProjectsList extends Component {
@@ -127,11 +128,8 @@ class ProjectsList extends Component {
                 )
 
             }
-            else {
-                projectsToDisplay = (<h5 className="noData">No data of the requested type was found</h5>);
-            }
         } else {
-            projectsToDisplay = (<h5 className="noData"> There is no data to display </h5>);
+            projectsToDisplay = (<h5 className="noData"> {GET_EMPTY_DATA} </h5>);
         }
 
         return (

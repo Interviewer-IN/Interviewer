@@ -94,9 +94,17 @@
 }
 
 .filter-select {
+  width: 130px;
   border-radius: 0;
   height: 2rem !important;
   color: #4f5f6f !important;
+
+  & option {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
 
   &:hover {
     border: 1px solid #85CE36 !important;
@@ -111,7 +119,10 @@
 }
 
 .date-fields {
-  width: 130px;
+  width: 100%;
+  border-radius: 0;
+  height: 2rem !important;
+  color: #4f5f6f !important;
 
   @media (max-width: 580px) {
     float: none;
@@ -126,7 +137,27 @@
       margin-bottom: 0 !important;;
     }
   }
+
+  &:hover {
+    border: 1px solid #85CE36 !important;
+  }
+  &:focus {
+    border: 1px solid #85CE36 !important;
+  }
 }
+
+.space-between {
+  @media (max-width: 580px) {
+    margin-bottom: 20px !important;
+  }
+
+  &:last-child {
+    @media (max-width: 580px) {
+      margin-bottom: 0 !important;;
+    }
+  }
+}
+
 
 .custom-icon {
   font-size: 1.8em;

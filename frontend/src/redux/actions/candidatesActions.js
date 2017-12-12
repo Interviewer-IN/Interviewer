@@ -110,7 +110,7 @@ export function createCandidate(data, message, backPath) {
                 }
             })
             .then(data => {
-                dispatch(addNewCandidate(data));
+                // dispatch(addNewCandidate(data));
                 dispatch(getCandidates());
                 dispatch(makeNote(
                     {

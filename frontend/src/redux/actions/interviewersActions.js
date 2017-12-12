@@ -109,7 +109,7 @@ export function createInterviewer(data, message, backPath) {
                 }
             })
             .then(data => {
-                dispatch(addNewInterviewer(data));
+                // dispatch(addNewInterviewer(data));
                 dispatch(getInterviewers());
                 dispatch(makeNote(
                     {
